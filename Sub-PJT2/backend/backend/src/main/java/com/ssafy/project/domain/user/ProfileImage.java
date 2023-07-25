@@ -1,5 +1,7 @@
-package com.ssafy.project.domain;
+package com.ssafy.project.domain.user;
 
+import com.ssafy.project.domain.BaseTimeEntity;
+import com.ssafy.project.domain.user.Profile;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class ProfileImage extends BaseTimeEntity{
+public class ProfileImage extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

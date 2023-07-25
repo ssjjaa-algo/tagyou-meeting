@@ -1,6 +1,7 @@
-package com.ssafy.project.domain;
+package com.ssafy.project.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.project.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Profile extends BaseTimeEntity{
+public class Profile extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

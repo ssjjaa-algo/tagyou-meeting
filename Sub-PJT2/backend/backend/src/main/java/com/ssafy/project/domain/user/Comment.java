@@ -1,16 +1,18 @@
-package com.ssafy.project.domain;
+package com.ssafy.project.domain.user;
 
+import com.ssafy.project.domain.BaseTimeEntity;
+import com.ssafy.project.domain.user.Profile;
+import com.ssafy.project.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "comments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Comment extends BaseTimeEntity{
+public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;

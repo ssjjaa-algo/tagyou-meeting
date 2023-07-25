@@ -1,6 +1,8 @@
-package com.ssafy.project.domain;
+package com.ssafy.project.domain.friend;
 
 
+import com.ssafy.project.domain.BaseTimeEntity;
+import com.ssafy.project.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Entity
-public class FriendShip extends BaseTimeEntity{
+public class FriendShip extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long friendshipId;
+    private Long friendShipId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
