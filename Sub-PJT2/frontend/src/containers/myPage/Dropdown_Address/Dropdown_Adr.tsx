@@ -6,7 +6,7 @@ const Dropdown_Adr: React.FC = () => {
 
   const categoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const state = document.getElementById("state") as HTMLSelectElement;
-    const options: { [key: string]: string[] } = {
+    const options: { [key: string]: string[] } = { 
       // 각 카테고리에 해당하는 지역 배열
       general00: ["시/군/구 선택"], 
       general01: ["강릉시","동해시","삼척시","속초시","원주시","춘천시","태백시","고성군","양구군","양양군","영월군","인제군","정선군","철원군","평창군","홍천군","화천군","횡성군"],

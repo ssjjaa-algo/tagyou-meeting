@@ -27,7 +27,7 @@ export const miniTitle = styled.div`
 export const InputArea = styled.div`
   margin-left: 10%;
   margin-top: 5vh;
-  display: flex;
+  display: flex; 
   flex-wrap: wrap;
   align-items: center;
 ` 

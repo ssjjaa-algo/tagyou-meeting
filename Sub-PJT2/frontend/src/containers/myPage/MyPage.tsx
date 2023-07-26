@@ -9,7 +9,7 @@ const MyPage: React.FC = () => {
   const [pw, setPw] = useState({ 
     type: 'password',
     visible: false
-  })
+  }) 
   const [newpw, setNewpw] = useState<string>("");
   const [pwcheck, setPwcheck] = useState<string>("");
   // const [hidePw, setHidePw] = useState(true)
