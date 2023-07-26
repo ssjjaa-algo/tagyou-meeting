@@ -9,7 +9,7 @@ export const Container = styled.div`
 export const Title = styled.text`
   color: #3C3939;
   opacity: 0.74;
-  font-size: 45px;
+  font-size: 45px; 
   font-weight: bold;
   display: inline-block;
 `

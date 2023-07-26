@@ -5,7 +5,7 @@ import MyPage from "./containers/myPage/MyPage";
 import ChatList from "./components/chat/chatList";
 import ChatRoom from "components/chat/chatRoom";
 
-const Router = () => {
+const Router = () => { 
   const dataList: Array<UserData> = [
     {
       profileImage: "pic1",

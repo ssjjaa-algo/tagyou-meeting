@@ -8,7 +8,7 @@ const MyPage: React.FC = () => {
   const [job, setJob] = useState<string>("");
   const [pw, setPw] = useState({ 
     type: 'password',
-    visible: false
+    visible: false 
   }) 
   const [newpw, setNewpw] = useState<string>("");
   const [pwcheck, setPwcheck] = useState<string>("");

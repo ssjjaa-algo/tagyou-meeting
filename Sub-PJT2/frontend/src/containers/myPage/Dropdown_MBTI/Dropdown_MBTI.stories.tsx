@@ -9,7 +9,7 @@ export default {
 
 type Story = StoryObj<typeof Dropdown_MBTI>;
 
-const Template: Story = {
+const Template: Story = { 
   name: "Default",
   args: {},
   render: () => <Dropdown_MBTI />,

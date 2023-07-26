@@ -7,7 +7,7 @@ const Dropdown_MBTI : React.FC = () => {
 
   return ( 
     <S.DropdownContainer>
-      <S.DropdownSelect onChange={onClick}>
+      <S.DropdownSelect onChange={onClick}> 
         <option value="general00">MBTI 선택</option>
         <option value="general01">ISTJ</option>
         <option value="general02">ISTP</option>

@@ -8,7 +8,7 @@ export default {
 } as Meta<typeof MyPage>;
 
 type Story = StoryObj<typeof MyPage>;
-
+ 
 const Template: Story = {
   name: "Default",
   args: {},
