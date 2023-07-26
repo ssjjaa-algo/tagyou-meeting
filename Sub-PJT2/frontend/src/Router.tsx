@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Test from "./components/test/Test";
 import Main from "./containers/main/Main";
-import Mypage from "./containers/mypage/Mypage";
+import MyPage from "./containers/myPage/MyPage";
 import ChatList from "./components/chat/chatList";
 import ChatRoom from "components/chat/chatRoom";
 
@@ -129,7 +129,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/test" element={<Test />} />
-        <Route path="/mypage" element={<Mypage />} />
+        <Route path="/user/mypage" element={<MyPage />} />
         <Route path="/chatList" element={<ChatList userData={dataList} />} />
         <Route path="/chatRoom" element={<ChatRoom chatData={chatData} />} />
       </Routes>
