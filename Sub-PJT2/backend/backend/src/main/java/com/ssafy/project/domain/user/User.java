@@ -19,7 +19,7 @@ public class User extends BaseTimeEntity {
     private Long userId;
 
     @Column(nullable = false, unique = true)
-    private String loginId;
+    private String userEmail;
 
     @Column(nullable = false)
     private String userPassword;
@@ -30,30 +30,28 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String phoneNumber;
 
-    @Column(nullable = false, unique = true)
-    private String userEmail;
-
     @Column(nullable = false)
     private int userAge;
 
     @Enumerated(EnumType.STRING)
     private UserGender userGender;
 
-    @Column(nullable = false, columnDefinition = "int default 1")
-    private int userMode;
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private MeetingGroup meetingGroup;
 
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐
-    public User(String loginId, String userPassword, String userName, String phoneNumber, String userEmail, int userAge, UserGender userGender) {
-        this.loginId = loginId;
+
+    public User(String userEmail, String userPassword, String userName, String phoneNumber, int userAge, UserGender userGender, RoleType roleType) {
+        this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
-        this.userEmail = userEmail;
         this.userAge = userAge;
         this.userGender = userGender;
+        this.roleType = roleType;
     }
 }
