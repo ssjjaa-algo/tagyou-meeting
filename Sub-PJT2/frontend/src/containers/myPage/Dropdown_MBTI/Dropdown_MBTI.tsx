@@ -5,7 +5,7 @@ const Dropdown_MBTI : React.FC = () => {
   const onClick = (e: ChangeEvent<HTMLSelectElement>) => {
   } 
 
-  return (
+  return ( 
     <S.DropdownContainer>
       <S.DropdownSelect onChange={onClick}>
         <option value="general00">MBTI 선택</option>

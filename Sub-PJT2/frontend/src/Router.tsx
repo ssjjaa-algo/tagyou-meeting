@@ -8,7 +8,7 @@ import ChatRoom from "containers/chatRoom/ChatRoom";
 const Router = () => {
   return (
     <BrowserRouter>
-      <Routes>
+      <Routes> 
         <Route path="/" element={<Main />} />
         <Route path="/test" element={<Test />} />
         <Route path="/mypage" element={<MyPage />} />

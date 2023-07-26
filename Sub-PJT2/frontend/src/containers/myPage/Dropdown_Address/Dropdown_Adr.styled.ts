@@ -6,7 +6,7 @@ export const DropdownContainer = styled.div`
 
 export const DropdownSelect = styled.select`
   outline: none;
-  padding: 13px 17px;
+  padding: 13px 17px; 
   border: 1px solid #dadce0;
   border-radius: 10px;
   font-size: 20px; 
