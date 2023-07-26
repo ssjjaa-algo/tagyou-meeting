@@ -1,7 +1,7 @@
 import * as S from "./ChatRoom.styled";
 import "css/chat/chatRoom.css";
 import React, { useRef } from "react";
-import sendButton from "stats/img/button_send.png";
+import sendButton from "asset/img/button_send.png";
 
 interface chatDataProps {
   chatData: ChatData;

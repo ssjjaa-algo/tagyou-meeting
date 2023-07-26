@@ -8,8 +8,17 @@ import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer/index";
 import RightContainer from "containers/rightContainer/rightContainer-chatList/ChatList";
 
+import { leftContainerProprs } from "../../types/leftContainerProprs";
+import TestImg from "../../asset/img/imgSrcTest.jpg";
+
 function ChatList() {
   const isDark = useRecoilValue(IsDark);
+
+  const leftContainerData: leftContainerProprs = {
+    imgSrc: TestImg,
+    name: "스티븐연",
+    age: 32,
+  };
 
   const dataList: Array<UserData> = [
     {
@@ -82,7 +91,11 @@ function ChatList() {
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <Global styles={GlobalStyle} />
         <Container>
-          <LeftContainer />
+          <LeftContainer
+            imgSrc={leftContainerData.imgSrc}
+            name={leftContainerData.name}
+            age={leftContainerData.age}
+          />
           <RightContainer userData={dataList} />
         </Container>
       </ThemeProvider>

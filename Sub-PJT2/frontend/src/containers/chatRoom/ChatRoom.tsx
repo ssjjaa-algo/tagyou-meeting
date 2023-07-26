@@ -8,8 +8,17 @@ import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer/index";
 import RightContainer from "../rightContainer/rightContainer-chatRoom/ChatRoom";
 
+import { leftContainerProprs } from "../../types/leftContainerProprs";
+import TestImg from "../../asset/img/imgSrcTest.jpg";
+
 function ChatRoom() {
   const isDark = useRecoilValue(IsDark);
+
+  const leftContainerData: leftContainerProprs = {
+    imgSrc: TestImg,
+    name: "스티븐연",
+    age: 32,
+  };
 
   const chatData: ChatData = {
     otherUser: {
@@ -81,8 +90,12 @@ function ChatRoom() {
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <Global styles={GlobalStyle} />
         <Container>
-          <LeftContainer />
-          <RightContainer chatData={chatData}/>
+          <LeftContainer
+            imgSrc={leftContainerData.imgSrc}
+            name={leftContainerData.name}
+            age={leftContainerData.age}
+          />
+          <RightContainer chatData={chatData} />
         </Container>
       </ThemeProvider>
     </div>
