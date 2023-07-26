@@ -36,7 +36,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private int userAge;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserGender userGender;
 
     @Column(nullable = false, columnDefinition = "int default 1")
@@ -47,7 +47,7 @@ public class User extends BaseTimeEntity {
     private MeetingGroup meetingGroup;
 
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐
-    public User(String loginId, String userPassword, String userName, String phoneNumber, String userEmail, int userAge, UserGender userGender, int userMode, MeetingGroup meetingGroup) {
+    public User(String loginId, String userPassword, String userName, String phoneNumber, String userEmail, int userAge, UserGender userGender) {
         this.loginId = loginId;
         this.userPassword = userPassword;
         this.userName = userName;
@@ -55,7 +55,5 @@ public class User extends BaseTimeEntity {
         this.userEmail = userEmail;
         this.userAge = userAge;
         this.userGender = userGender;
-        this.userMode = userMode;
-        this.meetingGroup = meetingGroup;
     }
 }
