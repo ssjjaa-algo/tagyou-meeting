@@ -1,6 +1,13 @@
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,java,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,java,windows
 
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
 # QUser
 /src/main/generated/
 
@@ -57,6 +64,7 @@ cmake-build-*/
 *.iws
 
 # IntelliJ
+.idea
 out/
 
 # mpeltonen/sbt-idea plugin
@@ -86,10 +94,10 @@ fabric.properties
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-# *.iml
-# modules.xml
-# .idea/misc.xml
-# *.ipr
+*.iml
+modules.xml
+.idea/misc.xml
+*.ipr
 
 # Sonarlint plugin
 # https://plugins.jetbrains.com/plugin/7973-sonarlint
