@@ -1,6 +1,6 @@
 import * as S from "./RightContainer.styled";
 
-const RightContinaer = () => {
+const RightContainer = () => {
   return (
     <S.Container>
       <p>rightContainer</p>
@@ -8,4 +8,4 @@ const RightContinaer = () => {
   );
 };
 
-export default RightContinaer;
+export default RightContainer;

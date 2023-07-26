@@ -101,29 +101,6 @@ const Router = () => {
     },
   };
 
-  // const otherUser: UserData = {
-  //   profileImage: "pic6",
-  //   name: "A",
-  //   region: "서울 동작구",
-  //   lastMessage: "ㅎㅇㅎㅇㅎㅇ",
-  //   lastMessageTime: "2023.07.10 17:46",
-  //   age: 28,
-  // };
-
-  // const messages: Array<Message> = [
-  //   { from: "A", to: "B", content: "내용입니다." },
-  //   { from: "B", to: "A", content: "내용입니다." },
-  // ];
-
-  // const user: UserData = {
-  //   profileImage: "pic3",
-  //   name: "고민시",
-  //   region: "대전 광역시",
-  //   lastMessage: "ㅎㅇㅎㅇㅎㅇ",
-  //   lastMessageTime: "2023.07.13 15:56",
-  //   age: 23,
-  // };
-
   return (
     <BrowserRouter>
       <Routes>
