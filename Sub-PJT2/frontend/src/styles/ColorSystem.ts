@@ -48,6 +48,6 @@ export const lightTheme: themeProps = {
   bgColor: palette.pink_500,
   pointDeepColor: palette.pink_400,
   pointLightColor: palette.pink_300,
-  fontColor: palette.gray_900,
+  fontColor: palette.white,
   fontSubColor: palette.gray_700,
 };

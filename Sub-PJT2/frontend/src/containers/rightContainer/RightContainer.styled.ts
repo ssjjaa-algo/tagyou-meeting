@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
+import { themeProps } from "@emotion/react";
 
-export const Container = styled.div`
-  background-color: var(--pink_100);
+export const Container = styled.div<{ theme: themeProps }>`
+  background-color: ${(props) => props.theme.pointLightColor};
   height: 100vh;
-  width: 1200px;
+  width: 100vw;
 `;
 
 export const ProfileImg = styled.div`

@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Router from "./Router";
 import { RecoilRoot } from "recoil";
+import Main from "./containers/main/Main";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <RecoilRoot>
     <React.StrictMode>
-      <Router />
+      <Main />
     </React.StrictMode>
   </RecoilRoot>
 );
