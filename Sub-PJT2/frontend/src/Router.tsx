@@ -14,7 +14,6 @@ const Router = () => {
         <Route path="/myPage" element={<MyPage />} />
         <Route path="/chatList" element={<ChatList />} />
         <Route path="/chatRoom" element={<ChatRoom />} />
-        <div>Test</div>
       </Routes>
     </BrowserRouter>
   );
