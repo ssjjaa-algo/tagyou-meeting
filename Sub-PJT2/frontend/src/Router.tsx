@@ -4,11 +4,10 @@ import Home from "./containers/home";
 import ChatList from "containers/chatList/ChatList";
 import ChatRoom from "containers/chatRoom/ChatRoom";
 
-const Router = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
+      <Routes> 
+        <Route path="/" element={<Main />} />
         <Route path="/test" element={<Test />} />
         <Route path="/chatList" element={<ChatList />} />
         <Route path="/chatRoom" element={<ChatRoom />} />
