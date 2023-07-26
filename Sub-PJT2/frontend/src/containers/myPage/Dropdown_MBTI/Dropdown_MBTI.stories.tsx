@@ -18,7 +18,7 @@ const Template: Story = {
 export const AppStory: Story = {
   ...Template,
   name: "태그명",
-  args: {
+  args: { 
     ...Template.args,
   },
 };

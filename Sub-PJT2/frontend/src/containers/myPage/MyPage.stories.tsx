@@ -21,4 +21,4 @@ export const AppStory: Story = {
   args: {
     ...Template.args,
   },
-};
+}; 

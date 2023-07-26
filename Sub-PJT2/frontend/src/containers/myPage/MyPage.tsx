@@ -6,7 +6,7 @@ import Dropdown_MBTI from "./Dropdown_MBTI/Dropdown_MBTI"
 const MyPage: React.FC = () => {
   const [nickname, setNickname] = useState<string>("");
   const [job, setJob] = useState<string>("");
-  const [pw, setPw] = useState({
+  const [pw, setPw] = useState({ 
     type: 'password',
     visible: false
   })
