@@ -1,0 +1,55 @@
+package com.ssafy.project.domain.room;
+
+import static com.querydsl.core.types.PathMetadataFactory.*;
+
+import com.querydsl.core.types.dsl.*;
+
+import com.querydsl.core.types.PathMetadata;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
+
+
+/**
+ * QThreeMeetingRoomGroup is a Querydsl query type for ThreeMeetingRoomGroup
+ */
+@Generated("com.querydsl.codegen.DefaultEntitySerializer")
+public class QThreeMeetingRoomGroup extends EntityPathBase<ThreeMeetingRoomGroup> {
+
+    private static final long serialVersionUID = -1038956606L;
+
+    private static final PathInits INITS = PathInits.DIRECT2;
+
+    public static final QThreeMeetingRoomGroup threeMeetingRoomGroup = new QThreeMeetingRoomGroup("threeMeetingRoomGroup");
+
+    public final NumberPath<Integer> groupMeetingRoomUserId = createNumber("groupMeetingRoomUserId", Integer.class);
+
+    public final ListPath<com.ssafy.project.domain.group.MeetingGroup, com.ssafy.project.domain.group.QMeetingGroup> groups = this.<com.ssafy.project.domain.group.MeetingGroup, com.ssafy.project.domain.group.QMeetingGroup>createList("groups", com.ssafy.project.domain.group.MeetingGroup.class, com.ssafy.project.domain.group.QMeetingGroup.class, PathInits.DIRECT2);
+
+    public final QThreeMeetingRoom threeMeetingRoom;
+
+    public final EnumPath<com.ssafy.project.domain.user.UserGender> userGender = createEnum("userGender", com.ssafy.project.domain.user.UserGender.class);
+
+    public QThreeMeetingRoomGroup(String variable) {
+        this(ThreeMeetingRoomGroup.class, forVariable(variable), INITS);
+    }
+
+    public QThreeMeetingRoomGroup(Path<? extends ThreeMeetingRoomGroup> path) {
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+    }
+
+    public QThreeMeetingRoomGroup(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QThreeMeetingRoomGroup(PathMetadata metadata, PathInits inits) {
+        this(ThreeMeetingRoomGroup.class, metadata, inits);
+    }
+
+    public QThreeMeetingRoomGroup(Class<? extends ThreeMeetingRoomGroup> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.threeMeetingRoom = inits.isInitialized("threeMeetingRoom") ? new QThreeMeetingRoom(forProperty("threeMeetingRoom")) : null;
+    }
+
+}
+

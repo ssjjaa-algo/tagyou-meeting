@@ -3,7 +3,7 @@ package com.ssafy.project.domain.group;
 import com.ssafy.project.domain.BaseTimeEntity;
 import com.ssafy.project.domain.room.ThreeMeetingRoomGroup;
 import com.ssafy.project.domain.user.UserGender;
-import com.ssafy.project.exception.OverLimitPartyCountException;
+import com.ssafy.project.exception.OverLimitGroupCountException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class MeetingGroup extends BaseTimeEntity {
 
     public void acceptGroup() {
         if (this.groupCount >= 3) {
-            throw new OverLimitPartyCountException("그룹 인원 초과입니다.");
+            throw new OverLimitGroupCountException("그룹 인원 초과입니다.");
         }
         this.accepted = true;
         this.groupCount += 1;

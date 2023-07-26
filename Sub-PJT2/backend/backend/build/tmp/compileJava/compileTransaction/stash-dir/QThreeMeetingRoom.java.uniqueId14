@@ -1,0 +1,58 @@
+package com.ssafy.project.domain.room;
+
+import static com.querydsl.core.types.PathMetadataFactory.*;
+
+import com.querydsl.core.types.dsl.*;
+
+import com.querydsl.core.types.PathMetadata;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
+
+
+/**
+ * QThreeMeetingRoom is a Querydsl query type for ThreeMeetingRoom
+ */
+@Generated("com.querydsl.codegen.DefaultEntitySerializer")
+public class QThreeMeetingRoom extends EntityPathBase<ThreeMeetingRoom> {
+
+    private static final long serialVersionUID = -296047427L;
+
+    public static final QThreeMeetingRoom threeMeetingRoom = new QThreeMeetingRoom("threeMeetingRoom");
+
+    public final QMeetingRoom _super = new QMeetingRoom(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
+    public final NumberPath<Integer> femaleCount = createNumber("femaleCount", Integer.class);
+
+    public final BooleanPath isReady = createBoolean("isReady");
+
+    //inherited
+    public final BooleanPath isStart = _super.isStart;
+
+    public final NumberPath<Integer> maleCount = createNumber("maleCount", Integer.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final NumberPath<Long> roomId = _super.roomId;
+
+    public final ListPath<ThreeMeetingRoomGroup, QThreeMeetingRoomGroup> roomList = this.<ThreeMeetingRoomGroup, QThreeMeetingRoomGroup>createList("roomList", ThreeMeetingRoomGroup.class, QThreeMeetingRoomGroup.class, PathInits.DIRECT2);
+
+    public QThreeMeetingRoom(String variable) {
+        super(ThreeMeetingRoom.class, forVariable(variable));
+    }
+
+    public QThreeMeetingRoom(Path<? extends ThreeMeetingRoom> path) {
+        super(path.getType(), path.getMetadata());
+    }
+
+    public QThreeMeetingRoom(PathMetadata metadata) {
+        super(ThreeMeetingRoom.class, metadata);
+    }
+
+}
+
