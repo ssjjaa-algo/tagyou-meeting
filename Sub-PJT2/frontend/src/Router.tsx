@@ -129,7 +129,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/test" element={<Test />} />
-        <Route path="/user/mypage" element={<MyPage />} />
+        <Route path="/mypage" element={<MyPage />} />
         <Route path="/chatList" element={<ChatList userData={dataList} />} />
         <Route path="/chatRoom" element={<ChatRoom chatData={chatData} />} />
       </Routes>
