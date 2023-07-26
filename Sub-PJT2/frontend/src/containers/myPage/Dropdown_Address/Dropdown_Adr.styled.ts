@@ -9,7 +9,7 @@ export const DropdownSelect = styled.select`
   padding: 13px 17px;
   border: 1px solid #dadce0;
   border-radius: 10px;
-  font-size: 20px;
+  font-size: 20px; 
   transition: border-color 0.3s;
   margin-right: 20px;
   &:focus {

@@ -3,7 +3,7 @@ import * as S from './Dropdown_MBTI.styled';
 
 const Dropdown_MBTI : React.FC = () => {
   const onClick = (e: ChangeEvent<HTMLSelectElement>) => {
-  }
+  } 
 
   return (
     <S.DropdownContainer>

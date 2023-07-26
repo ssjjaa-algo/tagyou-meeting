@@ -15,7 +15,7 @@ export const DropdownSelect = styled.select`
   &:focus {
     border-color: royalblue;
   }
-`;
+`; 
 
 // export const DropdownOption = styled.option`
 // `;

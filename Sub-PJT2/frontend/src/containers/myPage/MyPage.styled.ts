@@ -21,7 +21,7 @@ export const miniTitle = styled.div`
   font-size: 25px;
   font-weight: bold;
   vertical-align: middle;
-  text-align: center;
+  text-align: center; 
 `
 // export const Select
 export const InputArea = styled.div`
