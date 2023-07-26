@@ -9,3 +9,8 @@ export const IsDark = atom<boolean>({
   key: "IsDark",
   default: false,
 });
+
+export const IsOpen = atom<boolean>({
+  key: "IsOpen",
+  default: true,
+});

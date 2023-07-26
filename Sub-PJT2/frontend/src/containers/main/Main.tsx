@@ -6,17 +6,33 @@ import { useRecoilValue } from "recoil";
 import { darkTheme, lightTheme } from "../../styles/ColorSystem";
 import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer";
-import RightContinaer from "../rightContainer";
+import RightContainer from "../rightContainer";
 
+import { leftContainerProprs } from "../../types/leftContainerProprs";
+import TestImg from "../../asset/img/imgSrcTest.jpg";
+import Router from "../../Router";
 function Main() {
   const isDark = useRecoilValue(IsDark);
+
+  const leftContainerData: leftContainerProprs = {
+    imgSrc: TestImg,
+    name: "스티븐연",
+    age: 32,
+  };
+
   return (
     <div>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <Global styles={GlobalStyle} />
         <Container>
-          <LeftContainer />
-          <RightContinaer />
+          <LeftContainer
+            imgSrc={leftContainerData.imgSrc}
+            name={leftContainerData.name}
+            age={leftContainerData.age}
+          />
+          <RightContainer>
+            <Router />
+          </RightContainer>
         </Container>
       </ThemeProvider>
     </div>
