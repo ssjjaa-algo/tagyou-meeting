@@ -1,12 +1,15 @@
 import { ChangeEvent } from "react";
 import * as S from "./Dropdown_MBTI.styled";
+import { themeProps } from "@emotion/react";
+import { useTheme } from "@mui/material";
 
 const Dropdown_MBTI = () => {
+  const theme : themeProps = useTheme();
   const onClick = (e: ChangeEvent<HTMLSelectElement>) => {};
 
   return (
     <S.DropdownContainer>
-      <S.DropdownSelect onChange={onClick}>
+      <S.DropdownSelect theme={theme} onChange={onClick}>
         <option value="general00">MBTI 선택</option>
         <option value="general01">ISTJ</option>
         <option value="general02">ISTP</option>
