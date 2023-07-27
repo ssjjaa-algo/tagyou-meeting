@@ -1,4 +1,4 @@
-package com.ssafy.project.domain.friend;
+package com.ssafy.project.entity.friend;
 
 public enum FreindShipStatus {
     FOLLOW, UNFOLLOW

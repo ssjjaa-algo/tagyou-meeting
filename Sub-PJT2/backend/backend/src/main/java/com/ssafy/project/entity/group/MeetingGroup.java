@@ -1,8 +1,8 @@
-package com.ssafy.project.domain.group;
+package com.ssafy.project.entity.group;
 
-import com.ssafy.project.domain.BaseTimeEntity;
-import com.ssafy.project.domain.room.ThreeMeetingRoomGroup;
-import com.ssafy.project.domain.user.UserGender;
+import com.ssafy.project.entity.BaseTimeEntity;
+import com.ssafy.project.entity.Gender;
+import com.ssafy.project.entity.room.GroupMeetingRoom;
 import com.ssafy.project.exception.OverLimitGroupCountException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -18,15 +18,16 @@ public class MeetingGroup extends BaseTimeEntity {
     private Long groupId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "three_room_group_id")
-    private ThreeMeetingRoomGroup threeMeetingRoomGroup;
+    @JoinColumn(name = "room_id")
+    private GroupMeetingRoom groupMeetingRoom;
 
     @Enumerated(EnumType.STRING)
     private MeetingGroupRole groupRole; // LEADER, MEMBER
 
     private int groupCount;
 
-    private UserGender userGender;
+    @Enumerated(EnumType.STRING)
+    private Gender groupGender;
 
     private boolean accepted;
 

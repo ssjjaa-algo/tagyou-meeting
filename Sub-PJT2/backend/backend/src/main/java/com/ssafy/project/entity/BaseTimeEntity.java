@@ -1,4 +1,4 @@
-package com.ssafy.project.domain;
+package com.ssafy.project.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

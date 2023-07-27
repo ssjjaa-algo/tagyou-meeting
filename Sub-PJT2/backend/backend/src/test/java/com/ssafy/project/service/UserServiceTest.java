@@ -1,8 +1,7 @@
 package com.ssafy.project.service;
 
-import com.ssafy.project.domain.user.User;
-import com.ssafy.project.domain.user.UserGender;
-import com.ssafy.project.repository.UserRepository;
+import com.ssafy.project.entity.user.User;
+import com.ssafy.project.entity.user.UserGender;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ class UserServiceTest {
     @Test
     public void 유저확인() throws Exception {
         //given
-        User user = new User("m1","123","김싸피","011","hey", 12, UserGender.MALE);
+        User user = new User("ssafy","1234","김싸피","010",23, UserGender.MALE);
 
         //when
         Long savedId = userService.join(user);
