@@ -35,7 +35,7 @@
 }
 .chatRoom-main-input > textarea:focus {
   outline: none;
-  box-shadow: 0px 0px 10px 5px #ff8b94;
+  box-shadow: 0px 0px 10px 5px #ff5664;
 }
 .button-outer{
   /* border: solid black; */
