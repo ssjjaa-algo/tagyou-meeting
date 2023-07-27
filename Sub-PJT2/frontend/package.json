@@ -67,8 +67,12 @@
     "babel-plugin-named-exports-order": "^0.0.2",
     "eslint-plugin-storybook": "^0.6.12",
     "http-proxy-middleware": "^2.0.6",
+    "msw": "^1.2.3",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.26",
     "webpack": "^5.88.1"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
