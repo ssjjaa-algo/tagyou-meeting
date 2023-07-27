@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
+import { themeProps } from "@emotion/react";
 
 export const Container = styled.div``;
 
-export const ChatRoom = styled.div`
-  // border: solid black;
+export const ChatRoom = styled.div<{ theme: themeProps }>`
+  /* border: solid black; */
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -24,7 +25,8 @@ export const ChatRoomBody = styled.div`
   min-height: 40rem;
 `;
 
-export const ChatRoomCouterpart = styled.div`
+export const ChatRoomCouterpart = styled.div<{ theme: themeProps }>`
+  color: ${(props) => props.theme.font.text};
   /* border: solid red; */
   display: flex;
   flex-direction: column;
@@ -61,9 +63,9 @@ export const ChatRoomMain = styled.div`
   /* padding: 2rem; */
 `;
 
-export const ChatRoomMainBox = styled.div`
-  // border: solid pink;
-  background-color: #ffe6e5;
+export const ChatRoomMainBox = styled.div<{ theme: themeProps }>`
+  /* border: solid pink; */
+  background-color: ${(props) => props.theme.point.light};
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
@@ -121,7 +123,7 @@ export const Line = styled.div`
 export const MessageReceived = styled.div`
   /* border: solid red; */
   justify-content: flex-start;
-  isplay: flex;
+  display: flex;
   flex-direction: row;
   width: 95%;
   margin: 0.5rem 0 0.5rem 0.5rem;
@@ -136,8 +138,9 @@ export const MessageSent = styled.div`
   margin: 0.5rem 0 0.5rem 0.5rem;
 `;
 
-export const MessageBox = styled.div`
-  // border: solid green; 
+export const MessageBox = styled.div<{theme: themeProps}>`
+  /* border: solid green; */
+  color: ${(props) => props.theme.font.text};
   display: flex;
   flex-direction: row;
   width: 80%;
@@ -145,10 +148,10 @@ export const MessageBox = styled.div`
   padding-bottom: 1rem;
 `;
 
-export const MessageContent = styled.div`
+export const MessageContent = styled.div<{theme: themeProps}>`
   /* border: solid green; */
-  background-color: white;
-  box-shadow: 0px 5px 10px 0px #ff8b94;
+  background-color: ${(props) => props.theme.bg.light};
+  box-shadow: 0px 5px 10px 0px ${(props) =>  props.theme.point.mid};
   border-radius: 0.5rem;
   padding: 1rem;
 `;
@@ -163,15 +166,23 @@ export const MessageTime = styled.div`
   font-size: small;
 `;
 
-export const ChatRoomMainInput = styled.div`
-  // border: solid green;
+export const ChatRoomMainInput = styled.div<{ theme: themeProps }>`
+  /* border: solid green; */
   border-radius: 0.5rem;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   width: 85%;
   height: 5rem;
   padding: 1rem 1.5rem 1rem 1.5rem;
-  background-color: #ffaaa5;
+  background-color: ${(props) => props.theme.point.mid};
   margin-top: 1rem;
+`;
+
+export const Button = styled.button<{ theme: themeProps }>`
+  background-color: ${(props) => props.theme.point.deep};
+  border: none;
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 100%;
 `;

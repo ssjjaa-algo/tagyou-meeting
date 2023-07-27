@@ -1,9 +1,8 @@
-package com.ssafy.project.domain.room;
+package com.ssafy.project.entity.room;
 
 
-import com.ssafy.project.domain.BaseTimeEntity;
-import com.ssafy.project.domain.room.MeetingRoom;
-import com.ssafy.project.domain.user.User;
+import com.ssafy.project.entity.BaseTimeEntity;
+import com.ssafy.project.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

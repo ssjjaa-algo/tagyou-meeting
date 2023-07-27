@@ -1,4 +1,4 @@
-package com.ssafy.project.domain.group;
+package com.ssafy.project.entity.group;
 
 public enum MeetingGroupRole {
     LEADER, MEMBER

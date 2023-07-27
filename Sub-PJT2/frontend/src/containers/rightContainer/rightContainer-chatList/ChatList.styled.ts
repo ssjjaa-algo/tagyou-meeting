@@ -1,9 +1,11 @@
 import styled from "@emotion/styled";
+import { themeProps } from "@emotion/react";
 
-export const Container = styled.div``;
+export const Container = styled.div`
+`;
 
-export const ChatList = styled.div`
-  // border: solid black;
+export const ChatList = styled.div<{theme: themeProps}>`
+  /* border: solid black; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,12 +25,12 @@ export const ChatListBody = styled.div`
   height: calc(100vh - 3.5rem);
   width: 100%;
   overflow: scroll;
-  overflow-x:hidden;
-`
+  overflow-x: hidden;
+`;
 
-export const Chat = styled.div`
+export const Chat = styled.div<{theme: themeProps}>`
   /* border: solid red; */
-  background-color: #FFE6E5;
+  background-color: ${(props) => props.theme.point.light};
   border-radius: 0.3rem;
   display: flex;
   flex-direction: row;
@@ -37,22 +39,23 @@ export const Chat = styled.div`
   padding: 1rem;
   width: 95%;
   min-width: 50rem;
-`
+`;
 
 export const ChatProfileImage = styled.div`
   border: solid green;
   border-radius: 50%;
   width: 7rem;
   height: 7rem;
-`
+`;
 
-export const chatContent = styled.div`
+export const chatContent = styled.div<{theme: themeProps}>`
+  color: ${(props) => props.theme.font.deep};
   /* border: solid pink; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   width: 80%;
-`
+`;
 
 export const ChatContentUserData = styled.div`
   /* border: solid black; */
@@ -60,16 +63,16 @@ export const ChatContentUserData = styled.div`
   flex-direction: row;
   justify-content: space-between;
   font-weight: bold;
-`
+`;
 
 export const ChatContentMessage = styled.div`
   /* border: solid black; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`
+`;
 
 export const ChatContentMessageTime = styled.div`
   width: 5rem;
   text-align: center;
-`
+`;

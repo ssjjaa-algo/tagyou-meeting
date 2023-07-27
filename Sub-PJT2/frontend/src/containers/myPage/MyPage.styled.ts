@@ -8,16 +8,16 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.text<{ theme: themeProps }>`
-  color: ${(props) => props.theme.font.mid};
+  color: ${(props) => props.theme.point.deep};
   font-size: 30px;
   font-weight: bold;
   display: inline-block;
 `;
 
-export const miniTitle = styled.div`
-  color: #5a5a5a;
+export const miniTitle = styled.div<{ theme: themeProps }>`
+  color: ${(props) => props.theme.font.mid};
   /* opacity: 0.74; */
-  width: 200px;
+  width: 15vh;
   font-size: 17px;
   font-weight: bold;
   vertical-align: middle;
@@ -32,9 +32,9 @@ export const InputArea = styled.div`
   align-items: center;
 `;
 
-export const Input = styled.input`
-  background-image: linear-gradient(#f43f5e, #f43f5e),
-    linear-gradient(#5a5a5a, #5a5a5a);
+export const Input = styled.input<{ theme: themeProps }>`
+  background-image: linear-gradient(${(props) => props.theme.point.deep}, ${(props) => props.theme.point.deep}),
+    linear-gradient(${(props) => props.theme.font.mid}, ${(props) => props.theme.font.mid});
   border: 0 none;
   /* border-radius: 0; */
   float: none;
@@ -45,10 +45,10 @@ export const Input = styled.input`
   background-size: 0 2px, 100% 1px;
   padding: 15px 15px;
   transition: background 0s ease-out 0s;
-  color: #5a5a5a;
+  color: ${(props) => props.theme.font.mid};
   min-height: 20px;
   display: inline-block;
-  width: 30%;
+  width: 20%;
   outline: none;
   font-size: 15px;
   margin-left: 20px;
@@ -56,39 +56,43 @@ export const Input = styled.input`
     background-size: 100% 2px, 100% 1px;
     outline: 0 none;
     transition-duration: 0.3s;
-    color: #525252;
+    color: ${(props) => props.theme.font.deep};
   }
 `;
 
-export const Button = styled.button`
-  background: #fb7185;
-  color: #fff1f2;
+export const Button = styled.button<{ theme: themeProps }>`
+  background: ${(props) => props.theme.point.deep};
+  color: ${(props) => props.theme.font.light};
   font-size: 17px;
   margin: 10px;
   font-weight: bold;
   padding: 0.6em 1em;
   border-radius: 10px;
-  border-color: #fb7185;
+  border-color: ${(props) => props.theme.point.deep};
   display: inline-block;
+  box-shadow: 0px 2px 4px ${(props) => props.theme.font.deep};
 `;
 
-export const SaveButton = styled.button`
-  background: #fb7185;
-  color: #fff8f8;
+export const SaveButton = styled.button<{ theme: themeProps }>`
+  background: ${(props) => props.theme.point.deep};
+  color: ${(props) => props.theme.font.light};
   font-size: 17px;
   margin: 10px;
   padding: 0.6em 1em;
   border-radius: 10px;
   font-weight: bold;
-  border-color: #fb7185;
+  border-color: ${(props) => props.theme.point.deep};
   display: inline-block;
   float: right;
   margin-right: 20vw;
+  box-shadow: 0px 2px 4px ${(props) => props.theme.font.deep};
 `;
 
-export const Notice = styled.p`
+export const Notice = styled.p<{ theme: themeProps }>`
+  margin-left:20px;
   vertical-align: middle;
-  font-size: 20px;
+  font-size: 13px;
+  color: ${(props) => props.theme.font.mid};
 `;
 
 export const getOptionListStyle = ({ active = true, zIndex = 1 }) => {

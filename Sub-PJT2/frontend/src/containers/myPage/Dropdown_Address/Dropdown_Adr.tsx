@@ -1,7 +1,10 @@
 import { useState, ChangeEvent } from "react";
 import * as S from "./Dropdown_Adr.styled";
+import { themeProps } from "@emotion/react";
+import { useTheme } from "@mui/material";
 
 const Dropdown_Adr = () => {
+  const theme : themeProps = useTheme();
   const [selectedOption, setSelectedOption] = useState<string>(""); // 선택한 option을 상태로 관리
 
   const categoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -275,7 +278,7 @@ const Dropdown_Adr = () => {
 
   return (
     <S.DropdownContainer>
-      <S.DropdownSelect onChange={categoryChange}>
+      <S.DropdownSelect  theme={theme} onChange={categoryChange}>
         <option value="general00">시/도 선택</option>
         <option value="general01">강원도</option>
         <option value="general02">경기도</option>
@@ -294,7 +297,7 @@ const Dropdown_Adr = () => {
         <option value="general15">충청남도</option>
         <option value="general16">충청북도</option>
       </S.DropdownSelect>
-      <S.DropdownSelect id="state" onChange={handleRegionChange}>
+      <S.DropdownSelect  theme={theme} id="state" onChange={handleRegionChange}>
         <option value="">시/군/구 선택</option>
       </S.DropdownSelect>
     </S.DropdownContainer>

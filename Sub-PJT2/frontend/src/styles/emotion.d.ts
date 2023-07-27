@@ -13,6 +13,7 @@ declare module "@emotion/react" {
       deep: string;
       mid: string;
       light: string;
+      text: string;
     };
     point: {
       deep: string;

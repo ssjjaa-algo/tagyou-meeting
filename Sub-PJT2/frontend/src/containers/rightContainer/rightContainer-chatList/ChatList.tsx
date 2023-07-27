@@ -1,3 +1,5 @@
+import { themeProps } from "@emotion/react";
+import { useTheme } from "@mui/material";
 import * as S from "./ChatList.styled";
 import "css/chat/chatList.css";
 
@@ -6,15 +8,17 @@ interface Listprop {
 }
 
 const RightContainer = ({ userData }: Listprop) => {
+  const theme: themeProps = useTheme();
+
   return (
     <S.Container>
-      <S.ChatList>
+      <S.ChatList theme={theme}>
         <S.ChatListBody className="chatList-body">
           {userData?.map((item: UserData, idx: number) => (
-            <S.Chat key={idx}>
+            <S.Chat key={idx} theme={theme}>
               {/* <img src="" alt="" /> */}
               <S.ChatProfileImage>{item.profileImage}</S.ChatProfileImage>
-              <S.chatContent>
+              <S.chatContent theme={theme}>
                 <S.ChatContentUserData>
                   <div className="chat-content-userData-nameAndAge">
                     {item.name} | {item.age}

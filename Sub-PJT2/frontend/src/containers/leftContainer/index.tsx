@@ -1,9 +1,9 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
-import * as S from "./LeftContainer.styled";
-import { leftContainerProprs } from "../../types/leftContainerProprs";
 import { useRecoilState } from "recoil";
 import { IsDark, IsOpen } from "../../atoms/atoms";
+import * as S from "./LeftContainer.styled";
+import { leftContainerProprs } from "../../types/leftContainerProprs";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Profile from "components/profile";
