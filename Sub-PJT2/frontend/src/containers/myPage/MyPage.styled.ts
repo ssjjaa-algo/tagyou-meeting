@@ -8,11 +8,11 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.text<{ theme: themeProps }>`
-  color: ${props => props.theme.fontSubColor};
-  font-size: 30px;  
+  color: ${(props) => props.theme.font.mid};
+  font-size: 30px;
   font-weight: bold;
   display: inline-block;
-`
+`;
 
 export const miniTitle = styled.div`
   color: #5a5a5a;
@@ -21,19 +21,20 @@ export const miniTitle = styled.div`
   font-size: 17px;
   font-weight: bold;
   vertical-align: middle;
-  text-align: center; 
-`
+  text-align: center;
+`;
 // export const Select
 export const InputArea = styled.div`
   margin-left: 5%;
   margin-top: 1vh;
-  display: flex; 
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
-` 
+`;
 
 export const Input = styled.input`
-  background-image: linear-gradient(#f43f5e, #f43f5e), linear-gradient(#5a5a5a, #5a5a5a);
+  background-image: linear-gradient(#f43f5e, #f43f5e),
+    linear-gradient(#5a5a5a, #5a5a5a);
   border: 0 none;
   /* border-radius: 0; */
   float: none;
@@ -52,12 +53,12 @@ export const Input = styled.input`
   font-size: 15px;
   margin-left: 20px;
   &:focus {
-      background-size: 100% 2px, 100% 1px;
-      outline: 0 none;
-      transition-duration: 0.3s;
-      color: #525252;
-    }
-`
+    background-size: 100% 2px, 100% 1px;
+    outline: 0 none;
+    transition-duration: 0.3s;
+    color: #525252;
+  }
+`;
 
 export const Button = styled.button`
   background: #fb7185;
@@ -73,7 +74,7 @@ export const Button = styled.button`
 
 export const SaveButton = styled.button`
   background: #fb7185;
-  color: #FFF8F8;
+  color: #fff8f8;
   font-size: 17px;
   margin: 10px;
   padding: 0.6em 1em;
@@ -88,11 +89,11 @@ export const SaveButton = styled.button`
 export const Notice = styled.p`
   vertical-align: middle;
   font-size: 20px;
-`
+`;
 
 export const getOptionListStyle = ({ active = true, zIndex = 1 }) => {
   return `
-  max-height: ${active ? '300px' : '0'};
+  max-height: ${active ? "300px" : "0"};
   z-index: ${zIndex};
   `;
 };
@@ -108,4 +109,3 @@ export const Styled = {
     }
   `,
 };
-

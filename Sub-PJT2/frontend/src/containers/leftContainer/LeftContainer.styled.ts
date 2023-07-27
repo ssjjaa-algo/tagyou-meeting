@@ -12,32 +12,32 @@ import GroupIcon from "@mui/icons-material/Group";
 export const HomeIconStyled = styled(HomeIcon)<{
   theme: themeProps;
 }>`
-  color: ${(props) => props.theme.pointDeepColor};
+  color: ${(props) => props.theme.bg.deep};
   font-size: 25px;
 `;
 
 export const List = styled.li<{ theme: themeProps }>`
   font-size: 20px;
   font-weight: 400;
-  color: ${(props) => props.theme.fontColor};
+  color: ${(props) => props.theme.font.light};
   margin: 0 20px 0 20px;
   line-height: 20px;
   cursor: pointer;
   border-bottom: solid;
   padding: 20px 0 20px 0;
-  border-bottom-color: ${(props) => props.theme.fontColor};
+  border-bottom-color: ${(props) => props.theme.font.light};
 `;
 
 export const PlayCircleOutlineIconStyled = styled(PlayCircleOutlineIcon)<{
   theme: themeProps;
 }>`
-  color: ${(props) => props.theme.fontColor};
+  color: ${(props) => props.theme.font.light};
 `;
 
 export const GroupIconStyled = styled(GroupIcon)<{
   theme: themeProps;
 }>`
-  color: ${(props) => props.theme.fontColor};
+  color: ${(props) => props.theme.font.light};
 `;
 
 export const Profile = styled.div`
@@ -53,19 +53,19 @@ export const ListBox = styled.ul`
 export const LightModeIconStyled = styled(LightModeIcon)<{
   theme: themeProps;
 }>`
-  color: ${(props) => props.theme.pointLightColor};
+  color: ${(props) => props.theme.font.light};
 `;
 
 export const DarkModeIconStyled = styled(DarkModeIcon)<{
   theme: themeProps;
 }>`
-  color: ${(props) => props.theme.pointLightColor};
+  color: ${(props) => props.theme.font.light};
 `;
 
 export const ArrowForwardIosIconStyled = styled(ArrowForwardIosIcon)<{
   theme: themeProps;
 }>`
-  color: ${(props) => props.theme.pointLightColor};
+  color: ${(props) => props.theme.font.light};
 `;
 
 export const ArrowBtn = styled.button`
@@ -75,7 +75,7 @@ export const ArrowBtn = styled.button`
 export const ArrowBackIosIconStyled = styled(ArrowBackIosIcon)<{
   theme: themeProps;
 }>`
-  color: ${(props) => props.theme.pointLightColor};
+  color: ${(props) => props.theme.font.light};
 `;
 
 export const ProfileImgBox = styled.div`
@@ -98,7 +98,7 @@ export const ProfileImg = styled.img`
 `;
 
 export const Name = styled.div<{ theme: themeProps }>`
-  color: ${(props) => props.theme.fontColor};
+  color: ${(props) => props.theme.font.light};
   font-size: 18px;
   font-weight: bold;
 `;
@@ -110,7 +110,7 @@ export const Age = styled(Name)`
 `;
 
 export const FootBox = styled.div<{ theme: themeProps }>`
-  color: ${(props) => props.theme.pointLightColor};
+  color: ${(props) => props.theme.font.light};
   margin-top: 280px;
   margin-left: 160px;
 `;
