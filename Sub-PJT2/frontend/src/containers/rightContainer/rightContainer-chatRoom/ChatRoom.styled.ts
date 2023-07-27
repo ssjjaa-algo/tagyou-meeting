@@ -47,7 +47,7 @@ export const ChatRoomUser = styled.div`
 `;
 
 export const ProfileImg = styled.div`
-  /* border: solid green; */
+  border: solid green;
   border-radius: 50%;
   width: 7rem;
   height: 7rem;
