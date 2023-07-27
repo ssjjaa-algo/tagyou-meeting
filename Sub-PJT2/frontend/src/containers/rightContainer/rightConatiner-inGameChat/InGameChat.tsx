@@ -16,7 +16,6 @@ const RightContainer = ({ chatData }: chatDataProps) => {
   const chats = () => {
     const result = [];
     const chats = chatData.messages;
-    const user = chatData.user;
     result.push(
       <S.ChatBegins theme={theme}>
         <S.Line theme={theme} />

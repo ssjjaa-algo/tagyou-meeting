@@ -6,12 +6,12 @@ export const Container = styled.div``;
 export const ChatRoom = styled.div<{ theme: themeProps }>`
   /* border: solid black; */
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   justify-content: space-between;
   height: calc(100vh - 3.5rem);
   min-width: fit-content;
   min-height: fit-content;
-  margin-top: 1rem;
+  margin: 1rem 1rem 0 0;
 `;
 
 export const ChatRoomMain = styled.div`
