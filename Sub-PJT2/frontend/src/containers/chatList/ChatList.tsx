@@ -108,7 +108,7 @@ function ChatList() {
 
 const Container = styled.div<{ theme: themeProps }>`
   display: flex;
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.bg};
   flex-direction: row;
   justify-content: space-between;
 `;
