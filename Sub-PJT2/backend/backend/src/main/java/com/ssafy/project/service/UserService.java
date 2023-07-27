@@ -1,6 +1,6 @@
 package com.ssafy.project.service;
 
-import com.ssafy.project.domain.user.User;
+import com.ssafy.project.entity.user.User;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

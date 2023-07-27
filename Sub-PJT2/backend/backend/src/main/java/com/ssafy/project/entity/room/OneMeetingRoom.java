@@ -1,8 +1,9 @@
-package com.ssafy.project.domain.room;
+package com.ssafy.project.entity.room;
 
-import com.ssafy.project.domain.user.User;
+import com.ssafy.project.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,9 @@ public class OneMeetingRoom extends MeetingRoom{
         this.femaleUser = femaleUser;
     }
 
+    @Builder
+    public OneMeetingRoom(User maleUser, User femaleUser) {
+        this.maleUser = maleUser;
+        this.femaleUser = femaleUser;
+    }
 }

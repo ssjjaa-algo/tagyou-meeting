@@ -1,7 +1,7 @@
-package com.ssafy.project.domain.friend;
+package com.ssafy.project.entity.friend;
 
-import com.ssafy.project.domain.BaseTimeEntity;
-import com.ssafy.project.domain.user.User;
+import com.ssafy.project.entity.BaseTimeEntity;
+import com.ssafy.project.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

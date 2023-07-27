@@ -1,7 +1,7 @@
-package com.ssafy.project.domain.user;
+package com.ssafy.project.entity.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.project.domain.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ssafy.project.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,45 +23,44 @@ public class Profile extends BaseTimeEntity {
     @Column(name="user_profile_id")
     private Long profileId;
 
-    @JsonIgnore
+    @JsonBackReference
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", updatable = false)
     private User user;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<ProfileImage> profileImages = new ArrayList<>();
 
-    @Column(name = "user_region", updatable = false)
-    private String region;
+    @Column(nullable = false)
+    private String userRegion;
 
-    @Column(name = "user_job", updatable = false)
-    private String job;
+    @Column(nullable = false)
+    private String userJob;
 
-    @Column(name = "user_hobby", updatable = false)
-    private String hobby;
+    @Column(nullable = false)
+    private String userHobby;
 
-    @Column(name = "user_mbti", updatable = false)
-    private String mbti;
+    @Column(nullable = false)
+    private String userMbti;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
-    private int userLike;
-
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     @Builder
-    public Profile(User user, String region, String job, String hobby, String mbti, String content) {
+    public Profile(User user, String userRegion, String userJob, String userHobby, String userMbti, String content) {
         this.user = user;
-        this.region = region;
-        this.job = job;
-        this.hobby = hobby;
-        this.mbti = mbti;
+        this.userRegion = userRegion;
+        this.userJob = userJob;
+        this.userHobby = userHobby;
+        this.userMbti = userMbti;
         this.content = content;
     }
-    public void updateProfile(String title, String content, List<ProfileImage> profileImages) {
-        this.region = region;
-        this.job = job;
-        this.hobby = hobby;
-        this.mbti = mbti;
+
+    public void updateProfile(String userRegion, String userJob, String userHobby, String userMbti, String content) {
+        this.userRegion = userRegion;
+        this.userJob = userJob;
+        this.userHobby = userHobby;
+        this.userMbti = userMbti;
         this.content = content;
         this.profileImages = new ArrayList<>();
         profileImages.forEach(this::addImage);
@@ -70,7 +69,7 @@ public class Profile extends BaseTimeEntity {
     // 연관관계 편의 메서드
     public void addImage(ProfileImage profileImage) {
         profileImages.add(profileImage);
-        profileImage.addProfile(this);
+        profileImage.setProfile(this);
     }
 
 }

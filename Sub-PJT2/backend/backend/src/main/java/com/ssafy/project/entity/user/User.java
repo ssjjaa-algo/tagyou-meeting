@@ -1,7 +1,8 @@
-package com.ssafy.project.domain.user;
+package com.ssafy.project.entity.user;
 
-import com.ssafy.project.domain.BaseTimeEntity;
-import com.ssafy.project.domain.group.MeetingGroup;
+import com.ssafy.project.entity.BaseTimeEntity;
+import com.ssafy.project.entity.Gender;
+import com.ssafy.project.entity.group.MeetingGroup;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,41 +20,42 @@ public class User extends BaseTimeEntity {
     private Long userId;
 
     @Column(nullable = false, unique = true)
-    private String loginId;
+    private String userEmail;
 
     @Column(nullable = false)
     private String userPassword;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String userName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String phoneNumber;
-
-    @Column(nullable = false, unique = true)
-    private String userEmail;
 
     @Column(nullable = false)
     private int userAge;
 
     @Enumerated(EnumType.STRING)
-    private UserGender userGender;
+    private Gender userGender;
 
-    @Column(nullable = false, columnDefinition = "int default 1")
-    private int userMode;
+    @Column(nullable = false)
+    private int userLike;
+
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType = RoleType.USER;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private MeetingGroup meetingGroup;
 
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐
-    public User(String loginId, String userPassword, String userName, String phoneNumber, String userEmail, int userAge, UserGender userGender) {
-        this.loginId = loginId;
+
+    public User(String userEmail, String userPassword, String userName, String phoneNumber, int userAge, Gender userGender) {
+        this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
-        this.userEmail = userEmail;
         this.userAge = userAge;
         this.userGender = userGender;
+        this.userLike = 0;
     }
 }
