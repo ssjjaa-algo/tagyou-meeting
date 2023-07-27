@@ -71,7 +71,6 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
             <S.ListText>친구목록</S.ListText>
           </S.List>
         </S.ListBox>
-
         <S.FootBox theme={theme}>로그아웃</S.FootBox>
       </Drawer>
     </>
