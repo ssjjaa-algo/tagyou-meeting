@@ -12,7 +12,7 @@ import GroupIcon from "@mui/icons-material/Group";
 export const HomeIconStyled = styled(HomeIcon)<{
   theme: themeProps;
 }>`
-  color: ${(props) => props.theme.fontColor};
+  color: ${(props) => props.theme.pointDeepColor};
   font-size: 25px;
 `;
 

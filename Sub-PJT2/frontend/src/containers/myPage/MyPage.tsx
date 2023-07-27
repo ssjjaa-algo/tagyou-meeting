@@ -2,8 +2,11 @@ import { useState, ChangeEvent } from "react";
 import * as S from "./MyPage.styled";
 import Dropdown_Adr from "./Dropdown_Address/Dropdown_Adr";
 import Dropdown_MBTI from "./Dropdown_MBTI/Dropdown_MBTI";
-
+import { themeProps } from "@emotion/react";
+import { useTheme } from "@mui/material";
 const MyPage = () => {
+
+  const theme : themeProps = useTheme();
   const [nickname, setNickname] = useState<string>("");
   const [job, setJob] = useState<string>("");
   const [pw, setPw] = useState({
@@ -55,7 +58,7 @@ const MyPage = () => {
   return (
     <>
       <S.Container>
-        <S.Title>내 정보 수정</S.Title>
+        <S.Title theme={theme}>내 정보 수정</S.Title>
 
         <S.InputArea>
           <S.miniTitle>닉네임</S.miniTitle>
@@ -89,7 +92,7 @@ const MyPage = () => {
         <S.SaveButton>변경사항 저장</S.SaveButton>
       </S.Container>
       <S.Container>
-        <S.Title>비밀번호 변경</S.Title>
+        <S.Title theme={theme}>비밀번호 변경</S.Title>
         <S.InputArea>
           <S.miniTitle>현재 비밀번호</S.miniTitle>
           <S.Input

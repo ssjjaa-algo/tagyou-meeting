@@ -1,3 +1,4 @@
+import { themeProps } from "@emotion/react";
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
@@ -6,50 +7,49 @@ export const Container = styled.div`
   justify-items: center;
 `;
 
-export const Title = styled.text`
-  color: #3C3939;
-  opacity: 0.74;
-  font-size: 45px; 
+export const Title = styled.text<{ theme: themeProps }>`
+  color: ${props => props.theme.fontSubColor};
+  font-size: 30px;  
   font-weight: bold;
   display: inline-block;
 `
 
 export const miniTitle = styled.div`
-  color: #3C3939;
-  opacity: 0.74;
+  color: #5a5a5a;
+  /* opacity: 0.74; */
   width: 200px;
-  font-size: 25px;
+  font-size: 17px;
   font-weight: bold;
   vertical-align: middle;
   text-align: center; 
 `
 // export const Select
 export const InputArea = styled.div`
-  margin-left: 10%;
-  margin-top: 5vh;
+  margin-left: 5%;
+  margin-top: 1vh;
   display: flex; 
   flex-wrap: wrap;
   align-items: center;
 ` 
 
 export const Input = styled.input`
-  background-image: linear-gradient(#20aee3, #20aee3), linear-gradient(#bfbfbf, #bfbfbf);
+  background-image: linear-gradient(#f43f5e, #f43f5e), linear-gradient(#5a5a5a, #5a5a5a);
   border: 0 none;
-  border-radius: 0;
-  box-shadow: none;
+  /* border-radius: 0; */
   float: none;
   background-color: transparent;
+  /* border-radius: 10%; */
   background-position: center bottom, center calc(100% - 1px);
   background-repeat: no-repeat;
   background-size: 0 2px, 100% 1px;
   padding: 15px 15px;
   transition: background 0s ease-out 0s;
-  color: #bfbfbf;
-  min-height: 35px;
+  color: #5a5a5a;
+  min-height: 20px;
   display: inline-block;
   width: 30%;
   outline: none;
-  font-size: 20px;
+  font-size: 15px;
   margin-left: 20px;
   &:focus {
       background-size: 100% 2px, 100% 1px;
@@ -60,26 +60,26 @@ export const Input = styled.input`
 `
 
 export const Button = styled.button`
-  background: #FF7480;
-  color: #FFF8F8;
-  font-size: 18px;
-  margin: 20px;
+  background: #fb7185;
+  color: #fff1f2;
+  font-size: 17px;
+  margin: 10px;
   font-weight: bold;
-  padding: 0.8em 1.2em;
+  padding: 0.6em 1em;
   border-radius: 10px;
-  border-color: #FF7480;
+  border-color: #fb7185;
   display: inline-block;
 `;
 
 export const SaveButton = styled.button`
-  background: #FF7480;
+  background: #fb7185;
   color: #FFF8F8;
-  font-size: 18px;
+  font-size: 17px;
   margin: 10px;
-  padding: 0.8em 1.2em;
+  padding: 0.6em 1em;
   border-radius: 10px;
   font-weight: bold;
-  border-color: #FF7480;
+  border-color: #fb7185;
   display: inline-block;
   float: right;
   margin-right: 20vw;
