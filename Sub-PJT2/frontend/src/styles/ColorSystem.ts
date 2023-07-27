@@ -60,7 +60,7 @@ export const lightTheme: themeProps = {
   },
   font: {
     deep: palette.neutral_800,
-    mid: palette.neutral_300,
+    mid: palette.neutral_400,
     light: palette.neutral_50,
   },
   point: {

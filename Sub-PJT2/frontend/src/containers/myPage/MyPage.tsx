@@ -15,9 +15,7 @@ const MyPage = () => {
   });
   const [newpw, setNewpw] = useState<string>("");
   const [pwcheck, setPwcheck] = useState<string>("");
-  // const [hidePw, setHidePw] = useState(true)
-  // const [hideNewPw, setHideNewPw] = useState(true)
-  // const [hidePwCheck, setHidePwCheck] = useState(true)
+
   const HandlePw = () => {
     setPw(() => {
       if (pw.visible) {
@@ -26,12 +24,6 @@ const MyPage = () => {
       return { type: "password", visible: false };
     });
   };
-  // const toggleHideNewPw = () => {
-  //   setHideNewPw(!hideNewPw)
-  // }
-  // const toggleHidePwCheck = () => {
-  //   setHidePwCheck(!hidePwCheck)
-  // }
 
   const name_input = document.getElementById("nickname") as HTMLInputElement;
 
@@ -61,71 +53,76 @@ const MyPage = () => {
         <S.Title theme={theme}>내 정보 수정</S.Title>
 
         <S.InputArea>
-          <S.miniTitle>닉네임</S.miniTitle>
+          <S.miniTitle theme={theme}>닉네임</S.miniTitle>
           <S.Input
             id="nickname"
             type="text"
             value={nickname}
+            theme={theme}
             onChange={changeInput_name}
             placeholder="닉네임"
           />
-          <S.Button>중복체크</S.Button>
+          <S.Button theme={theme}>중복체크</S.Button>
         </S.InputArea>
         <S.InputArea>
-          <S.miniTitle>주소지</S.miniTitle>
+          <S.miniTitle theme={theme}>주소지</S.miniTitle>
           <Dropdown_Adr></Dropdown_Adr>
         </S.InputArea>
         <S.InputArea>
-          <S.miniTitle>MBTI</S.miniTitle>
+          <S.miniTitle theme={theme}>MBTI</S.miniTitle>
           <Dropdown_MBTI></Dropdown_MBTI>
         </S.InputArea>
         <S.InputArea>
-          <S.miniTitle>직업</S.miniTitle>
+          <S.miniTitle theme={theme}>직업</S.miniTitle>
           <S.Input
             id="job"
             type="text"
             value={job}
+            theme={theme}
             onChange={changeInput_job}
             placeholder="직업"
           />
         </S.InputArea>
-        <S.SaveButton>변경사항 저장</S.SaveButton>
+        <S.SaveButton theme={theme}>변경사항 저장</S.SaveButton>
       </S.Container>
       <S.Container>
         <S.Title theme={theme}>비밀번호 변경</S.Title>
         <S.InputArea>
-          <S.miniTitle>현재 비밀번호</S.miniTitle>
+          <S.miniTitle theme={theme}>현재 비밀번호</S.miniTitle>
           <S.Input
             id="pw"
             type="password"
             onClick={HandlePw}
+            theme={theme}
             onChange={changeInput_pw}
             placeholder="현재 비밀번호"
           />
         </S.InputArea>
         <S.InputArea>
-          <S.miniTitle>새 비밀번호</S.miniTitle>
+          <S.miniTitle theme={theme}>새 비밀번호</S.miniTitle>
           <S.Input
             id="newpw"
             type="password"
             value={newpw}
+            theme={theme}
             onChange={changeInput_newpw}
             placeholder="새 비밀번호"
           />
-          <S.Notice>
+          <S.Notice theme={theme}>
             비밀번호는 8~20자 이내, 숫자/특수문자/영문대소문자를 사용해주세요.
           </S.Notice>
         </S.InputArea>
         <S.InputArea>
-          <S.miniTitle>비밀번호 확인</S.miniTitle>
+          <S.miniTitle theme={theme}>비밀번호 확인</S.miniTitle>
           <S.Input
             id="pwcheck"
             type="password"
             value={pwcheck}
+            theme={theme}
             onChange={changeInput_pwcheck}
             placeholder="새 비밀번호 확인"
           />
-          <S.Button>변경사항 저장</S.Button>
+          <S.Button theme={theme}>변경사항 저장</S.Button>
         </S.InputArea>
       </S.Container>
     </>
