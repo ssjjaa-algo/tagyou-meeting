@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 
 export const Container = styled.div<{ theme: themeProps }>`
-  background-color: ${(props) => props.theme.pointLightColor};
+  background-color: ${(props) => props.theme.bg.light};
   height: 100vh;
   width: 100vw;
 `;

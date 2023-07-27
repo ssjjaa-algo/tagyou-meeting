@@ -37,17 +37,35 @@ const palette = {
 };
 
 export const darkTheme: themeProps = {
-  bgColor: palette.neutral_800,
-  pointDeepColor: palette.neutral_900,
-  pointLightColor: palette.neutral_700,
-  fontColor: palette.white,
-  fontSubColor: palette.pink_400,
+  bg: {
+    deep: palette.neutral_800,
+    light: palette.neutral_700,
+  },
+  font: {
+    deep: palette.neutral_800,
+    mid: palette.neutral_400,
+    light: palette.neutral_50,
+  },
+  point: {
+    deep: palette.pink_500,
+    mid: palette.pink_400,
+    light: palette.pink_300,
+  },
 };
 
 export const lightTheme: themeProps = {
-  bgColor: palette.pink_400,
-  pointDeepColor: palette.pink_400,
-  pointLightColor: palette.white,
-  fontColor: palette.white,
-  fontSubColor: palette.gray_700,
+  bg: {
+    deep: palette.pink_400,
+    light: palette.neutral_50,
+  },
+  font: {
+    deep: palette.neutral_800,
+    mid: palette.neutral_300,
+    light: palette.neutral_50,
+  },
+  point: {
+    deep: palette.pink_500,
+    mid: palette.pink_400,
+    light: palette.pink_300,
+  },
 };

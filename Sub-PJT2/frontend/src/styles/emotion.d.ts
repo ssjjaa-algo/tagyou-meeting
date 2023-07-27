@@ -4,10 +4,19 @@ type theme = "light" | "dark";
 
 declare module "@emotion/react" {
   export interface themeProps {
-    bgColor: string;
-    pointDeepColor: string;
-    pointLightColor: string;
-    fontColor: string;
-    fontSubColor: string;
+    bg: {
+      deep: string;
+      light: string;
+    };
+    font: {
+      deep: string;
+      mid: string;
+      light: string;
+    };
+    point: {
+      deep: string;
+      mid: string;
+      light: string;
+    };
   }
 }
