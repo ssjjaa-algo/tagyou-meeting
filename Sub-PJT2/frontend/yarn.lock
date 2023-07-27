@@ -12760,13 +12760,19 @@ typedarray@^0.0.6:
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> f82019f3e13041dba792fcea9a0c582dae57da45
 typeface-roboto@0.0.75:
   version "0.0.75"
   resolved "https://registry.npmjs.org/typeface-roboto/-/typeface-roboto-0.0.75.tgz"
   integrity sha512-VrR/IiH00Z1tFP4vDGfwZ1esNqTiDMchBEXYY9kilT6wRGgFoCAlgkEUMHb1E3mB0FsfZhv756IF0+R+SFPfdg==
 
+<<<<<<< HEAD
 >>>>>>> 885bb95 (Add: S09P12A705-136 이연주 WebRTC 기능 구현)
+=======
+>>>>>>> f82019f3e13041dba792fcea9a0c582dae57da45
 typescript-styled-plugin@^0.18.3:
   version "0.18.3"
   resolved "https://registry.npmjs.org/typescript-styled-plugin/-/typescript-styled-plugin-0.18.3.tgz"
@@ -12784,11 +12790,14 @@ typescript-template-language-service-decorator@^2.3.2:
   integrity sha512-hN0zNkr5luPCeXTlXKxsfBPlkAzx86ZRM1vPdL7DbEqqWoeXSxplACy98NpKpLmXsdq7iePUzAXloCAoPKBV6A==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 typescript@^5.1.6:
   version "5.1.6"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.1.6.tgz"
   integrity sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==
 =======
+=======
+>>>>>>> f82019f3e13041dba792fcea9a0c582dae57da45
 "typescript@^3.2.1 || ^4", typescript@^4.9.5, "typescript@>= 2.7", "typescript@>= 4.3.x", "typescript@>= 4.4.x <= 5.1.x", "typescript@>= 4.x", "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta", typescript@>3.6.0:
   version "4.9.5"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz"
