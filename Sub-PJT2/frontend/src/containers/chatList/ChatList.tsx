@@ -108,7 +108,10 @@ function ChatList() {
 
 const Container = styled.div<{ theme: themeProps }>`
   display: flex;
+<<<<<<< HEAD
   background-color: ${(props) => props.theme.bg};
+=======
+>>>>>>> 885bb95 (Add: S09P12A705-136 이연주 WebRTC 기능 구현)
   flex-direction: row;
   justify-content: space-between;
 `;
