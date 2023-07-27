@@ -28,9 +28,9 @@ export const ChatListBody = styled.div`
   overflow-x: hidden;
 `;
 
-export const Chat = styled.div`
+export const Chat = styled.div<{theme: themeProps}>`
   /* border: solid red; */
-  background-color: #ffe6e5;
+  background-color: ${(props) => props.theme.point.light};
   border-radius: 0.3rem;
   display: flex;
   flex-direction: row;
@@ -48,7 +48,8 @@ export const ChatProfileImage = styled.div`
   height: 7rem;
 `;
 
-export const chatContent = styled.div`
+export const chatContent = styled.div<{theme: themeProps}>`
+  color: ${(props) => props.theme.font.deep};
   /* border: solid pink; */
   display: flex;
   flex-direction: column;

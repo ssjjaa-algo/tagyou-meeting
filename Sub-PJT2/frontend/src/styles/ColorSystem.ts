@@ -45,6 +45,7 @@ export const darkTheme: themeProps = {
     deep: palette.neutral_800,
     mid: palette.neutral_400,
     light: palette.neutral_50,
+    text: palette.neutral_50,
   },
   point: {
     deep: palette.pink_500,
@@ -62,6 +63,7 @@ export const lightTheme: themeProps = {
     deep: palette.neutral_800,
     mid: palette.neutral_400,
     light: palette.neutral_50,
+    text: palette.neutral_800,
   },
   point: {
     deep: palette.pink_500,
