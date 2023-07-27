@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { IsDark, IsOpen } from "../../atoms/atoms";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
+import Profile from "components/profile";
 
 const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);
@@ -23,7 +24,13 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
 
   return (
     <>
-      <span onClick={toggleDrawer}>btn</span>
+      <S.HiddenSection theme={theme} onClick={toggleDrawer}>
+        {isOpen ? (
+          <S.ArrowBackIosIconStyled theme={theme} />
+        ) : (
+          <S.ArrowForwardIosIconStyled theme={theme} />
+        )}
+      </S.HiddenSection>
       <Drawer
         open={isOpen}
         onClose={toggleDrawer}
@@ -47,27 +54,24 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
             )}
           </S.ArrowBtn>
         </S.BtnBox>
-        <S.Profile>
-          <S.ProfileImgBox>
-            <S.ProfileImg src={imgSrc} width={80} alt="profileImg" />
-          </S.ProfileImgBox>
-          <S.ProfileText>
-            <S.Name theme={theme}>{name}</S.Name>
-            <S.Age theme={theme}>만 {age}세</S.Age>
-          </S.ProfileText>
-        </S.Profile>
+
+        <Profile imgSrc={imgSrc} name={name} age={age} />
+
         <S.ListBox>
           <S.List theme={theme}>
-            <S.HomeIconStyled theme={theme} />홈
+            <S.HomeIconStyled theme={theme} />
+            <S.ListText>홈</S.ListText>
           </S.List>
           <S.List theme={theme}>
-            <S.PlayCircleOutlineIconStyled theme={theme} /> 미팅 시작
+            <S.PlayCircleOutlineIconStyled theme={theme} />{" "}
+            <S.ListText>미팅시작</S.ListText>
           </S.List>
           <S.List theme={theme}>
             <S.GroupIconStyled theme={theme} />
-            친구 목록
+            <S.ListText>친구목록</S.ListText>
           </S.List>
         </S.ListBox>
+
         <S.FootBox theme={theme}>로그아웃</S.FootBox>
       </Drawer>
     </>

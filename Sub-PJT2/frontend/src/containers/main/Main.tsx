@@ -16,7 +16,7 @@ function Main() {
 
   const leftContainerData: leftContainerProprs = {
     imgSrc: TestImg,
-    name: "스티븐연",
+    name: "스티븐",
     age: 32,
   };
 

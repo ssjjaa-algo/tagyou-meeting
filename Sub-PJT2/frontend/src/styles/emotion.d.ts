@@ -6,6 +6,7 @@ declare module "@emotion/react" {
   export interface themeProps {
     bg: {
       deep: string;
+      mid: string;
       light: string;
     };
     font: {

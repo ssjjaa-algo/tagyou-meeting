@@ -4,7 +4,6 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-
 import HomeIcon from "@mui/icons-material/Home";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import GroupIcon from "@mui/icons-material/Group";
@@ -12,20 +11,33 @@ import GroupIcon from "@mui/icons-material/Group";
 export const HomeIconStyled = styled(HomeIcon)<{
   theme: themeProps;
 }>`
-  color: ${(props) => props.theme.bg.deep};
+  color: ${(props) => props.theme.font.light};
   font-size: 25px;
 `;
 
+export const BtnBox = styled.div`
+  width: fit-content;
+  margin: 20px 10px 30px 10px;
+`;
+
+export const HiddenSection = styled.div<{ theme: themeProps }>`
+  padding-top: 20px;
+  padding-right: 20px;
+  background-color: ${(props) => props.theme.bg.deep};
+`;
+
 export const List = styled.li<{ theme: themeProps }>`
-  font-size: 20px;
-  font-weight: 400;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 300;
   color: ${(props) => props.theme.font.light};
-  margin: 0 20px 0 20px;
   line-height: 20px;
   cursor: pointer;
-  border-bottom: solid;
-  padding: 20px 0 20px 0;
-  border-bottom-color: ${(props) => props.theme.font.light};
+  border-bottom: solid 1px;
+  padding: 18px 10px 18px 10px;
+  border-bottom-color: ${(props) => props.theme.bg.mid};
+  vertical-align: middle;
 `;
 
 export const PlayCircleOutlineIconStyled = styled(PlayCircleOutlineIcon)<{
@@ -40,14 +52,12 @@ export const GroupIconStyled = styled(GroupIcon)<{
   color: ${(props) => props.theme.font.light};
 `;
 
-export const Profile = styled.div`
-  display: flex;
-  justify-content: center;
-  vertical-align: middle;
+export const ListBox = styled.ul`
+  margin-top: 50px;
 `;
 
-export const ListBox = styled.ul`
-  margin-top: 100px;
+export const ListText = styled.div`
+  margin-left: 10px;
 `;
 
 export const LightModeIconStyled = styled(LightModeIcon)<{
@@ -78,39 +88,9 @@ export const ArrowBackIosIconStyled = styled(ArrowBackIosIcon)<{
   color: ${(props) => props.theme.font.light};
 `;
 
-export const ProfileImgBox = styled.div`
-  display: flex;
-`;
-export const BtnBox = styled.div`
-  width: fit-content;
-  margin: 20px 10px 30px 10px;
-`;
-
-export const ProfileText = styled.div`
-  margin-top: 15%;
-`;
-
-export const ProfileImg = styled.img`
-  border-radius: 100px;
-  object-fit: cover;
-  padding: 4px;
-  margin-right: 8px;
-`;
-
-export const Name = styled.div<{ theme: themeProps }>`
-  color: ${(props) => props.theme.font.light};
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-export const Age = styled(Name)`
-  font-size: 14px;
-  font-weight: normal;
-  margin-top: 10px;
-`;
-
 export const FootBox = styled.div<{ theme: themeProps }>`
   color: ${(props) => props.theme.font.light};
-  margin-top: 280px;
-  margin-left: 160px;
+  position: relative;
+  left: 150px;
+  top: 230px;
 `;
