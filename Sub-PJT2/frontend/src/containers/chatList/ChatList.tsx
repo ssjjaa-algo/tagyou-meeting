@@ -1,8 +1,9 @@
-import { Global } from "@emotion/react";
+import { Global, themeProps } from "@emotion/react";
 import styled from "@emotion/styled";
+import { useTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { IsDark } from "../../atoms/atoms";
-import { useRecoilValue } from "recoil";
+import { useRecoilState} from "recoil";
 import { darkTheme, lightTheme } from "../../styles/ColorSystem";
 import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer/index";
@@ -12,7 +13,9 @@ import { leftContainerProprs } from "../../types/leftContainerProprs";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
 
 function ChatList() {
-  const isDark = useRecoilValue(IsDark);
+  const isDark = useRecoilState(IsDark);
+
+  const theme: themeProps = useTheme();
 
   const leftContainerData: leftContainerProprs = {
     imgSrc: TestImg,
@@ -90,7 +93,7 @@ function ChatList() {
     <div>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <Global styles={GlobalStyle} />
-        <Container>
+        <Container theme={theme}>
           <LeftContainer
             imgSrc={leftContainerData.imgSrc}
             name={leftContainerData.name}
@@ -103,8 +106,9 @@ function ChatList() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ theme: themeProps }>`
   display: flex;
+  background-color: ${(props) => props.theme.bgColor};
   flex-direction: row;
   justify-content: space-between;
 `;
