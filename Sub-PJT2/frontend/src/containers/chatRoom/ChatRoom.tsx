@@ -7,10 +7,8 @@ import { darkTheme, lightTheme } from "../../styles/ColorSystem";
 import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer/index";
 import RightContainer from "../rightContainer/rightContainer-chatRoom/ChatRoom";
-
-import { leftContainerProprs } from "../../types/leftContainerProprs";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
-import { ChatData } from "types/types";
+import { ChatData, leftContainerProprs } from "types/types";
 
 function ChatRoom() {
   const isDark = useRecoilValue(IsDark);

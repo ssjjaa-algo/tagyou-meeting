@@ -9,9 +9,8 @@ import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer/index";
 import RightContainer from "containers/rightContainer/rightContainer-chatList/ChatList";
 
-import { leftContainerProprs } from "../../types/leftContainerProprs";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
-import { UserData } from "types/types";
+import { UserData, leftContainerProprs } from "types/types";
 
 function ChatList() {
   const isDark = useRecoilState(IsDark);

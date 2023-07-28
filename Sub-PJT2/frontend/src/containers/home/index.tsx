@@ -1,15 +1,15 @@
 import * as S from "./Home.styled";
-
-import { themeProps } from "@emotion/react";
-import { useTheme } from "@mui/material";
+import TestImg from "../../asset/img/imgSrcTest.jpg";
+import Main from '../main/Main'
 
 const Home = () => {
-  const theme: themeProps = useTheme();
+  // const theme: themeProps = useTheme();
   return (
     <S.Container>
-      <S.DeepText theme={theme}>Deep</S.DeepText>
-      <S.MidText theme={theme}>Mid</S.MidText>
-      <S.LightText theme={theme}>Light</S.LightText>
+      <S.ProfileImgBox>
+        {/* <S.ProfileImg src={imgSrc} width={80} height={80} alt="profileImg" /> */}
+        <Main></Main>
+      </S.ProfileImgBox>
     </S.Container>
   );
 };

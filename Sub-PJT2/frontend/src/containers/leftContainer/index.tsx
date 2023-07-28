@@ -3,11 +3,11 @@ import { useTheme } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { IsDark, IsOpen } from "../../atoms/atoms";
 import * as S from "./LeftContainer.styled";
-import { leftContainerProprs } from "../../types/leftContainerProprs";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Profile from "components/profile";
 import FriendContainer from "containers/friendContainer";
+import { leftContainerProprs } from "types/types";
 
 const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);

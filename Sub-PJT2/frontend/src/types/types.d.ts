@@ -26,3 +26,19 @@ export type friendProps = {
   name: string;
   src: string;
 };
+
+export type leftContainerProprs = {
+  imgSrc: string;
+  name: string;
+  age: number;
+};
+
+export type getProfileProps = {
+  imgSrc: string;
+  name: string;
+  age: number;
+  mbti: string;
+  job: string;
+  hobby: string;
+  like: number;
+};

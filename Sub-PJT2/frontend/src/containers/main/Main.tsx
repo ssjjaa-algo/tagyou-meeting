@@ -7,19 +7,19 @@ import { darkTheme, lightTheme } from "../../styles/ColorSystem";
 import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer";
 import RightContainer from "../rightContainer";
-
-import { leftContainerProprs } from "../../types/leftContainerProprs";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
 import Router from "../../Router";
+import { leftContainerProprs } from "types/types";
 function Main() {
   const isDark = useRecoilValue(IsDark);
+
 
   const leftContainerData: leftContainerProprs = {
     imgSrc: TestImg,
     name: "스티븐",
     age: 32,
   };
-
+  // const [mainLeftContainerData, setMainLeftContainerData] = useState<leftContainerProps>(leftContainerData);
   return (
     <div>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
