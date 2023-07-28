@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { useTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { IsDark } from "../../atoms/atoms";
-import { useRecoilState} from "recoil";
+import { useRecoilState } from "recoil";
 import { darkTheme, lightTheme } from "../../styles/ColorSystem";
 import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer/index";
@@ -11,6 +11,7 @@ import RightContainer from "containers/rightContainer/rightContainer-chatList/Ch
 
 import { leftContainerProprs } from "../../types/leftContainerProprs";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
+import { UserData } from "types/types";
 
 function ChatList() {
   const isDark = useRecoilState(IsDark);

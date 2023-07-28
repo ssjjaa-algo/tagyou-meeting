@@ -7,6 +7,7 @@ import { leftContainerProprs } from "../../types/leftContainerProprs";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Profile from "components/profile";
+import FriendContainer from "containers/friendContainer";
 
 const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);
@@ -73,6 +74,7 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
         </S.ListBox>
         <S.FootBox theme={theme}>로그아웃</S.FootBox>
       </Drawer>
+      <FriendContainer />
     </>
   );
 };

@@ -10,6 +10,7 @@ import RightContainer from "../rightContainer/rightContainer-chatRoom/ChatRoom";
 
 import { leftContainerProprs } from "../../types/leftContainerProprs";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
+import { ChatData } from "types/types";
 
 function ChatRoom() {
   const isDark = useRecoilValue(IsDark);

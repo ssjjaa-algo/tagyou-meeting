@@ -1,11 +1,33 @@
 import { rest } from "msw";
 
-const testDatas = ["게시글1", "게시글2", "게시글3"];
+const friendList = [
+  {
+    id: "hongjaeyeon",
+    name: "JAEYEON",
+    img: "../asset/img/imgSrcTest.jpg",
+  },
+
+  {
+    id: "idTAgUE",
+    name: "JoTAEGUE",
+    img: "../asset/img/imgSrcTest.jpg",
+  },
+
+  {
+    id: "dd",
+    name: "Jgfdgdfsgsfd",
+    img: "../asset/img/imgSrcTest.jpg",
+  },
+
+  {
+    id: "dd",
+    name: "dsdsds",
+    img: "../asset/img/imgSrcTest.jpg",
+  },
+];
 
 export const handlers = [
-  // 포스트 추가
-  rest.post("/posts", (req, res, ctx) => {
-    testDatas.push(req.body);
-    return res(ctx.status(201));
+  rest.get("/friends/list", (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(friendList));
   }),
 ];
