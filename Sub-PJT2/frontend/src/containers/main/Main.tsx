@@ -10,34 +10,37 @@ import RightContainer from "../rightContainer";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
 import Router from "../../Router";
 import { leftContainerProprs } from "types/types";
+import { BrowserRouter } from "react-router-dom";
 function Main() {
   const isDark = useRecoilValue(IsDark);
-
 
   const leftContainerData: leftContainerProprs = {
     imgSrc: TestImg,
     name: "스티븐",
     age: 32,
   };
-  // const [mainLeftContainerData, setMainLeftContainerData] = useState<leftContainerProps>(leftContainerData);
+
   return (
     <div>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <Global styles={GlobalStyle} />
-        <Container>
-          <LeftContainer
-            imgSrc={leftContainerData.imgSrc}
-            name={leftContainerData.name}
-            age={leftContainerData.age}
-          />
-          <RightContainer>
-            <Router />
-          </RightContainer>
-        </Container>
+        <BrowserRouter>
+          <Container>
+            <LeftContainer
+              imgSrc={leftContainerData.imgSrc}
+              name={leftContainerData.name}
+              age={leftContainerData.age}
+            />
+            <RightContainer>
+              <Router />
+            </RightContainer>
+          </Container>
+        </BrowserRouter>
       </ThemeProvider>
     </div>
   );
 }
+
 const Container = styled.div`
   display: flex;
 `;

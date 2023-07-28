@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { darkTheme, lightTheme } from "../../styles/ColorSystem";
 import GlobalStyle from "../../styles/GlobalStyle";
 import RightContainer from "containers/rightContainer/rightConatiner-inGameChat/InGameChat";
+import { ChatData } from "types/types";
 
 function InGame() {
   const isDark = useRecoilState(IsDark);

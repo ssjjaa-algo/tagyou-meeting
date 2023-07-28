@@ -5,6 +5,7 @@ import "css/chat/chatRoom.css";
 import React, { useRef } from "react";
 import sendButton from "asset/img/button_send.png";
 import messageButton from "asset/img/message.png";
+import { ChatData } from "types/types";
 
 interface chatDataProps {
   chatData: ChatData;

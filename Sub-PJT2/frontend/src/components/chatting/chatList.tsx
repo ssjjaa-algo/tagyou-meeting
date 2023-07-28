@@ -1,5 +1,6 @@
 // import { useEffect, useState } from "react";
 import "css/chat/chatList.css";
+import { UserData } from "types/types";
 
 interface Listprop {
   userData: Array<UserData>;
