@@ -10,7 +10,6 @@ import RightContainer from "../rightContainer/rightContainer-chatRoom/ChatRoom";
 // import React from 'react';
 // import WebSocketProvider from 'webSocket/WebSocketProvider';
 
-import { leftContainerProprs } from "../../types/leftContainerProprs";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
 import { ChatData, leftContainerProprs } from "types/types";
 

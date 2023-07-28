@@ -2,8 +2,9 @@ import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./ChatRoom.styled";
 import "css/chat/chatRoom.css";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import sendButton from "asset/img/button_send.png";
+import { ChatData } from "types/types";
 
 interface chatDataProps {
   chatData: ChatData;
@@ -29,7 +30,9 @@ const RightContainer = ({ chatData }: chatDataProps) => {
         result.push(
           <S.MessageReceived theme={theme}>
             <S.MessageBox theme={theme}>
-              <S.MessageContent theme={theme}>{chats[i].content}</S.MessageContent>
+              <S.MessageContent theme={theme}>
+                {chats[i].content}
+              </S.MessageContent>
               <S.MessageTime>{chats[i].time}</S.MessageTime>
             </S.MessageBox>
           </S.MessageReceived>
@@ -39,7 +42,9 @@ const RightContainer = ({ chatData }: chatDataProps) => {
           <S.MessageSent theme={theme}>
             <S.MessageBox theme={theme}>
               <S.MessageTime>{chats[i].time}</S.MessageTime>
-              <S.MessageContent theme={theme}>{chats[i].content}</S.MessageContent>
+              <S.MessageContent theme={theme}>
+                {chats[i].content}
+              </S.MessageContent>
             </S.MessageBox>
           </S.MessageSent>
         );
@@ -48,10 +53,18 @@ const RightContainer = ({ chatData }: chatDataProps) => {
     return result;
   };
 
+  // 대화 창의 스크롤 맨 아래로 내리는기능
   const bottomRef = useRef<HTMLDivElement>(null);
-  window.addEventListener("DOMContentLoaded", function () {
+  
+  const handleContentLoaded = () =>{
+    console.log('content Loaded');
     bottomRef.current?.scrollIntoView();
-  });
+  }
+  useEffect(() => {
+    console.log('using Effect');
+    handleContentLoaded();
+  })
+  // 대화 창 스크롤 아래로 내리는 기능  끝 
 
   return (
     <S.Container theme={theme}>
@@ -79,8 +92,9 @@ const RightContainer = ({ chatData }: chatDataProps) => {
               >
                 <S.ChatRoomMainChatsContent theme={theme}>
                   {chats()}
+                  <div ref={bottomRef}>
+                  </div>
                 </S.ChatRoomMainChatsContent>
-                <div ref={bottomRef}></div>
               </S.ChatRoomMainChats>
               <S.ChatRoomMainInput
                 className="chatRoom-main-input"
