@@ -1,6 +1,6 @@
-package com.ssafy.project.entity.user;
+package com.ssafy.project.domain.user;
 
-import com.ssafy.project.entity.BaseTimeEntity;
+import com.ssafy.project.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class ProfileImage extends BaseTimeEntity {
+public class Image extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long profileImgId;
+    private Long ImageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_profile_id")
@@ -29,13 +29,16 @@ public class ProfileImage extends BaseTimeEntity {
     private Long fileSize;
 
     @Builder
-    public ProfileImage(String origFileName, String filePath, Long fileSize) {
+    public Image(String origFileName, String filePath, Long fileSize) {
         this.origFileName = origFileName;
         this.filePath = filePath;
         this.fileSize = fileSize;
     }
 
-    // board 정보
+    // 대표 이미지
+
+
+    // profile 정보
     public void setProfile(Profile profile){
         this.profile = profile;
 
