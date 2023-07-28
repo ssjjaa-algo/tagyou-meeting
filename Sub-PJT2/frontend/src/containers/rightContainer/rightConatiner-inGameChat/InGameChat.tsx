@@ -1,7 +1,7 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./InGameChat.styled";
-import React, { useRef, useContext, useState } from "react";
+import React, { useRef, useContext, useState, useEffect } from "react";
 import { WebSocketContext } from "webSocket/WebSocketProvider";
 import "css/chat/inGameChat.css";
 
@@ -85,6 +85,13 @@ const RightContainer = () => {
     setIsHovering(false);
   };
 
+  // alt + c 누르면 채팅 나오는 기능
+  window.onkeydown = (e) =>{
+    if(e.key === "c" && e.altKey){
+      handleClickMessage();
+    }
+  }
+
   return (
     <S.Container theme={theme}>
       <S.ChatRoomMain theme={theme}>
@@ -100,13 +107,14 @@ const RightContainer = () => {
         <S.ChatRoomMainBox theme={theme} style={isShown}>
           <S.ChatRoomMainChats className="chatRoom-main-chats" theme={theme}>
             <S.ChatRoomMainChatsContent>
-              {items.map((chat) => {
+              {items.map((chat, index) => {
                 return (
-                  <S.Messages>
+                  <S.Messages key={index}>
                     {chat.user} : {chat.message}
                   </S.Messages>
                 );
               })}
+              {/* 스크롤 맨 아래로 내리기 위한 레퍼런스 */}
               <div ref={bottomRef}></div>
             </S.ChatRoomMainChatsContent>
           </S.ChatRoomMainChats>
@@ -115,7 +123,9 @@ const RightContainer = () => {
               value={message}
               onChange={handleChangeText}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
+                if (e.key === "Enter" && e.ctrlKey) {
+                  return;
+                } else if(e.key ==="Enter"){
                   handleClickSubmit();
                 }
               }}
