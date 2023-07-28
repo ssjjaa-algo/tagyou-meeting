@@ -1,5 +1,5 @@
-import { Global } from "@emotion/react";
 import styled from "@emotion/styled";
+import { Global } from "@emotion/react";
 import { ThemeProvider } from "@emotion/react";
 import { IsDark } from "../../atoms/atoms";
 import { useRecoilValue } from "recoil";
@@ -7,6 +7,10 @@ import { darkTheme, lightTheme } from "../../styles/ColorSystem";
 import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer/index";
 import RightContainer from "../rightContainer/rightContainer-chatRoom/ChatRoom";
+// import React from 'react';
+// import WebSocketProvider from 'webSocket/WebSocketProvider';
+
+import { leftContainerProprs } from "../../types/leftContainerProprs";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
 import { ChatData, leftContainerProprs } from "types/types";
 
