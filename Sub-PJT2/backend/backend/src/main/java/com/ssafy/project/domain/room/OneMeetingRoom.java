@@ -1,6 +1,6 @@
-package com.ssafy.project.entity.room;
+package com.ssafy.project.domain.room;
 
-import com.ssafy.project.entity.user.User;
+import com.ssafy.project.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

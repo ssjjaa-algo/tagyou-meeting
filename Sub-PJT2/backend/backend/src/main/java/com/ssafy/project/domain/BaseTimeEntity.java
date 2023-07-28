@@ -1,4 +1,4 @@
-package com.ssafy.project.entity;
+package com.ssafy.project.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -20,5 +20,5 @@ public abstract class BaseTimeEntity {
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    private LocalDateTime lastUsedDate;
 }

@@ -1,7 +1,7 @@
-package com.ssafy.project.entity.room;
+package com.ssafy.project.domain.room;
 
 
-import com.ssafy.project.entity.BaseTimeEntity;
+import com.ssafy.project.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 

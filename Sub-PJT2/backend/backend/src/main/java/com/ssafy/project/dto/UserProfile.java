@@ -1,6 +1,6 @@
 package com.ssafy.project.dto;
 
-import com.ssafy.project.entity.user.User;
+import com.ssafy.project.domain.user.User;
 import lombok.Getter;
 
 @Getter
