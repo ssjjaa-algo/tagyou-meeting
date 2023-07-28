@@ -25,8 +25,9 @@ function ChildModal() {
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
-    <div>
+    <React.Fragment>
       <Button onClick={handleOpen}>Open Child Modal</Button>
       <Modal
         open={open}
@@ -42,7 +43,7 @@ function ChildModal() {
           <Button onClick={handleClose}>Close Child Modal</Button>
         </Box>
       </Modal>
-    </div>
+    </React.Fragment>
   );
 }
 

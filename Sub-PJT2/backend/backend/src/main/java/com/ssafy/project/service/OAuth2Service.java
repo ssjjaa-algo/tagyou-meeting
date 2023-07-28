@@ -2,7 +2,7 @@ package com.ssafy.project.service;
 
 import com.ssafy.project.attribute.OAuthAttributes;
 import com.ssafy.project.dto.UserProfile;
-import com.ssafy.project.entity.user.User;
+import com.ssafy.project.domain.user.User;
 import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

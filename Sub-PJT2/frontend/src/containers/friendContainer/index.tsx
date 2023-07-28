@@ -7,12 +7,16 @@ import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { friendProps } from "types/types";
-import NestedModal from "components/freindRequestModal";
 
 const FriendContainer = () => {
+  const theme = useTheme<themeProps>();
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);
   const [friendList, setFriendList] = useState<friendProps[]>();
   const [loading, setLoading] = useState(true);
+
+  const style: React.CSSProperties = {
+    backgroundColor: theme.bg.deep,
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,25 +34,21 @@ const FriendContainer = () => {
     setIsOpen((prevState) => !prevState);
   };
 
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const handleRequestFriend = () => {
-    setShowModal((cur) => !cur);
-  };
-
   return (
     <Drawer
       open={isOpen}
       onClose={toggleDrawer}
       direction="right"
       overlayOpacity={0}
+      style={style}
     >
       <S.Container>
-        <h1>친구목록</h1>
+        <S.Title theme={theme}>친구목록</S.Title>
         {friendList?.map((item: friendProps, idx: number) => (
           <Friend id={item.id} name={item.name} src={item.src} key={idx} />
         ))}
         {/* {showModal && NestedModal} */}
-        <button onClick={handleRequestFriend}>친구요청</button>
+        <button>친구요청</button>
       </S.Container>
     </Drawer>
   );

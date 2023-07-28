@@ -2,6 +2,7 @@ import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./ChatList.styled";
 import "css/chat/chatList.css";
+import { UserData } from "types/types";
 
 interface Listprop {
   userData: Array<UserData>;

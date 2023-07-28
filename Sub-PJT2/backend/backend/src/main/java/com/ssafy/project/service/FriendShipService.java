@@ -9,6 +9,25 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class FriendShipService {
 
+    /**
+     * 친구 요청
+     */
+    @Transactional
+    public void addFriendShip(){
+
+    }
+
+    /**
+     * 친구 수락
+     */
+    @Transactional
+    public void acceptFriendShip(){
+
+    }
+
+    /**
+     * 친구 거절
+     */
 
 
 }

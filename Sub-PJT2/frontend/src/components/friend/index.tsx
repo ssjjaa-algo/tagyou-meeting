@@ -1,12 +1,16 @@
 import { friendProps } from "types/types";
+import * as S from "./Friend.styled";
+import tmpImgSrc from "../../asset/img/imgSrcTest.jpg";
 
 const Friend = ({ id, name, src }: friendProps) => {
   return (
-    <div>
-      <img src={src} alt="profile"></img>
-      <span>{id}</span>
+    <S.Container to="/chatroom">
+      <div>{src}</div>
+      <S.ProfileImgBox>
+        <S.ProfileImg src={tmpImgSrc} width={50} height={50} alt="profile" />
+      </S.ProfileImgBox>
       <span>{name}</span>
-    </div>
+    </S.Container>
   );
 };
 

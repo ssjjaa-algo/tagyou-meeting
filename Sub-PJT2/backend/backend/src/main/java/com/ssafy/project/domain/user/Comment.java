@@ -1,6 +1,6 @@
-package com.ssafy.project.entity.user;
+package com.ssafy.project.domain.user;
 
-import com.ssafy.project.entity.BaseTimeEntity;
+import com.ssafy.project.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,9 +15,6 @@ public class Comment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String content;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "user_id")
     private User user;
@@ -26,14 +23,22 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "user_profile_id")
     private Profile profile;
 
+    private String title;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String content;
+
     @Builder
-    public Comment(String content, User user, Profile profile) {
-        this.content = content;
+    public Comment(User user, Profile profile, String title, String content) {
         this.user = user;
         this.profile = profile;
+        this.title = title;
+        this.content = content;
     }
 
     public void updateComment(String content){
+        this.title = title;
         this.content = content;
     }
+
 }

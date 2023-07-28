@@ -1,7 +1,7 @@
-package com.ssafy.project.entity.user;
+package com.ssafy.project.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.ssafy.project.entity.BaseTimeEntity;
+import com.ssafy.project.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,10 +29,13 @@ public class Profile extends BaseTimeEntity {
     private User user;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private List<ProfileImage> profileImages = new ArrayList<>();
+    private List<Image> profileImages = new ArrayList<>();
 
     @Column(nullable = false)
-    private String userRegion;
+    private String userSido;
+
+    @Column(nullable = false)
+    private String userGugun;
 
     @Column(nullable = false)
     private String userJob;
@@ -47,17 +50,21 @@ public class Profile extends BaseTimeEntity {
     private String content;
 
     @Builder
-    public Profile(User user, String userRegion, String userJob, String userHobby, String userMbti, String content) {
+    public Profile(User user, List<Image> profileImages, String userSido, String userGugun, String userJob, String userHobby, String userMbti, String content) {
         this.user = user;
-        this.userRegion = userRegion;
+        this.userSido = userSido;
+        this.userGugun = userGugun;
         this.userJob = userJob;
         this.userHobby = userHobby;
         this.userMbti = userMbti;
         this.content = content;
+        this.profileImages = new ArrayList<>();
+        profileImages.forEach(this::addImage);
     }
 
     public void updateProfile(String userRegion, String userJob, String userHobby, String userMbti, String content) {
-        this.userRegion = userRegion;
+        this.userSido = userSido;
+        this.userGugun = userGugun;
         this.userJob = userJob;
         this.userHobby = userHobby;
         this.userMbti = userMbti;
@@ -67,7 +74,7 @@ public class Profile extends BaseTimeEntity {
     }
 
     // 연관관계 편의 메서드
-    public void addImage(ProfileImage profileImage) {
+    public void addImage(Image profileImage) {
         profileImages.add(profileImage);
         profileImage.setProfile(this);
     }
