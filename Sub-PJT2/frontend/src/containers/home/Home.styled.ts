@@ -1,29 +1,23 @@
 import styled from "@emotion/styled";
-import { themeProps } from "@emotion/react";
+// import { themeProps } from "@emotion/react";
 
 export const Container = styled.div`
   height: 100vh;
   width: 1200px;
 `;
-export const DeepText = styled.div<{ theme: themeProps }>`
-  color: ${(props) => props.theme.font.deep};
-  font-size: 30px;
-  font-weight: bold;
-  margin-left: 500px;
+
+export const ProfileImgBox = styled.div`
+  display: block;
+  overflow: hidden;
+  height: 120px;
+  width: 120px;
 `;
 
-export const MidText = styled(DeepText)<{ theme: themeProps }>`
-  color: ${(props) => props.theme.font.mid};
-`;
-
-export const LightText = styled(DeepText)<{ theme: themeProps }>`
-  color: ${(props) => props.theme.font.light};
-  background-color: ${(props) => props.theme.bg.deep};
-`;
-
-export const ProfileImg = styled.div`
-  background-color: red;
-  border-radius: 5px;
+export const ProfileImg = styled.img`
+  border-radius: 100px;
   object-fit: cover;
-  width: 360px;
+  display: block;
+  min-width: 100%;
+  min-height: 100%;
+  padding: 15px;
 `;

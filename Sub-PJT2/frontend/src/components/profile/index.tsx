@@ -1,7 +1,7 @@
 import * as S from "./Profile.styled";
-import { leftContainerProprs } from "types/leftContainerProprs";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
+import { leftContainerProprs } from "types/types";
 
 const Profile = ({ imgSrc, name, age }: leftContainerProprs) => {
   const theme: themeProps = useTheme();
