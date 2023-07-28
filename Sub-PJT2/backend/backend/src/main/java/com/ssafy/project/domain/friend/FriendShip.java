@@ -1,8 +1,8 @@
-package com.ssafy.project.entity.friend;
+package com.ssafy.project.domain.friend;
 
 
-import com.ssafy.project.entity.BaseTimeEntity;
-import com.ssafy.project.entity.user.User;
+import com.ssafy.project.domain.BaseTimeEntity;
+import com.ssafy.project.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,14 +31,19 @@ public class FriendShip extends BaseTimeEntity {
     public FriendShip(User user, User targetUser) {
         this.user = user;
         this.targetUser = targetUser;
-        this.freindShipStatus = FreindShipStatus.UNFOLLOW;
+        this.freindShipStatus = FreindShipStatus.NONE;
+    }
+
+    public void applyFriendShip(){
+        this.freindShipStatus = FreindShipStatus.READY;
     }
 
     public void acceptFriendShip(){
         this.freindShipStatus = FreindShipStatus.FOLLOW;
     }
 
-    public void deleteFriendShip(){
-        this.freindShipStatus = FreindShipStatus.UNFOLLOW;
+    public void blockFriendShip(){
+
+        this.freindShipStatus = FreindShipStatus.BLOCK;
     }
 }

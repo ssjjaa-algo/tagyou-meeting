@@ -23,7 +23,8 @@
   box-shadow: inset 0px 0px 5px transparent;
 }
 
-.chatRoom-main-input > textarea {
+.chatRoom-main-input > textarea,
+.chatRoom-main-input > input {
   width: 85%;
   margin-right: 1rem;
   border: none;
@@ -33,7 +34,9 @@
   resize: none;
   padding: 0.7rem;
 }
-.chatRoom-main-input > textarea:focus {
+.chatRoom-main-input > textarea:focus,
+.chatRoom-main-input > input:focus
+{
   outline: none;
   box-shadow: 0px 0px 10px 5px #ff5664;
 }

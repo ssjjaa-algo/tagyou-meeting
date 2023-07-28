@@ -17,7 +17,10 @@ public class ProfileService {
      */
 
     /**
-     * 프로필 삭제
+     * 프로필 수정
      */
 
+    /**
+     * 프로필 삭제
+     */
 }

@@ -1,4 +1,4 @@
-package com.ssafy.project.entity;
+package com.ssafy.project.domain;
 
 public enum Gender {
     MALE,
