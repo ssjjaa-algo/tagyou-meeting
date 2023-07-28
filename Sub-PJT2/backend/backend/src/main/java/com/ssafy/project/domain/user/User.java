@@ -1,11 +1,14 @@
-package com.ssafy.project.entity.user;
+package com.ssafy.project.domain.user;
 
-import com.ssafy.project.entity.BaseTimeEntity;
-import com.ssafy.project.entity.Gender;
-import com.ssafy.project.entity.group.MeetingGroup;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ssafy.project.domain.BaseTimeEntity;
+import com.ssafy.project.domain.Gender;
+import com.ssafy.project.domain.group.MeetingGroup;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Table(name = "users")
 @AllArgsConstructor
@@ -29,8 +32,10 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String userName;
 
-    @Column//(nullable = false)
-    private String phoneNumber;
+    @JsonBackReference
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "main_image_id")
+    private Image mainImage;
 
     @Column//(nullable = false)
     private int userAge;
@@ -44,20 +49,9 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType = RoleType.USER;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "group_id")
     private MeetingGroup meetingGroup;
-
-//    @Builder //// 여기 나중에 조건에 맞게 수정해야댐
-//    public User(String userEmail, String userPassword, String userName, String phoneNumber, int userAge, Gender userGender) {
-//        this.userEmail = userEmail;
-//        this.userPassword = userPassword;
-//        this.userName = userName;
-//        this.phoneNumber = phoneNumber;
-//        this.userAge = userAge;
-//        this.userGender = userGender;
-//        this.userLike = 0;
-//    }
 
     public User updateUser(String userName, String userEmail) {
         this.userName = userName;

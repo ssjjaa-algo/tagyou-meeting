@@ -1,6 +1,6 @@
 package com.ssafy.project.repository;
 
-import com.ssafy.project.entity.user.User;
+import com.ssafy.project.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
 
-//import com.ssafy.project.entity.user.User;
+//import com.ssafy.project.domain.user.User;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //
 //import java.util.List;

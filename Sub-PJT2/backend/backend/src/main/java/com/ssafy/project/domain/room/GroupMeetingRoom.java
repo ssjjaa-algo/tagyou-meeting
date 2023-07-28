@@ -1,6 +1,6 @@
-package com.ssafy.project.entity.room;
+package com.ssafy.project.domain.room;
 
-import com.ssafy.project.entity.group.MeetingGroup;
+import com.ssafy.project.domain.group.MeetingGroup;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,6 +21,6 @@ public class GroupMeetingRoom extends MeetingRoom {
     private int femaleCount; // maxCnt = 3
 
     @OneToMany(mappedBy = "groupMeetingRoom", cascade = CascadeType.ALL)
-    private List<MeetingGroup> groups = new ArrayList<>();
+    private List<MeetingGroup> groupMeetingRooms = new ArrayList<>();
 
 }
