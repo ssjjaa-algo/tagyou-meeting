@@ -13,13 +13,13 @@ import { leftContainerProprs } from "types/types";
 function Main() {
   const isDark = useRecoilValue(IsDark);
 
-
   const leftContainerData: leftContainerProprs = {
     imgSrc: TestImg,
     name: "스티븐",
     age: 32,
   };
-  // const [mainLeftContainerData, setMainLeftContainerData] = useState<leftContainerProps>(leftContainerData);
+
+
   return (
     <div>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>

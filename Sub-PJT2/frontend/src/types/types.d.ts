@@ -37,8 +37,11 @@ export type getProfileProps = {
   imgSrc: string;
   name: string;
   age: number;
+  email: string;
   mbti: string;
   job: string;
   hobby: string;
   like: number;
+  region_sido: string;
+  region_sigungu: string;
 };
