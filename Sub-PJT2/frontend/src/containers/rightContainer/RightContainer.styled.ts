@@ -4,7 +4,8 @@ import { themeProps } from "@emotion/react";
 export const Container = styled.div<{ theme: themeProps }>`
   background-color: ${(props) => props.theme.bg.light};
   height: 100vh;
-  width: 100vw;
+  transition: width, 500ms;
+  margin: auto;
 `;
 
 export const ProfileImg = styled.div`

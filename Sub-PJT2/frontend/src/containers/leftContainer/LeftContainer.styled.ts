@@ -22,8 +22,9 @@ export const BtnBox = styled.div`
 
 export const HiddenSection = styled.div<{ theme: themeProps }>`
   padding-top: 20px;
-  padding-right: 20px;
+  width: 30px;
   background-color: ${(props) => props.theme.bg.deep};
+  transition: all 500ms;
 `;
 
 export const List = styled.li<{ theme: themeProps }>`
@@ -58,6 +59,7 @@ export const ListBox = styled.ul`
 
 export const ListText = styled.div`
   margin-left: 10px;
+  font-weight: 400;
 `;
 
 export const LightModeIconStyled = styled(LightModeIcon)<{

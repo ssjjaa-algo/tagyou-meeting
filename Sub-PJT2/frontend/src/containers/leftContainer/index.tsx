@@ -8,10 +8,23 @@ import "react-modern-drawer/dist/index.css";
 import Profile from "components/profile";
 import FriendContainer from "containers/friendContainer";
 import { leftContainerProprs } from "types/types";
+import { useEffect } from "react";
 
 const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);
   const [isDark, setIsDark] = useRecoilState(IsDark);
+
+  useEffect(() => {
+    const rightContainer = document.querySelector(
+      ".right_container"
+    ) as HTMLElement;
+    if (rightContainer instanceof Element) {
+      console.log("open", isOpen);
+      rightContainer.style.width = isOpen
+        ? "calc(100vw - 500px)"
+        : "calc(100vw)";
+    }
+  }, [isOpen]);
 
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
@@ -25,13 +38,15 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
 
   return (
     <>
-      <S.HiddenSection theme={theme} onClick={toggleDrawer}>
-        {isOpen ? (
-          <S.ArrowBackIosIconStyled theme={theme} />
-        ) : (
-          <S.ArrowForwardIosIconStyled theme={theme} />
-        )}
-      </S.HiddenSection>
+      {!isOpen && (
+        <S.HiddenSection theme={theme} onClick={toggleDrawer}>
+          {isOpen ? (
+            <S.ArrowBackIosIconStyled theme={theme} />
+          ) : (
+            <S.ArrowForwardIosIconStyled theme={theme} />
+          )}
+        </S.HiddenSection>
+      )}
       <Drawer
         open={isOpen}
         onClose={toggleDrawer}

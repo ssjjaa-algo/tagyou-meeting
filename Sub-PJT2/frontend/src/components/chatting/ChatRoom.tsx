@@ -19,7 +19,7 @@ const ChatRoom = () => {
     };
     fetchData();
     console.log(chatList);
-  }, [chatList]);
+  }, []);
 
   return (
     <div>
