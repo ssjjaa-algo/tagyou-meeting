@@ -9,7 +9,13 @@ type RightContinaerProp = {
 
 const RightContainer = ({ children }: RightContinaerProp) => {
   const theme: themeProps = useTheme();
-  return <S.Container theme={theme}>{children}</S.Container>;
+  return (
+    <>
+      <S.Container className="right_container" theme={theme}>
+        {children}
+      </S.Container>
+    </>
+  );
 };
 
 export default RightContainer;

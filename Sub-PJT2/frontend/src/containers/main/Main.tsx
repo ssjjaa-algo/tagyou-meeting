@@ -11,6 +11,7 @@ import TestImg from "../../asset/img/imgSrcTest.jpg";
 import Router from "../../Router";
 import { leftContainerProprs } from "types/types";
 import { BrowserRouter } from "react-router-dom";
+
 function Main() {
   const isDark = useRecoilValue(IsDark);
 
@@ -25,7 +26,7 @@ function Main() {
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <Global styles={GlobalStyle} />
         <BrowserRouter>
-          <Container>
+          <Container theme={isDark}>
             <LeftContainer
               imgSrc={leftContainerData.imgSrc}
               name={leftContainerData.name}
@@ -41,8 +42,10 @@ function Main() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ theme: boolean }>`
   display: flex;
+  background-color: ${(props) =>
+    props.theme ? darkTheme.bg.light : lightTheme.bg.light};
 `;
 
 export default Main;
