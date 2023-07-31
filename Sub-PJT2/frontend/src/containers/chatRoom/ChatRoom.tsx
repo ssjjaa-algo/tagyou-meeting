@@ -1,110 +1,114 @@
-import styled from "@emotion/styled";
-import { Global } from "@emotion/react";
-import { ThemeProvider } from "@emotion/react";
-import { IsDark } from "../../atoms/atoms";
-import { useRecoilValue } from "recoil";
-import { darkTheme, lightTheme } from "../../styles/ColorSystem";
-import GlobalStyle from "../../styles/GlobalStyle";
-import LeftContainer from "../leftContainer/index";
-import RightContainer from "../rightContainer/rightContainer-chatRoom/ChatRoom";
-// import React from 'react';
-// import WebSocketProvider from 'webSocket/WebSocketProvider';
+import "css/chat/chatRoom.css";
+import React, { useRef } from "react";
+import sendButton from "stats/img/button_send.png";
+import { ChatData } from "types/types";
+import { useState, useEffect } from "react";
 
-import TestImg from "../../asset/img/imgSrcTest.jpg";
-import { ChatData, leftContainerProprs } from "types/types";
+interface chatDataProps {
+  chatData: ChatData;
+}
 
-function ChatRoom() {
-  const isDark = useRecoilValue(IsDark);
+const ChatRoom = () => {
+  const [chatList, setChatList] = useState<chatDataProps>();
 
-  const leftContainerData: leftContainerProprs = {
-    imgSrc: TestImg,
-    name: "스티븐연",
-    age: 32,
-  };
-
-  const chatData: ChatData = {
-    otherUser: {
-      profileImage: "pic6",
-      name: "A",
-      region: "서울 동작구",
-      lastMessage: "ㅎㅇㅎㅇㅎㅇ",
-      lastMessageTime: "2023.07.10 17:46",
-      age: 28,
-      mbti: "ENFJ",
-    },
-    messages: [
-      {
-        from: "A",
-        to: "B",
-        content:
-          "내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:46",
-      },
-      {
-        from: "B",
-        to: "A",
-        content:
-          "내용입니다.내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:48",
-      },
-      {
-        from: "A",
-        to: "B",
-        content:
-          "내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:46",
-      },
-      {
-        from: "B",
-        to: "A",
-        content:
-          "내용입니다.내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:48",
-      },
-      {
-        from: "A",
-        to: "B",
-        content:
-          "내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:46",
-      },
-      {
-        from: "B",
-        to: "A",
-        content:
-          "내용입니다.내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:48",
-      },
-    ],
-    user: {
-      profileImage: "pic7",
-      name: "B",
-      region: "서울 은평구",
-      lastMessage: "ㅎㅇㅎㅇㅎㅇ",
-      lastMessageTime: "2023.07.09 17:46",
-      age: 30,
-      mbti: "INFP",
-    },
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      fetch("chatlist").then((res) =>
+        res.json().then((data) => setChatList(data))
+      );
+    };
+    fetchData();
+    console.log(chatList);
+  }, []);
 
   return (
     <div>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <Global styles={GlobalStyle} />
-        <Container>
-          <LeftContainer
-            imgSrc={leftContainerData.imgSrc}
-            name={leftContainerData.name}
-            age={leftContainerData.age}
-          />
-          <RightContainer chatData={chatData} />
-        </Container>
-      </ThemeProvider>
+      <span>chattingRoom</span>
     </div>
   );
-}
-const Container = styled.div`
-  display: flex;
-`;
+
+  // const chats = () => {
+  //   const result = [];
+  //   const chats = chatData.messages;
+  //   const user = chatData.user;
+  //   result.push(
+  //     <div className="chatbegins">
+  //       <div className="line"></div>
+  //       <div>대화의 시작</div>
+  //       <div className="line"></div>
+  //     </div>
+  //   );
+
+  //   for (let i = 0; i < chats.length; i++) {
+  //     if (chats[i].from !== user.name) {
+  //       result.push(
+  //         <div className="messageReceived">
+  //           <div className="messageBox">
+  //             <div className="message-content">{chats[i].content}</div>
+  //             <div className="message-time">{chats[i].time}</div>
+  //           </div>
+  //         </div>
+  //       );
+  //     } else {
+  //       result.push(
+  //         <div className="messageSent">
+  //           <div className="messageBox">
+  //             <div className="message-time">{chats[i].time}</div>
+  //             <div className="message-content">{chats[i].content}</div>
+  //           </div>
+  //         </div>
+  //       );
+  //     }
+  //   }
+  //   return result;
+  // };
+
+  // const bottomRef = useRef<HTMLDivElement>(null);
+  // window.addEventListener("DOMContentLoaded", function () {
+  //   bottomRef.current?.scrollIntoView();
+  // });
+
+  // return (
+  //   <div className="chatRoom">
+  //     <div className="chatRoom-body">
+  //       <div className="chatRoom-couterpart">
+  //         <div className="couterpart-info">
+  //           {/* <img src="" alt="" /> */}
+  //           {/* 여기 img 들어가면 바로 아래 div 빼고 couterpart-exceptImg div 수정해야됨 */}
+  //           <div className="couterpart-img">
+  //             {chatData.otherUser.profileImage}
+  //           </div>
+  //           <div className="couterpart-exceptImg">
+  //             <div>
+  //               {chatData.otherUser.name} | {chatData.otherUser.age}
+  //             </div>
+  //             <div>{chatData.otherUser.region}</div>
+  //             <div>{chatData.otherUser.mbti}</div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <div className="chatRoom-main">
+  //         <div className="chatRoom-main-box">
+  //           <div className="chatRoom-main-chats">
+  //             <div className="chatRoom-main-chats-content">{chats()}</div>
+  //             <div ref={bottomRef}></div>
+  //           </div>
+  //           <div className="chatRoom-main-input">
+  //             <textarea />
+  //             <button>
+  //               <img src={sendButton} alt="send" />
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <div className="chatRoom-user">
+  //         <div className="user-info">
+  //           <div className="user-img">{chatData.user.profileImage}</div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
+};
 
 export default ChatRoom;
