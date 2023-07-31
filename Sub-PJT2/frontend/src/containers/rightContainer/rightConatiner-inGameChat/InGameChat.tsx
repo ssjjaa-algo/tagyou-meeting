@@ -1,7 +1,7 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./InGameChat.styled";
-import React, { useRef, useContext, useState, useEffect } from "react";
+import React, { useRef, useContext, useState } from "react";
 import { WebSocketContext } from "webSocket/WebSocketProvider";
 import "css/chat/inGameChat.css";
 

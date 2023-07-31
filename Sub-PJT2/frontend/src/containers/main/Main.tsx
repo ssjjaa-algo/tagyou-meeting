@@ -27,11 +27,16 @@ function Main() {
         <Global styles={GlobalStyle} />
         <BrowserRouter>
           <Container theme={isDark}>
-            <LeftContainer
-              imgSrc={leftContainerData.imgSrc}
-              name={leftContainerData.name}
-              age={leftContainerData.age}
-            />
+            {/* landingPage와 inGame에서는 사이드바가 안뜨게 */}
+            {document.location.pathname !== "/" &&
+              document.location.pathname !== "/inGame" &&
+              document.location.pathname !== "/start" && (
+                <LeftContainer
+                  imgSrc={leftContainerData.imgSrc}
+                  name={leftContainerData.name}
+                  age={leftContainerData.age}
+                />
+              )}
             <RightContainer>
               <Router />
             </RightContainer>

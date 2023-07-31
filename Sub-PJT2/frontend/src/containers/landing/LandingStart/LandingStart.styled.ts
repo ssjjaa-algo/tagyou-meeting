@@ -43,39 +43,67 @@ export const LandingTitle2 = styled.div`
   margin-left: 4rem;
 `;
 
-export const StartSection = styled.div`
+export const StartBox = styled.div<{ theme: themeProps }>`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+  background-color: ${(props) => props.theme.point.light};
+  border-radius: 0.3rem;
+  width: 25%;
+  height: 40%;
 `;
 
-export const StartBtn = styled.button<{ theme: themeProps }>`
+export const StartBoxTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 2rem;
+  opacity: 0.7;
+`;
+
+export const KaKaoStartBtn = styled.button`
   /* border: solid green; */
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   border-radius: 0.3rem;
-  width: 10rem;
-  height: 3.5rem;
-  background-color: ${(props) => props.theme.point.light};
-  font-size: large;
+  width: 85%;
+  height: 2.5rem;
+  background-color: #ffeb02;
+  font-weight: 600;
+`;
+
+export const kakaologo = styled.img`
+  height: 2rem !important;
+  width: 2rem !important;
 `;
 
 export const StartSectionText = styled.div`
   /* border: solid yellow; */
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 27rem;
-  color: white;
-  margin-top: 0.5rem;
+  opacity: 0.7;
+  font-size: small;
+  font-weight: 500;
+`;
+
+export const GoLoginText = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: small;
+  margin-top: 0.3rem;
 `;
 
 export const GoLoginBtn = styled.button`
   border: none;
-  font-size: 1.2rem;
-  color: #339DFF;
+  font-size: 1rem;
+  font-weight: 700;
 `;
