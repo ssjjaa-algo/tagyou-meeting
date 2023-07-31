@@ -11,12 +11,9 @@ import org.hibernate.annotations.DynamicUpdate;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Table(name = "users")
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Builder
-@DynamicUpdate
 public class User extends BaseTimeEntity {
 
     @Id
@@ -32,10 +29,8 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String userName;
 
-    @JsonBackReference
-    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "main_image_id")
-    private Image mainImage;
+    @Column//(nullable = false)
+    private String phoneNumber;
 
     @Column//(nullable = false)
     private int userAge;
@@ -49,13 +44,19 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType = RoleType.USER;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private MeetingGroup meetingGroup;
 
-    public User updateUser(String userName, String userEmail) {
-        this.userName = userName;
+    @Builder //// 여기 나중에 조건에 맞게 수정해야댐
+
+    public User(String userEmail, String userPassword, String userName, String phoneNumber, int userAge, Gender userGender) {
         this.userEmail = userEmail;
-        return this;
+        this.userPassword = userPassword;
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.userAge = userAge;
+        this.userGender = userGender;
+        this.userLike = 0;
     }
 }
