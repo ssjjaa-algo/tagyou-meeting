@@ -42,7 +42,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        log.info(">>> generate token");
 
         Token token = tokenService.generateToken(userDto.getEmail(), "USER");
-//        log.info(">>> generated token : {}", token);
+        log.info(">>> generated token : {}", token);
 
         targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
                 .queryParam("Auth", token.getToken())
