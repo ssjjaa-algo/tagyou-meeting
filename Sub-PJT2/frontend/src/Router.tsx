@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Test from "./components/test/Test";
-// import Landing from "containers/landing/index";
+import Landing from "containers/landing/index";
 import Home from "./containers/home";
 import MyPage from "containers/myPage/MyPage";
 import OnlineMeeting from "containers/onlineMeeting/index";
@@ -11,7 +11,7 @@ import InGame from "containers/inGame/InGame";
 const Router = () => {
   return (
     <Routes>
-      {/* <Route path="/" element={<Landing />} /> */}
+      <Route path="/" element={<Landing />} />
       <Route path="/home" element={<Home />} />
       <Route path="/test" element={<Test />} />
       <Route path="/mypage" element={<MyPage />} />

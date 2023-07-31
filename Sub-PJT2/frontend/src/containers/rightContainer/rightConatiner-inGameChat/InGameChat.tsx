@@ -7,7 +7,6 @@ import "css/chat/inGameChat.css";
 
 import sendButton from "asset/img/button_send.png";
 import messageButton from "asset/img/message.png";
-import { ChatData } from "types/types";
 
 type MessageType = {
   user: string;

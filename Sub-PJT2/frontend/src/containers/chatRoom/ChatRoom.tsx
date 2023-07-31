@@ -1,24 +1,7 @@
-import { Global } from "@emotion/react";
-import styled from "@emotion/styled";
-import { ThemeProvider } from "@emotion/react";
-import { IsDark } from "../../atoms/atoms";
-import { useRecoilValue } from "recoil";
-import { darkTheme, lightTheme } from "../../styles/ColorSystem";
-import GlobalStyle from "../../styles/GlobalStyle";
-import LeftContainer from "../leftContainer/index";
 import RightContainer from "../rightContainer/rightContainer-chatRoom/ChatRoom";
-import { ChatData, leftContainerProprs } from "types/types";
-import TestImg from "../../asset/img/imgSrcTest.jpg";
+import { ChatData } from "types/types";
 
 function ChatRoom() {
-  const isDark = useRecoilValue(IsDark);
-
-  const leftContainerData: leftContainerProprs = {
-    imgSrc: TestImg,
-    name: "스티븐",
-    age: 32,
-  };
-
   const chatData: ChatData = {
     otherUser: {
       profileImage: "pic6",
@@ -90,8 +73,5 @@ function ChatRoom() {
     </div>
   );
 }
-const Container = styled.div`
-  display: flex;
-`;
 
 export default ChatRoom;

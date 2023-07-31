@@ -1,7 +1,7 @@
+import Landing from "./Landing";
+
 const index = () => {
-  return(
-    <div></div>
-  )
-}
+  return <Landing />;
+};
 
 export default index;

@@ -1,23 +1,7 @@
-import { Global } from "@emotion/react";
-import styled from "@emotion/styled";
-import { ThemeProvider } from "@emotion/react";
-import { IsDark } from "../../atoms/atoms";
-import { useRecoilValue } from "recoil";
-import { darkTheme, lightTheme } from "../../styles/ColorSystem";
-import GlobalStyle from "../../styles/GlobalStyle";
-import LeftContainer from "../leftContainer/index";
 import RightContainer from "containers/rightContainer/rightContainer-chatList/ChatList";
-import { UserData, leftContainerProprs } from "types/types";
-import TestImg from "../../asset/img/imgSrcTest.jpg";
+import { UserData } from "types/types";
 
 function ChatList() {
-  const isDark = useRecoilValue(IsDark);
-
-  const leftContainerData: leftContainerProprs = {
-    imgSrc: TestImg,
-    name: "스티븐",
-    age: 32,
-  };
 
   const dataList: Array<UserData> = [
     {
@@ -91,12 +75,5 @@ function ChatList() {
     </div>
   );
 }
-
-const Container = styled.div`
-  /* border: solid green; */
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
 
 export default ChatList;
