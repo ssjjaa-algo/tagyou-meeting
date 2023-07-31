@@ -15,10 +15,11 @@ export type Message = {
   time: string;
 };
 
-export type ChatData = {
-  otherUser: UserData;
-  messages: Array<Message>;
-  user: UserData;
+export type chatProps = {
+  from: string;
+  content: string;
+  to: string;
+  time: Date;
 };
 
 export type friendProps = {
@@ -44,4 +45,9 @@ export type getProfileProps = {
   like: number;
   region_sido: string;
   region_sigungu: string;
+};
+
+export type userInfoProps = {
+  id: string | null;
+  nickname: string | null;
 };

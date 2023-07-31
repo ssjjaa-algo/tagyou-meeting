@@ -7,7 +7,7 @@ import "css/chat/inGameChat.css";
 
 import sendButton from "asset/img/button_send.png";
 import messageButton from "asset/img/message.png";
-import { ChatData } from "types/types";
+// import { ChatData } from "types/types";
 
 type MessageType = {
   user: string;
@@ -86,11 +86,11 @@ const RightContainer = () => {
   };
 
   // alt + c 누르면 채팅 나오는 기능
-  window.onkeydown = (e) =>{
-    if(e.key === "c" && e.altKey){
+  window.onkeydown = (e) => {
+    if (e.key === "c" && e.altKey) {
       handleClickMessage();
     }
-  }
+  };
 
   return (
     <S.Container theme={theme}>
@@ -125,7 +125,7 @@ const RightContainer = () => {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && e.ctrlKey) {
                   return;
-                } else if(e.key ==="Enter"){
+                } else if (e.key === "Enter") {
                   handleClickSubmit();
                 }
               }}

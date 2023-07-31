@@ -7,7 +7,7 @@ import { useTheme } from "@mui/material";
 const Friend = ({ id, name, src }: friendProps) => {
   const theme: themeProps = useTheme();
   return (
-    <S.Profile to="/chatroom">
+    <S.Profile to={`/chatroom/${id}`}>
       <S.ProfileImgBox>
         <S.ProfileImg src={tmpImgSrc} width={50} height={50} alt="profile" />
       </S.ProfileImgBox>
