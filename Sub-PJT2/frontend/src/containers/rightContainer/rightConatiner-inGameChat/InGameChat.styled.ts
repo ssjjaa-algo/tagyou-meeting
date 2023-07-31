@@ -88,6 +88,7 @@ export const ChatRoomMainInput = styled.div<{ theme: themeProps }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: 5rem;
   padding: 1rem 1.5rem 1rem 1.5rem;
@@ -97,6 +98,6 @@ export const Button = styled.button<{ theme: themeProps }>`
   background-color: ${(props) => props.theme.point.deep};
   border: none;
   border-radius: 0.5rem;
-  width: 100%;
-  height: 100%;
+  width: 3rem;
+  height: 2.5rem;
 `;

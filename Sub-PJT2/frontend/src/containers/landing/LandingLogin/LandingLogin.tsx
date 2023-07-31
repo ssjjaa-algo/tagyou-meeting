@@ -2,6 +2,7 @@ import * as S from "./LandingLogin.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import kakaoLogo from "asset/img/kakaologo.png";
 
 const LandingLogin = () => {
@@ -32,13 +33,15 @@ const LandingLogin = () => {
             <S.StartSectionText>
               <S.GoLoginText>
                 계정이 없나요?
-                <S.GoRegisterBtn
-                  style={pointerShape}
-                  onMouseOver={handleHover}
-                  onMouseLeave={handleHoverOut}
-                >
-                  가입하기
-                </S.GoRegisterBtn>
+                <Link to="/start">
+                  <S.GoRegisterBtn
+                    style={pointerShape}
+                    onMouseOver={handleHover}
+                    onMouseLeave={handleHoverOut}
+                  >
+                    가입하기
+                  </S.GoRegisterBtn>
+                </Link>
               </S.GoLoginText>
             </S.StartSectionText>
           </S.LoginBox>
