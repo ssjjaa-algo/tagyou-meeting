@@ -23,26 +23,24 @@ public class JwtAuthFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println(">>> JwtAuthFilter");
+//        System.out.println(">>> JwtAuthFilter");
 
         String token = ((HttpServletRequest)request).getHeader("Auth");
-        System.out.println(">>> token: "+token);
+//        System.out.println(">>> token: "+token);
 
         if (token != null && tokenService.verifyToken(token)) {
             String email = tokenService.getUid(token);
-            System.out.println(">>>after verifyToken, email: "+email);
+//            System.out.println(">>>after verifyToken, email: "+email);
             // DB연동을 안했으니 이메일 정보로 유저를 만들어주겠습니다
+            //// 여기 수정해야댐!!!!
             UserDto userDto = UserDto.builder()
                     .email(email)
                     .name("이름이에용")
 //                    .picture("프로필 이미지에요")
                     .build();
-            System.out.println(">>> after userDto");
 
             Authentication auth = getAuthentication(userDto);
-            System.out.println(">>> SecurityContextHolder setAuthentication");
             SecurityContextHolder.getContext().setAuthentication(auth);
-            System.out.println(">>> set Authentication done");
         }
 
         chain.doFilter(request, response);
