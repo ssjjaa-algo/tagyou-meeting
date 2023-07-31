@@ -4,13 +4,8 @@ import * as S from "./ChatRoom.styled";
 import "css/chat/chatRoom.css";
 import React, { useEffect, useRef } from "react";
 import sendButton from "asset/img/button_send.png";
-import { ChatData } from "types/types";
 
-interface chatDataProps {
-  chatData: ChatData;
-}
-
-const RightContainer = ({ chatData }: chatDataProps) => {
+const RightContainer = ({ chatData }: any) => {
   const theme: themeProps = useTheme();
 
   const chats = () => {
@@ -55,16 +50,16 @@ const RightContainer = ({ chatData }: chatDataProps) => {
 
   // 대화 창의 스크롤 맨 아래로 내리는기능
   const bottomRef = useRef<HTMLDivElement>(null);
-  
-  const handleContentLoaded = () =>{
-    console.log('content Loaded');
+
+  const handleContentLoaded = () => {
+    console.log("content Loaded");
     bottomRef.current?.scrollIntoView();
-  }
+  };
   useEffect(() => {
-    console.log('using Effect');
+    console.log("using Effect");
     handleContentLoaded();
-  })
-  // 대화 창 스크롤 아래로 내리는 기능  끝 
+  });
+  // 대화 창 스크롤 아래로 내리는 기능  끝
 
   return (
     <S.Container theme={theme}>
@@ -92,8 +87,7 @@ const RightContainer = ({ chatData }: chatDataProps) => {
               >
                 <S.ChatRoomMainChatsContent theme={theme}>
                   {chats()}
-                  <div ref={bottomRef}>
-                  </div>
+                  <div ref={bottomRef}></div>
                 </S.ChatRoomMainChatsContent>
               </S.ChatRoomMainChats>
               <S.ChatRoomMainInput

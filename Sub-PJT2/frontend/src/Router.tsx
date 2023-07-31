@@ -18,8 +18,8 @@ const Router = () => {
       <Route path="/test" element={<Test />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/meeting" element={<OnlineMeeting />} />
+      <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
       <Route path="/chatList" element={<ChatList />} />
-      <Route path="/chatRoom" element={<ChatRoom />} />
       <Route path="/inGame" element={<InGame />} />
     </Routes>
   );

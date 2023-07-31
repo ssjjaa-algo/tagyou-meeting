@@ -2,13 +2,13 @@ import { rest } from "msw";
 const friendList = [
   {
     id: "hongjaeyeon",
-    name: "JAEYEON",
+    name: "hongjaeyeon",
     img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fnews.mt.co.kr%2Fmtview.php%3Fno%3D2021031610278225391&psig=AOvVaw0aIAaS3nWgARywqhTRZ56f&ust=1690612248026000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPCKgsnjsIADFQAAAAAdAAAAABAD",
   },
 
   {
-    id: "idTAgUE",
-    name: "JoTAEGUE",
+    id: "taegue",
+    name: "taegue",
     img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fnews.mt.co.kr%2Fmtview.php%3Fno%3D2021031610278225391&psig=AOvVaw0aIAaS3nWgARywqhTRZ56f&ust=1690612248026000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPCKgsnjsIADFQAAAAAdAAAAABAD",
   },
 
@@ -25,52 +25,7 @@ const friendList = [
   },
 ];
 
-export const getChatList = [
-  {
-    from: "A",
-    to: "B",
-    content:
-      "내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-    time: "2023.07.09 17:46",
-  },
-  {
-    from: "B",
-    to: "A",
-    content:
-      "내용입니다.내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-    time: "2023.07.09 17:48",
-  },
-  {
-    from: "A",
-    to: "B",
-    content:
-      "내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-    time: "2023.07.09 17:46",
-  },
-  {
-    from: "B",
-    to: "A",
-    content:
-      "내용입니다.내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-    time: "2023.07.09 17:48",
-  },
-  {
-    from: "A",
-    to: "B",
-    content:
-      "내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-    time: "2023.07.09 17:46",
-  },
-  {
-    from: "B",
-    to: "A",
-    content:
-      "내용입니다.내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-    time: "2023.07.09 17:48",
-  },
-];
-
-export const getChatData = [
+const getChatData = [
   {
     profileImage: "pic1",
     name: "송강",
@@ -134,10 +89,9 @@ export const getChatData = [
     age: 30,
     mbti: "INFP",
   },
-]
+];
 
-
-export const getProfileData = {
+const getProfileData = {
   imgSrc:
     "https://i.namu.wiki/i/e-AmZjk-7-VjN_p7qbd18eIcRUnqfIfeFIlgCtu9A36AXHT4aW4Kk9ScHToD4EvG4Aqswe4CfhscQRTxGa7ivQ.webp",
   name: "스티븐",
@@ -151,16 +105,96 @@ export const getProfileData = {
   region_sigungu: "은평구",
 };
 
+const chatList_jaeyeon = [
+  {
+    from: "A",
+    to: "B",
+    content: "안녕",
+    time: "2023.07.09 17:46",
+  },
+  {
+    from: "B",
+    to: "A",
+    content: "반가워 A야",
+    time: "2023.07.09 17:47",
+  },
+  {
+    from: "A",
+    to: "B",
+    content: "응 B야 ",
+    time: "2023.07.09 17:48",
+  },
+  {
+    from: "B",
+    to: "A",
+    content: "정말 반가워 A야",
+    time: "2023.07.10 14:02",
+  },
+  {
+    from: "A",
+    to: "B",
+    content: "맞아 B야",
+    time: "2023.07.11 14:02",
+  },
+  {
+    from: "A",
+    to: "B",
+    content: "나는 A이다",
+    time: "2023.07.12 17:48",
+  },
+
+  {
+    from: "B",
+    to: "A",
+    content: "fdsfsfsddsfsdfsdfdsfdsfdsfdsfsdfdsfdsfdsfsdfsdfsdfsdf나는 A이다",
+    time: "2023.07.12 17:48",
+  },
+];
+
+const chatList_taegue = [
+  {
+    from: "A",
+    to: "B",
+    content: "랴 조태규ㅓ1!!!!!!!!!!!!!!!!!!!!!!",
+    time: "2023.07.09 17:46",
+  },
+  {
+    from: "B",
+    to: "A",
+    content: "반가워 재연아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ야",
+    time: "2023.07.09 17:47",
+  },
+  {
+    from: "A",
+    to: "B",
+    content: "응 B야 ",
+    time: "2023.07.09 17:48",
+  },
+  {
+    from: "B",
+    to: "A",
+    content: "정말 반가워 A야",
+    time: "2023.07.10 14:02",
+  },
+];
+
 export const handlers = [
   rest.get("/friends/list", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(friendList));
   }),
 
-  rest.get("/chatlist", (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(chatList));
+  rest.get("/chatlist/:nickName", (req, res, ctx) => {
+    const { nickName } = req.params;
+    return nickName === "hongjaeyeon"
+      ? res(ctx.status(200), ctx.json(chatList_jaeyeon))
+      : res(ctx.status(200), ctx.json(chatList_taegue));
   }),
 
   rest.get("/profile", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(getProfileData));
+  }),
+
+  rest.post("/chatlist/:nickName", (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(req));
   }),
 ];

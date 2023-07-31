@@ -1,77 +1,72 @@
-import RightContainer from "../rightContainer/rightContainer-chatRoom/ChatRoom";
-import { ChatData } from "types/types";
+import { chatProps } from "types/types";
+import { useState, useEffect } from "react";
+import Bubble from "components/bubble/Bubble";
+import { useRecoilValue } from "recoil";
+import { UserInfo } from "../../atoms/atoms";
+import * as S from "./ChatRoom.styled";
+import { useParams } from "react-router-dom";
+const ChatRoom = () => {
+  // toUser
+  const { nickname } = useParams();
+  // fromUser -> 후에 recoil에서 user정보 받아오도록 수정
+  const id: string = "A";
 
-function ChatRoom() {
-  const chatData: ChatData = {
-    otherUser: {
-      profileImage: "pic6",
-      name: "A",
-      region: "서울 동작구",
-      lastMessage: "ㅎㅇㅎㅇㅎㅇ",
-      lastMessageTime: "2023.07.10 17:46",
-      age: 28,
-      mbti: "ENFJ",
-    },
-    messages: [
-      {
-        from: "A",
-        to: "B",
-        content:
-          "내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:46",
-      },
-      {
-        from: "B",
-        to: "A",
-        content:
-          "내용입니다.내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:48",
-      },
-      {
-        from: "A",
-        to: "B",
-        content:
-          "내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:46",
-      },
-      {
-        from: "B",
-        to: "A",
-        content:
-          "내용입니다.내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:48",
-      },
-      {
-        from: "A",
-        to: "B",
-        content:
-          "내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:46",
-      },
-      {
-        from: "B",
-        to: "A",
-        content:
-          "내용입니다.내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다.내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다",
-        time: "2023.07.09 17:48",
-      },
-    ],
-    user: {
-      profileImage: "pic7",
-      name: "B",
-      region: "서울 은평구",
-      lastMessage: "ㅎㅇㅎㅇㅎㅇ",
-      lastMessageTime: "2023.07.09 17:46",
-      age: 30,
-      mbti: "INFP",
-    },
+  const [chatList, setChatList] = useState<chatProps[]>();
+
+  const [content, setContent] = useState<string>("");
+
+  const handleSendMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const insertData = async () => {
+      fetch(`/chatlist/${nickname}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: id,
+          content: content,
+          time: Date.now(),
+          to: nickname,
+        }),
+      });
+    };
+    insertData();
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      fetch(`/chatlist/${nickname}`).then((res) =>
+        res.json().then((data) => setChatList(data))
+      );
+    };
+    fetchData();
+  }, [nickname]);
+
   return (
-    <div>
-      <RightContainer chatData={chatData} />
-    </div>
+    <S.Conatiner>
+      {chatList?.map((item: chatProps, idx: number) => (
+        <S.ChattingBox>
+          <Bubble
+            key={idx}
+            text={item.content}
+            time={item.time}
+            owner={item.from === id ? "user" : "otherUser"}
+          />
+        </S.ChattingBox>
+      ))}
+      <S.Form>
+        <S.Input
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+        ></S.Input>
+        <button onClick={(e) => handleSendMessage(e)}>
+          <S.ArrowCircleUpRoundedIconStyled />
+        </button>
+      </S.Form>
+    </S.Conatiner>
   );
-}
+};
 
 export default ChatRoom;
