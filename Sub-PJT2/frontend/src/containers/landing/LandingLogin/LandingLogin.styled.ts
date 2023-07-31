@@ -37,7 +37,7 @@ export const LandingTitle = styled.div`
   margin-right: 25rem;
 `;
 
-export const StartBox = styled.div<{ theme: themeProps }>`
+export const LoginBox = styled.div<{ theme: themeProps }>`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -57,7 +57,7 @@ export const StartBoxTitle = styled.div`
   opacity: 0.7;
 `;
 
-export const KaKaoStartBtn = styled.button`
+export const KaKaoLoginBtn = styled.button`
   /* border: solid green; */
   display: flex;
   flex-direction: row;
@@ -96,7 +96,7 @@ export const GoLoginText = styled.div`
   margin-top: 0.3rem;
 `;
 
-export const GoLoginBtn = styled.button`
+export const GoRegisterBtn = styled.button`
   border: none;
   font-size: 1rem;
   font-weight: 700;
