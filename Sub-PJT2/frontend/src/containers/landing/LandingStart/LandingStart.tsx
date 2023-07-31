@@ -1,11 +1,11 @@
-import * as S from "./Landing.styled";
+import * as S from "./LandingStart.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import { useState } from "react";
+import kakaoLogo from "asset/img/kakaologo.png";
 
-const Landing = () => {
+const LandingStart = () => {
   const theme: themeProps = useTheme();
-
   const [pointerShape, setPointerShape] = useState({ cursor: "" });
 
   const handleHover = () => {
@@ -19,35 +19,34 @@ const Landing = () => {
     <div>
       <S.Container>
         <S.LandingBody>
-          <S.LandingTitle>
-            <S.LandingTitle1>친구에서 연인으로</S.LandingTitle1>
-            <S.LandingTitle2>연인에서 가족으로</S.LandingTitle2>
-          </S.LandingTitle>
-          <S.StartSection>
-            <S.StartBtn
-              theme={theme}
+          <S.StartBox theme={theme}>
+            <S.StartBoxTitle>시작하기</S.StartBoxTitle>
+            <S.KaKaoStartBtn
               style={pointerShape}
               onMouseOver={handleHover}
               onMouseLeave={handleHoverOut}
             >
-              시작하기
-            </S.StartBtn>
+              <S.kakaologo src={kakaoLogo}></S.kakaologo>
+              카카오로 시작하기
+            </S.KaKaoStartBtn>
             <S.StartSectionText>
               이미 저희의 소중한 가족이신가요?
-              <S.GoLoginBtn
-                style={pointerShape}
-                onMouseOver={handleHover}
-                onMouseLeave={handleHoverOut}
-              >
-                로그인
-              </S.GoLoginBtn>
-              하러 가기
+              <S.GoLoginText>
+                <S.GoLoginBtn
+                  style={pointerShape}
+                  onMouseOver={handleHover}
+                  onMouseLeave={handleHoverOut}
+                >
+                  로그인
+                </S.GoLoginBtn>
+                하러 가기
+              </S.GoLoginText>
             </S.StartSectionText>
-          </S.StartSection>
+          </S.StartBox>
         </S.LandingBody>
       </S.Container>
     </div>
   );
 };
 
-export default Landing;
+export default LandingStart;

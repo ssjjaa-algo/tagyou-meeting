@@ -5,8 +5,8 @@ export const Container = styled.div`
   /* border: solid green; */
   display: flex;
   flex-direction: row-reverse;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 `;
 
 export const ChatRoomMain = styled.div`
