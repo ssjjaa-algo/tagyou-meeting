@@ -5,15 +5,11 @@ export const Container = styled.div`
 `;
 
 export const ChatList = styled.div<{theme: themeProps}>`
-  /* border: solid black; */
+  /* border: solid red 4px; */
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 1rem;
-  padding-right: 5rem;
-  width: calc(100vw - 20rem);
-  min-width: 60rem;
+  flex-direction: row;
+  justify-content: flex-end;
+  min-width: fit-content;
 `;
 
 export const ChatListBody = styled.div`
@@ -23,7 +19,7 @@ export const ChatListBody = styled.div`
   align-items: center;
   margin-top: 2rem;
   height: calc(100vh - 3.5rem);
-  width: 100%;
+  width: 95%;
   overflow: scroll;
   overflow-x: hidden;
 `;

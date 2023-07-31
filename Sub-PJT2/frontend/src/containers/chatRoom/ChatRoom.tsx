@@ -86,17 +86,7 @@ function ChatRoom() {
 
   return (
     <div>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <Global styles={GlobalStyle} />
-        <Container>
-          <LeftContainer
-            imgSrc={leftContainerData.imgSrc}
-            name={leftContainerData.name}
-            age={leftContainerData.age}
-          />
-          <RightContainer chatData={chatData} />
-        </Container>
-      </ThemeProvider>
+      <RightContainer chatData={chatData} />
     </div>
   );
 }

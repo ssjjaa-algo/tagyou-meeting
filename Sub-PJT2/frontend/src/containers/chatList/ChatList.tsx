@@ -10,7 +10,6 @@ import RightContainer from "containers/rightContainer/rightContainer-chatList/Ch
 import { UserData, leftContainerProprs } from "types/types";
 import TestImg from "../../asset/img/imgSrcTest.jpg";
 
-
 function ChatList() {
   const isDark = useRecoilValue(IsDark);
 
@@ -88,25 +87,16 @@ function ChatList() {
 
   return (
     <div>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <Global styles={GlobalStyle} />
-        <Container>
-        <LeftContainer
-              imgSrc={leftContainerData.imgSrc}
-              name={leftContainerData.name}
-              age={leftContainerData.age}
-            />
-          <RightContainer userData={dataList} />
-        </Container>
-      </ThemeProvider>
+      <RightContainer userData={dataList} />
     </div>
   );
 }
 
 const Container = styled.div`
+  /* border: solid green; */
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 export default ChatList;
