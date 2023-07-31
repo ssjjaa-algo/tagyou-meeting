@@ -2,6 +2,7 @@ import * as S from "./Landing.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   const theme: themeProps = useTheme();
@@ -24,23 +25,27 @@ const Landing = () => {
             <S.LandingTitle2>연인에서 가족으로</S.LandingTitle2>
           </S.LandingTitle>
           <S.StartSection>
-            <S.StartBtn
-              theme={theme}
-              style={pointerShape}
-              onMouseOver={handleHover}
-              onMouseLeave={handleHoverOut}
-            >
-              시작하기
-            </S.StartBtn>
-            <S.StartSectionText>
-              이미 저희의 소중한 가족이신가요?
-              <S.GoLoginBtn
+            <Link to="/start">
+              <S.StartBtn
+                theme={theme}
                 style={pointerShape}
                 onMouseOver={handleHover}
                 onMouseLeave={handleHoverOut}
               >
-                로그인
-              </S.GoLoginBtn>
+                시작하기
+              </S.StartBtn>
+            </Link>
+            <S.StartSectionText>
+              이미 저희의 소중한 가족이신가요?
+              <Link to="/login">
+                <S.GoLoginBtn
+                  style={pointerShape}
+                  onMouseOver={handleHover}
+                  onMouseLeave={handleHoverOut}
+                >
+                  로그인
+                </S.GoLoginBtn>
+              </Link>
               하러 가기
             </S.StartSectionText>
           </S.StartSection>
