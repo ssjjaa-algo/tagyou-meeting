@@ -1,21 +1,28 @@
-//package com.ssafy.project.service;
-//
-//import com.ssafy.project.entity.user.User;
-//import com.ssafy.project.exception.NotFoundException;
-//import com.ssafy.project.repository.UserRepository;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import java.util.List;
-//
-//@Service
-//@Transactional(readOnly = true)
-//@RequiredArgsConstructor
-//public class UserService {
-//
-//    private final UserRepository userRepository;
-//
+package com.ssafy.project.service;
+
+import com.ssafy.project.domain.user.User;
+import com.ssafy.project.dto.UserDto;
+import com.ssafy.project.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    @Transactional(readOnly = false)
+    public User saveUser(UserDto dto) {
+        System.out.println(">>> saveUser!");
+        return userRepository.save(User.builder()
+                        .userEmail(dto.getEmail())
+                        .userName(dto.getName())
+                        .build());
+    }
+
 //    /**
 //     * 회원 가입
 //     */
@@ -42,6 +49,6 @@
 //    public User findOne(Long userId) {
 //        return userRepository.findById(userId).orElseThrow(()-> new NotFoundException("잘못된 접근입니다."));
 //    }
-//
-//}
-//
+
+}
+
