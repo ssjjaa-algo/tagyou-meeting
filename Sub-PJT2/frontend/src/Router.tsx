@@ -8,12 +8,14 @@ import ChatList from "containers/chatList/ChatList";
 import ChatRoom from "containers/chatRoom/ChatRoom";
 import InGame from "containers/inGame/InGame";
 import LandingStart from "containers/landing/LandingStart/LandingStart";
+import LandingLogin from "containers/landing/LandingLogin/LandingLogin";
 
 const Router = () => {
   return (
     <Routes>
       <Route path="" element={<Landing />} />
       <Route path="/start" element={<LandingStart />} />
+      <Route path="/login" element={<LandingLogin />} />
       <Route path="/home" element={<Home />} />
       <Route path="/test" element={<Test />} />
       <Route path="/mypage" element={<MyPage />} />
