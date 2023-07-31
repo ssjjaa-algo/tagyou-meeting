@@ -17,11 +17,31 @@ public class UserService {
     @Transactional(readOnly = false)
     public User saveUser(UserDto dto) {
 //        System.out.println(">>> saveUser!");
-        return userRepository.save(User.builder()
-                        .userEmail(dto.getEmail())
-                        .userName(dto.getName())
-                        .build());
+        User u = userRepository.findByUserEmail(dto.getEmail());
+        //// 여기 고치기!!
+        if(u == null) {
+//            System.out.println(">>> first login");
+            return userRepository.save(User.builder()
+                    .userEmail(dto.getEmail())
+                    .userName(dto.getName())
+                    .build());
+        }
+        else{
+//            System.out.println(">>> not first");
+            u.setUserEmail(dto.getEmail());
+            u.setUserName(dto.getName());
+            return u;
+        }
     }
+
+    public boolean hasDetailInfo(String userEmail) {
+        User u = userRepository.findByUserEmail(userEmail);
+        if(u.getPhoneNumber() == null)
+            return false;
+        return true;
+    }
+
+//    public
 
 //    /**
 //     * 회원 가입

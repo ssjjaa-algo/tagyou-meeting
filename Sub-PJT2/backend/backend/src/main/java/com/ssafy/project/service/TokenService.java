@@ -15,7 +15,6 @@ import java.util.Date;
 public class TokenService{
     private String issuer = "issuer";
     private String secretKey = "token-secret-key-token-secret-key";
-//    private String secretKey = "token-secret-key";
     private String tmpToken;
 
     @PostConstruct
@@ -59,7 +58,7 @@ public class TokenService{
 
 
     public boolean verifyToken(String token) {
-        token = tmpToken; //// 나중에 지워야 함!!!!
+//        token = tmpToken; //// 나중에 지워야 함!!!!
 //        System.out.println(">>> secretKey: " + secretKey);
         System.out.println("!!!!!----->>> token: "+token);
 //        System.out.print(">>> verifyToken -> ");

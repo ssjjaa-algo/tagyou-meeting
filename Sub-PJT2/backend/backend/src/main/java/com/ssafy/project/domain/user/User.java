@@ -13,6 +13,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 public class User extends BaseTimeEntity {
 
