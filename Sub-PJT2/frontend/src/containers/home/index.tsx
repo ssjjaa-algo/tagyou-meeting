@@ -2,25 +2,25 @@ import * as S from "./Home.styled";
 import { getProfileProps } from "types/types";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
-import { useEffect, useState, useRef } from "react";
-import Slider from "components/slide"
-import App from "components/tags"
+import { useEffect, useState } from "react";
+import Slider from "components/slide";
+import App from "components/tags";
 
 const Home = () => {
   const theme: themeProps = useTheme();
 
-  const [ profileData, setProfileData ] = useState<getProfileProps>();
-  useEffect(()=>{
+  const [profileData, setProfileData] = useState<getProfileProps>();
+  useEffect(() => {
     const fetchData = async () => {
       fetch("profile")
-      .then((res) => res.json())
-      .then((data) => {
-        setProfileData(data);
-        console.log(data)
-      });
-    }
+        .then((res) => res.json())
+        .then((data) => {
+          setProfileData(data);
+          console.log(data);
+        });
+    };
     fetchData();
-  },[])
+  }, []);
 
   // const inputRef = useRef<HTMLInputElement>(null);
 
@@ -35,11 +35,15 @@ const Home = () => {
   //   }
   // }, []);
 
-
   return (
     <S.Container>
       <S.ProfileContainer>
-        <S.ProfileImg src={profileData?.imgSrc} width={80} height={80} alt="profileImg" />
+        <S.ProfileImg
+          src={profileData?.imgSrc}
+          width={80}
+          height={80}
+          alt="profileImg"
+        />
         <S.LeftContainer>
           <S.InnerContent>
             <S.miniTitle theme={theme}>{profileData?.name}</S.miniTitle>
@@ -55,7 +59,9 @@ const Home = () => {
         </S.LeftContainer>
         <S.RightContainer>
           <S.InnerContent>
-            <S.miniTitle theme={theme}>{profileData?.region_sido} {profileData?.region_sigungu}</S.miniTitle>
+            <S.miniTitle theme={theme}>
+              {profileData?.region_sido} {profileData?.region_sigungu}
+            </S.miniTitle>
           </S.InnerContent>
           <S.InnerContent>
             <S.miniTitle theme={theme}>{profileData?.mbti}</S.miniTitle>

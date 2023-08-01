@@ -17,37 +17,31 @@ const LandingLogin = () => {
   };
 
   return (
-    <div>
-      <S.Container>
-        <S.LandingBody>
-          <S.LoginBox theme={theme}>
-            <S.StartBoxTitle>로그인</S.StartBoxTitle>
-            <S.KaKaoLoginBtn
+    <S.LoginBox theme={theme}>
+      <S.StartBoxTitle>로그인</S.StartBoxTitle>
+      <S.KaKaoLoginBtn
+        style={pointerShape}
+        onMouseOver={handleHover}
+        onMouseLeave={handleHoverOut}
+      >
+        <S.kakaologo src={kakaoLogo}></S.kakaologo>
+        카카오계정으로 로그인
+      </S.KaKaoLoginBtn>
+      <S.StartSectionText>
+        <S.GoLoginText>
+          계정이 없나요?
+          <Link to="/start">
+            <S.GoRegisterBtn
               style={pointerShape}
               onMouseOver={handleHover}
               onMouseLeave={handleHoverOut}
             >
-              <S.kakaologo src={kakaoLogo}></S.kakaologo>
-              카카오계정으로 로그인
-            </S.KaKaoLoginBtn>
-            <S.StartSectionText>
-              <S.GoLoginText>
-                계정이 없나요?
-                <Link to="/start">
-                  <S.GoRegisterBtn
-                    style={pointerShape}
-                    onMouseOver={handleHover}
-                    onMouseLeave={handleHoverOut}
-                  >
-                    가입하기
-                  </S.GoRegisterBtn>
-                </Link>
-              </S.GoLoginText>
-            </S.StartSectionText>
-          </S.LoginBox>
-        </S.LandingBody>
-      </S.Container>
-    </div>
+              가입하기
+            </S.GoRegisterBtn>
+          </Link>
+        </S.GoLoginText>
+      </S.StartSectionText>
+    </S.LoginBox>
   );
 };
 
