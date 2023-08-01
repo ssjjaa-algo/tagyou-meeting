@@ -38,7 +38,6 @@ export const LandingTitle = styled.div`
 `;
 
 export const LoginBox = styled.div<{ theme: themeProps }>`
-  display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;

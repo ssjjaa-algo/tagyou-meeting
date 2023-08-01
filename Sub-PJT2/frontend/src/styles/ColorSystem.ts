@@ -1,6 +1,6 @@
 import { themeProps } from "@emotion/react";
 
-const palette = {
+export const palette = {
   /* pink */
   pink_50: "#fff1f2",
   pink_100: "#ffe4e6",
@@ -57,7 +57,7 @@ export const darkTheme: themeProps = {
 
 export const lightTheme: themeProps = {
   bg: {
-    deep: palette.pink_400,
+    deep: palette.pink_500,
     mid: palette.pink_200,
     light: palette.neutral_50,
   },
