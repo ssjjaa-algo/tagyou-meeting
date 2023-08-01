@@ -41,6 +41,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String targetUrl;
         log.info(">>> generate token");
 
+        userService.getUserIdByEmail(userDto.getEmail());
         Token token = tokenService.generateToken(userDto.getEmail(), "USER");
         log.info(">>> generated token : {}", token);
 
@@ -48,6 +49,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 .queryParam("Auth", token.getToken())
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
-//        System.out.println(">>> SuccessHandler done!");
+        System.out.println(">>> SuccessHandler done!");
     }
 }
