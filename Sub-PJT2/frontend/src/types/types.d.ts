@@ -51,3 +51,8 @@ export type userInfoProps = {
   id: string | null;
   nickname: string | null;
 };
+
+export type CanvasProps = {
+  width: number;
+  height: number;
+};

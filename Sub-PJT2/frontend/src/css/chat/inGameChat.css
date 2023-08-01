@@ -1,9 +1,27 @@
-.grow{
-  /* background-color: black; */
-  border: solid transparent 3px;
+.inGameChatContainerShown {
+  width: 30rem;
+  transition: all 1s;
+}
+.inGameChatContainerHidden {
+  width: 4rem;
+  transition: all 1s;
 }
 
-.chatRoom-main-input > input{
+.chatBoxShown {
+  transition: all 0.7s;
+}
+.chatBoxHidden {
+  margin-left: 50rem !important;
+  transition: all 1s;
+}
+
+.grow {
+  /* background-color: black; */
+  background-color: #ff5563 !important;
+  cursor: pointer;
+}
+
+.chatRoom-main-input > input {
   /* border: solid green; */
   width: 75%;
   margin-right: 1rem;
@@ -15,8 +33,7 @@
   padding: 0.7rem;
 }
 
-.chatRoom-main-input > input:focus
-{
+.chatRoom-main-input > input:focus {
   outline: none;
   box-shadow: 0px 0px 10px 5px #ff5664;
 }
