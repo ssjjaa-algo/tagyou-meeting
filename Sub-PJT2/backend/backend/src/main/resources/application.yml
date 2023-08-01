@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/meeting?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: root
-    password: mongiya99
+    password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
