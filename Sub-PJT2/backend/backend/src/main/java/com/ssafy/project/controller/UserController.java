@@ -21,13 +21,13 @@ public class UserController {
 
     @GetMapping("/tmp/token")
     public String tmpTokenGenerate(HttpServletRequest request) {
-        String email = request.getHeader("email");
-        return tokenService.generateToken(email, "USER").getToken();
+        String id = request.getHeader("userId");
+        return tokenService.generateToken(id, "USER").getToken();
     }
 
     @GetMapping("/first")
     public ResponseEntity<?> firstLogin(HttpServletRequest request) {
-        if(userService.hasDetailInfo(tokenService.parseEmail(request.getHeader("Auth"))))
+        if(userService.hasDetailInfo(tokenService.parseUId(request.getHeader("Auth"))))
             return ResponseEntity.ok().body("notFirst");
         else
             return ResponseEntity.ok().body("first");
@@ -35,22 +35,37 @@ public class UserController {
 
     @GetMapping("/mypage") // 마이페이지(users 테이블) 정보 받아오기
     public ResponseEntity<?> getMypage(HttpServletRequest request) {
-        String email = tokenService.parseEmail(request.getHeader("Auth"));
-//        System.out.println(">>>>>>>>>>>> email: "+email);
-        return ResponseEntity.ok().body(new UserRspDto(userService.getUserInfo(email)));
+        String id = tokenService.parseUId(request.getHeader("Auth"));
+        System.out.println(">>>>>>>>>>>> id: "+id);
+        return ResponseEntity.ok().body(new UserRspDto(userService.getUserInfo(id)));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/mypage") // 첫 로그인 후 추가정보 넣기 or 마이페이지 정보 수정하기
     public UserRspDto editMypage(HttpServletRequest request, @RequestBody UserInfoReqDto userInfo) {
-        String email = tokenService.parseEmail(request.getHeader("Auth"));
-        return new UserRspDto(userService.editUserInfo(email, userInfo)); // 이런식으로 가능함!!
+        String id = tokenService.parseUId(request.getHeader("Auth"));
+        return new UserRspDto(userService.editUserInfo(id, userInfo)); // 이런식으로 가능함!!
 //        return ResponseEntity.ok().body();
     }
 
+    @PostMapping("/profile")
+    public ResponseEntity<?> makeProfile(HttpServletRequest request) {
+        String id = tokenService.parseUId(request.getHeader("Auth"));
+        // Profile profile = userService.makeProfile(userId);
+        if(false) return new ResponseEntity<>("new ProfileRspDto(profile)", HttpStatus.CREATED);
+//        if(false) return ResponseEntity.created(createdUri).body("new ProfileRspDto(profile)");
 
+        // 이미 있는 경우
+        else return ResponseEntity.ok().body("already exists");
+    }
 
+    @PutMapping("/profile")
+    public ResponseEntity<?> editProfile(HttpServletRequest request/*, */) {
+        String id = tokenService.parseUId(request.getHeader("Auth"));
+        // Profile profile = userService.editProfile(userId);
 
+        return ResponseEntity.ok().body("new ProfileRspDto(profile)");
+    }
 
 
     // ---------------- 일반 회원 가입 (일단 보류) --------------------

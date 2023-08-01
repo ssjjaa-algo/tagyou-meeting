@@ -36,6 +36,10 @@ public class User extends BaseTimeEntity {
     @Column//(nullable = false)
     private int userAge;
 
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "main_image_id")
+    private Image mainImage;
+
     @Enumerated(EnumType.STRING)
     private Gender userGender;
 

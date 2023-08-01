@@ -23,12 +23,12 @@ public class TokenService{
     }
 
 
-    public Token generateToken(String email, String role) {
-        System.out.println(">>> generateToken / email: "+email+", role: "+role);
+    public Token generateToken(String id, String role) {
+        System.out.println(">>> generateToken / id: "+id+", role: "+role);
         long tokenPeriod = 1000L * 60L * 10L;
         long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 3L;
 
-        Claims claims = Jwts.claims().setSubject(email);
+        Claims claims = Jwts.claims().setSubject(id);
         claims.put("role", role);
 
         Date now = new Date();
@@ -52,7 +52,6 @@ public class TokenService{
 
 
     public boolean verifyToken(String token) {
-//        token = tmpToken; //// 나중에 지워야 함!!!!
 //        System.out.println(">>> secretKey: " + secretKey);
 //        System.out.println("!!!!!----->>> token: "+token);
         System.out.print(">>> verifyToken -> ");
@@ -71,7 +70,7 @@ public class TokenService{
         }
     }
 
-    public String parseEmail(String token) {
+    public String parseUId(String token) {
 //        System.out.println(">>> get user email");
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }

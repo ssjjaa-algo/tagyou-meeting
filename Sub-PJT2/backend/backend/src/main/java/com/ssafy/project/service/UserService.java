@@ -19,6 +19,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public Long getUserIdByEmail(String email) {
+        User u = userRepository.findByUserEmail(email);
+        return u.getUserId();
+    }
+
     @Transactional(readOnly = false)
     public User saveUser(UserDto dto) {
         System.out.println(">>> saveUser!");
@@ -37,20 +42,20 @@ public class UserService {
                 );
     }
 
-    public boolean hasDetailInfo(String userEmail) {
-        User u = userRepository.findByUserEmail(userEmail);
+    public boolean hasDetailInfo(String userId) {
+        User u = userRepository.findByUserId(Long.parseLong(userId));
         if(u.getPhoneNumber() == null)
             return false;
         return true;
     }
 
-    public User getUserInfo(String email) {
-        return userRepository.findByUserEmail(email);
+    public User getUserInfo(String userId) {
+        return userRepository.findByUserId(Long.parseLong(userId));
     }
 
     @Transactional
-    public User editUserInfo(String email, UserInfoReqDto userInfo) {
-        User u = getUserInfo(email);
+    public User editUserInfo(String userId, UserInfoReqDto userInfo) {
+        User u = getUserInfo(userId);
         u.setPhoneNumber(userInfo.getPhoneNumber());
         u.setUserAge(userInfo.getUserAge());
         u.setUserGender(userInfo.getUserGender());
