@@ -24,8 +24,8 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String userEmail;
 
-    @Column//(nullable = false)
-    private String userPassword;
+//    @Column//(nullable = false)
+//    private String userPassword;
 
     @Column(nullable = false, unique = true)
     private String userName;
@@ -51,9 +51,9 @@ public class User extends BaseTimeEntity {
 
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐
 
-    public User(String userEmail, String userPassword, String userName, String phoneNumber, int userAge, Gender userGender) {
+    public User(String userEmail, /*String userPassword,*/ String userName, String phoneNumber, int userAge, Gender userGender) {
         this.userEmail = userEmail;
-        this.userPassword = userPassword;
+//        this.userPassword = userPassword;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.userAge = userAge;

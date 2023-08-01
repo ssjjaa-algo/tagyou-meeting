@@ -1,57 +1,59 @@
 package com.ssafy.project.controller;
 
-import com.ssafy.project.domain.user.User;
+import com.ssafy.project.dto.request.UserInfoReqDto;
+import com.ssafy.project.dto.response.UserRspDto;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping(value = "/users", produces = "application/json; charset=utf8")
 public class UserController {
-    static HttpHeaders headers = new HttpHeaders();
-    static {
-        headers.add("Content-Type", "text/plain;charset=UTF-8");
-    }
 
     private final UserService userService;
     private final TokenService tokenService;
 
-    @GetMapping("/mypage")
-    public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
-        System.out.println(">>> userEmail: "+tokenService.getUid(request.getHeader("Auth")));
-
-        return null;
+    @GetMapping("/tmp/token")
+    public String tmpTokenGenerate(HttpServletRequest request) {
+        String email = request.getHeader("email");
+        return tokenService.generateToken(email, "USER").getToken();
     }
 
-//    @GetMapping("/first")
-//    public ResponseEntity<?> firstLogin(HttpServletRequest request) {
-//        // response 형식 바꾸기
-//        if(userService.hasDetailInfo(tokenService.getUid(request.getHeader("Auth"))))
-//            return new ResponseEntity<String>("첫 로그인 아님", headers, HttpStatus.OK);
-//        else
-//            return new ResponseEntity<String>("첫 로그인. 유저 추가정보 입력 필요", headers, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/mypage")
-//    public ResponseEntity<?> getMypage(HttpServletRequest request) {
-//        String email = tokenService.getUid(request.getHeader("Auth"));
-//        return null;
-//    }
+    @GetMapping("/first")
+    public ResponseEntity<?> firstLogin(HttpServletRequest request) {
+        if(userService.hasDetailInfo(tokenService.parseEmail(request.getHeader("Auth"))))
+            return ResponseEntity.ok().body("notFirst");
+        else
+            return ResponseEntity.ok().body("first");
+    }
 
+    @GetMapping("/mypage") // 마이페이지(users 테이블) 정보 받아오기
+    public ResponseEntity<?> getMypage(HttpServletRequest request) {
+        String email = tokenService.parseEmail(request.getHeader("Auth"));
+//        System.out.println(">>>>>>>>>>>> email: "+email);
+        return ResponseEntity.ok().body(new UserRspDto(userService.getUserInfo(email)));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/mypage") // 첫 로그인 후 추가정보 넣기 or 마이페이지 정보 수정하기
+    public UserRspDto editMypage(HttpServletRequest request, @RequestBody UserInfoReqDto userInfo) {
+        String email = tokenService.parseEmail(request.getHeader("Auth"));
+        return new UserRspDto(userService.editUserInfo(email, userInfo)); // 이런식으로 가능함!!
+//        return ResponseEntity.ok().body();
+    }
+
+
+
+
+
+
+    // ---------------- 일반 회원 가입 (일단 보류) --------------------
 
 
 }

@@ -2,11 +2,14 @@ package com.ssafy.project.service;
 
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.UserDto;
+import com.ssafy.project.dto.request.UserInfoReqDto;
+import com.ssafy.project.dto.response.UserRspDto;
 import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,7 +44,18 @@ public class UserService {
         return true;
     }
 
-//    public
+    public User getUserInfo(String email) {
+        return userRepository.findByUserEmail(email);
+    }
+
+    @Transactional
+    public User editUserInfo(String email, UserInfoReqDto userInfo) {
+        User u = getUserInfo(email);
+        u.setPhoneNumber(userInfo.getPhoneNumber());
+        u.setUserAge(userInfo.getUserAge());
+        u.setUserGender(userInfo.getUserGender());
+        return u;
+    }
 
 //    /**
 //     * 회원 가입

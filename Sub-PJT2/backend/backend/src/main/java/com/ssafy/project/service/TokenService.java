@@ -48,12 +48,6 @@ public class TokenService{
         tmpToken = t.getToken();
         System.out.println("!!!!!----->>> token: "+tmpToken);
         return t;
-
-//        Claims claims = Jwts.claims().setSubject(email);
-//        claims.put("role", role);
-//        return new Token(
-//                "accesstoken",
-//                "refreshToken");
     }
 
 
@@ -77,8 +71,8 @@ public class TokenService{
         }
     }
 
-    public String getUid(String token) {
-//        System.out.println(">>> getUid");
+    public String parseEmail(String token) {
+//        System.out.println(">>> get user email");
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 }
