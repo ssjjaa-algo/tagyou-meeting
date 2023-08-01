@@ -23,7 +23,6 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        System.out.println(">>> filterChain");
         http.httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -43,7 +42,6 @@ public class SecurityConfig {
                 .userInfoEndpoint().userService(oAuth2UserService);
 
         http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
-//        System.out.println(">>> filterChain end");
         return http.build();
     }
 }

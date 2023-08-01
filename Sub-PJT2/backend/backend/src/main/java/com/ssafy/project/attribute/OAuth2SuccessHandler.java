@@ -30,7 +30,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
-//        System.out.println(">>> onAuthenticationSuccess!");
+        System.out.println(">>> onAuthenticationSuccess!");
         OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
         UserDto userDto = userRequestMapper.toDto(oAuth2User);
 
@@ -39,7 +39,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         userService.saveUser(userDto);
 
         String targetUrl;
-//        log.info(">>> generate token");
+        log.info(">>> generate token");
 
         Token token = tokenService.generateToken(userDto.getEmail(), "USER");
         log.info(">>> generated token : {}", token);

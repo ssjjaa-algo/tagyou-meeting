@@ -20,7 +20,7 @@ public class OAuth2Attribute {
 
     public static OAuth2Attribute of(String provider, String attributeKey,
                               Map<String, Object> attributes) {
-//        System.out.println(">>> of");
+        System.out.println(">>> of");
         switch (provider) {
             case "kakao":
                 return ofKakao("email", attributes);
