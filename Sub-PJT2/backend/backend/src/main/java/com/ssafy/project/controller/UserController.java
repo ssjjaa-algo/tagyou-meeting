@@ -30,11 +30,6 @@ public class UserController {
     private final UserService userService;
     private final TokenService tokenService;
 
-//    @GetMapping("/home")
-//    public void loginSuccess () {
-//        System.out.println(">>> login success");
-//    }
-
     @GetMapping("/mypage")
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
         System.out.println(">>> userEmail: "+tokenService.getUid(request.getHeader("Auth")));
@@ -42,13 +37,21 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("/first")
-    public ResponseEntity<?> firstLogin(HttpServletRequest request) {
-        // response 형식 바꾸기
-        if(userService.hasDetailInfo(tokenService.getUid(request.getHeader("Auth"))))
-            return new ResponseEntity<String>("첫 로그인 아님", headers, HttpStatus.OK);
-        else
-            return new ResponseEntity<String>("첫 로그인. 유저 추가정보 입력 필요", headers, HttpStatus.OK);
-    }
+//    @GetMapping("/first")
+//    public ResponseEntity<?> firstLogin(HttpServletRequest request) {
+//        // response 형식 바꾸기
+//        if(userService.hasDetailInfo(tokenService.getUid(request.getHeader("Auth"))))
+//            return new ResponseEntity<String>("첫 로그인 아님", headers, HttpStatus.OK);
+//        else
+//            return new ResponseEntity<String>("첫 로그인. 유저 추가정보 입력 필요", headers, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/mypage")
+//    public ResponseEntity<?> getMypage(HttpServletRequest request) {
+//        String email = tokenService.getUid(request.getHeader("Auth"));
+//        return null;
+//    }
+
+
 
 }

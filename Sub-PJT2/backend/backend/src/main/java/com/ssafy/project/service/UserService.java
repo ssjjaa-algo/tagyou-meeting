@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -16,22 +18,20 @@ public class UserService {
 
     @Transactional(readOnly = false)
     public User saveUser(UserDto dto) {
-//        System.out.println(">>> saveUser!");
-        User u = userRepository.findByUserEmail(dto.getEmail());
-        //// 여기 고치기!!
-        if(u == null) {
-//            System.out.println(">>> first login");
-            return userRepository.save(User.builder()
-                    .userEmail(dto.getEmail())
-                    .userName(dto.getName())
-                    .build());
-        }
-        else{
-//            System.out.println(">>> not first");
-            u.setUserEmail(dto.getEmail());
-            u.setUserName(dto.getName());
-            return u;
-        }
+        System.out.println(">>> saveUser!");
+
+        return Optional.ofNullable(
+                        userRepository.findByUserEmail(dto.getEmail())
+                )
+                .orElseGet(()->
+                    {
+                        System.out.println(">>> first login, saved");
+                        return userRepository.save(User.builder()
+                            .userEmail(dto.getEmail())
+                            .userName(dto.getName())
+                            .build());
+                    }
+                );
     }
 
     public boolean hasDetailInfo(String userEmail) {
