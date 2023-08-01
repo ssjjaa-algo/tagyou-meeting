@@ -3,6 +3,8 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import { InGameChatStatus } from "atoms/atoms";
 import { useRecoilState } from "recoil";
 import styled from "@emotion/styled";
+import { themeProps } from "@emotion/react";
+import { useTheme } from "@mui/material";
 
 interface Coordinate {
   x: number;
@@ -10,7 +12,10 @@ interface Coordinate {
 }
 
 const CatchMind = () => {
+  const theme: themeProps = useTheme();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const [color, setColor] = useState<string>("black");
   const [mousePosition, setMousePosition] = useState<Coordinate | undefined>(
     undefined
@@ -100,8 +105,22 @@ const CatchMind = () => {
     };
   }, [startPaint, paint, exitPaint]);
 
+  const [fillColor, setFillColor] = useState({
+    backgroundColor: "",
+    color: "",
+  });
+
   const handleColorClick = (e: any) => {
     setColor(e.target.innerText);
+    if (
+      e.target.innerText === "black" ||
+      e.target.innerText === "blue" ||
+      e.target.innerText === "navy"
+    ) {
+      setFillColor({ backgroundColor: e.target.innerText, color: "white" });
+    } else {
+      setFillColor({ backgroundColor: e.target.innerText, color: "black" });
+    }
   };
 
   const handleClear = () => {
@@ -126,13 +145,6 @@ const CatchMind = () => {
     context?.fillRect(0, 0, 800, 600);
   };
 
-  const [hoverStyle, setHoverStyle] = useState({ cursor: "" });
-
-  const handleHover = (e: any) => {
-    setHoverStyle({ cursor: "pointer" });
-    console.log(e.target.style = 'border: solid black 2px');
-  };
-
   return (
     <Container>
       <S.Container>
@@ -144,13 +156,83 @@ const CatchMind = () => {
             <S.PlayerVid></S.PlayerVid>
           </S.PlayerVidBundle>
           {/* 그림판 */}
-          <S.Canvas
-            ref={canvasRef}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-            width="700"
-            height="600"
-          ></S.Canvas>
+          <S.CanvasBox theme={theme}>
+            <S.Canvas
+              ref={canvasRef}
+              width="800"
+              height="600"
+              theme={theme}
+            ></S.Canvas>
+            <S.PaletteBody theme={theme}>
+              <S.Palette>
+                <S.PaletteColor
+                  onClick={handleColorClick}
+                  style={{ backgroundColor: "black", color: "white" }}
+                >
+                  black
+                </S.PaletteColor>
+                <S.PaletteColor
+                  onClick={handleColorClick}
+                  style={{ backgroundColor: "white" }}
+                >
+                  white
+                </S.PaletteColor>
+                <S.PaletteColor
+                  onClick={handleClear}
+                  style={{ backgroundColor: "white" }}
+                >
+                  clear
+                </S.PaletteColor>
+                <S.PaletteColor onClick={handleFill} style={fillColor}>
+                  fill
+                </S.PaletteColor>
+              </S.Palette>
+              <S.Palette>
+                <S.PaletteColor
+                  onClick={handleColorClick}
+                  style={{ backgroundColor: "red" }}
+                >
+                  red
+                </S.PaletteColor>
+                <S.PaletteColor
+                  onClick={handleColorClick}
+                  style={{ backgroundColor: "orange" }}
+                >
+                  orange
+                </S.PaletteColor>
+                <S.PaletteColor
+                  onClick={handleColorClick}
+                  style={{ backgroundColor: "yellow" }}
+                >
+                  yellow
+                </S.PaletteColor>
+                <S.PaletteColor
+                  onClick={handleColorClick}
+                  style={{ backgroundColor: "green" }}
+                >
+                  green
+                </S.PaletteColor>
+                <S.PaletteColor
+                  onClick={handleColorClick}
+                  style={{ backgroundColor: "blue" }}
+                >
+                  blue
+                </S.PaletteColor>
+                <S.PaletteColor
+                  onClick={handleColorClick}
+                  style={{ backgroundColor: "navy" }}
+                >
+                  navy
+                </S.PaletteColor>
+                <S.PaletteColor
+                  onClick={handleColorClick}
+                  style={{ backgroundColor: "purple" }}
+                >
+                  purple
+                </S.PaletteColor>
+              </S.Palette>
+            </S.PaletteBody>
+          </S.CanvasBox>
           {/* 사람 영상 뜰 자리 */}
           <S.PlayerVidBundle>
             <S.PlayerVid></S.PlayerVid>
@@ -158,85 +240,6 @@ const CatchMind = () => {
             <S.PlayerVid></S.PlayerVid>
           </S.PlayerVidBundle>
         </S.Body>
-        <S.Palette>
-          <S.PaletteColor
-            onClick={(e) => handleColorClick(e)}
-            style={hoverStyle}
-            onMouseOver={(e) => handleHover(e)}
-          >
-            red
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={(e) => handleColorClick(e)}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            orange
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={(e) => handleColorClick(e)}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            yellow
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={(e) => handleColorClick(e)}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            green
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={(e) => handleColorClick(e)}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            blue
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={(e) => handleColorClick(e)}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            navy
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={(e) => handleColorClick(e)}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            purple
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={(e) => handleColorClick(e)}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            black
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={(e) => handleColorClick(e)}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            white
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={handleClear}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            clear
-          </S.PaletteColor>
-          <S.PaletteColor
-            onClick={handleFill}
-            style={hoverStyle}
-            onMouseOver={handleHover}
-          >
-            fill
-          </S.PaletteColor>
-        </S.Palette>
       </S.Container>
     </Container>
   );

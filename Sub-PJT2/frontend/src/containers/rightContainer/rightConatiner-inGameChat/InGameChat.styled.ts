@@ -2,10 +2,10 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 
 export const Container = styled.div`
-  border: solid white;
+  /* border: solid white; */
+  /* background-color: yellow; */
   display: flex;
   flex-direction: row;
-  background-color: yellow;
   overflow: hidden;
 `;
 
