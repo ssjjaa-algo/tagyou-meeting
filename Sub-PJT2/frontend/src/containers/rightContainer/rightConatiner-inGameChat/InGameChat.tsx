@@ -3,10 +3,12 @@ import { useTheme } from "@mui/material";
 import * as S from "./InGameChat.styled";
 import React, { useRef, useContext, useState } from "react";
 import { WebSocketContext } from "webSocket/WebSocketProvider";
+import { InGameChatStatus } from "atoms/atoms";
 import "css/chat/inGameChat.css";
 
 import sendButton from "asset/img/button_send.png";
 import messageButton from "asset/img/message.png";
+import { useRecoilState } from "recoil";
 // import { ChatData } from "types/types";
 
 type MessageType = {
@@ -20,8 +22,9 @@ const RightContainer = () => {
   const ws = useContext(WebSocketContext);
   const [items, setItems] = useState<MessageType[]>([]);
   const [message, setMessage] = useState("");
-  const [isShown, setIsShown] = useState({ display: "none" });
   const [isHovering, setIsHovering] = useState(false);
+  const [inGameChatStatus, setInGameChatStatus] =
+    useRecoilState(InGameChatStatus);
 
   const addItem = (item: MessageType) => {
     setItems([...items, item]);
@@ -70,11 +73,8 @@ const RightContainer = () => {
 
   // 메시지 아이콘 누르면 채팅 창 열리고 닫히기 기능
   const handleClickMessage = () => {
-    if (isShown.display === "flex") {
-      setIsShown({ display: "none" });
-    } else {
-      setIsShown({ display: "flex" });
-    }
+    console.log(inGameChatStatus);
+    setInGameChatStatus(!inGameChatStatus);
   };
 
   // 메시지 아이콘 호버시 메시지 아이콘 확대 기능
@@ -93,7 +93,14 @@ const RightContainer = () => {
   };
 
   return (
-    <S.Container theme={theme}>
+    <S.Container
+      theme={theme}
+      className={
+        inGameChatStatus
+          ? "inGameChatContainerShown"
+          : "inGameChatContainerHidden"
+      }
+    >
       <S.ChatRoomMain theme={theme}>
         <S.MessageButton
           theme={theme}
@@ -104,7 +111,10 @@ const RightContainer = () => {
         >
           <S.MessageImg src={messageButton} alt="messageButton" />
         </S.MessageButton>
-        <S.ChatRoomMainBox theme={theme} style={isShown}>
+        <S.ChatRoomMainBox
+          theme={theme}
+          className={inGameChatStatus ? "chatBoxShown" : "chatBoxHidden"}
+        >
           <S.ChatRoomMainChats className="chatRoom-main-chats" theme={theme}>
             <S.ChatRoomMainChatsContent>
               {items.map((chat, index) => {

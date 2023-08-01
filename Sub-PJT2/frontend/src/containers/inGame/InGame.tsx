@@ -1,40 +1,28 @@
-import React from "react";
 import WebSocketProvider from "webSocket/WebSocketProvider";
-import { Global, themeProps } from "@emotion/react";
-import styled from "@emotion/styled";
-import { useTheme } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
-import { IsDark } from "../../atoms/atoms";
-import { useRecoilState } from "recoil";
-import { darkTheme, lightTheme } from "../../styles/ColorSystem";
-import GlobalStyle from "../../styles/GlobalStyle";
 import RightContainer from "containers/rightContainer/rightConatiner-inGameChat/InGameChat";
-// import { ChatData } from "types/types";
+import LeftContainer from "containers/leftContainer/game/catchMind/CatchMind";
+import styled from "@emotion/styled";
 
 function InGame() {
-  const isDark = useRecoilState(IsDark);
-
-  const theme: themeProps = useTheme();
-
   return (
     <div>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <Global styles={GlobalStyle} />
-        <Container theme={theme}>
-          <WebSocketProvider>
-            <RightContainer />
-          </WebSocketProvider>
-        </Container>
-      </ThemeProvider>
+      <Container>
+        <LeftContainer />
+        <WebSocketProvider>
+          <RightContainer />
+        </WebSocketProvider>
+      </Container>
     </div>
   );
 }
-const Container = styled.div<{ theme: themeProps }>`
-  /* border: solid red; */
+
+const Container = styled.div`
+  border: solid green;
   display: flex;
-  background-color: ${(props) => props.theme.bg};
   flex-direction: row;
-  height: 100vh;
+  justify-content: space-between;
+  width: 100vw;
+  min-width: fit-content;
 `;
 
 export default InGame;

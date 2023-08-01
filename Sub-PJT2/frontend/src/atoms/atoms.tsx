@@ -29,3 +29,8 @@ export const UserInfo = atom<userInfoProps>({
     nickname: null,
   },
 });
+
+export const InGameChatStatus = atom<boolean>({
+  key: "InGameChatStatus",
+  default: true,
+});

@@ -2,26 +2,25 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 
 export const Container = styled.div`
-  /* border: solid green; */
+  border: solid white;
   display: flex;
-  flex-direction: row-reverse;
-  width: 100vw;
-  height: 100vh;
+  flex-direction: row;
+  background-color: yellow;
+  overflow: hidden;
 `;
 
 export const ChatRoomMain = styled.div`
   /* border: dotted black; */
   display: flex;
   flex-direction: row;
-  width: fit-content;
   /* align-items: flex-end; */
   height: calc(100vh - 3.5rem);
   min-height: 30rem;
-  margin: 2rem 3rem 0 0;
+  margin: 2rem 0rem 0 0;
 `;
 
 export const MessageButton = styled.button<{ theme: themeProps }>`
-  /* border: solid black; */
+  border: solid ${(props) => props.theme.point.deep} 3px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -32,19 +31,22 @@ export const MessageButton = styled.button<{ theme: themeProps }>`
   background-color: ${(props) => props.theme.point.deep};
   position: relative;
   top: 1rem;
-  left: 1.5rem;
+  /*left: 1.5rem; */
+  z-index: 100;
 `;
 export const MessageImg = styled.img`
-  width: 90%;
-  height: 60%;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
 `;
 
 export const ChatRoomMainBox = styled.div<{ theme: themeProps }>`
   /* border: solid pink; */
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  position: relative;
+  right: 1.5rem;
   border-radius: 1rem;
   background-color: ${(props) => props.theme.point.light};
   width: 20rem;
