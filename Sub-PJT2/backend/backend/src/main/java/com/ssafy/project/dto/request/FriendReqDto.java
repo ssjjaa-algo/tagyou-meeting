@@ -1,16 +1,16 @@
 package com.ssafy.project.dto.request;
 
-import lombok.Getter;
-import lombok.Value;
-
+import com.ssafy.project.domain.friend.FriendShipStatus;
+import lombok.*;
 @Getter
-@Value
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FriendReqDto {
-    Long friendId;
-    String friendName;
+    private Long userId;
+    private Long targetUserId;
+    private FriendShipStatus friendShipStatus;
 
-    public FriendReqDto(Long friendId, String friendName) {
-        this.friendId = friendId;
-        this.friendName = friendName;
+    public FriendReqDto(Long userId, Long targetUserId) {
+        this.userId = userId;
+        this.targetUserId = targetUserId;
     }
 }

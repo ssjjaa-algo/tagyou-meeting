@@ -3,12 +3,14 @@ package com.ssafy.project.service;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.UserDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
+import com.ssafy.project.dto.response.UserRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -18,27 +20,34 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public Long getUserIdByEmail(String email) {
-        User u = userRepository.findByUserEmail(email);
-        return u.getId();
+    /**
+     * 회원 가입
+     */
+    @Transactional
+    public UserRspDto signUpUser(UserDto userDto) {
+        userRepository.findByUserEmail(
+                userDto.getEmail()).ifPresent(
+                        user -> { throw new IllegalStateException("이미 존재하는 회원입니다.");}
+        );
+
+        return saveUser(new User(userDto.getEmail(),userDto.getName()))
+                .map(UserRspDto::new)
+                .orElseThrow(() -> new NotFoundException("유효하지 않은 유저입니다."));
+    }
+    /**
+     * 회원 정보 수정
+     */
+    @Transactional
+    public UserRspDto editUserInfo(String userId, UserInfoReqDto userInfo) {
+        User user = findUser((Long.parseLong(userId))).orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
+        user.changeUser(userInfo);
+        return new UserRspDto(user);
     }
 
-    @Transactional(readOnly = false)
-    public User saveUser(UserDto dto) {
-        System.out.println(">>> saveUser!");
-
-        return Optional.ofNullable(
-                        userRepository.findByUserEmail(dto.getEmail())
-                )
-                .orElseGet(()->
-                    {
-                        System.out.println(">>> first login, saved");
-                        return userRepository.save(User.builder()
-                            .userEmail(dto.getEmail())
-                            .userName(dto.getName())
-                            .build());
-                    }
-                );
+    public Long getUserIdByEmail(String email) {
+        return findUserByEmail(email)
+                .map(User::getId)
+                .orElseThrow(() -> new NotFoundException("이메일에 해당하는 유저가 없습니다."));
     }
 
     public boolean hasDetailInfo(String userId) {
@@ -49,18 +58,20 @@ public class UserService {
         return true;
     }
 
-    public User getUserInfo(String userId) {
+    public UserRspDto getUserInfo(String userId) {
         return userRepository.findById(Long.parseLong(userId))
+                .map(UserRspDto::new)
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
     }
 
-    @Transactional
-    public User editUserInfo(String userId, UserInfoReqDto userInfo) {
-        User u = getUserInfo(userId);
-        u.setPhoneNumber(userInfo.getPhoneNumber());
-        u.setUserAge(userInfo.getUserAge());
-        u.setUserGender(userInfo.getUserGender());
-        return u;
+    public Optional<User> saveUser(User user){ return Optional.of(userRepository.save(user));}
+
+    public Optional<User> findUser(Long userId){
+        return userRepository.findById(userId);
+    }
+
+    public Optional<User> findUserByEmail(String email){
+        return userRepository.findByUserEmail(email);
     }
 
 //    /**

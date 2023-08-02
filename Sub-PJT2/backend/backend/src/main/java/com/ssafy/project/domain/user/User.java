@@ -3,6 +3,7 @@ package com.ssafy.project.domain.user;
 import com.ssafy.project.domain.BaseTimeEntity;
 import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.group.MeetingGroup;
+import com.ssafy.project.dto.request.UserInfoReqDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CollectionId;
@@ -12,7 +13,6 @@ import static jakarta.persistence.FetchType.LAZY;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 @Entity
 public class User extends BaseTimeEntity {
 
@@ -54,14 +54,13 @@ public class User extends BaseTimeEntity {
     private MeetingGroup meetingGroup;
 
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐
-
-    public User(String userEmail, /*String userPassword,*/ String userName, String phoneNumber, int userAge, Gender userGender) {
+    public User(String userEmail, String userName) {
         this.userEmail = userEmail;
-//        this.userPassword = userPassword;
         this.userName = userName;
-        this.phoneNumber = phoneNumber;
-        this.userAge = userAge;
-        this.userGender = userGender;
+    }
+    public void changeUser(UserInfoReqDto userInfoReqDto){
+        this.phoneNumber = userInfoReqDto.getPhoneNumber();
+        this.userAge = userInfoReqDto.getUserAge();
         this.userLike = 0;
     }
 }
