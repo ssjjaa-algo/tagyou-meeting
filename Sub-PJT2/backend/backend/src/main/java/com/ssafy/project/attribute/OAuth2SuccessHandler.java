@@ -36,12 +36,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         log.info("Principal에서 꺼낸 OAuth2User = {}", oAuth2User);
         // 최초 로그인이라면 회원가입 처리를 한다.
-        userService.signUpUser(userDto);
+        boolean userExists = userService.checkUserExists(userDto.getEmail());
+        if(!userExists)
+            userService.signUpUser(userDto);
 
         String targetUrl;
         log.info(">>> generate token");
-
-        userService.getUserIdByEmail(userDto.getEmail());
         Token token = tokenService.generateToken(userDto.getEmail(), "USER");
         log.info(">>> generated token : {}", token);
 

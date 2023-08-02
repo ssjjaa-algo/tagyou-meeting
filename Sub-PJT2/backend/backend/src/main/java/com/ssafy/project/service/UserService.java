@@ -65,6 +65,10 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
     }
 
+    public boolean checkUserExists(String email){
+        return findUserByEmail(email).isPresent();
+    }
+
     public Optional<User> saveUser(User user){ return Optional.of(userRepository.save(user));}
 
     public Optional<User> findUser(Long userId){
