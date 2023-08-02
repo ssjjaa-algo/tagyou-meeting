@@ -3,10 +3,12 @@ package com.ssafy.project.domain.group;
 import com.ssafy.project.domain.BaseTimeEntity;
 import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.room.GroupMeetingRoom;
+import com.ssafy.project.domain.room.MeetingRoom;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.exception.OverLimitGroupCountException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,37 +21,48 @@ import java.util.List;
 public class MeetingGroup extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long groupId;
+    @Column(name="group_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private GroupMeetingRoom groupMeetingRoom;
 
-    @Enumerated(EnumType.STRING)
-    private MeetingGroupRole groupRole; // LEADER, MEMBER
-
-    private int groupCount;
-
     @OneToMany(mappedBy = "meetingGroup", cascade = CascadeType.ALL)
-    private List<User> groupUser = new ArrayList<>();
+    private List<UserMeetingGroup> groupUser = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Gender groupGender;
 
-    private boolean accepted;
-
-    public MeetingGroup(MeetingGroupRole groupRole, int groupCount, Gender groupGender) {
-        this.groupRole = groupRole;
-        this.groupCount = groupCount;
-        this.groupGender = groupGender;
+    @Builder
+    public MeetingGroup(User user) {
+        this.groupUser.add(new UserMeetingGroup(user, GroupRole.HOST));
+        this.groupGender = user.getUserGender();
     }
 
-    public void acceptGroup() {
-        if (this.groupCount >= 3) {
-            throw new OverLimitGroupCountException("그룹 인원 초과입니다.");
-        }
-        this.accepted = true;
-        this.groupCount += 1;
+    public void InviteGroup(User user) {
+        if(this.groupUser.size() >= 3)
+            throw new OverLimitGroupCountException("그룹 인원이 초과되었습니다.");
+        if(this.groupGender != user.getUserGender())
+            throw new IllegalArgumentException("해당하는 그룹 성별이 다릅니다.");
+        this.groupUser.add(new UserMeetingGroup(user, GroupRole.MEMBER));
+    }
+
+    public void quitGroup(User user){
+        this.groupUser.removeIf(groupUser -> groupUser.getUser().getId().equals(user.getId()));
+    }
+
+    public void deleteGroup(UserMeetingGroup user) {
+
+        this.groupUser.clear();
+    }
+
+    public void attendMeetingRoom(GroupMeetingRoom meetingRoom){
+        this.groupMeetingRoom = meetingRoom;
+    }
+
+    public void quitMeetingRoom(){
+        this.groupMeetingRoom = null;
     }
 
 }
