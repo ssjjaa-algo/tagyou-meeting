@@ -70,12 +70,13 @@ public class TokenService{
         }
     }
 
-    public String parseUId(String token) {
+    public Long parseUId(String token) {
 //        System.out.println(">>> get user email");
-        return Jwts.parser()
+        return Long.parseLong(
+                Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .getSubject());
     }
 }

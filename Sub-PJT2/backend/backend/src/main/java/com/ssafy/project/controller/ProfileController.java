@@ -23,7 +23,7 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(HttpServletRequest request) {
-        Long userId = Long.parseLong(tokenService.parseUId(request.getHeader("Auth")));
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
         Profile profile = profileService.getProfile(userId);
         if(profile == null)
             return ResponseEntity.ok().body("does not exist");
@@ -32,14 +32,14 @@ public class ProfileController {
 
     @PostMapping("/profile")
     public ResponseEntity<?> makeProfile(HttpServletRequest request, @RequestBody ProfileReqDto profileReqDto) {
-        Long userId = Long.parseLong(tokenService.parseUId(request.getHeader("Auth")));
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
         Profile profile = profileService.makeProfile(userId, profileReqDto);
             return new ResponseEntity<>(new ProfileRspDto(profile), HttpStatus.CREATED);
     }
 
     @PutMapping("/profile")
     public ResponseEntity<?> editProfile(HttpServletRequest request, @RequestBody ProfileReqDto profileReqDto) {
-        Long userId = Long.parseLong(tokenService.parseUId(request.getHeader("Auth")));
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
         Profile profile = profileService.editProfile(userId, profileReqDto);
         if(profile == null)
             return ResponseEntity.ok().body("not found");

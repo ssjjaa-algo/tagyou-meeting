@@ -38,8 +38,8 @@ public class UserService {
      * 회원 정보 수정
      */
     @Transactional
-    public UserRspDto editUserInfo(String userId, UserInfoReqDto userInfo) {
-        User user = findUser((Long.parseLong(userId))).orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
+    public UserRspDto editUserInfo(Long userId, UserInfoReqDto userInfo) {
+        User user = findUser(userId).orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
         user.changeUser(userInfo);
         return new UserRspDto(user);
     }
@@ -50,16 +50,17 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("이메일에 해당하는 유저가 없습니다."));
     }
 
-    public boolean hasDetailInfo(String userId) {
-        User u = findUser(Long.parseLong(userId))
+    public boolean hasDetailInfo(Long userId) {
+        User u = findUser(userId)
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
         if(u.getPhoneNumber() == null)
             return false;
+
         return true;
     }
 
-    public UserRspDto getUserInfo(String userId) {
-        return findUser(Long.parseLong(userId))
+    public UserRspDto getUserInfo(Long userId) {
+        return findUser(userId)
                 .map(UserRspDto::new)
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
     }
