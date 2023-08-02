@@ -4,7 +4,7 @@ import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import Slider from "components/slide";
-import App from "components/tags";
+import Tags from "components/tags";
 
 const Home = () => {
   const theme: themeProps = useTheme();
@@ -16,7 +16,6 @@ const Home = () => {
         .then((res) => res.json())
         .then((data) => {
           setProfileData(data);
-          console.log(data);
         });
     };
     fetchData();
@@ -74,8 +73,7 @@ const Home = () => {
       </S.OtherContainer>
       <S.OtherContainer>
         <S.Title theme={theme}>취미</S.Title>
-        <S.miniTitle theme={theme}>{profileData?.hobby}</S.miniTitle>
-        <App></App>
+        <Tags profileData={undefined}></Tags>
       </S.OtherContainer>
       <S.OtherContainer>
         <S.Title theme={theme}>한 줄 소개</S.Title>
