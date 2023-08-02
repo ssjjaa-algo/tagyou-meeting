@@ -72,6 +72,10 @@ public class TokenService{
 
     public String parseUId(String token) {
 //        System.out.println(">>> get user email");
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }
