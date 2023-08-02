@@ -8,11 +8,14 @@ import "react-modern-drawer/dist/index.css";
 import Profile from "components/profile";
 import FriendContainer from "containers/friendContainer";
 import { leftContainerProprs } from "types/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Modal } from "components/modal";
 
 const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);
   const [isDark, setIsDark] = useRecoilState(IsDark);
+  const [isLogout, setIsLogout] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
     const rightContainer = document.querySelector(
@@ -76,20 +79,32 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
         <S.ListBox>
           <S.List theme={theme}>
             <S.HomeIconStyled theme={theme} />
-            <S.ListText>홈</S.ListText>
+            <S.ListText to="/home">홈</S.ListText>
           </S.List>
           <S.List theme={theme}>
             <S.PlayCircleOutlineIconStyled theme={theme} />{" "}
-            <S.ListText>미팅시작</S.ListText>
-          </S.List>
-          <S.List theme={theme}>
-            <S.GroupIconStyled theme={theme} />
-            <S.ListText>친구목록</S.ListText>
+            <S.ListText to="/ingame">미팅시작</S.ListText>
           </S.List>
         </S.ListBox>
-        <S.FootBox theme={theme}>로그아웃</S.FootBox>
+        <S.FootBox
+          theme={theme}
+          onClick={() => {
+            setShowModal(true);
+            setIsLogout(true);
+          }}
+        >
+          로그아웃
+        </S.FootBox>
       </Drawer>
       <FriendContainer />
+
+      {showModal && (
+        <Modal
+          handleOnClick={() => console.log("logout")}
+          setShowModal={setShowModal}
+          formType="logout"
+        />
+      )}
     </>
   );
 };
