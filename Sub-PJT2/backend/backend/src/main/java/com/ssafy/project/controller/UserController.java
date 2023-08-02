@@ -48,25 +48,6 @@ public class UserController {
 //        return ResponseEntity.ok().body();
     }
 
-    @PostMapping("/profile")
-    public ResponseEntity<?> makeProfile(HttpServletRequest request) {
-        String id = tokenService.parseUId(request.getHeader("Auth"));
-        // Profile profile = userService.makeProfile(userId);
-        if(false) return new ResponseEntity<>("new ProfileRspDto(profile)", HttpStatus.CREATED);
-//        if(false) return ResponseEntity.created(createdUri).body("new ProfileRspDto(profile)");
-
-        // 이미 있는 경우
-        else return ResponseEntity.ok().body("already exists");
-    }
-
-    @PutMapping("/profile")
-    public ResponseEntity<?> editProfile(HttpServletRequest request/*, */) {
-        String id = tokenService.parseUId(request.getHeader("Auth"));
-        // Profile profile = userService.editProfile(userId);
-
-        return ResponseEntity.ok().body("new ProfileRspDto(profile)");
-    }
-
 
     // ---------------- 일반 회원 가입 (일단 보류) --------------------
 

@@ -3,13 +3,12 @@ package com.ssafy.project.service;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.UserDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
-import com.ssafy.project.dto.response.UserRspDto;
+import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +20,7 @@ public class UserService {
 
     public Long getUserIdByEmail(String email) {
         User u = userRepository.findByUserEmail(email);
-        return u.getUserId();
+        return u.getId();
     }
 
     @Transactional(readOnly = false)
@@ -43,14 +42,16 @@ public class UserService {
     }
 
     public boolean hasDetailInfo(String userId) {
-        User u = userRepository.findByUserId(Long.parseLong(userId));
+        User u = userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
         if(u.getPhoneNumber() == null)
             return false;
         return true;
     }
 
     public User getUserInfo(String userId) {
-        return userRepository.findByUserId(Long.parseLong(userId));
+        return userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
     }
 
     @Transactional

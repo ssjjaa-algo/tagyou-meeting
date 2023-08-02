@@ -39,13 +39,13 @@ public class Image extends BaseTimeEntity {
 
 
     // profile 정보
-    public void setProfile(Profile profile){
-        this.profile = profile;
-
-        // 이미지 목록에 없을 시 추가
-        if(!profile.getProfileImages().contains(this))
-            profile.getProfileImages().add(this);
-    }
+//    public void setProfile(Profile profile){
+//        this.profile = profile;
+//
+//        // 이미지 목록에 없을 시 추가
+//        if(!profile.getProfileImages().contains(this))
+//            profile.getProfileImages().add(this);
+//    }
 }
 
 
