@@ -1,12 +1,11 @@
 package com.ssafy.project.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.project.domain.BaseTimeEntity;
 import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.group.MeetingGroup;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.CollectionId;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -19,7 +18,8 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    @Column(name = "user_id")
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String userEmail;
