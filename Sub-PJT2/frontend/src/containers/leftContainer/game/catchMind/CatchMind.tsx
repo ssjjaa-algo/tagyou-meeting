@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
+import brush from "asset/img/brush.png";
 
 interface Coordinate {
   x: number;
@@ -21,6 +22,7 @@ const CatchMind = () => {
     undefined
   );
   const [isPainting, setIsPainting] = useState(false);
+  const [thickness, setThickness] = useState(1);
 
   const getCoordinates = (event: MouseEvent): Coordinate | undefined => {
     if (!canvasRef.current) {
@@ -47,7 +49,7 @@ const CatchMind = () => {
     if (context) {
       context.strokeStyle = color;
       context.lineJoin = "round";
-      context.lineWidth = 3;
+      context.lineWidth = thickness;
 
       context.beginPath();
       context.moveTo(originalMousePosition.x, originalMousePosition.y);
@@ -145,6 +147,25 @@ const CatchMind = () => {
     context?.fillRect(0, 0, 800, 600);
   };
 
+  const [brushShape, setBrushShape] = useState({
+    height: thickness * 0.1 + "rem",
+    width: thickness * 0.1 + "rem",
+  });
+
+  const seekBarRef = useRef<HTMLInputElement>(null);
+
+  const brushThicknessControl = async () => {
+    if (!seekBarRef || !seekBarRef.current) return;
+    setThickness(seekBarRef.current?.valueAsNumber);
+  };
+
+  useEffect(() => {
+    setBrushShape({
+      height: thickness * 0.1 + "rem",
+      width: thickness * 0.1 + "rem",
+    });
+  }, [thickness]);
+
   return (
     <Container>
       <S.Container>
@@ -159,10 +180,16 @@ const CatchMind = () => {
           <S.CanvasBox theme={theme}>
             <S.Canvas
               ref={canvasRef}
-              width="800"
-              height="600"
+              width="750"
+              height="450"
               theme={theme}
             ></S.Canvas>
+            <S.WordContainer>
+              <S.WordText theme={theme}>
+                <S.WordTitle theme={theme}>제시어</S.WordTitle>
+                <S.Word>꿀벌</S.Word>
+              </S.WordText>
+            </S.WordContainer>
             <S.PaletteBody theme={theme}>
               <S.Palette>
                 <S.PaletteColor
@@ -186,6 +213,21 @@ const CatchMind = () => {
                 <S.PaletteColor onClick={handleFill} style={fillColor}>
                   fill
                 </S.PaletteColor>
+                <S.SeekBarContainer theme={theme}>
+                  <S.BrushInfo>
+                    <S.BrushShape style={brushShape} />
+                    <S.Burshimg src={brush} alt="브러쉬 정보" />
+                  </S.BrushInfo>
+                  <S.SeekBar
+                    ref={seekBarRef}
+                    theme={theme}
+                    type="range"
+                    min={1}
+                    max={30}
+                    value={thickness}
+                    onChange={brushThicknessControl}
+                  ></S.SeekBar>
+                </S.SeekBarContainer>
               </S.Palette>
               <S.Palette>
                 <S.PaletteColor

@@ -2,11 +2,14 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 
 export const Container = styled.div`
-  /* border: solid white; */
-  /* background-color: yellow; */
+  /* border: solid white;
+  background-color: yellow; */
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  position: fixed;
+  right: 0;
+  padding-left: 1rem;
 `;
 
 export const ChatRoomMain = styled.div`
@@ -54,6 +57,7 @@ export const ChatRoomMainBox = styled.div<{ theme: themeProps }>`
   margin: 2rem 0 2rem 0;
   padding-top: 1rem;
   padding-bottom: 0.5rem;
+  opacity: 0.6;
 `;
 
 export const ChatRoomMainChats = styled.div`
