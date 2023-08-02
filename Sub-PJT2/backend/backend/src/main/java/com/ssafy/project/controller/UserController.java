@@ -39,7 +39,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/mypage") // 마이페이지(users 테이블) 정보 받아오기
     public UserRspDto getMypage(HttpServletRequest request) {
-        String id = tokenService.parseUId(request.getHeader("Auth"));
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.getUserInfo(id);
     }
 
@@ -47,9 +47,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/mypage") // 첫 로그인 후 추가정보 넣기 or 마이페이지 정보 수정하기
     public UserRspDto editMypage(HttpServletRequest request, @RequestBody UserInfoReqDto userInfo) {
-        String id = tokenService.parseUId(request.getHeader("Auth"));
+        String Token = request.getHeader("Auth");
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.editUserInfo(id, userInfo);
     }
+
     // ---------------- 일반 회원 가입 (일단 보류) --------------------
 
 }

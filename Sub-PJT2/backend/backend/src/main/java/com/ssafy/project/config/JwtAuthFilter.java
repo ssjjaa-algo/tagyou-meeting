@@ -29,11 +29,11 @@ public class JwtAuthFilter extends GenericFilterBean {
         System.out.println(">>> token: "+token);
 
         if (token != null && tokenService.verifyToken(token)) {
-            String email = tokenService.parseUId(token);
+            String email = tokenService.parseUId(token).toString();
             System.out.println(">>> after verifyToken");
             // DB연동을 안했으니 이메일 정보로 유저를 만들어주겠습니다
             //// 여기 수정해야댐!!!!
-            UserDto userDto = new UserDto(email, "이름이에용");
+            UserDto userDto = new UserDto(email, "이름");
 
             Authentication auth = getAuthentication(userDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -42,7 +42,7 @@ public class JwtAuthFilter extends GenericFilterBean {
             String tmpEmail = ((HttpServletRequest) request).getHeader("email");
 //            System.out.println(">>> master email: "+tmpEmail);
 
-            UserDto userDto = new UserDto(tmpEmail, "이름이에용");
+            UserDto userDto = new UserDto(tmpEmail, "이름");
             Authentication auth = getAuthentication(userDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
