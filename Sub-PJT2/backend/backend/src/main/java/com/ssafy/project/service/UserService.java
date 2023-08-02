@@ -25,7 +25,7 @@ public class UserService {
      */
     @Transactional
     public UserRspDto signUpUser(UserDto userDto) {
-        userRepository.findByUserEmail(
+        findUserByEmail(
                 userDto.getEmail()).ifPresent(
                         user -> { throw new IllegalStateException("이미 존재하는 회원입니다.");}
         );
@@ -51,7 +51,7 @@ public class UserService {
     }
 
     public boolean hasDetailInfo(String userId) {
-        User u = userRepository.findById(Long.parseLong(userId))
+        User u = findUser(Long.parseLong(userId))
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
         if(u.getPhoneNumber() == null)
             return false;
@@ -59,7 +59,7 @@ public class UserService {
     }
 
     public UserRspDto getUserInfo(String userId) {
-        return userRepository.findById(Long.parseLong(userId))
+        return findUser(Long.parseLong(userId))
                 .map(UserRspDto::new)
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
     }
