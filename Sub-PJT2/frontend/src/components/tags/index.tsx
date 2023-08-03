@@ -4,24 +4,13 @@ import * as S from './Tags.styled';
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 
-interface TagsProps {
-  profileData: getProfileProps | undefined;
-}
-
-function Tags({ profileData }: TagsProps) {
+const Tags = () => {
   const isBrowser = typeof window !== 'undefined';
-  const theme: themeProps = useTheme();
+  const theme : themeProps = useTheme();
   
-  const [hashtag, setHashtag] = useState<string>('');
-  const [hashArr, setHashArr] = useState<string[]>([]); 
-
-  // useEffect(() => {
-  //   if (profileData?.hobby) {
-  //     setHashArr([profileData.hobby]);
-  //   }
-  // }, [profileData]);
-  
-  // console.log(profileData?.hobby) // undefined -> '강아지 밥주기'
+  const [profileData, setProfileData] = useState<getProfileProps>();
+  const [hashtag, setHashtag] = useState<string>('')
+  const [hashArr, setHashArr] = useState<string[]>(profileData?.hobby ? [profileData?.hobby] : [])  
   
   const onKeyUp = useCallback( // hashtag, hashArr이 변경될 때마다 함수 재생성
     (e :React.KeyboardEvent<HTMLInputElement>) => {

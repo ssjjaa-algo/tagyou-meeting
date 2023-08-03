@@ -4,13 +4,12 @@ import styled from "@emotion/styled";
 
 export const HashWrap = styled.div<{ theme: themeProps }>`
   margin-top: 24px;
-  color: rgb(52, 58, 64);
   font-size: 1.125rem;
   display: flex;
   flex-wrap: wrap;
   letter-spacing: -0.6px;
   color: #444241;
-  border-bottom: 1.6px solid black;
+  border-bottom: 1.6px dashed ${(props) => props.theme.bg.deep};
   padding: 2px 2px 8px 2px;
 
   .HashWrapOuter {
