@@ -7,7 +7,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import HomeIcon from "@mui/icons-material/Home";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import GroupIcon from "@mui/icons-material/Group";
-
+import { Link } from "react-router-dom";
 export const HomeIconStyled = styled(HomeIcon)<{
   theme: themeProps;
 }>`
@@ -57,7 +57,7 @@ export const ListBox = styled.ul`
   margin-top: 50px;
 `;
 
-export const ListText = styled.div`
+export const ListText = styled(Link)`
   margin-left: 10px;
   font-weight: 400;
 `;
