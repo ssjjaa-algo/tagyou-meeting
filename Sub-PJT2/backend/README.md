@@ -1,3 +1,2 @@
-
 ## 엔티티 DB 테이블 사진
-![db_이미지](/uploads/fd17bc67c4e5bba9ddf75430a0a7eaa6/db_이미지.png)
+![Database](/uploads/e66abeb64be0b2b8fc7b75ce99a8b77f/Database.png)
