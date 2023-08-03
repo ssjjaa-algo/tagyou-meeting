@@ -1,6 +1,6 @@
 package com.ssafy.project.config;
 
-import com.ssafy.project.dto.UserDto;
+import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,24 +32,23 @@ public class JwtAuthFilter extends GenericFilterBean {
             String email = tokenService.parseUId(token).toString();
             System.out.println(">>> after verifyToken");
             // DB연동을 안했으니 이메일 정보로 유저를 만들어주겠습니다
-            //// 여기 수정해야댐!!!!
-            UserDto userDto = new UserDto(email, "이름");
+            UserReqDto userReqDto = new UserReqDto(email, "이름");
 
-            Authentication auth = getAuthentication(userDto);
+            Authentication auth = getAuthentication(userReqDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         else if(token != null && token.equals("master")){
             String tmpEmail = ((HttpServletRequest) request).getHeader("email");
 //            System.out.println(">>> master email: "+tmpEmail);
 
-            UserDto userDto = new UserDto(tmpEmail, "이름");
-            Authentication auth = getAuthentication(userDto);
+            UserReqDto userReqDto = new UserReqDto(tmpEmail, "이름");
+            Authentication auth = getAuthentication(userReqDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         chain.doFilter(request, response);
     }
 
-    public Authentication getAuthentication(UserDto member) {
+    public Authentication getAuthentication(UserReqDto member) {
         return new UsernamePasswordAuthenticationToken(member, "",
                 Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
     }

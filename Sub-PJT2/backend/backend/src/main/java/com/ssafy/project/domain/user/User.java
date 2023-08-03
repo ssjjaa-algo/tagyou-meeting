@@ -3,10 +3,10 @@ package com.ssafy.project.domain.user;
 import com.ssafy.project.domain.BaseTimeEntity;
 import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.group.MeetingGroup;
+import com.ssafy.project.domain.room.MeetingRoom;
 import com.ssafy.project.dto.request.UserInfoReqDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CollectionId;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -52,6 +52,10 @@ public class User extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private MeetingGroup meetingGroup;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private MeetingRoom meetingRoom;
 
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐
     public User(String userEmail, String userName) {

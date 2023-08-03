@@ -26,43 +26,44 @@ public class MeetingGroup extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
-    private GroupMeetingRoom groupMeetingRoom;
+    private MeetingRoom meetingRoom;
 
     @OneToMany(mappedBy = "meetingGroup", cascade = CascadeType.ALL)
-    private List<UserMeetingGroup> groupUser = new ArrayList<>();
+    private List<User> groupUser = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Gender groupGender;
 
     @Builder
     public MeetingGroup(User user) {
-        this.groupUser.add(new UserMeetingGroup(user, GroupRole.HOST));
+        this.groupUser.add(user);
         this.groupGender = user.getUserGender();
     }
 
     public void InviteGroup(User user) {
-        if(this.groupUser.size() >= 3)
+        if(this.groupUser.size() > 3)
             throw new OverLimitGroupCountException("그룹 인원이 초과되었습니다.");
         if(this.groupGender != user.getUserGender())
             throw new IllegalArgumentException("해당하는 그룹 성별이 다릅니다.");
-        this.groupUser.add(new UserMeetingGroup(user, GroupRole.MEMBER));
+        this.groupUser.add(user);
     }
 
     public void quitGroup(User user){
-        this.groupUser.removeIf(groupUser -> groupUser.getUser().getId().equals(user.getId()));
+        if(this.groupUser.size() < 0)
+            throw new OverLimitGroupCountException("현재 그룹 인원의 수는 0명입니다.");
+        this.groupUser.remove(user);
     }
 
-    public void deleteGroup(UserMeetingGroup user) {
-
+    public void deleteGroup(User user) {
         this.groupUser.clear();
     }
 
-    public void attendMeetingRoom(GroupMeetingRoom meetingRoom){
-        this.groupMeetingRoom = meetingRoom;
+    public void attendMeetingRoom(GroupMeetingRoom groupRoom){
+        this.meetingRoom = groupRoom;
     }
 
     public void quitMeetingRoom(){
-        this.groupMeetingRoom = null;
+        this.meetingRoom = null;
     }
 
 }

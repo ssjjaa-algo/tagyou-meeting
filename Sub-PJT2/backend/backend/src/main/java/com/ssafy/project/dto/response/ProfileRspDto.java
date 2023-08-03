@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ProfileRspDto {
+    private String userName;
     private String userSido;
     private String userGugun;
     private String userJob;
@@ -15,6 +16,7 @@ public class ProfileRspDto {
     private String content;
 
     public ProfileRspDto(Profile profile) {
+        this.userName = profile.getUser().getUserName();
         this.userSido = profile.getUserSido();
         this.userGugun = profile.getUserGugun();
         this.userJob = profile.getUserJob();

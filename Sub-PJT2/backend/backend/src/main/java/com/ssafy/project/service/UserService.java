@@ -1,8 +1,9 @@
 package com.ssafy.project.service;
 
 import com.ssafy.project.domain.user.User;
-import com.ssafy.project.dto.UserDto;
+import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
+import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.dto.response.UserRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.UserRepository;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -24,13 +24,13 @@ public class UserService {
      * 회원 가입
      */
     @Transactional
-    public UserRspDto signUpUser(UserDto userDto) {
+    public UserRspDto signUpUser(UserReqDto userReqDto) {
         findUserByEmail(
-                userDto.getEmail()).ifPresent(
+                userReqDto.getEmail()).ifPresent(
                         user -> { throw new IllegalStateException("이미 존재하는 회원입니다.");}
         );
 
-        return saveUser(new User(userDto.getEmail(),userDto.getName()))
+        return saveUser(new User(userReqDto.getEmail(), userReqDto.getName()))
                 .map(UserRspDto::new)
                 .orElseThrow(() -> new NotFoundException("유효하지 않은 유저입니다."));
     }
@@ -38,10 +38,10 @@ public class UserService {
      * 회원 정보 수정
      */
     @Transactional
-    public UserRspDto editUserInfo(Long userId, UserInfoReqDto userInfo) {
+    public UserInfoRspDto editUserInfo(Long userId, UserInfoReqDto userInfo) {
         User user = findUser(userId).orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
         user.changeUser(userInfo);
-        return new UserRspDto(user);
+        return new UserInfoRspDto(user);
     }
 
     public Long getUserIdByEmail(String email) {
@@ -59,9 +59,9 @@ public class UserService {
         return true;
     }
 
-    public UserRspDto getUserInfo(Long userId) {
+    public UserInfoRspDto getUserInfo(Long userId) {
         return findUser(userId)
-                .map(UserRspDto::new)
+                .map(UserInfoRspDto::new)
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
     }
 
