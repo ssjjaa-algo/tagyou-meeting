@@ -1,30 +1,28 @@
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
 const WebSocketContext = React.createContext<any>(null);
 export { WebSocketContext };
 
 export default ({ children }: { children: React.ReactNode }) => {
-  const webSocketUrl = `ws://localhost:8083`;
+  const webSocketUrl = `ws://localhost:3000/ws`;
   let ws = useRef<WebSocket | null>(null);
 
   if (!ws.current) {
     ws.current = new WebSocket(webSocketUrl);
     ws.current.onopen = () => {
       console.log("connected to " + webSocketUrl);
-    }
-    ws.current.onclose = error => {
+    };
+    ws.current.onclose = (error) => {
       console.log("disconnect from " + webSocketUrl);
       console.log(error);
     };
-    ws.current.onerror = error => {
+    ws.current.onerror = (error) => {
       console.log("connection error " + webSocketUrl);
       console.log(error);
     };
   }
 
   return (
-    <WebSocketContext.Provider value={ws}>
-      {children}
-    </WebSocketContext.Provider>
+    <WebSocketContext.Provider value={ws}>{children}</WebSocketContext.Provider>
   );
-}
+};

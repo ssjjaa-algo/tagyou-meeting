@@ -1,7 +1,7 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./InGameChat.styled";
-import React, { useRef, useContext, useState } from "react";
+import React, { useRef, useContext, useState, useEffect } from "react";
 import { WebSocketContext } from "webSocket/WebSocketProvider";
 import { InGameChatStatus } from "atoms/atoms";
 import "css/chat/inGameChat.css";
@@ -22,6 +22,7 @@ const RightContainer = () => {
   const ws = useContext(WebSocketContext);
   const [items, setItems] = useState<MessageType[]>([]);
   const [message, setMessage] = useState("");
+
   const [isHovering, setIsHovering] = useState(false);
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
@@ -33,6 +34,7 @@ const RightContainer = () => {
   ws.current.onmessage = (evt: MessageEvent) => {
     const data = JSON.parse(evt.data);
     addItem(data.chat);
+    console.log(data);
   };
 
   const handleChangeText = (e: any) => {
@@ -40,6 +42,8 @@ const RightContainer = () => {
   };
 
   const handleClickSubmit = () => {
+    console.log("여까지 옴");
+    console.log(items.length);
     if (message.length > 0) {
       console.log(ws.current.readyState);
       console.log(message);
@@ -52,15 +56,12 @@ const RightContainer = () => {
       addItem(messageSent);
 
       // 웹소켓으로 데이터 전달
-      ws.current.onopen = () => {
-        console.log(ws.current.readyState);
-        ws.current.send(
-          JSON.stringify({
-            user: "A",
-            chat: message,
-          })
-        );
-      };
+      ws.current.send(
+        JSON.stringify({
+          user: "A",
+          chat: message,
+        })
+      );
       setMessage("");
     }
 
@@ -69,6 +70,14 @@ const RightContainer = () => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 10);
   };
+
+  useEffect(() => {
+    if (!chatScreenRef.current?.scrollTop) return;
+    console.log(chatScreenRef.current?.scrollTop);
+    if (chatScreenRef.current?.scrollTop > 0.5) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [message]);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // 메시지 아이콘 누르면 채팅 창 열리고 닫히기 기능
@@ -91,6 +100,8 @@ const RightContainer = () => {
       handleClickMessage();
     }
   };
+
+  const chatScreenRef = useRef<HTMLDivElement>(null);
 
   return (
     <S.Container
@@ -115,15 +126,21 @@ const RightContainer = () => {
           theme={theme}
           className={inGameChatStatus ? "chatBoxShown" : "chatBoxHidden"}
         >
-          <S.ChatRoomMainChats className="chatRoom-main-chats" theme={theme}>
+          <S.ChatRoomMainChats
+            className="chatRoom-main-chats"
+            theme={theme}
+            ref={chatScreenRef}
+          >
             <S.ChatRoomMainChatsContent>
-              {items.map((chat, index) => {
-                return (
-                  <S.Messages key={index}>
-                    {chat.user} : {chat.message}
-                  </S.Messages>
-                );
-              })}
+              {/* {items.length > 0
+                ? items.map((chat, index) => {
+                    return (
+                      <S.Messages key={index}>
+                        {chat.user} : {chat.message}
+                      </S.Messages>
+                    );
+                  })
+                : 1} */}
               {/* 스크롤 맨 아래로 내리기 위한 레퍼런스 */}
               <div ref={bottomRef}></div>
             </S.ChatRoomMainChatsContent>
