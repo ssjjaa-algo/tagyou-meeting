@@ -1,23 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="GradleSettings">
-    <option name="linkedExternalProjectsSettings">
-      <GradleProjectSettings>
-<<<<<<< HEAD
-        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
-        <option name="gradleJvm" value="corretto-19" />
-=======
-        <option name="delegatedBuild" value="false" />
-        <option name="testRunner" value="PLATFORM" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
-        <option name="gradleJvm" value="17" />
->>>>>>> 93218417f8365ccc0dd910eb5c19e35cc99394e1
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/backend" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-    </option>
-  </component>
+  <component name="GradleMigrationSettings" migrationVersion="1" />
 </project>

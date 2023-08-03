@@ -1,14 +1,40 @@
-export type UserData = {
-  profileImage: string;
-  name: string;
-  region: string;
-  lastMessage: string;
-  lastMessageTime: string;
-  age: int;
-  mbti: string;
+// user, profile 테이블 join 예정 -- 아래 type은 임시로 작성한 것임
+
+export type UserData = { // users 테이블
+  // userId: BigInt;
+  // createdDate: Date;
+  // lastUsedDate: Date;
+  phoneNumber: string;
+  // roleType: string;
+  userAge: Int;
+  userEmail: string;
+  userGender: string;
+  userLike: Int;
+  userName: string;
+  // userImageId: BigInt;
+  // groupId: BigInt;
 };
 
-export type Message = {
+export type ProfileData = { // profile 테이블
+  // userProfileId: BigInt;
+  // createdDate: Date;
+  // lastUsedDate: Date;
+  userSido: string;
+  userGugun: string;
+  userJob: string;
+  userHobby: string;
+  userMbti: string;
+  content: string;
+  // userId: BigInt;
+};
+
+export type Message = { // meeting_room_message 테이블
+  // messageId: BigInt;
+  // createdDate: Date;
+  // lastUsedDate: Date;
+  // content: string;
+  // roomId: BigInt;
+  // messageFromUserId: BigInt;
   from: string;
   to: string;
   content: string;
@@ -34,18 +60,6 @@ export type leftContainerProprs = {
   age: number;
 };
 
-export type getProfileProps = {
-  imgSrc: string;
-  name: string;
-  age: number;
-  email: string;
-  mbti: string;
-  job: string;
-  hobby: string;
-  like: number;
-  region_sido: string;
-  region_sigungu: string;
-};
 
 export type userInfoProps = {
   id: string | null;

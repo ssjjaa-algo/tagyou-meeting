@@ -22,7 +22,7 @@ const RightContainer = ({ userData }: Listprop) => {
               <S.chatContent theme={theme}>
                 <S.ChatContentUserData>
                   <div className="chat-content-userData-nameAndAge">
-                    {item.name} | {item.age}
+                    {item.userName} | {item.userAge}
                   </div>
                   <div className="chat-content-userData-region">
                     {item.region}

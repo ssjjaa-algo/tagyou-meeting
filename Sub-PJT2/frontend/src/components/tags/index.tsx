@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { getProfileProps } from "types/types";
+import React, { useCallback, useState } from "react";
 import * as S from './Tags.styled';
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 
-const Tags = () => {
+const Tags = (hobby: any) => {
   const isBrowser = typeof window !== 'undefined';
   const theme : themeProps = useTheme();
-  
-  const [profileData, setProfileData] = useState<getProfileProps>();
+  console.log(hobby)
   const [hashtag, setHashtag] = useState<string>('')
-  const [hashArr, setHashArr] = useState<string[]>(profileData?.hobby ? [profileData?.hobby] : [])  
+  const [hashArr, setHashArr] = useState<string[]>([])  
   
   const onKeyUp = useCallback( // hashtag, hashArr이 변경될 때마다 함수 재생성
     (e :React.KeyboardEvent<HTMLInputElement>) => {

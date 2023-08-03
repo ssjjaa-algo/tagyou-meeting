@@ -1,14 +1,13 @@
 import * as S from "./Intro.styled";
 import { themeProps } from "@emotion/react";
-import { getProfileProps } from "types/types";
 import { useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-const Intro = () => {
+const Intro = (content: any) => {
   const theme: themeProps = useTheme();
   
   function edit() {
-    console.log('edit')    
+    console.log(content)    
   }
 
   return (
