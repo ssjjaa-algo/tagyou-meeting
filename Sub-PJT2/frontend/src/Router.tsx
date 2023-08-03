@@ -11,6 +11,7 @@ import InGame from "containers/inGame/InGame";
 // import LandingStart from "containers/landing/LandingStart/LandingStart";
 // import LandingLogin from "containers/landing/LandingLogin/LandingLogin";
 import LandingContainer from "containers/landingContainer/Landing";
+import InputContainer from "containers/inputContainer";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
       <Route path="" element={<LandingContainer />} />
       {/* <Route path="/start" element={<LandingStart />} />
       <Route path="/login" element={<LandingLogin />} /> */}
+      <Route path="/input" element={<InputContainer />} />
       <Route path="/home" element={<Home />} />
       <Route path="/test" element={<Test />} />
       <Route path="/mypage" element={<MyPage />} />
