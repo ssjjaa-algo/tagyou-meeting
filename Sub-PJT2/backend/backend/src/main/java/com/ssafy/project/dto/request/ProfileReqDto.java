@@ -1,12 +1,11 @@
 package com.ssafy.project.dto.request;
 
 import com.ssafy.project.domain.user.Profile;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Value;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileReqDto {
     //// 이미지 필요
 

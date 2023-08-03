@@ -40,7 +40,6 @@ public class SecurityConfig {
                 .oauth2Login().loginPage("http://localhost:3000/auth")
                 .successHandler(successHandler)
                 .userInfoEndpoint().userService(oAuth2UserService);
-
         http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

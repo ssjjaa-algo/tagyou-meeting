@@ -6,7 +6,6 @@ import com.ssafy.project.dto.response.ProfileRspDto;
 import com.ssafy.project.service.ProfileService;
 import com.ssafy.project.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

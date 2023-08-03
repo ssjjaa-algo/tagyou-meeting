@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -21,7 +20,7 @@ public class Profile extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_profile_id")
+    @Column(name="profile_id")
     private Long id;
 
     @JsonBackReference
@@ -74,7 +73,6 @@ public class Profile extends BaseTimeEntity {
 //        profileImages.forEach(this::addImage);
     }
 
-    // 연관관계 편의 메서드
 //    public void addImage(Image profileImage) {
 //        profileImages.add(profileImage);
 //        profileImage.setProfile(this);
