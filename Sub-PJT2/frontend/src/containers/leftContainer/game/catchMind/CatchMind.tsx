@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
+import brush from "asset/img/brush.png";
 
 interface Coordinate {
   x: number;
@@ -21,6 +22,7 @@ const CatchMind = () => {
     undefined
   );
   const [isPainting, setIsPainting] = useState(false);
+  const [thickness, setThickness] = useState(1);
 
   const getCoordinates = (event: MouseEvent): Coordinate | undefined => {
     if (!canvasRef.current) {
@@ -47,7 +49,7 @@ const CatchMind = () => {
     if (context) {
       context.strokeStyle = color;
       context.lineJoin = "round";
-      context.lineWidth = 3;
+      context.lineWidth = thickness;
 
       context.beginPath();
       context.moveTo(originalMousePosition.x, originalMousePosition.y);
@@ -145,6 +147,27 @@ const CatchMind = () => {
     context?.fillRect(0, 0, 800, 600);
   };
 
+  const [brushShape, setBrushShape] = useState({
+    height: thickness * 0.1 + "rem",
+    width: thickness * 0.1 + "rem",
+    backgroundColor: "white",
+  });
+
+  const seekBarRef = useRef<HTMLInputElement>(null);
+
+  const brushThicknessControl = async () => {
+    if (!seekBarRef || !seekBarRef.current) return;
+    setThickness(seekBarRef.current?.valueAsNumber);
+  };
+
+  useEffect(() => {
+    setBrushShape({
+      height: thickness * 0.1 + "rem",
+      width: thickness * 0.1 + "rem",
+      backgroundColor: fillColor.backgroundColor,
+    });
+  }, [thickness, fillColor]);
+
   return (
     <Container>
       <S.Container>
@@ -157,74 +180,106 @@ const CatchMind = () => {
           </S.PlayerVidBundle>
           {/* 그림판 */}
           <S.CanvasBox theme={theme}>
-            <S.Canvas
-              ref={canvasRef}
-              width="800"
-              height="600"
-              theme={theme}
-            ></S.Canvas>
+            <S.Canvas ref={canvasRef} width="750" height="450" theme={theme} />
+            <S.WordContainer>
+              <S.WordText theme={theme}>
+                <S.WordTitle theme={theme}>제시어</S.WordTitle>
+                <S.Word>꿀벌</S.Word>
+              </S.WordText>
+            </S.WordContainer>
             <S.PaletteBody theme={theme}>
               <S.Palette>
-                <S.PaletteColor
-                  onClick={handleColorClick}
-                  style={{ backgroundColor: "black", color: "white" }}
-                >
-                  black
-                </S.PaletteColor>
-                <S.PaletteColor
-                  onClick={handleColorClick}
-                  style={{ backgroundColor: "white" }}
-                >
-                  white
-                </S.PaletteColor>
-                <S.PaletteColor
-                  onClick={handleClear}
-                  style={{ backgroundColor: "white" }}
-                >
-                  clear
-                </S.PaletteColor>
-                <S.PaletteColor onClick={handleFill} style={fillColor}>
-                  fill
-                </S.PaletteColor>
+                <S.BrushInfo>
+                  <S.BrushShape style={brushShape} />
+                  <S.Burshimg src={brush} alt="브러쉬 정보" />
+                </S.BrushInfo>
+                <S.UpperPalette>
+                  <S.PaletteColor
+                    theme={theme}
+                    onClick={handleColorClick}
+                    style={{ backgroundColor: "black", color: "white" }}
+                  >
+                    black
+                  </S.PaletteColor>
+                  <S.PaletteColor
+                    theme={theme}
+                    onClick={handleColorClick}
+                    style={{ backgroundColor: "white" }}
+                  >
+                    white
+                  </S.PaletteColor>
+                  <S.PaletteColor
+                    theme={theme}
+                    onClick={handleClear}
+                    style={{ backgroundColor: "white" }}
+                  >
+                    clear
+                  </S.PaletteColor>
+                  <S.PaletteColor
+                    theme={theme}
+                    onClick={handleFill}
+                    style={fillColor}
+                  >
+                    fill
+                  </S.PaletteColor>
+                </S.UpperPalette>
+                <S.SeekBarContainer theme={theme}>
+                  <S.SeekBar
+                    ref={seekBarRef}
+                    theme={theme}
+                    type="range"
+                    min={1}
+                    max={30}
+                    value={thickness}
+                    onChange={brushThicknessControl}
+                  ></S.SeekBar>
+                </S.SeekBarContainer>
               </S.Palette>
               <S.Palette>
                 <S.PaletteColor
+                  theme={theme}
                   onClick={handleColorClick}
                   style={{ backgroundColor: "red" }}
                 >
                   red
                 </S.PaletteColor>
                 <S.PaletteColor
+                  theme={theme}
                   onClick={handleColorClick}
                   style={{ backgroundColor: "orange" }}
                 >
                   orange
                 </S.PaletteColor>
                 <S.PaletteColor
+                  theme={theme}
                   onClick={handleColorClick}
                   style={{ backgroundColor: "yellow" }}
                 >
                   yellow
                 </S.PaletteColor>
                 <S.PaletteColor
+                  theme={theme}
                   onClick={handleColorClick}
                   style={{ backgroundColor: "green" }}
                 >
                   green
                 </S.PaletteColor>
                 <S.PaletteColor
+                  theme={theme}
                   onClick={handleColorClick}
                   style={{ backgroundColor: "blue" }}
                 >
                   blue
                 </S.PaletteColor>
                 <S.PaletteColor
+                  theme={theme}
                   onClick={handleColorClick}
                   style={{ backgroundColor: "navy" }}
                 >
                   navy
                 </S.PaletteColor>
                 <S.PaletteColor
+                  theme={theme}
                   onClick={handleColorClick}
                   style={{ backgroundColor: "purple" }}
                 >

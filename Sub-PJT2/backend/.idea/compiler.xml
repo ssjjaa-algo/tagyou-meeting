@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+<<<<<<< HEAD
     <annotationProcessing>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
@@ -20,5 +21,8 @@
         <module name="project.main" />
       </profile>
     </annotationProcessing>
+=======
+    <bytecodeTargetLevel target="17" />
+>>>>>>> 93218417f8365ccc0dd910eb5c19e35cc99394e1
   </component>
 </project>
