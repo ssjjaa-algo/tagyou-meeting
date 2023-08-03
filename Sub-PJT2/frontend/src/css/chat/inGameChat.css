@@ -1,5 +1,5 @@
 .inGameChatContainerShown {
-  width: 30rem;
+  width: 24rem;
   transition: all 1s;
 }
 .inGameChatContainerHidden {
