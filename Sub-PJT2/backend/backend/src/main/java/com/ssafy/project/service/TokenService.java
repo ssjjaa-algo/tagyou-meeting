@@ -1,6 +1,8 @@
 package com.ssafy.project.service;
 
+import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.Token;
+import com.ssafy.project.dto.response.UserRspDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -83,5 +85,10 @@ public class TokenService{
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject());
+    }
+
+    public String makeTmpToken(String id) {
+        UserRspDto u = userService.getUserInfo(Long.parseLong(id));
+        return generateToken(u.getUserEmail(), "USER").getToken();
     }
 }
