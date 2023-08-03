@@ -7,8 +7,8 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
   min-width: fit-content;
+  min-height: fit-content;
 `;
 
 export const CanvasBox = styled.div<{ theme: themeProps }>`
@@ -21,7 +21,7 @@ export const CanvasBox = styled.div<{ theme: themeProps }>`
   align-items: center;
   width: 53%;
   height: 90%;
-  padding: 2rem 0 2rem 0;
+  padding: 2rem 2rem 2rem 2rem;
   min-height: 46rem;
   min-width: fit-content;
   margin: 0 1rem 0 1rem;
@@ -46,30 +46,43 @@ export const PaletteBody = styled.div<{ theme: themeProps }>`
   align-items: center;
   margin-top: 1rem;
   background-color: ${(props) => props.theme.point.light};
-  height: 10rem;
   width: 95%;
+  padding: 1rem;
 `;
 
 export const Palette = styled.div`
   /* border: solid green; */
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  height: 4rem;
-  width: 50rem;
+  width: 100%;
+  position: relative;
 `;
 
-export const PaletteColor = styled.div`
+export const UpperPalette = styled.div`
+  /* border: solid black; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 60%;
+`;
+
+export const PaletteColor = styled.div<{ theme: themeProps }>`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   border: solid black 2px;
   border-radius: 0.7rem;
   padding: 0.5rem;
   margin: 0.5rem;
   font-weight: bold;
+  width: 5rem;
 
   &:hover {
     cursor: pointer;
-    border: solid black 3px;
+    border: solid 2px ${(props) => props.theme.point.deep};
     opacity: 1;
   }
 `;
@@ -142,11 +155,13 @@ export const Word = styled.div`
 `;
 
 export const SeekBarContainer = styled.div<{ theme: themeProps }>`
-border: solid black;
+  /* border: solid black; */
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  margin-left: 1rem;
+  width: 40%;
+  padding-right: 2rem;
+  margin-left: 2rem;
 `;
 
 export const SeekBar = styled.input<{ theme: themeProps }>`
@@ -179,20 +194,32 @@ export const SeekBar = styled.input<{ theme: themeProps }>`
 `;
 
 export const BrushInfo = styled.div`
-  border: solid black;
+  /* border: solid black 4px; */
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: 6rem;
+  width: 7rem;
+  position: absolute;
+  top: -2.5rem;
+  right: 10rem;
+  border-radius: 0.3rem;
+  z-index: 100000;
 `;
 
 export const Burshimg = styled.img`
-`
+  width: 2rem;
+  height: 2rem;
+`;
 
 export const BrushShape = styled.div`
   border: none;
   background-color: black;
   border-radius: 50%;
-  width: 0.3rem;
-  height: 0.3rem;
+  /* width: 0.3rem; */
+  /* height: 0.3rem; */
+  min-width: 0.3rem;
+  min-height: 0.3rem;
+  margin-top: 2rem;
 `;

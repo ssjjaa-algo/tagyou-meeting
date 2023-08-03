@@ -17,14 +17,10 @@ function InGame() {
 }
 
 const Container = styled.div`
-  border: solid green;
+  /* border: solid green; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100vw;
-  height: 100vh;
-  min-width: fit-content;
-  min-height: fit-content;
 `;
 
 export default InGame;
