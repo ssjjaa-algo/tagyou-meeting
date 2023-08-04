@@ -14,7 +14,8 @@ public class Image extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ImageId;
+    @Column(name = "image_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_profile_id")
@@ -37,6 +38,10 @@ public class Image extends BaseTimeEntity {
 
     // 대표 이미지
 
+    public void editImg(String filePath, Long fileSize) {
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+    }
 
     // profile 정보
 //    public void setProfile(Profile profile){

@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.util.IOUtils;
 import com.ssafy.project.domain.user.Image;
+import com.ssafy.project.domain.user.User;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,7 +32,22 @@ public class ImageService {
     private String bucket;
 
     @Transactional
+    public Image initImageInDb(Long uId) {
+        //// 여기 save 따로 분리하기
+        return imageRepository.save(
+                new Image(uId.toString(), "tmpUrl", 0L));
+    }
+
+    @Transactional
+    public Image editImageInDb(Image i, MultipartFile file) {
+        //// 여기 save 따로 분리하기
+        i.editImg(createImgUrl(file), file.getSize());
+        return i;
+    }
+
+    @Transactional
     public Image saveImageInDb(MultipartFile file) {
+        //// 여기 save 따로 분리하기
         return imageRepository.save(
                 new Image(
                         file.getOriginalFilename(),
@@ -39,8 +56,8 @@ public class ImageService {
     }
 
     @Transactional
-    public String saveImageInS3(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
+    public String saveImageInS3(MultipartFile file, String fileName) throws IOException {
+//        String fileName = file.getOriginalFilename();
 //        String fileUrl = "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" +fileName+"jpg";
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
@@ -51,15 +68,15 @@ public class ImageService {
 
     public String createImgUrl(MultipartFile file) {
         return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/"
-                +file.getOriginalFilename()+"jpg";
+                +file.getOriginalFilename();
     }
 
-    public MultipartFile downloadImageAndConvertToMultipartFile(String imageUrl, String fileName) throws IOException {
+    public MultipartFile downloadImageAndConvertToMultipartFile(String imageUrl, String imgId) throws IOException {
         // 이미지 다운로드
         byte[] imageBytes = downloadImage(imageUrl);
 
         // 다운로드한 이미지를 MultipartFile로 변환
-        MultipartFile multipartFile = new ByteArrayMultipartFile(imageBytes, fileName+".jpg");
+        MultipartFile multipartFile = new ByteArrayMultipartFile(imageBytes, imgId+".jpg");
 
         return multipartFile;
     }
@@ -71,6 +88,17 @@ public class ImageService {
         }
     }
 
+
+    public Optional<Image> findImage(Long imgId){
+        return imageRepository.findById(imgId);
+    }
+
+
+
+
+
+
+    // class //////////////////////////////////////////////////////////////////////////////////
     private static class ByteArrayMultipartFile implements MultipartFile {
         private final byte[] bytes;
         private final String name;

@@ -13,16 +13,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/upload")
+@RequestMapping("/image")
 @RequiredArgsConstructor
 public class FileUploadController {
 
     private final ImageService imageService;
 
-    @PostMapping("/image")
+    @PostMapping("/uploadTest")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
-            return ResponseEntity.ok(imageService.saveImageInS3(file));
+            return ResponseEntity.ok(imageService.saveImageInS3(file, file.getOriginalFilename()));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

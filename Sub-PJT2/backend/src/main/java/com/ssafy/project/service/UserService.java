@@ -49,11 +49,6 @@ public class UserService {
         return new UserInfoRspDto(user);
     }
 
-    @Transactional
-    public String editUserImg() {
-        return "";
-    }
-
     public Long getUserIdByEmail(String email) {
         return findUserByEmail(email)
                 .map(User::getId)
@@ -90,23 +85,54 @@ public class UserService {
     }
 
     @Transactional
-    public void saveUserImage(UserReqDto userReqDto, String imgUrl) throws IOException {
-        System.out.println(">>> saveUserImage");
+    public void saveUserAuthImage(UserReqDto userReqDto, String imgUrl) throws IOException {
 
         // uID 찾기 -> s3이미지 저장할때 이름으로 써야함
         User u = findUserByEmail(userReqDto.getEmail())
                 .orElseThrow(() -> new NotFoundException("이메일에 해당하는 유저가 없습니다."));
 
-        // 파일로 변환, 사진 s3에 저장
-        MultipartFile f = imageService.downloadImageAndConvertToMultipartFile(imgUrl, u.getId().toString());
-        imageService.saveImageInS3(f);
+        // 먼저 db에 임시 저장
+        Image img = imageService.initImageInDb(u.getId());
 
-        // 프사 정보 image 테이블에 저장
-        Image img = imageService.saveImageInDb(f);
+        // 파일로 변환, 사진 s3에 저장 (이미지 아이디가 파일 이름임)
+        MultipartFile f = imageService.downloadImageAndConvertToMultipartFile(imgUrl, img.getId().toString());
+        imageService.saveImageInS3(f, f.getOriginalFilename());
+
+        // 임시저장한 프사 정보 image 테이블 수정
+        img = imageService.editImageInDb(img, f);
 
         // 프사 정보 user 정보에 저장
         u.changeUserImg(img);
     }
+
+    @Transactional
+    public String editUserImage(Long uId, MultipartFile file) throws IOException {
+
+        // 먼저 db에 임시 저장
+        Image img = imageService.initImageInDb(uId);
+
+        imageService.saveImageInS3(file, img.getId()+".jpg");
+
+        // 임시저장한 프사 정보 image 테이블 수정
+        img = imageService.editImageInDb(img, file);
+
+        // 프사 정보 user 정보에 저장
+        User u = findUser(uId)
+                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
+        u.changeUserImg(img);
+
+        return img.getFilePath();
+    }
+
+    public String getUserImage(Long uId) {
+        User u = findUser(uId)
+                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
+        Image img = imageService.findImage(u.getMainImage().getId())
+                .orElseThrow(() -> new NotFoundException("이미지아이디에 해당하는 이미지가 없습니다."));
+
+        return img.getFilePath();
+    }
+
 
 //    /**
 //     * 회원 가입
