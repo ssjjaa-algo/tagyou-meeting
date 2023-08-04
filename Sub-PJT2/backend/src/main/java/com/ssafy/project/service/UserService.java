@@ -10,7 +10,9 @@ import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -19,6 +21,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ImageService imageService;
+
 
     /**
      * 회원 가입
@@ -77,6 +81,21 @@ public class UserService {
 
     public Optional<User> findUserByEmail(String email){
         return userRepository.findByUserEmail(email);
+    }
+
+    @Transactional
+    public void saveUserImage(UserReqDto userDto, String pic) throws IOException {
+        System.out.println(">>> saveUserImage");
+        // 프사 정보 image 테이블에 저장
+        Long imageId = imageService.saveImageInDb();
+
+        // 프사 정보 user 정보에 저장
+
+
+        // 사진 s3에 저장
+        MultipartFile f = imageService.downloadImageAndConvertToMultipartFile(pic, 111L);
+        imageService.saveImageInS3(f);
+
     }
 
 //    /**

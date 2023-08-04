@@ -3,12 +3,15 @@ package com.ssafy.project.service;
 import com.ssafy.project.domain.user.Profile;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.ProfileReqDto;
+import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.ProfileRepository;
 import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -33,14 +36,14 @@ public class ProfileService {
 //            return null; ///// 이거 나중에 고쳐야댐!
 //        }
         return profileRepository.save(Profile.builder()
-                        .user(user)
-                        .userSido(profileReqDto.getUserSido())
-                        .userGugun(profileReqDto.getUserGugun())
-                        .userJob(profileReqDto.getUserJob())
-                        .userHobby(profileReqDto.getUserHobby())
-                        .userMbti(profileReqDto.getUserMbti())
-                        .content(profileReqDto.getContent())
-                        .build());
+                .user(user)
+                .userSido(profileReqDto.getUserSido())
+                .userGugun(profileReqDto.getUserGugun())
+                .userJob(profileReqDto.getUserJob())
+                .userHobby(profileReqDto.getUserHobby())
+                .userMbti(profileReqDto.getUserMbti())
+                .content(profileReqDto.getContent())
+                .build());
     }
 
     @Transactional
@@ -52,6 +55,18 @@ public class ProfileService {
 //        return profileRepository.findByUserId(userId)
 //                .ifPresent(p -> p.updateProfile(profileReqDto))
 //                .orElseThrow(()->new NotFoundException("해당 유저아이디의 프로필이 존재하지 않습니다. "));
+    }
+
+    @Transactional
+    public void saveProfileImage(UserReqDto userReqDto, String pic) {
+        // 프로필사진 image 테이블에 저장
+
+
+        // 사진 s3에 저장
+
+
+        // 프로필사진 user 정보에 저장
+
     }
 
     /**
