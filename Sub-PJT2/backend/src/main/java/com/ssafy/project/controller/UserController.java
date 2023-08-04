@@ -23,7 +23,8 @@ public class UserController {
     @GetMapping("/tmp/token")
     public String tmpTokenGenerate(HttpServletRequest request) {
         String id = request.getHeader("userId");
-        return tokenService.generateToken(id, "USER").getToken();
+        return tokenService.makeTmpToken(id);
+//        return tokenService.generateToken(id, "USER").getToken();
     }
 
     // ====================== 첫 로그인 여부 ============================
