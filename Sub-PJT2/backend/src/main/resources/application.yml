@@ -45,3 +45,13 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+cloud:
+  aws:
+    s3:
+      bucket: tag-u #tagyou
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: AKIA4S2XBYFDNSFC7XBK
+      secretKey: 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
