@@ -12,11 +12,11 @@ import Main from "./containers/main/Main";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-
 root.render(
   <RecoilRoot>
-    <React.StrictMode>
+    {/* 자식 컴포넌트에서 console.log 시 여러 번 출력되서 StrictMode 지웠습니다 */}
+    {/* <React.StrictMode> */}
       <Main />
-    </React.StrictMode>
+    {/* </React.StrictMode> */}
   </RecoilRoot>
 );
