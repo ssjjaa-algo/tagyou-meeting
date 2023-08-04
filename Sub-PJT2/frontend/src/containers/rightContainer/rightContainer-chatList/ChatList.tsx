@@ -18,22 +18,22 @@ const RightContainer = ({ userData }: Listprop) => {
           {userData?.map((item: UserData, idx: number) => (
             <S.Chat key={idx} theme={theme}>
               {/* <img src="" alt="" /> */}
-              <S.ChatProfileImage>{item.profileImage}</S.ChatProfileImage>
+              {/* <S.ChatProfileImage>{item.profileImage}</S.ChatProfileImage> */}
               <S.chatContent theme={theme}>
                 <S.ChatContentUserData>
                   <div className="chat-content-userData-nameAndAge">
                     {item.userName} | {item.userAge}
                   </div>
                   <div className="chat-content-userData-region">
-                    {item.region}
+                    {/* {item.region} */}
                   </div>
                 </S.ChatContentUserData>
                 <S.ChatContentMessage>
                   <div className="chat-content-message-content">
-                    {item.lastMessage}
+                    {/* {item.lastMessage} */}
                   </div>
                   <S.ChatContentMessageTime>
-                    {item.lastMessageTime}
+                    {/* {item.lastMessageTime} */}
                   </S.ChatContentMessageTime>
                 </S.ChatContentMessage>
               </S.chatContent>

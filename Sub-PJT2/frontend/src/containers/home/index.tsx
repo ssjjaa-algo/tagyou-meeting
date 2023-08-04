@@ -7,24 +7,31 @@ import { useEffect, useState } from "react";
 import Slider from "components/slide";
 import Tags from "components/tags";
 import Intro from "components/intro";
+import { useSearchParams } from "react-router-dom";
 
 const Home = () => {
   const theme: themeProps = useTheme  ();
   const [userData, setUserData] = useState<UserData>();
   const [profileData, setProfileData] = useState<ProfileData>();
+  // const [searchParams] = useSearchParams();
+
 
   useEffect(() => {
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTEwNDEyMjMsImV4cCI6MTY5MTA0MTgyM30.AJkaPG4ybig-ig59PoGyrMsQaQAWBLVFEffNufliG0k";
+    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTExMTQwOTEsImV4cCI6MTY5MTExNDY5MX0.rHiZCF4PLt1dT9gvSGH466zFj0HXGkVz2WSkkXdvxyA"
+    // fetch("api/users/tmp/token", {
+    //   headers: {
+    //     'Auth': 'master',
+    //     'userId': '7'
+    //   }})
+    //   .then((res) => 
+    //     console.log(res)
+    //   ) 
+      
+      // JSON 변환
+      // .then((data) => {
+      //   console.log('결과물:', data);
+      // })
     const fetchData = async () => {
-      fetch("api/users/mypage", {
-        headers: {
-          'Auth': token
-        }
-      })
-        .then(async (res) => 
-        {const data = await res.json()
-        setUserData(data)})
-
       fetch("api/users/profile", {
         headers: {
           'Auth': token
@@ -32,8 +39,18 @@ const Home = () => {
       })
         .then(async (res) => 
         {const data = await res.json()
-        setProfileData(data)})
-    };
+        if (data !== undefined) {setUserData(data)}
+        })
+      fetch("api/users/mypage", {
+        headers: {
+          'Auth': token
+        }
+      })
+        .then(async (res) => 
+        {const data = await res.json()
+        if (data !== undefined) {setProfileData(data)}
+        })
+      };
     fetchData();
   }, []);
 

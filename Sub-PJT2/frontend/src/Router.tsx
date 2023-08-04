@@ -5,7 +5,7 @@ import Test from "./components/test/Test";
 import Home from "./containers/home";
 import MyPage from "containers/myPage/MyPage";
 import OnlineMeeting from "containers/onlineMeeting/index";
-import ChatList from "containers/chatList/ChatList";
+// import ChatList from "containers/chatList/ChatList";
 import ChatRoom from "containers/chatRoom/ChatRoom";
 import InGame from "containers/inGame/InGame";
 // import LandingStart from "containers/landing/LandingStart/LandingStart";
@@ -25,7 +25,7 @@ const Router = () => {
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/meeting" element={<OnlineMeeting />} />
       <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
-      <Route path="/chatList" element={<ChatList />} />
+      {/* <Route path="/chatList" element={<ChatList />} /> */}
       <Route path="/inGame" element={<InGame />} />
     </Routes>
   );
