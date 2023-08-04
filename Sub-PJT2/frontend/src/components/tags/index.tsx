@@ -17,8 +17,22 @@ const Tags = (data: any) => {
     if (data.hobby !== undefined) {
       $HashWrapInner_before.innerHTML = '#' + data.hobby
       $HashWrapOuter?.appendChild($HashWrapInner_before)
+      let new_content = data.hobby
+      // console.log(new_content+'ddd')
+
+
+      /* 태그를 클릭 이벤트 관련 로직 */
+      $HashWrapInner_before.addEventListener('click', () => {
+      $HashWrapOuter?.removeChild($HashWrapInner_before)
+      setHashArr(hashArr.filter((hashtag) => hashtag))
+      // let new_content = new_content.replace(data.hobby, 'ff')
+      // console.log(new_content)
+    })
     }
   }, [data.hobby])
+
+
+
 
   const onKeyUp = useCallback(
     (e:React.KeyboardEvent<HTMLInputElement>) => {
@@ -38,8 +52,12 @@ const Tags = (data: any) => {
         if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
           $HashWrapInner.innerHTML = '#' + e.currentTarget.value
           $HashWrapOuter?.appendChild($HashWrapInner)
+          
+          
+          // console.log('/' + e.currentTarget.value)
           setHashArr((hashArr) => [...hashArr, hashtag])
           setHashtag('')
+          /* '취미1/취미2/취미3' 의 형태로 content 변경해서 PUT 요청 보내기 */
         }
       }
     },

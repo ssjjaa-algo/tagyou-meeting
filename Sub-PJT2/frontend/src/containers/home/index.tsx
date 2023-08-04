@@ -15,7 +15,7 @@ const Home = () => {
   // const [searchParams] = useSearchParams();g
 
   useEffect(() => {
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTExMzEwMjMsImV4cCI6MTY5MTE5MTAyM30.8PdQWvYynebhgk2LRiZREanUTRptHclNVRXHWYlfZrU"
+    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTExMzc1NzMsImV4cCI6MTY5MTE5NzU3M30.vI8IMS3Bo_B1t1eC2N9qTtCnHUvTnXfx9jlzcSz2Mi0"
     // 토큰 받아오는 과정에서 막혀서 일단 주석 처리하였습니다.
     // fetch("api/users/tmp/token", {
     //   headers: {
