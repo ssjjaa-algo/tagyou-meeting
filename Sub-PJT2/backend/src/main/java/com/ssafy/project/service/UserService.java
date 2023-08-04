@@ -1,5 +1,6 @@
 package com.ssafy.project.service;
 
+import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
@@ -48,6 +49,11 @@ public class UserService {
         return new UserInfoRspDto(user);
     }
 
+    @Transactional
+    public String editUserImg() {
+        return "";
+    }
+
     public Long getUserIdByEmail(String email) {
         return findUserByEmail(email)
                 .map(User::getId)
@@ -84,18 +90,22 @@ public class UserService {
     }
 
     @Transactional
-    public void saveUserImage(UserReqDto userDto, String pic) throws IOException {
+    public void saveUserImage(UserReqDto userReqDto, String imgUrl) throws IOException {
         System.out.println(">>> saveUserImage");
-        // 프사 정보 image 테이블에 저장
-        Long imageId = imageService.saveImageInDb();
 
-        // 프사 정보 user 정보에 저장
+        // uID 찾기 -> s3이미지 저장할때 이름으로 써야함
+        User u = findUserByEmail(userReqDto.getEmail())
+                .orElseThrow(() -> new NotFoundException("이메일에 해당하는 유저가 없습니다."));
 
-
-        // 사진 s3에 저장
-        MultipartFile f = imageService.downloadImageAndConvertToMultipartFile(pic, 111L);
+        // 파일로 변환, 사진 s3에 저장
+        MultipartFile f = imageService.downloadImageAndConvertToMultipartFile(imgUrl, u.getId().toString());
         imageService.saveImageInS3(f);
 
+        // 프사 정보 image 테이블에 저장
+        Image img = imageService.saveImageInDb(f);
+
+        // 프사 정보 user 정보에 저장
+        u.changeUserImg(img);
     }
 
 //    /**

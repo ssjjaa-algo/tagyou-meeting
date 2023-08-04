@@ -3,6 +3,8 @@ package com.ssafy.project.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.util.IOUtils;
+import com.ssafy.project.domain.user.Image;
+import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,29 +30,36 @@ public class ImageService {
     private String bucket;
 
     @Transactional
-    public Long saveImageInDb() {
-
-
-        return null;
+    public Image saveImageInDb(MultipartFile file) {
+        return imageRepository.save(
+                new Image(
+                        file.getOriginalFilename(),
+                        createImgUrl(file),
+                        file.getSize()));
     }
 
     @Transactional
     public String saveImageInS3(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
-        String fileUrl = "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" +fileName+"jpg";
+//        String fileUrl = "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" +fileName+"jpg";
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
         amazonS3Client.putObject(bucket, fileName, file.getInputStream(), metadata);
-        return fileUrl;
+        return createImgUrl(file);
     }
 
-    public MultipartFile downloadImageAndConvertToMultipartFile(String imageUrl, Long pId) throws IOException {
+    public String createImgUrl(MultipartFile file) {
+        return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/"
+                +file.getOriginalFilename()+"jpg";
+    }
+
+    public MultipartFile downloadImageAndConvertToMultipartFile(String imageUrl, String fileName) throws IOException {
         // 이미지 다운로드
         byte[] imageBytes = downloadImage(imageUrl);
 
         // 다운로드한 이미지를 MultipartFile로 변환
-        MultipartFile multipartFile = new ByteArrayMultipartFile(imageBytes, pId+".jpg");
+        MultipartFile multipartFile = new ByteArrayMultipartFile(imageBytes, fileName+".jpg");
 
         return multipartFile;
     }
