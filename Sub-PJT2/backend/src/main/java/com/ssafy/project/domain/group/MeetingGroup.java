@@ -12,8 +12,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -29,7 +29,7 @@ public class MeetingGroup extends BaseTimeEntity {
     private MeetingRoom meetingRoom;
 
     @OneToMany(mappedBy = "meetingGroup", cascade = CascadeType.ALL)
-    private List<User> groupUser = new ArrayList<>();
+    private Queue<User> groupUser = new LinkedList<>();
 
     @Enumerated(EnumType.STRING)
     private Gender groupGender;
@@ -40,7 +40,7 @@ public class MeetingGroup extends BaseTimeEntity {
         this.groupGender = user.getUserGender();
     }
 
-    public void InviteGroup(User user) {
+    public void acceptGroup(User user) {
         if(this.groupUser.size() > 3)
             throw new OverLimitGroupCountException("그룹 인원이 초과되었습니다.");
         if(this.groupGender != user.getUserGender())
@@ -49,21 +49,11 @@ public class MeetingGroup extends BaseTimeEntity {
     }
 
     public void quitGroup(User user){
-        if(this.groupUser.size() < 0)
-            throw new OverLimitGroupCountException("현재 그룹 인원의 수는 0명입니다.");
         this.groupUser.remove(user);
     }
 
-    public void deleteGroup(User user) {
+    public void deleteGroup() {
         this.groupUser.clear();
-    }
-
-    public void attendMeetingRoom(GroupMeetingRoom groupRoom){
-        this.meetingRoom = groupRoom;
-    }
-
-    public void quitMeetingRoom(){
-        this.meetingRoom = null;
     }
 
 }

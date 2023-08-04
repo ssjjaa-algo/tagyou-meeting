@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    @Column(name = "comment_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "user_id")
