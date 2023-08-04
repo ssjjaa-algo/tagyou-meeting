@@ -29,13 +29,13 @@ public class TokenService{
     private final UserService userService;
 
 
-    public Token generateToken(String email, String role) {
-        Long id = userService.getUserIdByEmail(email);
+    public Token generateToken(String id, String role) {
+//        Long id = userService.getUserIdByEmail(uId);
         System.out.println(">>> generateToken / id: "+id+", role: "+role);
         long tokenPeriod = 1000L * 60L * 10L;
         long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 3L;
 
-        Claims claims = Jwts.claims().setSubject(id.toString());
+        Claims claims = Jwts.claims().setSubject(id);
         claims.put("role", role);
 
         Date now = new Date();
@@ -88,7 +88,7 @@ public class TokenService{
     }
 
     public String makeTmpToken(String id) {
-        UserInfoRspDto u = userService.getUserInfo(Long.parseLong(id));
-        return generateToken(u.getUserEmail(), "USER").getToken();
+//        UserInfoRspDto u = userService.getUserInfo(Long.parseLong(id));
+        return generateToken(id, "USER").getToken();
     }
 }
