@@ -42,6 +42,11 @@ public class Image extends BaseTimeEntity {
         this.filePath = filePath;
         this.fileSize = fileSize;
     }
+    public void editImg(Profile profile, String filePath, Long fileSize) {
+        this.profile = profile;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+    }
 
     // profile 정보
 //    public void setProfile(Profile profile){
