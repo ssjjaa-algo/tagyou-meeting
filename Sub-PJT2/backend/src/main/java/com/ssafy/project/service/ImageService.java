@@ -4,7 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.util.IOUtils;
 import com.ssafy.project.domain.user.Image;
-import com.ssafy.project.domain.user.User;
+import com.ssafy.project.domain.user.Profile;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,6 +44,13 @@ public class ImageService {
     public Image editImageInDb(Image i, MultipartFile file) {
         //// 여기 save 따로 분리하기
         i.editImg(createImgUrl(file), file.getSize());
+        return i;
+    }
+
+    @Transactional
+    public Image editImageInDb(Profile p, Image i, String imgName, MultipartFile file) {
+        //// 여기 save 따로 분리하기
+        i.editImg(p, createImgUrl(imgName), file.getSize());
         return i;
     }
 
@@ -70,6 +79,10 @@ public class ImageService {
         return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/"
                 +file.getOriginalFilename();
     }
+    public String createImgUrl(String name) {
+        return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/"
+                +name+".jpg";
+    }
 
     public MultipartFile downloadImageAndConvertToMultipartFile(String imageUrl, String imgId) throws IOException {
         // 이미지 다운로드
@@ -93,9 +106,11 @@ public class ImageService {
         return imageRepository.findById(imgId);
     }
 
-
-
-
+    public List<String> getProfileImages(Profile p) {
+        List<Image> images = imageRepository.findAllByProfile(p)
+                .orElseThrow(() -> new NotFoundException("해당 프로필 이미지가 없음. "));
+        return images.stream().map(Image::getFilePath).collect(Collectors.toList());
+    }
 
 
     // class //////////////////////////////////////////////////////////////////////////////////
