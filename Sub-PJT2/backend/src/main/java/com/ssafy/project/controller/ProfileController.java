@@ -33,6 +33,15 @@ public class ProfileController {
         else return ResponseEntity.ok().body(new ProfileRspDto(profile));
     }
 
+    @GetMapping("/{uId}")
+    public ResponseEntity<?> getFriendProfile(HttpServletRequest request, @PathVariable String uId) {
+        Long userId = Long.parseLong(uId);
+        Profile profile = profileService.getProfile(userId);
+        if(profile == null)
+            return ResponseEntity.ok().body("does not exist");
+        else return ResponseEntity.ok().body(new ProfileRspDto(profile));
+    }
+
     @PostMapping("")
     public ResponseEntity<?> makeProfile(HttpServletRequest request, @RequestBody ProfileReqDto profileReqDto) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
