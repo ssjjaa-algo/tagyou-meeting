@@ -38,11 +38,13 @@ type MeetingRoom = {
 
 const RightContainer = () => {
   const theme: themeProps = useTheme();
-
+  
   const [roomId, setRoomId] = useState<number>();
-
+  
   const client = useRef<CompatClient>();
-
+  
+  const domainAddress = "www.tagyou.com";
+  
   const connectHandler = (roomId: number, roomName: string) => {
     client.current = Stomp.over(() => {
       // 여기서 url 조정하면 됨
@@ -55,7 +57,7 @@ const RightContainer = () => {
       },
       () => {
         client.current!.subscribe(
-          `/${roomId}`,
+          `/sub/chat/rooms/${roomId}`,
           (message) => {
             console.log(message);
             addItem(JSON.parse(message.body));
@@ -68,7 +70,6 @@ const RightContainer = () => {
     setRoomId(roomId);
   };
 
-  const domainAddress = "www.tagyou.com";
   // const [socketUrl, setSocketUrl] = useState(`ws://${domainAddress}/ws/chat`);
   // const [socketUrl, setSocketUrl] = useState(`ws://localhost:3000/ws`);
   const [items, setItems] = useState<Message[]>([]);
