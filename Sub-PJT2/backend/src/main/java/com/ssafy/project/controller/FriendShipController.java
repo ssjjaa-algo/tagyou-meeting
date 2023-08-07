@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("friends")
+@RequestMapping(value="/friends", produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class FriendShipController {
 

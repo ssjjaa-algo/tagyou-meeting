@@ -23,19 +23,18 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final NoticeService noticeService;
     private final UserRepository userRepository;
-    private final NoticeRepository noticeRepository;
 
     /**
      * 그룹 생성
      */
     public GroupRspDto createGroup(Long userId){
-        User user = userRepository.findById(userId)
+        User user = findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 만들 유저가 존재하지 않습니다."));
 
         MeetingGroup meetingGroup = saveMeetingGroup(
                 MeetingGroup.builder()
-                .user(user)
-                .build());
+                        .user(user)
+                        .build());
         return new GroupRspDto(meetingGroup);
     }
 
@@ -46,21 +45,21 @@ public class GroupService {
         User targetUser = findUser(groupReqDto.getTargetUserId())
                 .orElseThrow(() -> new NotFoundException("그룹에 초대할 해당 유저가 존재하지 않습니다."));
 
-       return findMeetingGroup(groupReqDto.getGroupId())
-               .filter(group -> group.getGroupGender().equals(targetUser.getUserGender()))
-               .map(group -> {
+        return findMeetingGroup(groupReqDto.getGroupId())
+                .filter(group -> group.getGroupGender().equals(targetUser.getUserGender()))
+                .map(group -> {
                     User sendUser = findUser(groupReqDto.getUserId())
                             .orElseThrow(() -> new NotFoundException("그룹을 초대할 유저가 존재하지 않습니다."));
 
-                   String requestContent = "미팅 그룹 요청 : "
-                           + targetUser.getUserName()
-                           + "님이 보내온 그룹 요청입니다!!";
+                    String requestContent = "미팅 그룹 요청 : "
+                            + targetUser.getUserName()
+                            + "님이 보내온 그룹 요청입니다!!";
 
-                   NoticeReqDto noticeReqDto = new NoticeReqDto(sendUser.getId(), NoticeType.GROUP_REQUEST,requestContent);
-                   noticeService.insertNotice(noticeReqDto);
+                    NoticeReqDto noticeReqDto = new NoticeReqDto(sendUser.getId(), NoticeType.GROUP_REQUEST,requestContent);
+                    noticeService.insertNotice(noticeReqDto);
 
-                   return group;
-               })
+                    return group;
+                })
                 .map(GroupRspDto::new)
                 .orElseThrow(() -> new NotFoundException("초대할 유저의 성별과 해당 그룹의 성별이 일치 하지 않습니다."));
     }
@@ -74,6 +73,8 @@ public class GroupService {
 
         return findMeetingGroup(groupReqDto.getGroupId())
                 .map(group -> {
+                    Optional.of(group).filter(g -> g.getGroupUser().size()>=3)
+                            .orElseThrow(() ->new IllegalArgumentException("그룹원 최대 인원수에 초과되었습니다."));
                     group.acceptGroup(targetUser);
                     return group;
                 })
@@ -90,6 +91,8 @@ public class GroupService {
 
         return findMeetingGroup(groupId)
                 .map(group -> {
+                    Optional.of(group).filter(g -> g.getGroupUser().size() < 0)
+                            .orElseThrow(() -> new IllegalArgumentException("그룹원의 인원수가 0명입니다."));
                     group.quitGroup(user);
                     return group;
                 })
@@ -100,9 +103,15 @@ public class GroupService {
     /**
      * 그룹 삭제
      */
-    public GroupRspDto removeGroup(GroupReqDto groupReqDto){
-        return findMeetingGroup(groupReqDto.getGroupId())
+    public GroupRspDto removeGroup(Long groupId, Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("그룹을 삭제할 유저가 존재하지 않습니다."));
+
+
+        return findMeetingGroup(groupId)
                 .map(group -> {
+                    Optional.of(group).filter(g -> g.getGroupUser().peek().getId() == userId)
+                            .orElseThrow(() -> new IllegalArgumentException("현재 그룹장이 아닙니다."));
                     group.deleteGroup();
                     return group;
                 })
