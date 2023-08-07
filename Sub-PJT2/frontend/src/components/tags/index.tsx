@@ -1,96 +1,92 @@
-import React from "react";
-import Tags from "@yaireo/tagify/dist/react.tagify";
-import { TagifySettings } from "@yaireo/tagify";
+import React, { useCallback, useEffect, useState } from "react";
+import * as S from './Tags.styled';
+import { themeProps } from "@emotion/react";
+import { useTheme } from "@mui/material";
 
-// ================= TAGFIELD ==================
+const Tags = (data: any) => {
+  const isBrowser = typeof window !== 'undefined';
+  const theme : themeProps = useTheme();
+  // console.log(data.hobby)
+  const [hashtag, setHashtag] = useState<string>('')
+  const [hashArr, setHashArr] = useState<string[]>([])  
 
-// Tagify settings object
-const baseTagifySettings: TagifySettings = {
-  blacklist: [],
-  maxTags: 6,
-  backspace: "edit",
-  placeholder: "type something",
-  editTags: 1,
-  dropdown: {
-    enabled: 0,
-  },
-  callbacks: {},
-};
+  useEffect(() => {
+    const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+    const $HashWrapInner_before = document.createElement('div')
+    $HashWrapInner_before.className = 'HashWrapInner'
+    if (data.hobby !== undefined) {
+      $HashWrapInner_before.innerHTML = '#' + data.hobby
+      $HashWrapOuter?.appendChild($HashWrapInner_before)
+      let new_content = data.hobby
+      // console.log(new_content+'ddd')
 
-interface TagFieldProps {
-  label: string;
-  name: string;
-  initialValue?: string[];
-  suggestions?: string[];
-}
 
-const TagField: React.FC<TagFieldProps> = ({ label, name, initialValue = [], suggestions = [] }) => {
+      /* 태그를 클릭 이벤트 관련 로직 */
+      $HashWrapInner_before.addEventListener('click', () => {
+      $HashWrapOuter?.removeChild($HashWrapInner_before)
+      setHashArr(hashArr.filter((hashtag) => hashtag))
+      // let new_content = new_content.replace(data.hobby, 'ff')
+      // console.log(new_content)
+    })
+    }
+  }, [data.hobby])
 
-  const handleChange = (e: any) => {
-    console.log(e.type, " ==> ", e.detail.tagify.value.map((item: any) => item.value));
-  };
 
-  const settings: TagifySettings = {
-    ...baseTagifySettings,
-    whitelist: suggestions,
-    callbacks: {
-      add: handleChange,
-      remove: handleChange,
-      blur: handleChange,
-      // edit: handleChange,
-      invalid: handleChange,
-      click: handleChange,
-      focus: handleChange,
-      "edit:updated": handleChange,
-      "edit:start": handleChange,
+
+
+  const onKeyUp = useCallback(
+    (e:React.KeyboardEvent<HTMLInputElement>) => {
+      if (isBrowser) {
+        /* 요소 불러오기, 만들기*/
+        const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+        const $HashWrapInner = document.createElement('div')
+        $HashWrapInner.className = 'HashWrapInner'
+        
+        /* 태그를 클릭 이벤트 관련 로직 */
+        $HashWrapInner.addEventListener('click', () => {
+          $HashWrapOuter?.removeChild($HashWrapInner)
+          setHashArr(hashArr.filter((hashtag) => hashtag))
+        })
+
+        /* enter 키 코드 :13 */
+        if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
+          $HashWrapInner.innerHTML = '#' + e.currentTarget.value
+          $HashWrapOuter?.appendChild($HashWrapInner)
+          
+          
+          // console.log('/' + e.currentTarget.value)
+          setHashArr((hashArr) => [...hashArr, hashtag])
+          setHashtag('')
+          /* '취미1/취미2/취미3' 의 형태로 content 변경해서 PUT 요청 보내기 */
+        }
+      }
     },
-  };
+    [hashArr]
+  )
+  
+  const onChangeHashtag = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setHashtag(e.target.value);
+    },
+    []
+  );
 
   return (
-    <div className="form-group">
-      <label htmlFor={"field-" + name}>{label}</label>
-      <Tags settings={settings} value={initialValue} />
-    </div>
+    <>
+    <S.HashWrap theme={theme}>
+      <div className="HashWrapOuter"></div>
+    </S.HashWrap>
+      <S.HashInput
+        theme={theme}
+        className="HashInput"
+        type="text"
+        value={hashtag}
+        onChange={onChangeHashtag}
+        onKeyUp={onKeyUp}
+        placeholder="취미 추가하기"
+      />
+    </>
   );
 };
 
-// ================= APP ======================
-
-const App = () => {
-  const suggestions = [
-    "apple",
-    "banana",
-    "cucumber",
-    "dewberries",
-    "elderberry",
-    "farkleberry",
-    "grapes",
-    "hackberry",
-    "imbe",
-    "jambolan",
-    "kiwi",
-    "lime",
-    "mango",
-    "nectarine",
-    "orange",
-    "papaya",
-    "quince",
-    "raspberries",
-    "strawberries",
-    "tangerine",
-    "ugni",
-    "voavanga",
-    "watermelon",
-    "xigua",
-    "yangmei",
-    "zucchini",
-  ];
-  return (
-    <div className="App">
-      <h1>Tagify</h1>
-      <TagField initialValue={["foo", "brazil"]} suggestions={suggestions} label={""} name={""} />
-    </div>
-  );
-};
-
-export default App;
+export default Tags;

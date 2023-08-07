@@ -10,7 +10,7 @@ interface AppState {
 }
 
 class App extends Component<{}, AppState> {
-  private readonly APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4443/';
+  private readonly APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://localhost:4443/';
 
   constructor(props: {}) {
     super(props);

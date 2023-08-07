@@ -62,7 +62,7 @@ export const Title = styled.text<{ theme: themeProps }>`
   color: ${(props) => props.theme.point.deep};
   font-size: 25px;
   font-weight: bold;
-  display: block;
+  /* display: block; */
 `;
 
 export const miniTitle = styled.text<{ theme: themeProps }>`
