@@ -20,11 +20,7 @@ public class SubscriberController {
     private MeetingRoomRepository meetingRoomRepository;
 
 
-    // ====================== 미팅방 목록 ============================
-    @GetMapping
-    public List<MeetingRoom> getMeetingRooms() {
-        return meetingRoomRepository.findAll();
-    }
+
 
     // ====================== 해당 아이디 채팅 ============================
     @GetMapping(path = "/rooms/{meetingRoomId}/messages")

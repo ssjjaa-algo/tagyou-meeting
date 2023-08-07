@@ -4,6 +4,8 @@ import com.ssafy.project.domain.friend.FriendShipStatus;
 import com.ssafy.project.dto.request.FriendReqDto;
 import com.ssafy.project.dto.response.FriendRspDto;
 import com.ssafy.project.service.FriendShipService;
+import com.ssafy.project.service.TokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.util.List;
 public class FriendShipController {
 
     private final FriendShipService friendShipService;
+    private final TokenService tokenService;
 
     // ====================== 친구 요청 ============================
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,8 +37,9 @@ public class FriendShipController {
 
     // ====================== 친구 리스트 ============================
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{userId}")
-    public List<FriendRspDto> friendsList(@PathVariable Long userId){
+    @GetMapping("/list")
+    public List<FriendRspDto> friendsList(HttpServletRequest request){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return friendShipService.findFriendShips(userId);
     }
 
