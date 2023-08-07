@@ -112,6 +112,12 @@ public class ImageService {
         return images.stream().map(Image::getFilePath).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = false)
+    public void deleteImage(Long imgId) {
+        imageRepository.deleteById(imgId);
+        imageRepository.flush();
+    }
+
 
     // class //////////////////////////////////////////////////////////////////////////////////
     private static class ByteArrayMultipartFile implements MultipartFile {
