@@ -23,7 +23,7 @@ import java.util.Optional;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final ImageService imageService;
 
     public Profile getProfile(Long userId) {
@@ -33,7 +33,8 @@ public class ProfileService {
 
     @Transactional
     public Profile makeProfile(Long userId, ProfileReqDto profileReqDto) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("not found"));
+        User user = userService.findUser(userId)
+                .orElseThrow(() -> new NotFoundException("not found"));
 //        Profile p = profileRepository.findByUserId(userId).orElseThrow();
 
 //        if(p != null) { // 이미 존재하는 경우
@@ -79,6 +80,20 @@ public class ProfileService {
     public List<String> getProfileImages(Long id) {
         Profile p = getProfile(id);
         return imageService.getProfileImages(p);
+    }
+
+    @Transactional(readOnly = false)
+    public void deleteProfileImage(Long uId, Long imgId) throws IllegalAccessException {
+        // 이미지 아이디로 이미지 찾기
+        Image i = imageService.findImage(imgId)
+                .orElseThrow(() -> new NotFoundException("해당 아이디의 이미지 없음"));
+        // 유저 아이디로 프로필 찾기
+        Profile p = getProfile(uId);
+
+        if(p.getUser().getId() != i.getProfile().getUser().getId())
+            throw new IllegalAccessException("해당 이미지에 대한 접근 권한이 없습니다. ");
+
+        imageService.deleteImage(imgId);
     }
 
 

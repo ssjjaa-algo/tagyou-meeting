@@ -74,10 +74,11 @@ public class ProfileController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/image")
-    public String deleteProfileImage(HttpServletRequest request) {
-
-        return "deleteProfileImage";
+    @DeleteMapping("/image/{imgId}")
+    public String deleteProfileImage(HttpServletRequest request, @PathVariable String imgId) throws IllegalAccessException {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        profileService.deleteProfileImage(id, Long.parseLong(imgId));
+        return "deleted";
     }
 
 }
