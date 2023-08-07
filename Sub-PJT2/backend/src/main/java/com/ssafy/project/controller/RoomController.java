@@ -47,4 +47,9 @@ public class RoomController {
         return newRoom;
     }
 
+    // ====================== 미팅방 목록 ============================
+    @GetMapping
+    public List<MeetingRoom> getMeetingRooms() {
+        return meetingRoomRepository.findAll();
+    }
 }
