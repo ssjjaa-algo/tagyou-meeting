@@ -91,8 +91,6 @@ public class GroupService {
 
         return findMeetingGroup(groupId)
                 .map(group -> {
-                    Optional.of(group).filter(g -> g.getGroupUser().size() < 0)
-                            .orElseThrow(() -> new IllegalArgumentException("그룹원의 인원수가 0명입니다."));
                     group.quitGroup(user);
                     return group;
                 })
@@ -104,13 +102,10 @@ public class GroupService {
      * 그룹 삭제
      */
     public GroupRspDto removeGroup(Long groupId, Long userId){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("그룹을 삭제할 유저가 존재하지 않습니다."));
-
 
         return findMeetingGroup(groupId)
                 .map(group -> {
-                    Optional.of(group).filter(g -> g.getGroupUser().peek().getId() == userId)
+                    Optional.of(group).filter(g -> g.getGroupUser().peek().getId().equals(userId))
                             .orElseThrow(() -> new IllegalArgumentException("현재 그룹장이 아닙니다."));
                     group.deleteGroup();
                     return group;
