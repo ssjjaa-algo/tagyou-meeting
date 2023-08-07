@@ -1,7 +1,5 @@
 import * as S from "./CatchMind.styled";
 import { useRef, useState, useCallback, useEffect } from "react";
-import { InGameChatStatus } from "atoms/atoms";
-import { useRecoilState } from "recoil";
 import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
