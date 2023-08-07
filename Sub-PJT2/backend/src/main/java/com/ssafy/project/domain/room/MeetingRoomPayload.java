@@ -1,4 +1,4 @@
-package com.study.SpringBootWebSocketChatServer.domain.model;
+package com.ssafy.project.domain.room;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

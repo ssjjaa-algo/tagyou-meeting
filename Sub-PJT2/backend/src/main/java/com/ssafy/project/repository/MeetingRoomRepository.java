@@ -1,6 +1,6 @@
-package com.study.SpringBootWebSocketChatServer.repository;
+package com.ssafy.project.repository;
 
-import com.study.SpringBootWebSocketChatServer.domain.model.MeetingRoom;
+import com.ssafy.project.domain.room.MeetingRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

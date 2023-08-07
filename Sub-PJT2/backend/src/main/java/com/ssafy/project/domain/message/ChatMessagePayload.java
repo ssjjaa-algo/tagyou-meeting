@@ -1,10 +1,10 @@
-package com.study.SpringBootWebSocketChatServer.domain.model;
+package com.ssafy.project.domain.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.study.SpringBootWebSocketChatServer.domain.status.MessageType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,6 +22,6 @@ public class ChatMessagePayload {
     private MessageType messageType;
 
     @NotNull
-    @JsonProperty(value = "chat_room_id")
-    private Long chatRoomId;
+    @JsonProperty(value = "meeting_room_id")
+    private Long meetingRoomId;
 }

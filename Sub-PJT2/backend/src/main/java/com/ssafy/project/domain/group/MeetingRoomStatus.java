@@ -1,4 +1,4 @@
-package com.study.SpringBootWebSocketChatServer.domain.status;
+package com.ssafy.project.domain.group;
 
 public enum MeetingRoomStatus {
     ACTIVE(0),

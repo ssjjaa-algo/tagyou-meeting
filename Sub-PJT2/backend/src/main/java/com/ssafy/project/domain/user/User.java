@@ -65,6 +65,7 @@ public class User extends BaseTimeEntity {
     public void changeUser(UserInfoReqDto userInfoReqDto){
         this.phoneNumber = userInfoReqDto.getPhoneNumber();
         this.userAge = userInfoReqDto.getUserAge();
+        this.userGender = userInfoReqDto.getUserGender();
         this.userLike = 0;
     }
     public void changeUserImg(Image img) {

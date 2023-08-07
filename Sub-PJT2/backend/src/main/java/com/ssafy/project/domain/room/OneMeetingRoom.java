@@ -21,14 +21,6 @@ public class OneMeetingRoom extends MeetingRoom{
     @JoinColumn(name="female_user_id")
     private User femaleUser; // 여자
 
-    public void setMaleUser(User maleUser) {
-        this.maleUser = maleUser;
-    }
-
-    public void setFemaleUser(User femaleUser) {
-        this.femaleUser = femaleUser;
-    }
-
     @Builder
     public OneMeetingRoom(User maleUser, User femaleUser) {
         this.maleUser = maleUser;

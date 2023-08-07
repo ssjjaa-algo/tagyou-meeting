@@ -2,7 +2,11 @@ package com.ssafy.project.controller;
 
 import com.ssafy.project.dto.request.GroupReqDto;
 import com.ssafy.project.dto.response.GroupRspDto;
+import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.service.GroupService;
+import com.ssafy.project.service.TokenService;
+import com.ssafy.project.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +18,13 @@ import org.springframework.web.bind.annotation.*;
 public class GroupController {
 
     private final GroupService groupService;
+    private final TokenService tokenService;
 
     // ====================== 그룹 생성 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
-    public GroupRspDto createGroup(@RequestBody Long userId){
+    public GroupRspDto createGroup(HttpServletRequest request){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.createGroup(userId);
     }
 
