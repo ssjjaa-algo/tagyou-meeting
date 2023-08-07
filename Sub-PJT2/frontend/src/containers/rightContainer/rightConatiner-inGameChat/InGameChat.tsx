@@ -35,9 +35,9 @@ type MeetingRoom = {
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  // const domainAddress = 'www.tagyou.com';
-  // const [socketUrl, setSocketUrl] = useState(`ws://${domainAddress}/ws/chat`);
-  const [socketUrl, setSocketUrl] = useState(`ws://localhost:3000/ws`);
+  const domainAddress = 'www.tagyou.com';
+  const [socketUrl, setSocketUrl] = useState(`ws://${domainAddress}/ws/chat`);
+  // const [socketUrl, setSocketUrl] = useState(`ws://localhost:3000/ws`);
   const [items, setItems] = useState<Message[]>([]);
   const [messageHistory, setMessageHistory] = useState([]);
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
