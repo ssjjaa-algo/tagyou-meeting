@@ -14,10 +14,20 @@ import { useRecoilState } from "recoil";
 // import { WebSocketContext } from "webSocket/WebSocketProvider";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
+type Message = {
+  content: string;
+  type: MessageType;
+  sender: string;
+  meetingRoom: MeetingRoom;
+};
+
 type MessageType = {
-  type: string;
-  user: string;
-  message: string;
+  code: number;
+  name: string;
+};
+
+type MeetingRoom = {
+  name: string;
 };
 
 // const socket = new WebSocket(`ws://${window.location.host}`);
@@ -28,14 +38,15 @@ const RightContainer = () => {
   // const domainAddress = 'www.tagyou.com';
   // const [socketUrl, setSocketUrl] = useState(`ws://${domainAddress}/ws/chat`);
   const [socketUrl, setSocketUrl] = useState(`ws://localhost:3000/ws`);
-  const [items, setItems] = useState<MessageType[]>([]);
+  const [items, setItems] = useState<Message[]>([]);
   const [messageHistory, setMessageHistory] = useState([]);
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
   useEffect(() => {
     if (lastMessage) {
       setMessageHistory((prev) => prev.concat(lastMessage.data));
-      if (lastMessage.data.type === "MessageType") {
+      // 메세지 타입의 code가 2일 경우(메시지 전송일 경우) addItem
+      if (lastMessage.data.type.code === 2) {
         addItem(lastMessage.data);
       }
     }
@@ -49,7 +60,7 @@ const RightContainer = () => {
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
 
-  const addItem = (item: MessageType) => {
+  const addItem = (item: Message) => {
     setItems([...items, item]);
   };
 
@@ -76,21 +87,32 @@ const RightContainer = () => {
     setMessage(e.target.value);
   };
 
-  const messageSent: MessageType = {
-    type: "MessageType",
-    user: "A",
-    message: message,
+  const messageSendingType: MessageType = {
+    code: 2,
+    name: "메시지 전송",
+  };
+
+  const talkingMeetingRoom: MeetingRoom = {
+    name: "testRoom",
+  };
+
+  const messageSending: Message = {
+    content: message,
+    type: messageSendingType,
+    sender: "A",
+    meetingRoom: talkingMeetingRoom,
   };
   // useCallback(() => sendMessage(JSON.stringify(messageSent)), []);
-  
+
   const handleClickSubmit = useCallback(() => {
     console.log("전송!");
-    sendMessage(JSON.stringify(messageSent));
+    sendMessage(JSON.stringify(messageSending));
     sendMessage("Hello");
     setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 10);
   }, []);
+
   // {
   // console.log("여까지 옴");
   // console.log(items.length);
@@ -176,7 +198,7 @@ const RightContainer = () => {
       if (items[i] !== undefined) {
         result.push(
           <S.Messages>
-            {items[i].user} : {items[i].message}
+            {items[i].sender} : {items[i].content}
           </S.Messages>
         );
       }
