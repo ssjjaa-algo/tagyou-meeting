@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserReqDto {
+    private Long uId;
     private String email;
     private String name;
 //    private String picture;

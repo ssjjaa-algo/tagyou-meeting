@@ -1,8 +1,10 @@
 package com.ssafy.project.attribute;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.Token;
 import com.ssafy.project.dto.request.UserReqDto;
+import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
 import jakarta.servlet.ServletException;
@@ -42,9 +44,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             userService.saveUserAuthImage(userReqDto, oAuth2User.getAttribute("picture"));
         }
 
+        Long uId = userService.getUserIdByEmail(userReqDto.getEmail());
+
         String targetUrl;
         log.info(">>> generate token");
-        Token token = tokenService.generateToken(userReqDto.getEmail(), "USER");
+        Token token = tokenService.generateToken(uId.toString(), "USER");
         log.info(">>> generated token : {}", token);
 
         targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")

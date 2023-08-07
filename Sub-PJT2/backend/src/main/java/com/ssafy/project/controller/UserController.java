@@ -45,6 +45,12 @@ public class UserController {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.getUserInfo(id);
     }
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/mypage/{uId}") // 마이페이지(users 테이블) 정보 받아오기
+    public UserInfoRspDto getFriendPage(HttpServletRequest request, @PathVariable String uId) {
+        Long id = Long.parseLong(uId);
+        return userService.getUserInfo(id);
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/image")
