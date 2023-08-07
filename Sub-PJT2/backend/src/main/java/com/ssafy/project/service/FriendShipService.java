@@ -112,7 +112,8 @@ public class FriendShipService {
         // 친구 요청 메시지 확인
         findNoticesByUserId(friendReqDto.getUserId())
                 .ifPresent(notices -> notices.forEach(notice -> {
-                    if(notice.getUser().equals(friendReqDto.getUserId())){
+                    if(notice.getType().equals(NoticeType.FRIEND_REQUEST) &&
+                            notice.getUser().equals(friendReqDto)){
                         notice.readNotice();
                     }
                 }));
@@ -162,6 +163,8 @@ public class FriendShipService {
                                 .map(FriendRspDto::new)
                                 .collect(Collectors.toList()))
                         .orElseGet(ArrayList::new);
+
+        // status 가 있을 때 없을 때 구분이 필요함
 
         friendRspDtoList.addAll(
                 findUsersByKeyWord(word)

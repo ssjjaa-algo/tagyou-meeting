@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GroupReqDto {
-    private Long userId;
     private Long groupId;
+    private Long userId;
+    private Long targetUserId;
 }

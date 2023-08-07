@@ -12,7 +12,8 @@ import lombok.Getter;
 public abstract class MeetingRoom extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roomId;
+    @Column(name = "room_id")
+    private Long id;
 
     private boolean isStart; // 대기 : 0 시작 : 1
 
