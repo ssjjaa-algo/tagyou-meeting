@@ -10,17 +10,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/users", produces = "application/json; charset=utf8")
+@RequestMapping(value = "/profile", produces = "application/json; charset=utf8")
 public class ProfileController {
 
     private final TokenService tokenService;
     private final ProfileService profileService;
 
-    @GetMapping("/profile")
+    @GetMapping("")
     public ResponseEntity<?> getProfile(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         Profile profile = profileService.getProfile(userId);
@@ -29,14 +33,14 @@ public class ProfileController {
         else return ResponseEntity.ok().body(new ProfileRspDto(profile));
     }
 
-    @PostMapping("/profile")
+    @PostMapping("")
     public ResponseEntity<?> makeProfile(HttpServletRequest request, @RequestBody ProfileReqDto profileReqDto) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         Profile profile = profileService.makeProfile(userId, profileReqDto);
             return new ResponseEntity<>(new ProfileRspDto(profile), HttpStatus.CREATED);
     }
 
-    @PutMapping("/profile")
+    @PutMapping("")
     public ResponseEntity<?> editProfile(HttpServletRequest request, @RequestBody ProfileReqDto profileReqDto) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         Profile profile = profileService.editProfile(userId, profileReqDto);
@@ -44,4 +48,27 @@ public class ProfileController {
             return ResponseEntity.ok().body("not found");
         return ResponseEntity.ok().body(new ProfileRspDto(profile));
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/image")
+    public List<String> getProfileImages(HttpServletRequest request) {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        return profileService.getProfileImages(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/image")
+    public String uploadProfileImage(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        String url = profileService.saveProfileImage(id, file);
+        return url;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/image")
+    public String deleteProfileImage(HttpServletRequest request) {
+
+        return "deleteProfileImage";
+    }
+
 }

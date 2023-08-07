@@ -35,7 +35,7 @@ export const HashWrap = styled.div<{ theme: themeProps }>`
 
 `
 
-export const HashInput = styled.input`
+export const HashInput = styled.input<{ theme: themeProps }>`
   width: auto;
   margin: 10px;
   display: inline-flex;
@@ -45,4 +45,5 @@ export const HashInput = styled.input`
   margin-bottom: 0.75rem;
   min-width: 8rem;
   border: none;
+  background-color: ${(props) => props.theme.bg.light};
 `

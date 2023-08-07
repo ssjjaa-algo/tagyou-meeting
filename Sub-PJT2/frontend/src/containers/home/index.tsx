@@ -7,17 +7,16 @@ import { useEffect, useState } from "react";
 import Slider from "components/slide";
 import Tags from "components/tags";
 import Intro from "components/intro";
-import { useSearchParams } from "react-router-dom";
 
 const Home = () => {
   const theme: themeProps = useTheme  ();
   const [userData, setUserData] = useState<UserData>();
   const [profileData, setProfileData] = useState<ProfileData>();
-  // const [searchParams] = useSearchParams();
-
+  // const [searchParams] = useSearchParams();g
 
   useEffect(() => {
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTExMTQwOTEsImV4cCI6MTY5MTExNDY5MX0.rHiZCF4PLt1dT9gvSGH466zFj0HXGkVz2WSkkXdvxyA"
+    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTExMzc1NzMsImV4cCI6MTY5MTE5NzU3M30.vI8IMS3Bo_B1t1eC2N9qTtCnHUvTnXfx9jlzcSz2Mi0"
+    // 토큰 받아오는 과정에서 막혀서 일단 주석 처리하였습니다.
     // fetch("api/users/tmp/token", {
     //   headers: {
     //     'Auth': 'master',
@@ -25,12 +24,7 @@ const Home = () => {
     //   }})
     //   .then((res) => 
     //     console.log(res)
-    //   ) 
-      
-      // JSON 변환
-      // .then((data) => {
-      //   console.log('결과물:', data);
-      // })
+    //   )
     const fetchData = async () => {
       fetch("api/users/profile", {
         headers: {
@@ -39,7 +33,7 @@ const Home = () => {
       })
         .then(async (res) => 
         {const data = await res.json()
-        if (data !== undefined) {setUserData(data)}
+        if (data !== undefined) {setProfileData(data)}
         })
       fetch("api/users/mypage", {
         headers: {
@@ -48,12 +42,11 @@ const Home = () => {
       })
         .then(async (res) => 
         {const data = await res.json()
-        if (data !== undefined) {setProfileData(data)}
+        if (data !== undefined) {setUserData(data)}
         })
       };
     fetchData();
   }, []);
-
   
   return (
     <S.Container>
@@ -98,7 +91,7 @@ const Home = () => {
       </S.OtherContainer>
       <S.OtherContainer>
         <S.Title theme={theme}>한 줄 소개</S.Title>
-        <Intro content={profileData?.content}></Intro>
+        <Intro data={profileData?.content}></Intro>
       </S.OtherContainer>
       <S.OtherContainer>
         <S.Title theme={theme}>방명록</S.Title>

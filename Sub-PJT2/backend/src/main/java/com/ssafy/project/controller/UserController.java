@@ -7,7 +7,11 @@ import com.ssafy.project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -42,15 +46,28 @@ public class UserController {
         return userService.getUserInfo(id);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/image")
+    public String getMyImage(HttpServletRequest request) {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        return userService.getUserImage(id);
+    }
+
+
     // ==================== 회원 상세 정보 입력 ============================
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/mypage") // 첫 로그인 후 추가정보 넣기 or 마이페이지 정보 수정하기
     public UserInfoRspDto editMypage(HttpServletRequest request, @RequestBody UserInfoReqDto userInfo) {
-        String Token = request.getHeader("Auth");
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.editUserInfo(id, userInfo);
     }
 
-    // ---------------- 일반 회원 가입 (일단 보류) --------------------
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/image")
+    public String changeUserImg(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        return userService.editUserImage(id, file);
+    }
+
 
 }

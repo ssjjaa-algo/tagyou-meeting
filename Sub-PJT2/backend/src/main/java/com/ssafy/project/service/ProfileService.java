@@ -1,5 +1,6 @@
 package com.ssafy.project.service;
 
+import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.Profile;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.ProfileReqDto;
@@ -10,7 +11,10 @@ import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +24,7 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
+    private final ImageService imageService;
 
     public Profile getProfile(Long userId) {
         return profileRepository.findByUserId(userId)
@@ -58,16 +63,24 @@ public class ProfileService {
     }
 
     @Transactional
-    public void saveProfileImage(UserReqDto userReqDto, String pic) {
+    public String saveProfileImage(Long uId, MultipartFile file) throws IOException {
         // 프로필사진 image 테이블에 저장
-
+        Image img = imageService.initImageInDb(uId);
 
         // 사진 s3에 저장
+        imageService.saveImageInS3(file, img.getId()+".jpg");
 
+        Profile p = getProfile(uId);
+        img = imageService.editImageInDb(p, img, img.getId().toString(), file);
 
-        // 프로필사진 user 정보에 저장
-
+        return img.getFilePath();
     }
+
+    public List<String> getProfileImages(Long id) {
+        Profile p = getProfile(id);
+        return imageService.getProfileImages(p);
+    }
+
 
     /**
      * 프로필 등록

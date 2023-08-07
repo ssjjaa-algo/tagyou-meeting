@@ -39,7 +39,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         boolean userExists = userService.checkUserExists(userReqDto.getEmail());
         if(!userExists) {
             userService.signUpUser(userReqDto);
-            userService.saveUserImage(userReqDto, oAuth2User.getAttribute("picture"));
+            userService.saveUserAuthImage(userReqDto, oAuth2User.getAttribute("picture"));
         }
 
         String targetUrl;

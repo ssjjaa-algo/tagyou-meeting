@@ -1,39 +1,67 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as S from './Tags.styled';
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 
 const Tags = (data: any) => {
-  // const isBrowser = typeof window !== 'undefined';
+  const isBrowser = typeof window !== 'undefined';
   const theme : themeProps = useTheme();
   // console.log(data.hobby)
   const [hashtag, setHashtag] = useState<string>('')
   const [hashArr, setHashArr] = useState<string[]>([])  
 
-  /* 요소 불러오기, 초기값 넣기*/
-  const $HashWrapOuter = document.querySelector('.HashWrapOuter') as HTMLElement
-  const $HashWrapInner = document.createElement('div')
-  $HashWrapInner.className = 'HashWrapInner'
-  console.log(data.hobby)
-  $HashWrapInner.innerHTML = '#' + data.hobby 
-  // console.log($HashWrapInner)
-  $HashWrapOuter?.appendChild($HashWrapInner)
+  useEffect(() => {
+    const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+    const $HashWrapInner_before = document.createElement('div')
+    $HashWrapInner_before.className = 'HashWrapInner'
+    if (data.hobby !== undefined) {
+      $HashWrapInner_before.innerHTML = '#' + data.hobby
+      $HashWrapOuter?.appendChild($HashWrapInner_before)
+      let new_content = data.hobby
+      // console.log(new_content+'ddd')
 
-  /* 태그 클릭 이벤트 관련 로직 */
-  $HashWrapInner.addEventListener('click', () => {
-  $HashWrapOuter?.removeChild($HashWrapInner)})
 
-  const onKeyUp = useCallback( // hashtag, hashArr이 변경될 때마다 함수 재생성
-    (e :React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
-        console.log('Enter Key 입력됨!', e.currentTarget.value)
-        $HashWrapInner.innerHTML = '#' + e.currentTarget.value
-        $HashWrapOuter?.appendChild($HashWrapInner)
-        setHashArr((hashArr) => [...hashArr, hashtag])
-        setHashtag('')
+      /* 태그를 클릭 이벤트 관련 로직 */
+      $HashWrapInner_before.addEventListener('click', () => {
+      $HashWrapOuter?.removeChild($HashWrapInner_before)
+      setHashArr(hashArr.filter((hashtag) => hashtag))
+      // let new_content = new_content.replace(data.hobby, 'ff')
+      // console.log(new_content)
+    })
+    }
+  }, [data.hobby])
+
+
+
+
+  const onKeyUp = useCallback(
+    (e:React.KeyboardEvent<HTMLInputElement>) => {
+      if (isBrowser) {
+        /* 요소 불러오기, 만들기*/
+        const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+        const $HashWrapInner = document.createElement('div')
+        $HashWrapInner.className = 'HashWrapInner'
+        
+        /* 태그를 클릭 이벤트 관련 로직 */
+        $HashWrapInner.addEventListener('click', () => {
+          $HashWrapOuter?.removeChild($HashWrapInner)
+          setHashArr(hashArr.filter((hashtag) => hashtag))
+        })
+
+        /* enter 키 코드 :13 */
+        if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
+          $HashWrapInner.innerHTML = '#' + e.currentTarget.value
+          $HashWrapOuter?.appendChild($HashWrapInner)
+          
+          
+          // console.log('/' + e.currentTarget.value)
+          setHashArr((hashArr) => [...hashArr, hashtag])
+          setHashtag('')
+          /* '취미1/취미2/취미3' 의 형태로 content 변경해서 PUT 요청 보내기 */
+        }
       }
     },
-    [hashArr],
+    [hashArr]
   )
   
   const onChangeHashtag = useCallback(
@@ -49,12 +77,13 @@ const Tags = (data: any) => {
       <div className="HashWrapOuter"></div>
     </S.HashWrap>
       <S.HashInput
+        theme={theme}
         className="HashInput"
         type="text"
         value={hashtag}
         onChange={onChangeHashtag}
         onKeyUp={onKeyUp}
-        placeholder="해시태그 입력"
+        placeholder="취미 추가하기"
       />
     </>
   );
