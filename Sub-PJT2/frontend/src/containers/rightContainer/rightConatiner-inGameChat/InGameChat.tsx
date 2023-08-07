@@ -38,13 +38,13 @@ type MeetingRoom = {
 
 const RightContainer = () => {
   const theme: themeProps = useTheme();
-  
+
   const [roomId, setRoomId] = useState<number>();
-  
+
   const client = useRef<CompatClient>();
-  
+
   const domainAddress = "www.tagyou.com";
-  
+
   const connectHandler = (roomId: number, roomName: string) => {
     client.current = Stomp.over(() => {
       // 여기서 url 조정하면 됨
@@ -68,6 +68,7 @@ const RightContainer = () => {
       }
     );
     setRoomId(roomId);
+    console.log("...Connecting to Room #" + roomId);
   };
 
   // const [socketUrl, setSocketUrl] = useState(`ws://${domainAddress}/ws/chat`);
@@ -129,7 +130,7 @@ const RightContainer = () => {
   };
 
   const talkingMeetingRoom: MeetingRoom = {
-    id: 0,
+    id: 1,
     name: "testRoom",
   };
 
@@ -141,7 +142,7 @@ const RightContainer = () => {
   };
   // useCallback(() => sendMessage(JSON.stringify(messageSent)), []);
 
-  const handleClickSubmit = useCallback(() => {
+  const handleClickSubmit = () => {
     console.log("전송!");
     // prev version/////////////////////////////////////
     // sendMessage(JSON.stringify(messageSending));
@@ -149,17 +150,51 @@ const RightContainer = () => {
 
     // lastest version/////////////////////////////////
     console.log("roomId: " + roomId);
-    client.current!.send(
-      "/pub/chat/message",
-      {},
-      JSON.stringify(messageSending)
-    );
-    setMessage("");
+    console.log("연결상태: " + client.current?.connected);
+    if (!roomId || !client.current?.connected) {
+      alert("채팅이 연결되지 않았습니다.");
+    } else {
+      if (message.length > 0) {
+        client.current!.send(
+          "/pub/chat/message",
+          {},
+          JSON.stringify(messageSending)
+        );
+        setMessage("");
+      } else {
+        alert("메시지를 입력해주세요");
+      }
+    }
 
     setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 10);
-  }, []);
+  };
+
+  // const handleClickSubmit = useCallback(() => {
+  //   console.log("전송!");
+  //   // prev version/////////////////////////////////////
+  //   // sendMessage(JSON.stringify(messageSending));
+  //   // sendMessage("Hello");
+
+  //   // lastest version/////////////////////////////////
+  //   console.log("roomId: " + roomId);
+  //   console.log("연결상태: " + client.current?.connected);
+  //   if (!roomId || !client.current?.connected) {
+  //     alert("채팅이 연결되지 않았습니다.");
+  //   } else {
+  //     client.current!.send(
+  //       "/pub/chat/message",
+  //       {},
+  //       JSON.stringify(messageSending)
+  //     );
+  //     setMessage("");
+  //   }
+
+  //   setTimeout(() => {
+  //     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  //   }, 10);
+  // }, []);
 
   // {
   // console.log("여까지 옴");
@@ -257,7 +292,7 @@ const RightContainer = () => {
 
   // 테스트용 버튼 링크
   const testHandler = () => {
-    connectHandler(0, "testRoom");
+    connectHandler(1, "testRoom");
   };
 
   return (
