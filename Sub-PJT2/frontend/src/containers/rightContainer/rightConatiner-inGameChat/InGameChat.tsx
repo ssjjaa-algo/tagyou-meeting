@@ -1,8 +1,7 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./InGameChat.styled";
-import React, { useRef, useContext, useState, useEffect } from "react";
-import { WebSocketContext } from "webSocket/WebSocketProvider";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { InGameChatStatus } from "atoms/atoms";
 import "css/chat/inGameChat.css";
 
@@ -11,16 +10,39 @@ import messageButton from "asset/img/message.png";
 import { useRecoilState } from "recoil";
 // import { ChatData } from "types/types";
 
+// webSocket 관련
+// import { WebSocketContext } from "webSocket/WebSocketProvider";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+
 type MessageType = {
+  type: string;
   user: string;
   message: string;
 };
 
+// const socket = new WebSocket(`ws://${window.location.host}`);
+
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const ws = useContext(WebSocketContext);
+  // const domainAddress = 'www.tagyou.com';
+  // const [socketUrl, setSocketUrl] = useState(`ws://${domainAddress}/ws/chat`);
+  const [socketUrl, setSocketUrl] = useState(`ws://localhost:3000/ws`);
   const [items, setItems] = useState<MessageType[]>([]);
+  const [messageHistory, setMessageHistory] = useState([]);
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+
+  useEffect(() => {
+    if (lastMessage) {
+      setMessageHistory((prev) => prev.concat(lastMessage.data));
+      if (lastMessage.data.type === "MessageType") {
+        addItem(lastMessage.data);
+      }
+    }
+  }, [lastMessage, setItems]);
+
+  // const ws = useContext(WebSocketContext).current;
+  // const ws = new WebSocket("ws://localhost:3000/ws");
   const [message, setMessage] = useState("");
 
   const [isHovering, setIsHovering] = useState(false);
@@ -31,53 +53,98 @@ const RightContainer = () => {
     setItems([...items, item]);
   };
 
-  ws.current.onmessage = (evt: MessageEvent) => {
-    const data = JSON.parse(evt.data);
-    addItem(data.chat);
-    console.log(data);
-  };
+  // ws.onmessage = (evt: MessageEvent) => {
+  //   console.log("message이벤트 발생");
+  //   const data = JSON.parse(evt.data);
+  //   console.log(evt);
+  //   console.log("data: " + data);
+  //   if (data.type === "MessageType") {
+  //     addItem(data);
+  //   }
+  // };
+
+  // ws.onmessage = (evt: MessageEvent) => {
+  //   console.log("message이벤트 발생");
+  //   const data = JSON.parse(evt.data);
+  //   console.log("data: " + data);
+  //   if (data.type === "MessageType") {
+  //     addItem(data);
+  //   }
+  // };
 
   const handleChangeText = (e: any) => {
     setMessage(e.target.value);
   };
 
-  const handleClickSubmit = () => {
-    console.log("여까지 옴");
-    console.log(items.length);
-    if (message.length > 0) {
-      console.log(ws.current.readyState);
-      console.log(message);
-      console.log(items);
-      // dummy data
-      const messageSent: MessageType = {
-        user: "A",
-        message: message,
-      };
-      addItem(messageSent);
-
-      // 웹소켓으로 데이터 전달
-      ws.current.send(
-        JSON.stringify({
-          user: "A",
-          chat: message,
-        })
-      );
-      setMessage("");
-    }
-
-    // 전송 버튼 누르면 스크롤 맨 아래로 내리는 기능
+  const messageSent: MessageType = {
+    type: "MessageType",
+    user: "A",
+    message: message,
+  };
+  // useCallback(() => sendMessage(JSON.stringify(messageSent)), []);
+  
+  const handleClickSubmit = useCallback(() => {
+    console.log("전송!");
+    sendMessage(JSON.stringify(messageSent));
+    sendMessage("Hello");
     setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 10);
-  };
+  }, []);
+  // {
+  // console.log("여까지 옴");
+  // console.log(items.length);
+  // if (message.length > 0) {
+  //   console.log(ws.readyState);
+  //   console.log(message);
+  //   // dummy data
+  //   const messageSent: MessageType = {
+  //     type: "MessageType",
+  //     user: "A",
+  //     message: message,
+  //   };
+  //   addItem(messageSent);
+  //   console.log(items);
+
+  //   // 웹소켓으로 데이터 전달
+  //   const a = JSON.stringify(messageSent);
+  //   console.log("a:" + a);
+  //   ws.onopen = () => {
+  //     ws.send("뭐가 문제냐?");
+  //     ws.send(JSON.stringify(messageSent));
+  //   };
+  //   console.log(ws);
+  //   setMessage("");
+  // }
+
+  // 전송 버튼 누르면 스크롤 맨 아래로 내리는 기능
+  // setTimeout(() => {
+  //   bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, 10);
+  // }
+
+  const handleClickChangeSocketUrl = useCallback(
+    () => setSocketUrl("ws://localhost:3000/ws"),
+    []
+  );
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: "Connecting",
+    [ReadyState.OPEN]: "Open",
+    [ReadyState.CLOSING]: "Closing",
+    [ReadyState.CLOSED]: "Closed",
+    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+  }[readyState];
 
   useEffect(() => {
+    // console.log(items);
     if (!chatScreenRef.current?.scrollTop) return;
     console.log(chatScreenRef.current?.scrollTop);
     if (chatScreenRef.current?.scrollTop > 0.5) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [message]);
+
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // 메시지 아이콘 누르면 채팅 창 열리고 닫히기 기능
@@ -103,6 +170,20 @@ const RightContainer = () => {
 
   const chatScreenRef = useRef<HTMLDivElement>(null);
 
+  const loadChats = () => {
+    const result = [];
+    for (let i = 0; i < items.length; i++) {
+      if (items[i] !== undefined) {
+        result.push(
+          <S.Messages>
+            {items[i].user} : {items[i].message}
+          </S.Messages>
+        );
+      }
+    }
+    return result;
+  };
+
   return (
     <S.Container
       theme={theme}
@@ -126,21 +207,25 @@ const RightContainer = () => {
           theme={theme}
           className={inGameChatStatus ? "chatBoxShown" : "chatBoxHidden"}
         >
+          <button onClick={handleClickChangeSocketUrl}>
+            Click Me to change Socket Url
+          </button>
+          The WebSocket is currently {connectionStatus}
           <S.ChatRoomMainChats
             className="chatRoom-main-chats"
             theme={theme}
             ref={chatScreenRef}
           >
             <S.ChatRoomMainChatsContent>
-              {/* {items.length > 0
-                ? items.map((chat, index) => {
-                    return (
-                      <S.Messages key={index}>
-                        {chat.user} : {chat.message}
-                      </S.Messages>
-                    );
-                  })
-                : 1} */}
+              {loadChats()}
+              {lastMessage ? (
+                <span>Last message: {lastMessage.data}</span>
+              ) : null}
+              <ul>
+                {messageHistory.map((message, idx) => (
+                  <span key={idx}>{message ? message : null}</span>
+                ))}
+              </ul>
               {/* 스크롤 맨 아래로 내리기 위한 레퍼런스 */}
               <div ref={bottomRef}></div>
             </S.ChatRoomMainChatsContent>

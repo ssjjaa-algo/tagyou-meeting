@@ -1,4 +1,4 @@
-import WebSocketProvider from "webSocket/WebSocketProvider";
+// import WebSocketProvider from "webSocket/WebSocketProvider";
 import RightContainer from "containers/rightContainer/rightConatiner-inGameChat/InGameChat";
 import LeftContainer from "containers/leftContainer/game/catchMind/CatchMind";
 import styled from "@emotion/styled";
@@ -8,9 +8,9 @@ function InGame() {
     <div>
       <Container>
         <LeftContainer />
-        <WebSocketProvider>
+        {/* <WebSocketProvider> */}
           <RightContainer />
-        </WebSocketProvider>
+        {/* </WebSocketProvider> */}
       </Container>
     </div>
   );
