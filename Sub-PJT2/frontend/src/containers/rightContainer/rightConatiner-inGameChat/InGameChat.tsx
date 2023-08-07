@@ -13,6 +13,9 @@ import { useRecoilState } from "recoil";
 // webSocket 관련
 // import { WebSocketContext } from "webSocket/WebSocketProvider";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import StompJs, { CompatClient, Stomp } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+import { client } from "stompjs";
 
 type Message = {
   content: string;
@@ -27,6 +30,7 @@ type MessageType = {
 };
 
 type MeetingRoom = {
+  id: number;
   name: string;
 };
 
@@ -35,22 +39,51 @@ type MeetingRoom = {
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const domainAddress = 'www.tagyou.com';
-  const [socketUrl, setSocketUrl] = useState(`ws://${domainAddress}/ws/chat`);
+  const [roomId, setRoomId] = useState<number>();
+
+  const client = useRef<CompatClient>();
+
+  const connectHandler = (roomId: number, roomName: string) => {
+    client.current = Stomp.over(() => {
+      // 여기서 url 조정하면 됨
+      const socket = new SockJS(`http://${domainAddress}/ws/chat`);
+      return socket;
+    });
+    client.current.connect(
+      {
+        // Authorization: token,
+      },
+      () => {
+        client.current!.subscribe(
+          `/${roomId}`,
+          (message) => {
+            console.log(message);
+            addItem(JSON.parse(message.body));
+            // setChatMessage(JSON.parse(message.body));
+          }
+          // { Authorization: token ? token : "", simpDestination: mockId }
+        );
+      }
+    );
+    setRoomId(roomId);
+  };
+
+  const domainAddress = "www.tagyou.com";
+  // const [socketUrl, setSocketUrl] = useState(`ws://${domainAddress}/ws/chat`);
   // const [socketUrl, setSocketUrl] = useState(`ws://localhost:3000/ws`);
   const [items, setItems] = useState<Message[]>([]);
   const [messageHistory, setMessageHistory] = useState([]);
-  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+  // const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
-  useEffect(() => {
-    if (lastMessage) {
-      setMessageHistory((prev) => prev.concat(lastMessage.data));
-      // 메세지 타입의 code가 2일 경우(메시지 전송일 경우) addItem
-      if (lastMessage.data.type.code === 2) {
-        addItem(lastMessage.data);
-      }
-    }
-  }, [lastMessage, setItems]);
+  // useEffect(() => {
+  //   if (lastMessage) {
+  //     setMessageHistory((prev) => prev.concat(lastMessage.data));
+  //     // 메세지 타입의 code가 2일 경우(메시지 전송일 경우) addItem
+  //     if (lastMessage.data.type.code === 2) {
+  //       addItem(lastMessage.data);
+  //     }
+  //   }
+  // }, [lastMessage, setItems]);
 
   // const ws = useContext(WebSocketContext).current;
   // const ws = new WebSocket("ws://localhost:3000/ws");
@@ -61,7 +94,9 @@ const RightContainer = () => {
     useRecoilState(InGameChatStatus);
 
   const addItem = (item: Message) => {
-    setItems([...items, item]);
+    if (item.type.code === 2) {
+      setItems([...items, item]);
+    }
   };
 
   // ws.onmessage = (evt: MessageEvent) => {
@@ -93,6 +128,7 @@ const RightContainer = () => {
   };
 
   const talkingMeetingRoom: MeetingRoom = {
+    id: 0,
     name: "testRoom",
   };
 
@@ -106,8 +142,19 @@ const RightContainer = () => {
 
   const handleClickSubmit = useCallback(() => {
     console.log("전송!");
-    sendMessage(JSON.stringify(messageSending));
-    sendMessage("Hello");
+    // prev version/////////////////////////////////////
+    // sendMessage(JSON.stringify(messageSending));
+    // sendMessage("Hello");
+
+    // lastest version/////////////////////////////////
+    console.log("roomId: " + roomId);
+    client.current!.send(
+      "/pub/chat/message",
+      {},
+      JSON.stringify(messageSending)
+    );
+    setMessage("");
+
     setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 10);
@@ -145,18 +192,19 @@ const RightContainer = () => {
   // }, 10);
   // }
 
-  const handleClickChangeSocketUrl = useCallback(
-    () => setSocketUrl("ws://localhost:3000/ws"),
-    []
-  );
+  // const handleClickChangeSocketUrl = useCallback(
+  //   () => setSocketUrl("ws://localhost:3000/ws"),
+  //   []
+  // );
 
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: "Connecting",
-    [ReadyState.OPEN]: "Open",
-    [ReadyState.CLOSING]: "Closing",
-    [ReadyState.CLOSED]: "Closed",
-    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
-  }[readyState];
+  // prev version///////////////////////////////////
+  // const connectionStatus = {
+  //   [ReadyState.CONNECTING]: "Connecting",
+  //   [ReadyState.OPEN]: "Open",
+  //   [ReadyState.CLOSING]: "Closing",
+  //   [ReadyState.CLOSED]: "Closed",
+  //   [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+  // }[readyState];
 
   useEffect(() => {
     // console.log(items);
@@ -206,6 +254,11 @@ const RightContainer = () => {
     return result;
   };
 
+  // 테스트용 버튼 링크
+  const testHandler = () => {
+    connectHandler(0, "testRoom");
+  };
+
   return (
     <S.Container
       theme={theme}
@@ -229,10 +282,14 @@ const RightContainer = () => {
           theme={theme}
           className={inGameChatStatus ? "chatBoxShown" : "chatBoxHidden"}
         >
-          <button onClick={handleClickChangeSocketUrl}>
+          {/* 테스트용 버튼 */}
+          <S.Button theme={theme} onClick={testHandler}>
+            Test
+          </S.Button>
+          {/* <button onClick={handleClickChangeSocketUrl}>
             Click Me to change Socket Url
-          </button>
-          The WebSocket is currently {connectionStatus}
+          </button> */}
+          {/* The WebSocket is currently {connectionStatus} */}
           <S.ChatRoomMainChats
             className="chatRoom-main-chats"
             theme={theme}
@@ -240,9 +297,9 @@ const RightContainer = () => {
           >
             <S.ChatRoomMainChatsContent>
               {loadChats()}
-              {lastMessage ? (
+              {/* {lastMessage ? (
                 <span>Last message: {lastMessage.data}</span>
-              ) : null}
+              ) : null} */}
               <ul>
                 {messageHistory.map((message, idx) => (
                   <span key={idx}>{message ? message : null}</span>
