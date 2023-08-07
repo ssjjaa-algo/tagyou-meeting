@@ -31,6 +31,7 @@ public class GroupService {
         User user = findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 만들 유저가 존재하지 않습니다."));
 
+        System.out.println("user = " + user);
         MeetingGroup meetingGroup = saveMeetingGroup(
                 MeetingGroup.builder()
                         .user(user)
