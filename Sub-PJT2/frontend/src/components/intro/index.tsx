@@ -1,23 +1,40 @@
 import * as S from "./Intro.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
-// import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const Intro = (content: any) => {
+const Intro = (props: { data: any }) => {
   const theme: themeProps = useTheme();
-  
-  function edit() {
-    console.log("클릭 시 content.data 변경되도록 수정할 예정입니다")    
+  const [editing, setEditing] = useState(false);
+  const [editedData, setEditedData] = useState(props.data);
+
+  function handleEdit() {
+    setEditing(true);
+  }
+
+  function handleSave() {
+    setEditing(false);
+    setEditedData(editedData);
+    // 여기서 editedData로 수정하는 post 요청 보내야 함
+  }
+
+  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    setEditedData(event.target.value);
   }
 
   return (
     <>
-    
-    <button onClick={edit}><S.FavoriteIconStyled theme={theme}/></button>
-    <div>{content.data}</div>
-    
+      <S.FavoriteIconStyled theme={theme} onClick={handleEdit} />
+      {editing ? (
+        <S.Container>
+          <S.Input value={editedData} onChange={handleChange} theme={theme}/>
+          <S.Button onClick={handleSave} theme={theme}>저장</S.Button>
+        </S.Container>
+      ) : (
+        <S.Content theme={theme}>{editedData}</S.Content>
+      )}
     </>
-  )
-}
+  );
+};
 
 export default Intro;

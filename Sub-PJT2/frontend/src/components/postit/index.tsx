@@ -2,7 +2,6 @@ import * as S from "./Postit.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import "./Postit.css";
-import { create } from "domain";
 
 const Postit = () => {
   const theme: themeProps = useTheme();
@@ -104,16 +103,18 @@ const Postit = () => {
   return (
     <>
     <S.InputContainer>
-    <S.Label htmlFor="note_color" theme={theme}>색상</S.Label>
-    <S.Select id="note_color">
-      <option value="LightGoldenRodYellow">노란색</option>
-      <option value="#D9EAD3">녹색</option>
-      <option value="LightPink">분홍</option>
-      <option value="LightBlue">파란색</option>
-    </S.Select>
-    <S.Label htmlFor="note_color" theme={theme}>내용</S.Label>
-    <S.Input id="note_text" theme={theme} required maxLength={50}></S.Input>
-    <S.Add theme={theme} id="add_button">작성하기</S.Add>
+      <S.Label htmlFor="note_color" theme={theme}>색상</S.Label>
+      <S.Select id="note_color" theme={theme}>
+        <option value="LightGoldenRodYellow">노란색</option>
+        <option value="#D9EAD3">녹색</option>
+        <option value="LightPink">분홍</option>
+        <option value="LightBlue">파란색</option>
+      </S.Select>
+    </S.InputContainer>
+    <S.InputContainer>
+      <S.Label htmlFor="note_text" theme={theme}>내용</S.Label>
+      <S.Input id="note_text" theme={theme} required maxLength={50}></S.Input>
+      <S.Add theme={theme} id="add_button">작성하기</S.Add>
     </S.InputContainer>
     <S.Container>
       <ul id="stickies"></ul>
