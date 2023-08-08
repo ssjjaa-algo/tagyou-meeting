@@ -66,5 +66,6 @@ cloud:
       accessKey: AKIA4S2XBYFDNSFC7XBK
       secretKey: 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
 
-OPENVIDU_URL: http://localhost:4443/
-OPENVIDU_SECRET: MY_SECRET
+#OPENVIDU_URL: http://localhost:4443/
+OPENVIDU_URL: https://tagyou.site:8443/
+OPENVIDU_SECRET: tagyou
