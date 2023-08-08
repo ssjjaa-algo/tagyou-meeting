@@ -4,10 +4,8 @@ import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.Profile;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.ProfileReqDto;
-import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.ProfileRepository;
-import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,9 +23,14 @@ public class ProfileService {
     private final UserService userService;
     private final ImageService imageService;
 
-    public Profile getProfile(Long userId) {
+    public Profile getProfileByUId(Long userId) {
         return profileRepository.findByUserId(userId)
                 .orElseThrow(()->new NotFoundException("해당 유저아이디의 프로필이 존재하지 않습니다. "));
+    }
+
+    public Profile getProfile(Long profileId) {
+        return profileRepository.findById(profileId)
+                .orElseThrow(()->new NotFoundException("해당 아이디의 프로필이 존재하지 않습니다. "));
     }
 
     @Transactional
@@ -71,14 +73,14 @@ public class ProfileService {
         // 사진 s3에 저장
         imageService.saveImageInS3(file, img.getId()+".jpg");
 
-        Profile p = getProfile(uId);
+        Profile p = getProfileByUId(uId);
         img = imageService.editImageInDb(p, img, img.getId().toString(), file);
 
         return img.getFilePath();
     }
 
     public List<String> getProfileImages(Long id) {
-        Profile p = getProfile(id);
+        Profile p = getProfileByUId(id);
         return imageService.getProfileImages(p);
     }
 
@@ -88,7 +90,7 @@ public class ProfileService {
         Image i = imageService.findImage(imgId)
                 .orElseThrow(() -> new NotFoundException("해당 아이디의 이미지 없음"));
         // 유저 아이디로 프로필 찾기
-        Profile p = getProfile(uId);
+        Profile p = getProfileByUId(uId);
 
         if(p.getUser().getId() != i.getProfile().getUser().getId())
             throw new IllegalAccessException("해당 이미지에 대한 접근 권한이 없습니다. ");
