@@ -1,7 +1,7 @@
-.Container-Son {
+.Container-Sis {
   width: 100vw;
 }
 
-.Container-Son-withChat {
+.Container-Sis-withChat {
   width: calc(100vw - 25rem);
 }
