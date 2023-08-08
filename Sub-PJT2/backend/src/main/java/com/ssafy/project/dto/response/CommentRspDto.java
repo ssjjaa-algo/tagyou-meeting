@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentRspDto {
     private Long commentId;
-    private User user;
+    private String userName;
     private Long profileId;
     private String title;
     private String content;
 
     public CommentRspDto(Comment comment) {
         this.commentId = comment.getId();
-        this.user = comment.getUser();
+        this.userName = comment.getUser().getUserName();
         this.profileId = comment.getProfile().getId();
         this.title = comment.getTitle();
         this.content = comment.getContent();
