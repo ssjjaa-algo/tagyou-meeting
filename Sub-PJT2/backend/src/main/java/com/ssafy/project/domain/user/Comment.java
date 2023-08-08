@@ -1,6 +1,7 @@
 package com.ssafy.project.domain.user;
 
 import com.ssafy.project.domain.BaseTimeEntity;
+import com.ssafy.project.dto.request.CommentReqDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -37,9 +38,9 @@ public class Comment extends BaseTimeEntity {
         this.content = content;
     }
 
-    public void updateComment(String content){
-        this.title = title;
-        this.content = content;
+    public void updateComment(CommentReqDto commentReqDto){
+        this.title = commentReqDto.getTitle();
+        this.content = commentReqDto.getContent();
     }
 
 }

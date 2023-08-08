@@ -37,7 +37,7 @@ public class SecurityConfig {
                 ////
                 .addFilterBefore(new JwtAuthFilter(tokenService),
                         UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login().loginPage("http://localhost:3000/auth")
+                .oauth2Login().loginPage("http://localhost:3000/home") // loginPage("http://localhost:3000/auth")
                 .successHandler(successHandler)
                 .userInfoEndpoint().userService(oAuth2UserService);
         http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
