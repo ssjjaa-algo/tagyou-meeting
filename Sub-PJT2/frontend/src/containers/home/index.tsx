@@ -11,12 +11,12 @@ import Postit from "components/postit"
 
 const Home = () => {
   const theme: themeProps = useTheme  ();
-  const [userData, setUserData] = useState<UserData>();
   const [profileData, setProfileData] = useState<ProfileData>();
+  const [userData, setUserData] = useState<UserData>();
   // const [searchParams] = useSearchParams();g
 
   useEffect(() => {
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTEzNjc1MzksImV4cCI6MTY5MTQyNzUzOX0.rzHJR0JevP0ZH67LK4-xAvjG3fYZrYgVcGFAWWpt9AU"
+    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTE0NzM2NDIsImV4cCI6MTY5MTUzMzY0Mn0.b0m5pVnkqTxgssqXLlrG4n6dBIWTJ6fp1V_3HO52yZs"
     // 토큰 받아오는 과정에서 막혀서 일단 주석 처리하였습니다.
     // fetch("api/users/tmp/token", {
     //   headers: {
