@@ -52,7 +52,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         log.info(">>> generated token : {}", token);
 
 //        targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
-        targetUrl = UriComponentsBuilder.fromUriString("http://tagyou.site/home")
+//        targetUrl = UriComponentsBuilder.fromUriString("http://tagyou.site/home")
+        targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/home")
                 .queryParam("Auth", token.getToken())
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
