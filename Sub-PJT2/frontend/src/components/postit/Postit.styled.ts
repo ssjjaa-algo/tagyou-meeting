@@ -18,7 +18,7 @@ export const Label = styled.label<{ theme: themeProps }>`
 export const Select = styled.select`
 `
 
-export const Input = styled.textarea<{ theme: themeProps }>`
+export const Input = styled.input<{ theme: themeProps }>`
   background-color: rgb(233, 233, 233);
   border-radius: 2rem;
   padding-left: 20px;
