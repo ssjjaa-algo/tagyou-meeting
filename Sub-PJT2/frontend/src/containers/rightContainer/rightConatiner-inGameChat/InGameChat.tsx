@@ -21,16 +21,11 @@ type Message = {
   content: string;
   type: MessageType;
   sender: string;
-  meetingRoom: MeetingRoom;
+  meetingRoomId: number;
 };
 
 type MessageType = {
   code: number;
-  name: string;
-};
-
-type MeetingRoom = {
-  id: number;
   name: string;
 };
 
@@ -129,16 +124,12 @@ const RightContainer = () => {
     name: "메시지 전송",
   };
 
-  const talkingMeetingRoom: MeetingRoom = {
-    id: 1,
-    name: "testRoom",
-  };
 
   const messageSending: Message = {
     content: message,
     type: messageSendingType,
     sender: "A",
-    meetingRoom: talkingMeetingRoom,
+    meetingRoomId: 1,
   };
   // useCallback(() => sendMessage(JSON.stringify(messageSent)), []);
 
@@ -255,7 +246,7 @@ const RightContainer = () => {
 
   // 메시지 아이콘 누르면 채팅 창 열리고 닫히기 기능
   const handleClickMessage = () => {
-    console.log(inGameChatStatus);
+    // console.log(inGameChatStatus);
     setInGameChatStatus(!inGameChatStatus);
   };
 

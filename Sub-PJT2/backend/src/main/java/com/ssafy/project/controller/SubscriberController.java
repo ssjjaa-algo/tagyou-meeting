@@ -23,7 +23,8 @@ public class SubscriberController {
 
 
     // ====================== 해당 아이디 채팅 ============================
-    @GetMapping(path = "/rooms/{meetingRoomId}/messages")
+//    @GetMapping(path = "/rooms/{meetingRoomId}/messages")
+    @GetMapping(path = "/{meetingRoomId}")
     public ResponseEntity<?> getChatMessages(@PathVariable("meetingRoomId") Long meetingRoomId) {
         MeetingRoom meetingRoom = meetingRoomRepository.findById(meetingRoomId).orElse(null);
 
