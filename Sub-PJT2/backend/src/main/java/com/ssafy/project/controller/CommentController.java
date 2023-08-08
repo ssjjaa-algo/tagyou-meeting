@@ -1,6 +1,6 @@
 package com.ssafy.project.controller;
 
-import com.ssafy.project.service.CommentService;
+//import com.ssafy.project.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class CommentController {
 
-    private final CommentService commentService;
+//    private final CommentService commentService;
 
     // ===================== 코멘트 조회 =========================
 

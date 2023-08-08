@@ -1,5 +1,5 @@
-package com.ssafy.project.service;
-
-public class CommentService {
-
-}
+//package com.ssafy.project.service;
+//
+//public class CommentService {
+//
+//}

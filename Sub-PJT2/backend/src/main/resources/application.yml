@@ -22,10 +22,10 @@ spring:
     init:
       encoding: UTF-8
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
 
   security:
     oauth2:
