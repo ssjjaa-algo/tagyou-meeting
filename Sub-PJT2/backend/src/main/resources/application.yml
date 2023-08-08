@@ -60,3 +60,6 @@ cloud:
     credentials:
       accessKey: AKIA4S2XBYFDNSFC7XBK
       secretKey: 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
+
+OPENVIDU_URL: http://localhost:4443/
+OPENVIDU_SECRET: MY_SECRET
