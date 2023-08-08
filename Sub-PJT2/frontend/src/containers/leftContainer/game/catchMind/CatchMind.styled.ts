@@ -2,13 +2,13 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 
 export const Container = styled.div`
-  /* border: solid red; */
+  /* border: solid yellow; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-width: fit-content;
-  min-height: fit-content;
+  min-height: 40rem;
 `;
 
 export const CanvasBox = styled.div<{ theme: themeProps }>`
@@ -21,8 +21,8 @@ export const CanvasBox = styled.div<{ theme: themeProps }>`
   align-items: center;
   width: 53%;
   height: 90%;
-  padding: 2rem 2rem 2rem 2rem;
-  min-height: 46rem;
+  padding: 1rem 1rem 1rem 1rem;
+  min-height: 40rem;
   min-width: fit-content;
   margin: 0 1rem 0 1rem;
 `;
@@ -46,6 +46,7 @@ export const PaletteBody = styled.div<{ theme: themeProps }>`
   align-items: center;
   margin-top: 1rem;
   background-color: ${(props) => props.theme.point.light};
+  height: 8rem;
   width: 95%;
   padding: 1rem;
 `;

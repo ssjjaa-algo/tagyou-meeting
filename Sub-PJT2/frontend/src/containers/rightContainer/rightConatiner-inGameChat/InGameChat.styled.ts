@@ -19,7 +19,7 @@ export const ChatRoomMain = styled.div`
   /* align-items: flex-end; */
   height: calc(100vh - 3.5rem);
   min-height: 30rem;
-  margin: 2rem 0rem 0 0;
+  margin: 1rem 0rem 0 0;
 `;
 
 export const MessageButton = styled.button<{ theme: themeProps }>`
