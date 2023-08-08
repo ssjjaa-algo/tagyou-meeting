@@ -8,6 +8,7 @@ import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -54,8 +55,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
 //        targetUrl = UriComponentsBuilder.fromUriString("http://tagyou.site/home")
         targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/home")
-                .queryParam("Auth", token.getToken())
+//                .queryParam("Auth", token.getToken())
                 .build().toUriString();
+        Cookie cookie = new Cookie("Auth", token.getToken());
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
         System.out.println(">>> SuccessHandler done!");
     }

@@ -39,6 +39,7 @@ public class CommentService {
                 .orElseThrow(() -> new NotFoundException("유효하지 않은 커멘트입니다."));
     }
 
+    @Transactional(readOnly = false)
     public CommentRspDto editComment(Long uId, Long cId, CommentReqDto commentReqDto) throws IllegalAccessException {
         Comment c = findComment(cId)
                         .orElseThrow(() ->  new NotFoundException("해당 아이디의 커멘트가 없습니다. "));
@@ -54,6 +55,7 @@ public class CommentService {
                 .orElseThrow(() ->  new NotFoundException("해당 아이디의 커멘트가 없습니다. "));
         if(c.getUser().getId() != uId)
             throw new IllegalAccessException("해당 커멘트에 대한 접근권한이 없습니다. ");
+        deleteComment(commentId);
         return "deleted";
     }
 
@@ -68,10 +70,12 @@ public class CommentService {
         return commentRepository.findById(commentId);
     }
 
+    @Transactional(readOnly = false)
     public Optional<Comment> saveComment(Comment c) {
         return Optional.of(commentRepository.save(c));
     }
 
+    @Transactional(readOnly = false)
     public void deleteComment(Long id) {
         commentRepository.deleteById(id);
     }
