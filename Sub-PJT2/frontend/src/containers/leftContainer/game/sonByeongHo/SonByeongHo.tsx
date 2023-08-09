@@ -111,7 +111,7 @@ const Container = styled.div`
   /* border: solid green 5px; */
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  /* height: 100vh; */
   transition: all 1s;
   min-height: fit-content;
   min-width: fit-content;
