@@ -9,6 +9,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,13 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends GenericFilterBean {
     private final TokenService tokenService;
+
+    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+    private String redirectUrl;
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String clientId;
+    private String state = "stateee";
+    private String redirectUri = "localhost:3030/home";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -47,10 +55,14 @@ public class JwtAuthFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         else if(token != null && !tokenService.verifyToken(token)) {
-            System.out.println(">>>>>>>>>>>>>>> 토큰 문제 생김");
-//            // 토큰 만료 or 잘못된 경우
+            System.out.println(">>>>>>>>>>>>>>> token problem ");
+            // 토큰 만료 or 잘못된 경우
 //            HttpServletResponse res = (HttpServletResponse) response;
-//            res.sendRedirect("http://localhost:9999/api/oauth2/authorization/kakao");
+//            String oauthUrl = String.format(
+//                    "%s?response_type=code&client_id=%s&state=%s&redirect_uri=%s",
+//                    redirectUrl, clientId, state, redirectUri
+//            );
+//            res.sendRedirect(oauthUrl);
             return;
         }
         chain.doFilter(request, response);

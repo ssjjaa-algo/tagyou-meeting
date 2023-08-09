@@ -1,6 +1,7 @@
 package com.ssafy.project.controller;
 
 import com.ssafy.project.dto.request.UserInfoReqDto;
+import com.ssafy.project.dto.response.FirstLoginRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
@@ -34,8 +35,8 @@ public class UserController {
     // ====================== 첫 로그인 여부 ============================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/first")
-    public boolean firstLogin(HttpServletRequest request) {
-        return !userService.hasDetailInfo(tokenService.parseUId(request.getHeader("Auth")));
+    public FirstLoginRspDto firstLogin(HttpServletRequest request) {
+        return userService.hasDetailInfo(tokenService.parseUId(request.getHeader("Auth")));
     }
 
     // ====================== 마이페이지 ============================
