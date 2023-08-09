@@ -12,7 +12,6 @@ import { useRecoilState } from "recoil";
 // webSocket 관련
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { forceReRender } from "@storybook/react";
 
 type Message = {
   content: string;
@@ -30,6 +29,12 @@ const RightContainer = () => {
   const theme: themeProps = useTheme();
 
   const [roomId, setRoomId] = useState<number>();
+  const [items, setItems] = useState<Message[]>([]);
+  const [lastMessage, setLastMessage] = useState<Message>();
+  const [message, setMessage] = useState("");
+  const [isHovering, setIsHovering] = useState(false);
+  const [inGameChatStatus, setInGameChatStatus] =
+    useRecoilState(InGameChatStatus);
 
   const client = useRef<CompatClient>();
 
@@ -67,17 +72,18 @@ const RightContainer = () => {
     roomMake();
   };
 
-  useEffect(()=>{
+  // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러와야하나?
+  const requestChatHistory = async () => {
+    fetch("http://localhost:9999/api/chat/rooms/1/messages").then((res) =>
+      // console.log("res: " + res)
+      console.log(res.body)
+    );
+  };
+
+  useEffect(() => {
     connectHandler(1);
+    requestChatHistory();
   }, []);
-
-  const [items, setItems] = useState<Message[]>([]);
-  const [lastMessage, setLastMessage] = useState<Message>();
-  const [message, setMessage] = useState("");
-
-  const [isHovering, setIsHovering] = useState(false);
-  const [inGameChatStatus, setInGameChatStatus] =
-    useRecoilState(InGameChatStatus);
 
   const addItem = (item: Message) => {
     if (item.message_type === "TALK") {
@@ -123,14 +129,16 @@ const RightContainer = () => {
 
     setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 10);
+    }, 100);
   };
 
   useEffect(() => {
     if (!chatScreenRef.current?.scrollTop) return;
-    if (chatScreenRef.current?.scrollTop > 0.5) {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
+    // if (chatScreenRef.current?.scrollTop > 0.5) {
+    console.log("메시지 입력중...");
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    chatScreenRef.current.scrollTop = 0;
+    // }
   }, [message]);
 
   useEffect(() => {}, [lastMessage]);
