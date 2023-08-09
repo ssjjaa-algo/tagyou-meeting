@@ -6,6 +6,8 @@ import com.ssafy.project.dto.request.CommentReqDto;
 import com.ssafy.project.dto.response.CommentRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.CommentRepository;
+import com.ssafy.project.service.ProfileService;
+import com.ssafy.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +60,6 @@ public class CommentService {
         deleteComment(commentId);
         return "deleted";
     }
-
 
 
     // ========================================================
