@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,8 +47,11 @@ public class JwtAuthFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         else if(token != null && !tokenService.verifyToken(token)) {
+            System.out.println(">>>>>>>>>>>>>>> 토큰 문제 생김");
             // 토큰 만료 or 잘못된 경우
-
+            HttpServletResponse res = (HttpServletResponse) response;
+            res.sendRedirect("http://localhost:9999/api/oauth2/authorization/kakao");
+            return;
         }
         chain.doFilter(request, response);
     }
@@ -56,5 +60,6 @@ public class JwtAuthFilter extends GenericFilterBean {
         return new UsernamePasswordAuthenticationToken(member, "",
                 Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
     }
+
 }
 
