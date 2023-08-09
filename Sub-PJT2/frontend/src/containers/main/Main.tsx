@@ -30,7 +30,8 @@ function Main() {
             {/* landingPage와 inGame에서는 사이드바가 안뜨게 */}
             {document.location.pathname !== "/" &&
               document.location.pathname !== "/input" &&
-              document.location.pathname.search("inGame") !== 1 &&
+              document.location.pathname.search("ingame") !== 1 &&
+              document.location.pathname.search("meeting") !== 1 &&
               document.location.pathname !== "/start" &&
               document.location.pathname !== "/login" && (
                 <LeftContainer
