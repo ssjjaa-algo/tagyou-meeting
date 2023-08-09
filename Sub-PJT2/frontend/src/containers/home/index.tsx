@@ -1,54 +1,56 @@
 import * as S from "./Home.styled";
 import { themeProps } from "@emotion/react";
-import { UserData } from "types/types"
-import { ProfileData } from "types/types"
+import { UserData } from "types/types";
+import { ProfileData } from "types/types";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import Slider from "components/slide";
 import Tags from "components/tags";
 import Intro from "components/intro";
-import Postit from "components/postit"
+import Postit from "components/postit";
 
 const Home = () => {
-  const theme: themeProps = useTheme  ();
+  const theme: themeProps = useTheme();
   const [profileData, setProfileData] = useState<ProfileData>();
   const [userData, setUserData] = useState<UserData>();
   // const [searchParams] = useSearchParams();g
 
-  useEffect(() => {
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTE0NzM2NDIsImV4cCI6MTY5MTUzMzY0Mn0.b0m5pVnkqTxgssqXLlrG4n6dBIWTJ6fp1V_3HO52yZs"
-    // 토큰 받아오는 과정에서 막혀서 일단 주석 처리하였습니다.
-    // fetch("api/users/tmp/token", {
-    //   headers: {
-    //     'Auth': 'master',
-    //     'userId': '7'
-    //   }})
-    //   .then((res) => 
-    //     console.log(res)
-    //   )
-    const fetchData = async () => {
-      fetch("api/users/profile", {
-        headers: {
-          'Auth': token
-        }
-      })
-        .then(async (res) => 
-        {const data = await res.json()
-        if (data !== undefined) {setProfileData(data)}
-        })
-      fetch("api/users/mypage", {
-        headers: {
-          'Auth': token
-        }
-      })
-        .then(async (res) => 
-        {const data = await res.json()
-        if (data !== undefined) {setUserData(data)}
-        })
-      };
-    fetchData();
-  }, []);
-  
+  // useEffect(() => {
+  // const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTE0NzM2NDIsImV4cCI6MTY5MTUzMzY0Mn0.b0m5pVnkqTxgssqXLlrG4n6dBIWTJ6fp1V_3HO52yZs"
+  // 토큰 받아오는 과정에서 막혀서 일단 주석 처리하였습니다.
+  // fetch("api/users/tmp/token", {
+  //   headers: {
+  //     'Auth': 'master',
+  //     'userId': '7'
+  //   }})
+  //   .then((res) =>
+  //     console.log(res)
+  //   )
+  //   const fetchData = async () => {
+  //     fetch("api/users/profile", {
+  //       headers: {
+  //         Auth: token,
+  //       },
+  //     }).then(async (res) => {
+  //       const data = await res.json();
+  //       if (data !== undefined) {
+  //         setProfileData(data);
+  //       }
+  //     });
+  //     fetch("api/users/mypage", {
+  //       headers: {
+  //         Auth: token,
+  //       },
+  //     }).then(async (res) => {
+  //       const data = await res.json();
+  //       if (data !== undefined) {
+  //         setUserData(data);
+  //       }
+  //     });
+  //   };
+  //   fetchData();
+  // }, []);
+
   return (
     <S.Container>
       <S.ProfileContainer>

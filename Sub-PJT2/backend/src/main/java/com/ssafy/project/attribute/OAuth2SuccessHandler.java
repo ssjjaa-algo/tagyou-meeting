@@ -53,7 +53,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 //        targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
 //        targetUrl = UriComponentsBuilder.fromUriString("http://tagyou.site/home")
-        targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/home")
+        targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/input")
 //                .queryParam("Auth", token.getToken())
                 .build().toUriString();
         Cookie cookie = new Cookie("Auth", token.getToken());
