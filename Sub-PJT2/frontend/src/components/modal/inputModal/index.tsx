@@ -2,6 +2,7 @@ import * as S from "./index.styled";
 import logoImg from "../../../asset/img/logo/2.png";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import MyPage from "containers/myPage/MyPage";
 
 type inputModalProps = {
   setShowModal: (value: boolean) => void;
