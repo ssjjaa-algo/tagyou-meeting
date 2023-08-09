@@ -7,7 +7,7 @@ import MyPage from "containers/myPage/MyPage";
 import Openvidu from "containers/Openvidu/index";
 // import ChatList from "containers/chatList/ChatList";
 import ChatRoom from "containers/chatRoom/ChatRoom";
-import InGame from "containers/inGame/InGame";
+import Meeting from "containers/meeting";
 // import LandingStart from "containers/landing/LandingStart/LandingStart";
 // import LandingLogin from "containers/landing/LandingLogin/LandingLogin";
 import LandingContainer from "containers/landingContainer/Landing";
@@ -26,7 +26,7 @@ const Router = () => {
       <Route path="/meeting" element={<Openvidu />} />
       <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
       {/* <Route path="/chatList" element={<ChatList />} /> */}
-      <Route path="/inGame" element={<InGame />} />
+      <Route path="/ingame" element={<Meeting />} />
     </Routes>
   );
 };
