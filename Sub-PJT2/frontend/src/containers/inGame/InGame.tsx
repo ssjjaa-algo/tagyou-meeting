@@ -1,7 +1,7 @@
 // import WebSocketProvider from "webSocket/WebSocketProvider";
 import RightContainer from "containers/rightContainer/rightConatiner-inGameChat/InGameChat";
-// import LeftContainer from "containers/leftContainer/game/catchMind/CatchMind";
-import LeftContainer from "containers/leftContainer/game/sonByeongHo/SonByeongHo";
+import LeftContainer from "containers/leftContainer/game/catchMind/CatchMind";
+// import LeftContainer from "containers/leftContainer/game/sonByeongHo/SonByeongHo";
 // import LeftContainer from "containers/leftContainer/game/sis/Sis";
 import styled from "@emotion/styled";
 import Header from "components/header/Header";
