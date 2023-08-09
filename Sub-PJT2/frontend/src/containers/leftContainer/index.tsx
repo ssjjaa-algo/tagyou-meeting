@@ -22,7 +22,7 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
       ".right_container"
     ) as HTMLElement;
     if (rightContainer instanceof Element) {
-      console.log("open", isOpen);
+      // console.log("open", isOpen);
       rightContainer.style.width = isOpen
         ? "calc(100vw - 500px)"
         : "calc(100vw)";
@@ -84,11 +84,23 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
         <S.ListBox>
           <S.List theme={theme}>
             <S.HomeIconStyled theme={theme} />
-            <S.ListText to="/home">홈</S.ListText>
+            <S.ListText
+              onClick={() => {
+                window.location.replace("/home");
+              }}
+            >
+              홈
+            </S.ListText>
           </S.List>
           <S.List theme={theme}>
             <S.PlayCircleOutlineIconStyled theme={theme} />{" "}
-            <S.ListText to="/ingame">미팅시작</S.ListText>
+            <S.ListText
+              onClick={() => {
+                window.location.replace("/meeting");
+              }}
+            >
+              미팅 시작
+            </S.ListText>
           </S.List>
         </S.ListBox>
         <S.FootBox

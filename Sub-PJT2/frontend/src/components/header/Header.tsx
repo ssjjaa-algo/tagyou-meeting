@@ -1,5 +1,4 @@
 import * as S from "./Header.styled";
-import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import tmpLogo from "asset/img/logo/2.png";
@@ -10,14 +9,12 @@ const Header = () => {
   const theme: themeProps = useTheme();
 
   const handleClickExit = () => {
-    
+    window.location.replace("/ingame");
   };
 
   return (
     <S.Header theme={theme}>
-      <Link to="/home">
-        <S.Exit src={exitImg} alt="exit" onClick={handleClickExit}></S.Exit>
-      </Link>
+      <S.Exit src={exitImg} alt="exit" onClick={handleClickExit}></S.Exit>
       <S.Logo src={tmpLogo} alt="logo"></S.Logo>
     </S.Header>
   );

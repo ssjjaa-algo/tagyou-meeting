@@ -57,7 +57,7 @@ export const ListBox = styled.ul`
   margin-top: 50px;
 `;
 
-export const ListText = styled(Link)`
+export const ListText = styled.div`
   margin-left: 10px;
   font-weight: 400;
 `;

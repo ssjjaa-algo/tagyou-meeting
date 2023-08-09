@@ -21,24 +21,34 @@ function Main() {
     age: 32,
   };
 
+  const showSideBar = () => {
+    const position = document.location.pathname;
+    if (
+      position === "/" ||
+      position === "input" ||
+      position.search("inGame") === 1 ||
+      position.search("meeting") === 1 ||
+      position === "/start" ||
+      position === "/login"
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <Global styles={GlobalStyle} />
         <BrowserRouter>
           <Container theme={isDark}>
-            {/* landingPage와 inGame에서는 사이드바가 안뜨게 */}
-            {document.location.pathname !== "/" &&
-              document.location.pathname !== "/input" &&
-              document.location.pathname.search("inGame") !== 1 &&
-              document.location.pathname !== "/start" &&
-              document.location.pathname !== "/login" && (
-                <LeftContainer
-                  imgSrc={leftContainerData.imgSrc}
-                  name={leftContainerData.name}
-                  age={leftContainerData.age}
-                />
-              )}
+            {showSideBar() ? (
+              <LeftContainer
+                imgSrc={leftContainerData.imgSrc}
+                name={leftContainerData.name}
+                age={leftContainerData.age}
+              />
+            ) : null}
             <RightContainer>
               <Router />
             </RightContainer>

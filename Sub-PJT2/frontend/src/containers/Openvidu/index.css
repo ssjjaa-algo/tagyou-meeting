@@ -7,10 +7,10 @@ nav {
   height: 50px;
   width: 100%;
   z-index: 1;
-  background-color: #4d4d4d !important;
-  border-color: #4d4d4d !important;
-  border-top-right-radius: 0 !important;
-  border-top-left-radius: 0 !important;
+  background-color: #4d4d4d;
+  border-color: #4d4d4d;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
 
 .navbar-header {
