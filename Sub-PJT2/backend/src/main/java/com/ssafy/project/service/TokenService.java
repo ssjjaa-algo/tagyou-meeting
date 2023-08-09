@@ -32,7 +32,7 @@ public class TokenService{
     public Token generateToken(String id, String role) {
 //        Long id = userService.getUserIdByEmail(uId);
         System.out.println(">>> generateToken / id: "+id+", role: "+role);
-        long tokenPeriod = 1L; //1000L * 60L * 10L;
+        long tokenPeriod = 1000L * 60L * 10L;
         long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 3L;
 
         Claims claims = Jwts.claims().setSubject(id);

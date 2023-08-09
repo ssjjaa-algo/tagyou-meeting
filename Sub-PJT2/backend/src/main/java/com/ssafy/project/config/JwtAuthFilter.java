@@ -48,9 +48,9 @@ public class JwtAuthFilter extends GenericFilterBean {
         }
         else if(token != null && !tokenService.verifyToken(token)) {
             System.out.println(">>>>>>>>>>>>>>> 토큰 문제 생김");
-            // 토큰 만료 or 잘못된 경우
-            HttpServletResponse res = (HttpServletResponse) response;
-            res.sendRedirect("http://localhost:9999/api/oauth2/authorization/kakao");
+//            // 토큰 만료 or 잘못된 경우
+//            HttpServletResponse res = (HttpServletResponse) response;
+//            res.sendRedirect("http://localhost:9999/api/oauth2/authorization/kakao");
             return;
         }
         chain.doFilter(request, response);
