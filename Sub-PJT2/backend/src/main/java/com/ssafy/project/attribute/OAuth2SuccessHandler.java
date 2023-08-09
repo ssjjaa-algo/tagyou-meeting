@@ -27,7 +27,6 @@ import java.io.IOException;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final TokenService tokenService;
     private final UserRequestMapper userRequestMapper;
-    private final ObjectMapper objectMapper;
     private final UserService userService;
 
     @Override
@@ -58,7 +57,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //                .queryParam("Auth", token.getToken())
                 .build().toUriString();
         Cookie cookie = new Cookie("Auth", token.getToken());
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);
         cookie.setPath("/");
         response.addCookie(cookie);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);

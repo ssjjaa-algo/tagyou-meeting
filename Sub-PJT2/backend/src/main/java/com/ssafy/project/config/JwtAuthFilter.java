@@ -45,6 +45,10 @@ public class JwtAuthFilter extends GenericFilterBean {
             Authentication auth = getAuthentication(userReqDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
+        else if(token != null && !tokenService.verifyToken(token)) {
+            // 토큰 만료 or 잘못된 경우
+
+        }
         chain.doFilter(request, response);
     }
 
