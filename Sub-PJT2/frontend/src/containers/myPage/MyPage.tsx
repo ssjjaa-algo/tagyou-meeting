@@ -5,8 +5,7 @@ import Dropdown_MBTI from "./Dropdown_MBTI/Dropdown_MBTI";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 const MyPage = () => {
-
-  const theme : themeProps = useTheme();
+  const theme: themeProps = useTheme();
   const [nickname, setNickname] = useState<string>("");
   const [job, setJob] = useState<string>("");
   const [pw, setPw] = useState({
