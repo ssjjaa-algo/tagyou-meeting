@@ -39,3 +39,8 @@ export const InGameChatStatus = atom<boolean>({
   key: "InGameChatStatus",
   default: false,
 });
+
+export const GameStart = atom<boolean>({
+  key: "GameStart",
+  default: false,
+})

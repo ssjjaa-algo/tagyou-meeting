@@ -1,21 +1,32 @@
 import * as S from "./Header.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
-import tmpLogo from "asset/img/logo/2.png";
+import { GameStart as GameStartAtom } from "atoms/atoms";
+import { useRecoilState } from "recoil";
 import exitImg from "asset/img/icons8-exit-50.png";
-import { Link } from "react-router-dom";
+import homeImg from "asset/img/home.png";
+import tmpLogo from "asset/img/logo/2.png";
 
 const Header = () => {
   const theme: themeProps = useTheme();
+  const [GameStart, setGameStart] = useRecoilState(GameStartAtom);
 
-  const handleClickExit = () => {
-    window.location.replace("/ingame");
+  const GotoMeeting = () => {
+    window.location.href = "/meeting";  
+  };
+
+  const GotoHome = () => {
+    window.location.href = "/home";
   };
 
   return (
     <S.Header theme={theme}>
-      <S.Exit src={exitImg} alt="exit" onClick={handleClickExit}></S.Exit>
-      <S.Logo src={tmpLogo} alt="logo"></S.Logo>
+      <S.Exit
+        src={GameStart ? exitImg : homeImg}
+        alt="exit"
+        onClick={GameStart ? GotoMeeting : GotoHome}
+      />
+      <S.Logo src={tmpLogo} alt="logo" />
     </S.Header>
   );
 };

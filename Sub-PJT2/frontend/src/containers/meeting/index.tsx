@@ -3,12 +3,14 @@ import * as S from "./Meeting.styled";
 import CatchMind from "containers/inGame/catchMind";
 import SonByeonHo from "containers/inGame/sonByeongHo";
 import Sis from "containers/inGame/sis";
-import styled from "@emotion/styled";
-import Header from "components/header/Header";
 import { useState } from "react";
+import Header from "components/header/Header";
+import { GameStart as GameStartAtom } from "atoms/atoms";
+import { useRecoilState } from "recoil";
 
-function Meeting() {
-  const [start, setStart] = useState(false);
+
+const Meeting = () => {
+  const [GameStart, setGameStart] = useRecoilState(GameStartAtom);
   const [selectedGame, setSelectedGame] = useState("");
 
   const renderSelectedGame = () => {
@@ -19,41 +21,51 @@ function Meeting() {
     } else if (selectedGame === "sis") {
       return <Sis />;
     }
-    // 기본적으로 아무 것도 렌더링하지 않음
-    return null;
   };
 
   return (
-    <div>
+    <S.Container>
       <Header />
-      <Container>
-        {!start && (
-          <div>
-            <select
-              value={selectedGame}
-              onChange={(e) => setSelectedGame(e.target.value)}
-            >
-              <option value={"catchMind"}>캐치마인드</option>
-              <option value={"sonByeonHo"}>손병호게임</option>
-              <option value={"sis"}>고요속의 외침</option>
-            </select>
-            <button onClick={() => setStart(true)}>게임 시작</button>
-          </div>
-        )}
-        {start && renderSelectedGame()}
-        <RightContainer />
-      </Container>
-    </div>
+        {!GameStart ? (
+          <S.Container>
+          <S.InnerContainer>
+            <S.PlayerVidBundle>
+              <S.PlayerVid>
+              </S.PlayerVid>
+              <S.PlayerVid>
+              </S.PlayerVid>
+              <S.PlayerVid>
+              </S.PlayerVid>
+            </S.PlayerVidBundle>
+            <S.Middle>
+              <select
+                value={selectedGame}
+                onChange={(e) => setSelectedGame(e.target.value)}
+              >
+                <option value="">게임을 선택하세요</option>
+                <option value={"catchMind"}>캐치마인드</option>
+                <option value={"sonByeonHo"}>손병호게임</option>
+                <option value={"sis"}>고요속의 외침</option>
+              </select>
+              <button onClick={() => setGameStart(true)}>게임 시작</button>
+            </S.Middle>
+            <S.PlayerVidBundle>
+              <S.PlayerVid>
+              </S.PlayerVid>
+              <S.PlayerVid>
+              </S.PlayerVid>
+              <S.PlayerVid>
+              </S.PlayerVid>
+            </S.PlayerVidBundle>
+          </S.InnerContainer>
+          </S.Container>
+          ) : (
+            renderSelectedGame()
+            )}
+      <RightContainer />
+    </S.Container>
+
   );
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 4rem;
-  width: 100vw;
-  height: calc(100vh - 4rem);
-  min-width: fit-content !important;
-`;
 
 export default Meeting;

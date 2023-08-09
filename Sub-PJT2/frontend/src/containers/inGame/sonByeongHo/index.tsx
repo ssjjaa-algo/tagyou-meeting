@@ -68,10 +68,10 @@ const SonByeongHo = () => {
   }
 
   return (
-    <Container
+    <S.Container
       className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}
     >
-      <S.Container>
+      <S.InnerContainer>
         <S.PlayerVidBundle>
           <S.PlayerVid>
             <S.LifeContainer>{playerLifeCalc(player1LifeCnt)}</S.LifeContainer>
@@ -102,19 +102,9 @@ const SonByeongHo = () => {
             <S.LifeContainer>{playerLifeCalc(player6LifeCnt)}</S.LifeContainer>
           </S.PlayerVid>
         </S.PlayerVidBundle>
-      </S.Container>
-    </Container>
+      </S.InnerContainer>
+    </S.Container>
   );
 };
-
-const Container = styled.div`
-  /* border: solid green 5px; */
-  display: flex;
-  flex-direction: row;
-  /* height: 100vh; */
-  transition: all 1s;
-  min-height: fit-content;
-  min-width: fit-content;
-`;
 
 export default SonByeongHo;
