@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-//package com.ssafy.project.service;
-//
-//public class CommentService {
-//
-//}
-=======
 package com.ssafy.project.service;
 
 import com.ssafy.project.domain.user.Comment;
@@ -13,6 +6,8 @@ import com.ssafy.project.dto.request.CommentReqDto;
 import com.ssafy.project.dto.response.CommentRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.CommentRepository;
+import com.ssafy.project.service.ProfileService;
+import com.ssafy.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +62,6 @@ public class CommentService {
     }
 
 
-
     // ========================================================
     public Optional<List<Comment>> findComments(Profile p) {
         return commentRepository.findAllByProfile(p);
@@ -88,4 +82,3 @@ public class CommentService {
     }
 
 }
->>>>>>> 20bf9e0694d72db6306fa95b4dd146a0392e18b1

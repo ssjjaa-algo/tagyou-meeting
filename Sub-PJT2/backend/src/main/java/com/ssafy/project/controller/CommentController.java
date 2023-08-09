@@ -1,14 +1,10 @@
 package com.ssafy.project.controller;
 
-<<<<<<< HEAD
-//import com.ssafy.project.service.CommentService;
-=======
 import com.ssafy.project.dto.request.CommentReqDto;
 import com.ssafy.project.dto.response.CommentRspDto;
 import com.ssafy.project.service.CommentService;
 import com.ssafy.project.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
->>>>>>> 20bf9e0694d72db6306fa95b4dd146a0392e18b1
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +18,8 @@ import java.util.List;
 
 public class CommentController {
 
-<<<<<<< HEAD
-//    private final CommentService commentService;
-=======
     private final CommentService commentService;
     private final TokenService tokenService;
->>>>>>> 20bf9e0694d72db6306fa95b4dd146a0392e18b1
 
     // ===================== 코멘트 조회 =========================
     @ResponseStatus(HttpStatus.OK)
