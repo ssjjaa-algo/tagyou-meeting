@@ -4,7 +4,8 @@ import axios from 'axios';
 import { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
 
-const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://tagyou.site:8443/openvidu/';
+const OPENVIDU_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://tagyou.site:8443';
+const OPENVIDU_SERVER_SECRET = 'tagyou';
 
 class Openvidu extends Component {
     
@@ -179,8 +180,8 @@ class Openvidu extends Component {
         this.setState({
             session: undefined,
             subscribers: [],
-            mySessionId: 'SessionA',
-            myUserName: 'Participant' + Math.floor(Math.random() * 100),
+            mySessionId: 'CustomSessionId',
+            myUserName: '참가자' + Math.floor(Math.random() * 100),
             mainStreamManager: undefined,
             publisher: undefined
         });
@@ -327,67 +328,64 @@ class Openvidu extends Component {
      * Visit https://docs.openvidu.io/en/stable/application-server to learn
      * more about the integration of OpenVidu in your application server.
      */
-    async getToken() {
-        const sessionId = await this.createSession(this.state.mySessionId);
-        return await this.createToken(sessionId);
-    }
-
-    async createSession(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions', { customSessionId: sessionId }, {
-            headers: { 'Authorization': 'Basic T1BFTlZJRFVBUFA6dGFneW91', 'Content-Type': 'application/json', },
-            body: {
-                "mediaMode": "ROUTED",
-                "recordingMode": "MANUAL",
-                "customSessionId": "CUSTOM_SESSION_ID",
-                "forcedVideoCodec": "VP8",
-                "allowTranscoding": false,
-                "defaultRecordingProperties": {
-                    "name": "MyRecording",
-                    "hasAudio": true,
-                    "hasVideo": true,
-                    "outputMode": "COMPOSED",
-                    "recordingLayout": "BEST_FIT",
-                    "resolution": "1280x720",
-                    "frameRate": 25,
-                    "shmSize": 536870912,
-                    "mediaNode": {
-                        "id": "media_i-0c58bcdd26l11d0sd"
-                    }
-                },
-                "mediaNode": {
-                    "id": "media_i-0c58bcdd26l11d0sd"
-                }
+    getToken() {
+        return this.createSession(this.state.mySessionId).then((sessionId) =>
+          this.createToken(sessionId)
+        );
+      }
+    
+    createSession(sessionId) {
+    return new Promise((resolve, reject) => {
+        let data = JSON.stringify({ customSessionId: sessionId });
+        axios
+        .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
+            headers: {
+            Authorization: `Basic ${btoa(
+                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+            )}`,
+            'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => {
+            resolve(response.data.id);
+        })
+        .catch((response) => {
+            let error = { ...response };
+            if (error?.response?.status === 409) {
+            resolve(sessionId);
+            } else if (
+            window.confirm(
+                `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
+                `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
+            )
+            ) {
+            window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
             }
         });
-        return response.data.id; // The sessionId
+    });
     }
-
-    async createToken(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connection', {}, {
-            headers: { 'Authorization': 'Basic T1BFTlZJRFVBUFA6dGFneW91', 'Content-Type': 'application/json', },
-            body: {
-                "type": "WEBRTC",
-                "data": "My Server Data",
-                "record": true,
-                "role": "PUBLISHER",
-                "kurentoOptions": {
-                    "videoMaxRecvBandwidth": 1000,
-                    "videoMinRecvBandwidth": 300,
-                    "videoMaxSendBandwidth": 1000,
-                    "videoMinSendBandwidth": 300,
-                    "allowedFilters": [ "GStreamerFilter", "ZBarFilter" ]
-                },
-                "customIceServers": [
-                    {
-                        "url": "turn:turn-domain.com:443",
-                        "username": "usertest",
-                        "credential": "userpass"
-                    }
-                ]
+    
+    createToken(sessionId) {
+    return new Promise((resolve, reject) => {
+        let data = {};
+        axios
+        .post(
+            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+            data,
+            {
+            headers: {
+                Authorization: `Basic ${btoa(
+                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+                )}`,
+                'Content-Type': 'application/json',
+            },
             }
-        });
-        return response.data.token; // The token
+        )
+        .then((response) => {
+            resolve(response.data.token);
+        })
+        .catch((error) => reject(error));
+    });
     }
 }
-
 export default Openvidu;
