@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 
 export const Header = styled.header<{ theme: themeProps }>`
+  border: solid black;
   position: fixed;
   top: 0;
   display: flex;
