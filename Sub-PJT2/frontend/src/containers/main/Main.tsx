@@ -29,13 +29,13 @@ function Main() {
       position.search("inGame") === 1 ||
       position.search("meeting") === 1 ||
       position === "/start" ||
-      position === "/login"
+      position === "/login" ||
+      position === "/input"
     ) {
       return false;
     }
     return true;
   };
-  
 
   return (
     <div>
