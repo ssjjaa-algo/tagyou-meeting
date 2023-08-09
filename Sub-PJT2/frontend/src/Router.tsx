@@ -12,9 +12,11 @@ import Meeting from "containers/meeting";
 // import LandingLogin from "containers/landing/LandingLogin/LandingLogin";
 import LandingContainer from "containers/landingContainer/Landing";
 import InputContainer from "containers/inputContainer";
+import PageNotFound from "containers/pageNotFound/PageNotFound";
 
 const Router = () => {
-  return ( //localhost:3000
+  return (
+    //localhost:3000
     <Routes>
       <Route path="" element={<LandingContainer />} />
       {/* <Route path="/start" element={<LandingStart />} />
@@ -27,6 +29,7 @@ const Router = () => {
       <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
       {/* <Route path="/chatList" element={<ChatList />} /> */}
       <Route path="/ingame" element={<Meeting />} />
+      <Route id="pnf" path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

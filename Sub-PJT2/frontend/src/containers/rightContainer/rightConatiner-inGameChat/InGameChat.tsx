@@ -1,7 +1,7 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./InGameChat.styled";
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import { InGameChatStatus } from "atoms/atoms";
 import "css/chat/inGameChat.css";
 
@@ -18,11 +18,6 @@ type Message = {
   message_type: string;
   sender: string;
   meeting_room_id: number;
-};
-
-type MessageType = {
-  code: number;
-  name: string;
 };
 
 const RightContainer = () => {
@@ -97,11 +92,6 @@ const RightContainer = () => {
 
   const handleChangeText = (e: any) => {
     setMessage(e.target.value);
-  };
-
-  const messageSendingType: MessageType = {
-    code: 2,
-    name: "메시지 전송",
   };
 
   const messageSending: Message = {

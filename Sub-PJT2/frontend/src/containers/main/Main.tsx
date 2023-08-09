@@ -23,17 +23,10 @@ function Main() {
 
   const showSideBar = () => {
     const position = document.location.pathname;
-    if (
-      position === "/" ||
-      position === "input" ||
-      position.search("inGame") === 1 ||
-      position.search("meeting") === 1 ||
-      position === "/start" ||
-      position === "/login"
-    ) {
-      return false;
+    if (position === "/chatList" || position.search("chatRoom") === 1) {
+      return true;
     }
-    return true;
+    return false;
   };
 
   return (
@@ -42,6 +35,7 @@ function Main() {
         <Global styles={GlobalStyle} />
         <BrowserRouter>
           <Container theme={isDark}>
+            {/* {Router.caller.name} */}
             {showSideBar() ? (
               <LeftContainer
                 imgSrc={leftContainerData.imgSrc}
