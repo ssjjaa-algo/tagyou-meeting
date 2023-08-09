@@ -83,11 +83,11 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
 
         <S.ListBox>
           <S.List theme={theme}>
-            <S.HomeIconStyled theme={theme} />
+            <S.HomeIconStyled theme={theme} onClick={()=>{window.location.replace("/home");}}/>
             <S.ListText onClick={()=>{window.location.replace("/home");}}>홈</S.ListText>
           </S.List>
           <S.List theme={theme}>
-            <S.PlayCircleOutlineIconStyled theme={theme} />{" "}
+            <S.PlayCircleOutlineIconStyled theme={theme} onClick={()=>{window.location.replace("/meeting");}}/>{" "}
             <S.ListText onClick={()=>{window.location.replace("/meeting");}}>미팅 시작</S.ListText>
           </S.List>
         </S.ListBox>
