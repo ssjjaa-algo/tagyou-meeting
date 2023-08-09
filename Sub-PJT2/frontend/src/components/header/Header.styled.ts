@@ -7,7 +7,7 @@ export const Header = styled.header<{ theme: themeProps }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: ${(props) => props.theme.bg.deep};
+  background-color: ${(props) => props.theme.bg.mid};
   transition: all 1s;
   height: 4rem;
   width: 100%;
