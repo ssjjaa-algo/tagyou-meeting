@@ -4,6 +4,7 @@ import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
+import com.ssafy.project.dto.response.FirstLoginRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.dto.response.UserRspDto;
 import com.ssafy.project.exception.NotFoundException;
@@ -55,13 +56,13 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("이메일에 해당하는 유저가 없습니다."));
     }
 
-    public boolean hasDetailInfo(Long userId) {
+    public FirstLoginRspDto hasDetailInfo(Long userId) {
         User u = findUser(userId)
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
         if(u.getPhoneNumber() == null)
-            return false;
+            return new FirstLoginRspDto(true);
 
-        return true;
+        return new FirstLoginRspDto(false);
     }
 
     public UserInfoRspDto getUserInfo(Long userId) {
