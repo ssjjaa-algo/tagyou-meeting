@@ -35,7 +35,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/first")
     public boolean firstLogin(HttpServletRequest request) {
-        return userService.hasDetailInfo(tokenService.parseUId(request.getHeader("Auth")));
+        return !userService.hasDetailInfo(tokenService.parseUId(request.getHeader("Auth")));
     }
 
     // ====================== 마이페이지 ============================
