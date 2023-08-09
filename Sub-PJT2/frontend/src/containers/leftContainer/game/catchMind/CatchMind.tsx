@@ -178,7 +178,7 @@ const CatchMind = () => {
           </S.PlayerVidBundle>
           {/* 그림판 */}
           <S.CanvasBox theme={theme}>
-            <S.Canvas ref={canvasRef} width="750" height="450" theme={theme} />
+            <S.Canvas ref={canvasRef} width="700" height="350" theme={theme} />
             <S.WordContainer>
               <S.WordText theme={theme}>
                 <S.WordTitle theme={theme}>제시어</S.WordTitle>
@@ -299,10 +299,12 @@ const CatchMind = () => {
 };
 
 const Container = styled.div`
+  /* border: solid black; */
   display: flex;
   flex-direction: row;
   width: 100%;
   justify-content: space-evenly;
+  /* margin-top: 5rem; */
 `;
 
 export default CatchMind;

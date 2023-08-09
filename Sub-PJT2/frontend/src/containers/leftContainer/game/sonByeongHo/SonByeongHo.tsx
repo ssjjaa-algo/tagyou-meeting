@@ -3,7 +3,6 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
-import brush from "asset/img/brush.png";
 import { useRecoilState } from "recoil";
 import { InGameChatStatus } from "atoms/atoms";
 import "css/sonByeongHo.css";
@@ -62,11 +61,11 @@ const SonByeongHo = () => {
       !player6LifeCnt
     ) {
       // 게임 종료
-    } else{
+    } else {
       // 턴 끝났다는 표시 false로 바꾸기
       setTurnEnd(false);
     }
-  } 
+  }
 
   return (
     <Container
@@ -108,6 +107,14 @@ const SonByeongHo = () => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  /* border: solid green 5px; */
+  display: flex;
+  flex-direction: row;
+  /* height: 100vh; */
+  transition: all 1s;
+  min-height: fit-content;
+  min-width: fit-content;
+`;
 
 export default SonByeongHo;

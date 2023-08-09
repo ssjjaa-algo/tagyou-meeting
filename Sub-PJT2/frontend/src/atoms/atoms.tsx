@@ -16,6 +16,11 @@ export const IsOpen = atom<boolean>({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const TokenValue = atom<string | null>({
+  key: "TokenValue",
+  default: null,
+});
+
 export const IsLogin = atom<boolean>({
   key: "IsLogin",
   default: false,

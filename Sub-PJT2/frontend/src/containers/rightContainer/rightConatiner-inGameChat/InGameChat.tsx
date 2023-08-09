@@ -19,9 +19,9 @@ import { client } from "stompjs";
 
 type Message = {
   content: string;
-  type: MessageType;
+  message_type: number;
   sender: string;
-  meetingRoomId: number;
+  meeting_room_id: number;
 };
 
 type MessageType = {
@@ -40,10 +40,11 @@ const RightContainer = () => {
 
   const domainAddress = "www.tagyou.com";
 
-  const connectHandler = (roomId: number, roomName: string) => {
+  const connectHandler = (roomId: number, codeName: string) => {
     client.current = Stomp.over(() => {
       // 여기서 url 조정하면 됨
-      const socket = new SockJS(`http://${domainAddress}/ws/chat`);
+      // const socket = new SockJS(`http://${domainAddress}/ws/chat`);
+      const socket = new SockJS(`http://localhost:9999/api/ws/chat`);
       return socket;
     });
     client.current.connect(
@@ -54,7 +55,7 @@ const RightContainer = () => {
         client.current!.subscribe(
           `/sub/chat/rooms/${roomId}`,
           (message) => {
-            console.log(message);
+            console.log("message: " + message);
             addItem(JSON.parse(message.body));
             // setChatMessage(JSON.parse(message.body));
           }
@@ -91,7 +92,8 @@ const RightContainer = () => {
     useRecoilState(InGameChatStatus);
 
   const addItem = (item: Message) => {
-    if (item.type.code === 2) {
+    if (item.message_type === 2) {
+      // if (item.messageType === "TALK") {
       setItems([...items, item]);
     }
   };
@@ -124,12 +126,11 @@ const RightContainer = () => {
     name: "메시지 전송",
   };
 
-
   const messageSending: Message = {
     content: message,
-    type: messageSendingType,
+    message_type: 2,
     sender: "A",
-    meetingRoomId: 1,
+    meeting_room_id: 1,
   };
   // useCallback(() => sendMessage(JSON.stringify(messageSent)), []);
 
@@ -151,6 +152,7 @@ const RightContainer = () => {
           {},
           JSON.stringify(messageSending)
         );
+        console.log(messageSending);
         setMessage("");
       } else {
         alert("메시지를 입력해주세요");
@@ -286,6 +288,12 @@ const RightContainer = () => {
     connectHandler(1, "testRoom");
   };
 
+  const testRoomMake = async () => {
+    fetch("http://localhost:9999/api/chat/rooms/1").then((res) =>
+      console.log(res)
+    );
+  };
+
   return (
     <S.Container
       theme={theme}
@@ -312,6 +320,9 @@ const RightContainer = () => {
           {/* 테스트용 버튼 */}
           <S.Button theme={theme} onClick={testHandler}>
             Test
+          </S.Button>
+          <S.Button theme={theme} onClick={testRoomMake}>
+            New Room
           </S.Button>
           {/* <button onClick={handleClickChangeSocketUrl}>
             Click Me to change Socket Url

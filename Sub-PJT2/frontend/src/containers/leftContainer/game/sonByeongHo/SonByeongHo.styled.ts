@@ -36,7 +36,7 @@ export const PlayerVid = styled.div`
   min-width: 20rem;
   min-height: 15rem;
   position: relative;
-  `;
+`;
 
 export const LifeContainer = styled.div`
   /* border: solid green; */
