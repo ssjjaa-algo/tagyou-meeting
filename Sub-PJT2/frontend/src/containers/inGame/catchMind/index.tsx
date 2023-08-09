@@ -167,144 +167,133 @@ const CatchMind = () => {
   }, [thickness, fillColor]);
 
   return (
-    <Container>
-      <S.Container>
-        <S.Body>
-          {/* 사람 영상 뜰 자리 */}
-          <S.PlayerVidBundle>
-            <S.PlayerVid></S.PlayerVid>
-            <S.PlayerVid></S.PlayerVid>
-            <S.PlayerVid></S.PlayerVid>
-          </S.PlayerVidBundle>
-          {/* 그림판 */}
-          <S.CanvasBox theme={theme}>
-            <S.Canvas ref={canvasRef} width="700" height="350" theme={theme} />
-            <S.WordContainer>
-              <S.WordText theme={theme}>
-                <S.WordTitle theme={theme}>제시어</S.WordTitle>
-                <S.Word>꿀벌</S.Word>
-              </S.WordText>
-            </S.WordContainer>
-            <S.PaletteBody theme={theme}>
-              <S.Palette>
-                <S.BrushInfo>
-                  <S.BrushShape style={brushShape} />
-                  <S.Burshimg src={brush} alt="브러쉬 정보" />
-                </S.BrushInfo>
-                <S.UpperPalette>
-                  <S.PaletteColor
-                    theme={theme}
-                    onClick={handleColorClick}
-                    style={{ backgroundColor: "black", color: "white" }}
-                  >
-                    black
-                  </S.PaletteColor>
-                  <S.PaletteColor
-                    theme={theme}
-                    onClick={handleColorClick}
-                    style={{ backgroundColor: "white" }}
-                  >
-                    white
-                  </S.PaletteColor>
-                  <S.PaletteColor
-                    theme={theme}
-                    onClick={handleClear}
-                    style={{ backgroundColor: "white" }}
-                  >
-                    clear
-                  </S.PaletteColor>
-                  <S.PaletteColor
-                    theme={theme}
-                    onClick={handleFill}
-                    style={fillColor}
-                  >
-                    fill
-                  </S.PaletteColor>
-                </S.UpperPalette>
-                <S.SeekBarContainer theme={theme}>
-                  <S.SeekBar
-                    ref={seekBarRef}
-                    theme={theme}
-                    type="range"
-                    min={1}
-                    max={30}
-                    value={thickness}
-                    onChange={brushThicknessControl}
-                  ></S.SeekBar>
-                </S.SeekBarContainer>
-              </S.Palette>
-              <S.Palette>
+    <S.Container>
+      <S.Body>
+        {/* 사람 영상 뜰 자리 */}
+        <S.PlayerVidBundle>
+          <S.PlayerVid></S.PlayerVid>
+          <S.PlayerVid></S.PlayerVid>
+          <S.PlayerVid></S.PlayerVid>
+        </S.PlayerVidBundle>
+        {/* 그림판 */}
+        <S.CanvasBox theme={theme}>
+          <S.Canvas ref={canvasRef} width="700" height="350" theme={theme} />
+          <S.WordContainer>
+            <S.WordText theme={theme}>
+              <S.WordTitle theme={theme}>제시어</S.WordTitle>
+              <S.Word>꿀벌</S.Word>
+            </S.WordText>
+          </S.WordContainer>
+          <S.PaletteBody theme={theme}>
+            <S.Palette>
+              <S.BrushInfo>
+                <S.BrushShape style={brushShape} />
+                <S.Burshimg src={brush} alt="브러쉬 정보" />
+              </S.BrushInfo>
+              <S.UpperPalette>
                 <S.PaletteColor
                   theme={theme}
                   onClick={handleColorClick}
-                  style={{ backgroundColor: "red" }}
+                  style={{ backgroundColor: "black", color: "white" }}
                 >
-                  red
+                  black
                 </S.PaletteColor>
                 <S.PaletteColor
                   theme={theme}
                   onClick={handleColorClick}
-                  style={{ backgroundColor: "orange" }}
+                  style={{ backgroundColor: "white" }}
                 >
-                  orange
+                  white
                 </S.PaletteColor>
                 <S.PaletteColor
                   theme={theme}
-                  onClick={handleColorClick}
-                  style={{ backgroundColor: "yellow" }}
+                  onClick={handleClear}
+                  style={{ backgroundColor: "white" }}
                 >
-                  yellow
+                  clear
                 </S.PaletteColor>
                 <S.PaletteColor
                   theme={theme}
-                  onClick={handleColorClick}
-                  style={{ backgroundColor: "green" }}
+                  onClick={handleFill}
+                  style={fillColor}
                 >
-                  green
+                  fill
                 </S.PaletteColor>
-                <S.PaletteColor
+              </S.UpperPalette>
+              <S.SeekBarContainer theme={theme}>
+                <S.SeekBar
+                  ref={seekBarRef}
                   theme={theme}
-                  onClick={handleColorClick}
-                  style={{ backgroundColor: "blue" }}
-                >
-                  blue
-                </S.PaletteColor>
-                <S.PaletteColor
-                  theme={theme}
-                  onClick={handleColorClick}
-                  style={{ backgroundColor: "navy" }}
-                >
-                  navy
-                </S.PaletteColor>
-                <S.PaletteColor
-                  theme={theme}
-                  onClick={handleColorClick}
-                  style={{ backgroundColor: "purple" }}
-                >
-                  purple
-                </S.PaletteColor>
-              </S.Palette>
-            </S.PaletteBody>
-          </S.CanvasBox>
-          {/* 사람 영상 뜰 자리 */}
-          <S.PlayerVidBundle>
-            <S.PlayerVid></S.PlayerVid>
-            <S.PlayerVid></S.PlayerVid>
-            <S.PlayerVid></S.PlayerVid>
-          </S.PlayerVidBundle>
-        </S.Body>
-      </S.Container>
-    </Container>
+                  type="range"
+                  min={1}
+                  max={30}
+                  value={thickness}
+                  onChange={brushThicknessControl}
+                ></S.SeekBar>
+              </S.SeekBarContainer>
+            </S.Palette>
+            <S.Palette>
+              <S.PaletteColor
+                theme={theme}
+                onClick={handleColorClick}
+                style={{ backgroundColor: "red" }}
+              >
+                red
+              </S.PaletteColor>
+              <S.PaletteColor
+                theme={theme}
+                onClick={handleColorClick}
+                style={{ backgroundColor: "orange" }}
+              >
+                orange
+              </S.PaletteColor>
+              <S.PaletteColor
+                theme={theme}
+                onClick={handleColorClick}
+                style={{ backgroundColor: "yellow" }}
+              >
+                yellow
+              </S.PaletteColor>
+              <S.PaletteColor
+                theme={theme}
+                onClick={handleColorClick}
+                style={{ backgroundColor: "green" }}
+              >
+                green
+              </S.PaletteColor>
+              <S.PaletteColor
+                theme={theme}
+                onClick={handleColorClick}
+                style={{ backgroundColor: "blue" }}
+              >
+                blue
+              </S.PaletteColor>
+              <S.PaletteColor
+                theme={theme}
+                onClick={handleColorClick}
+                style={{ backgroundColor: "navy" }}
+              >
+                navy
+              </S.PaletteColor>
+              <S.PaletteColor
+                theme={theme}
+                onClick={handleColorClick}
+                style={{ backgroundColor: "purple" }}
+              >
+                purple
+              </S.PaletteColor>
+            </S.Palette>
+          </S.PaletteBody>
+        </S.CanvasBox>
+        {/* 사람 영상 뜰 자리 */}
+        <S.PlayerVidBundle>
+          <S.PlayerVid></S.PlayerVid>
+          <S.PlayerVid></S.PlayerVid>
+          <S.PlayerVid></S.PlayerVid>
+        </S.PlayerVidBundle>
+      </S.Body>
+    </S.Container>
   );
 };
-
-const Container = styled.div`
-  /* border: solid black; */
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-evenly;
-  /* margin-top: 5rem; */
-`;
 
 export default CatchMind;

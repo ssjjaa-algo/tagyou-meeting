@@ -25,11 +25,11 @@ const Router = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/test" element={<Test />} />
       <Route path="/mypage" element={<MyPage />} />
-      <Route path="/meeting" element={<Openvidu />} />
+      {/* <Route path="/meeting" element={<Openvidu />} /> */}
       <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
       {/* <Route path="/chatList" element={<ChatList />} /> */}
-      <Route path="/ingame" element={<Meeting />} />
       <Route id="pnf" path="*" element={<PageNotFound />} />
+      <Route path="/meeting" element={<Meeting />} />
     </Routes>
   );
 };

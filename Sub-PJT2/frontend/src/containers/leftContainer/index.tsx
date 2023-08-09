@@ -1,7 +1,7 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import { useRecoilState } from "recoil";
-import { IsDark, IsOpen, TokenValue } from "../../atoms/atoms";
+import { IsDark, IsOpen } from "../../atoms/atoms";
 import * as S from "./LeftContainer.styled";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
@@ -10,20 +10,12 @@ import FriendContainer from "containers/friendContainer";
 import { leftContainerProprs } from "types/types";
 import { useEffect, useState } from "react";
 import { Modal } from "components/modal";
-// import { Cookies } from "react-cookie";
 
 const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);
   const [isDark, setIsDark] = useRecoilState(IsDark);
   const [isLogout, setIsLogout] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
-  // const cookies = new Cookies();
-  // const [Token, setToken] = useRecoilState(TokenValue);
-
-  // useEffect(() => {
-  //   setToken(cookies.get("Auth"));
-  //   console.log(Token);
-  // }, [cookies]);
 
   useEffect(() => {
     const rightContainer = document.querySelector(
@@ -43,8 +35,13 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
 
   const theme: themeProps = useTheme();
 
+  useEffect(() => {
+    console.log("theme", theme);
+    console.log("aa", theme.bg.deep);
+  }, [theme]);
+
   const style: React.CSSProperties = {
-    backgroundColor: theme.bg.deep,
+    backgroundColor: `${theme.bg.deep}`,
   };
 
   return (
@@ -86,11 +83,11 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
 
         <S.ListBox>
           <S.List theme={theme}>
-            <S.HomeIconStyled theme={theme} />
+            <S.HomeIconStyled theme={theme} onClick={()=>{window.location.replace("/home");}}/>
             <S.ListText onClick={()=>{window.location.replace("/home");}}>홈</S.ListText>
           </S.List>
           <S.List theme={theme}>
-            <S.PlayCircleOutlineIconStyled theme={theme} />{" "}
+            <S.PlayCircleOutlineIconStyled theme={theme} onClick={()=>{window.location.replace("/meeting");}}/>{" "}
             <S.ListText onClick={()=>{window.location.replace("/meeting");}}>미팅 시작</S.ListText>
           </S.List>
         </S.ListBox>
