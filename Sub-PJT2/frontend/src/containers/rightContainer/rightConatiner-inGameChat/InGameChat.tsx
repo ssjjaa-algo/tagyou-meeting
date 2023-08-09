@@ -15,7 +15,6 @@ import { useRecoilState } from "recoil";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import StompJs, { CompatClient, Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { client } from "stompjs";
 
 type Message = {
   content: string;
@@ -35,6 +34,12 @@ const RightContainer = () => {
   const theme: themeProps = useTheme();
 
   const [roomId, setRoomId] = useState<number>();
+  const [items, setItems] = useState<Message[]>([]);
+  const [lastMessage, setLastMessage] = useState<Message>();
+  const [message, setMessage] = useState("");
+  const [isHovering, setIsHovering] = useState(false);
+  const [inGameChatStatus, setInGameChatStatus] =
+    useRecoilState(InGameChatStatus);
 
   const client = useRef<CompatClient>();
 
@@ -67,29 +72,18 @@ const RightContainer = () => {
     console.log("...Connecting to Room #" + roomId);
   };
 
-  // const [socketUrl, setSocketUrl] = useState(`ws://${domainAddress}/ws/chat`);
-  // const [socketUrl, setSocketUrl] = useState(`ws://localhost:3000/ws`);
-  const [items, setItems] = useState<Message[]>([]);
-  const [messageHistory, setMessageHistory] = useState([]);
-  // const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+  // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러와야하나?
+  const requestChatHistory = async () => {
+    fetch("http://localhost:9999/api/chat/rooms/1/messages").then((res) =>
+      // console.log("res: " + res)
+      console.log(res.body)
+    );
+  };
 
-  // useEffect(() => {
-  //   if (lastMessage) {
-  //     setMessageHistory((prev) => prev.concat(lastMessage.data));
-  //     // 메세지 타입의 code가 2일 경우(메시지 전송일 경우) addItem
-  //     if (lastMessage.data.type.code === 2) {
-  //       addItem(lastMessage.data);
-  //     }
-  //   }
-  // }, [lastMessage, setItems]);
-
-  // const ws = useContext(WebSocketContext).current;
-  // const ws = new WebSocket("ws://localhost:3000/ws");
-  const [message, setMessage] = useState("");
-
-  const [isHovering, setIsHovering] = useState(false);
-  const [inGameChatStatus, setInGameChatStatus] =
-    useRecoilState(InGameChatStatus);
+  useEffect(() => {
+    connectHandler(1);
+    requestChatHistory();
+  }, []);
 
   const addItem = (item: Message) => {
     if (item.message_type === 2) {
@@ -161,7 +155,7 @@ const RightContainer = () => {
 
     setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 10);
+    }, 100);
   };
 
   // const handleClickSubmit = useCallback(() => {
@@ -238,10 +232,11 @@ const RightContainer = () => {
   useEffect(() => {
     // console.log(items);
     if (!chatScreenRef.current?.scrollTop) return;
-    console.log(chatScreenRef.current?.scrollTop);
-    if (chatScreenRef.current?.scrollTop > 0.5) {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
+    // if (chatScreenRef.current?.scrollTop > 0.5) {
+    console.log("메시지 입력중...");
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    chatScreenRef.current.scrollTop = 0;
+    // }
   }, [message]);
 
   const bottomRef = useRef<HTMLDivElement>(null);
