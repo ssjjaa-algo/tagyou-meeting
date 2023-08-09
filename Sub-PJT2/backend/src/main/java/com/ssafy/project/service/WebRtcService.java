@@ -36,6 +36,8 @@ public class WebRtcService {
             throw new NotFoundException("해당 아이디에 해당에 세션이 없습니다. ");
         }
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
+        // 들어오는 사람의 권한이 publisher. role()을 어디서 만지지??
+        // params를 여기서 생성하면 되지 않을까?
         Connection connection = session.createConnection(properties);
         return connection.getToken();
     }
