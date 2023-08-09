@@ -93,7 +93,7 @@ const RightContainer = () => {
 
   const addItem = (item: Message) => {
     if (item.message_type === 2) {
-    // if (item.messageType === "TALK") {
+      // if (item.messageType === "TALK") {
       setItems([...items, item]);
     }
   };
@@ -288,6 +288,12 @@ const RightContainer = () => {
     connectHandler(1, "testRoom");
   };
 
+  const testRoomMake = async () => {
+    fetch("http://localhost:9999/api/chat/rooms/1").then((res) =>
+      console.log(res)
+    );
+  };
+
   return (
     <S.Container
       theme={theme}
@@ -314,6 +320,9 @@ const RightContainer = () => {
           {/* 테스트용 버튼 */}
           <S.Button theme={theme} onClick={testHandler}>
             Test
+          </S.Button>
+          <S.Button theme={theme} onClick={testRoomMake}>
+            New Room
           </S.Button>
           {/* <button onClick={handleClickChangeSocketUrl}>
             Click Me to change Socket Url
