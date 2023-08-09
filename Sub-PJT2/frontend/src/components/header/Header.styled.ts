@@ -16,5 +16,11 @@ export const Header = styled.header<{ theme: themeProps }>`
 
 export const Logo = styled.img`
   position: relative;
-  left: 46%;
+  right: 46%;
+  /* border: solid red; */
+`;
+
+export const Exit = styled.img`
+  width: 2rem;
+  height: 2rem;
 `;
