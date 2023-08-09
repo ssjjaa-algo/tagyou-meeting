@@ -3,15 +3,24 @@ import * as S from "./Meeting.styled";
 import CatchMind from "containers/inGame/catchMind";
 import SonByeonHo from "containers/inGame/sonByeongHo";
 import Sis from "containers/inGame/sis";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "components/header/Header";
 import { GameStart as GameStartAtom } from "atoms/atoms";
 import { useRecoilState } from "recoil";
 
-
 const Meeting = () => {
   const [GameStart, setGameStart] = useRecoilState(GameStartAtom);
   const [selectedGame, setSelectedGame] = useState("");
+
+  useEffect(() => {
+    const rightContainer = document.querySelector(
+      ".right_container"
+    ) as HTMLElement;
+    if (rightContainer instanceof Element) {
+      // console.log("open", isOpen);
+      rightContainer.style.width = "100vw";
+    }
+  }, []);
 
   const renderSelectedGame = () => {
     if (selectedGame === "catchMind") {
@@ -26,16 +35,13 @@ const Meeting = () => {
   return (
     <S.Container>
       <Header />
-        {!GameStart ? (
-          <S.Container>
+      {!GameStart ? (
+        <S.Container>
           <S.InnerContainer>
             <S.PlayerVidBundle>
-              <S.PlayerVid>
-              </S.PlayerVid>
-              <S.PlayerVid>
-              </S.PlayerVid>
-              <S.PlayerVid>
-              </S.PlayerVid>
+              <S.PlayerVid></S.PlayerVid>
+              <S.PlayerVid></S.PlayerVid>
+              <S.PlayerVid></S.PlayerVid>
             </S.PlayerVidBundle>
             <S.Middle>
               <select
@@ -50,22 +56,18 @@ const Meeting = () => {
               <button onClick={() => setGameStart(true)}>게임 시작</button>
             </S.Middle>
             <S.PlayerVidBundle>
-              <S.PlayerVid>
-              </S.PlayerVid>
-              <S.PlayerVid>
-              </S.PlayerVid>
-              <S.PlayerVid>
-              </S.PlayerVid>
+              <S.PlayerVid></S.PlayerVid>
+              <S.PlayerVid></S.PlayerVid>
+              <S.PlayerVid></S.PlayerVid>
             </S.PlayerVidBundle>
           </S.InnerContainer>
-          </S.Container>
-          ) : (
-            renderSelectedGame()
-            )}
+        </S.Container>
+      ) : (
+        renderSelectedGame()
+      )}
       <RightContainer />
     </S.Container>
-
   );
-}
+};
 
 export default Meeting;
