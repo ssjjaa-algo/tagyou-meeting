@@ -14,10 +14,10 @@ class Openvidu extends Component {
 
         // These properties are in the state's component in order to re-render the HTML whenever their values change
         this.state = {
-            mySessionId: 'CustomSessionId',
-            myUserName: '참가자' + Math.floor(Math.random() * 100),
+            mySessionId: undefined,
+            myUserName: undefined,
             session: undefined,
-            mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
+            mainStreamManager: undefined,
             publisher: undefined,
             subscribers: [],
         };
@@ -86,7 +86,7 @@ class Openvidu extends Component {
                 session: this.OV.initSession(),
             },
             () => {
-                var mySession = this.state.session;
+                let mySession = this.state.session;
 
                 // --- 3) Specify the actions when events take place in the session ---
 
@@ -94,8 +94,8 @@ class Openvidu extends Component {
                 mySession.on('streamCreated', (event) => {
                     // Subscribe to the Stream to receive it. Second parameter is undefined
                     // so OpenVidu doesn't create an HTML video by its own
-                    var subscriber = mySession.subscribe(event.stream, undefined);
-                    var subscribers = this.state.subscribers;
+                    let subscriber = mySession.subscribe(event.stream, undefined);
+                    let subscribers = this.state.subscribers;
                     subscribers.push(subscriber);
 
                     // Update the state with the new subscribers
@@ -122,7 +122,8 @@ class Openvidu extends Component {
                 this.getToken().then((token) => {
                     // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
                     // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-                    mySession.connect(token, { clientData: this.state.myUserName })
+                    mySession
+                        .connect(token, { clientData: this.state.myUserName })
                         .then(async () => {
 
                             // --- 5) Get your own camera stream ---
@@ -145,10 +146,10 @@ class Openvidu extends Component {
                             mySession.publish(publisher);
 
                             // Obtain the current video device in use
-                            var devices = await this.OV.getDevices();
-                            var videoDevices = devices.filter(device => device.kind === 'videoinput');
-                            var currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
-                            var currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
+                            let devices = await this.OV.getDevices();
+                            let videoDevices = devices.filter(device => device.kind === 'videoinput');
+                            let currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
+                            let currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
 
                             // Set the main video in the page to display our webcam and store our Publisher
                             this.setState({
@@ -180,8 +181,8 @@ class Openvidu extends Component {
         this.setState({
             session: undefined,
             subscribers: [],
-            mySessionId: 'CustomSessionId',
-            myUserName: '참가자' + Math.floor(Math.random() * 100),
+            mySessionId: undefined,
+            myUserName: undefined,
             mainStreamManager: undefined,
             publisher: undefined
         });
@@ -190,16 +191,16 @@ class Openvidu extends Component {
     async switchCamera() {
         try {
             const devices = await this.OV.getDevices()
-            var videoDevices = devices.filter(device => device.kind === 'videoinput');
+            let videoDevices = devices.filter(device => device.kind === 'videoinput');
 
             if (videoDevices && videoDevices.length > 1) {
 
-                var newVideoDevice = videoDevices.filter(device => device.deviceId !== this.state.currentVideoDevice.deviceId)
+                let newVideoDevice = videoDevices.filter(device => device.deviceId !== this.state.currentVideoDevice.deviceId)
 
                 if (newVideoDevice.length > 0) {
                     // Creating a new publisher with specific videoSource
                     // In mobile devices the default and first camera is the front one
-                    var newPublisher = this.OV.initPublisher(undefined, {
+                    let newPublisher = this.OV.initPublisher(undefined, {
                         videoSource: newVideoDevice[0].deviceId,
                         publishAudio: true,
                         publishVideo: true,

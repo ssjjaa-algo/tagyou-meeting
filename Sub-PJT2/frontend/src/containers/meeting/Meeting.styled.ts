@@ -5,8 +5,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   transition: all 1s;
-  min-height: fit-content;
-  min-width: fit-content;
+  /* width: 100%; */
+  height: 100%;
+  margin-top: 2rem;
 `;
 
 export const InnerContainer = styled.div`

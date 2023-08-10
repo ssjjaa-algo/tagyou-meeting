@@ -44,8 +44,9 @@ function Main() {
                 age={leftContainerData.age}
               />
             ) : null}
+            <RightContainer>
               <Router />
-            <RightContainer/>
+            </RightContainer>
           </Container>
         </BrowserRouter>
       </ThemeProvider>

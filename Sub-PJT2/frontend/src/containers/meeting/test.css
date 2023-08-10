@@ -171,6 +171,8 @@ a:hover .demo-logo {
   position: relative;
   float: left;
   cursor: pointer;
+  width: 30%;
+  height: 30%;
 }
 
 #video-container p {
