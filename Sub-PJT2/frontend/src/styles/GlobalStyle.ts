@@ -24,24 +24,19 @@ const GlobalStyle = css`
       url("/fonts/woff/Pretendard-Bold.woff") format("woff");
   }
   
-  body {
-    width: 100vw;
-    height: 100vh;
+  html{
     overflow-x: hidden;
-    border: solid white;
   }
   ::-webkit-scrollbar {
     width: 0.7rem;
-    background-color: transparent;
-    /* display: none; */
   }
-  body::-webkit-scrollbar-thumb {
+  ::-webkit-scrollbar-thumb {
     background-color: rgb(208, 208, 208);
     border-radius: 10px;
     background-clip: padding-box;
     border: 3px solid transparent;
   }
-  body::-webkit-scrollbar-track {
+  ::-webkit-scrollbar-track {
     border-radius: 10px;
     box-shadow: inset 0px 0px 5px transparent;
     /* background-color: transparent; */

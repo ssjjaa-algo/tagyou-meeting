@@ -4,11 +4,10 @@ import { themeProps } from "@emotion/react";
 import { getThemeProps } from "@mui/system";
 
 export const Container = styled.div`
-  margin-top: 10vh;
-  margin-left: 10%;
+  /* border: solid yellow 3px; */
   justify-items: center;
-  /* width: 1200px; */
-  width: calc(100% - 200px)
+  margin: 5rem 0 0 5rem;
+  width: calc(100% - 10rem);
 `;
 
 export const ProfileContainer = styled.div`
@@ -17,31 +16,30 @@ export const ProfileContainer = styled.div`
   max-width: 40vw;
   padding-bottom: 50px;
   align-items: center;
-`
+`;
 
 export const OtherContainer = styled.div`
   padding-bottom: 50px;
   align-items: center;
-`
+`;
 
 export const InnerContent = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 export const LeftContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-`
+`;
 export const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: auto;
   margin-top: 13px;
 `;
-
 
 export const ProfileImg = styled.img`
   border-radius: 100px;
@@ -55,7 +53,7 @@ export const ProfileImg = styled.img`
 export const FavoriteIconStyled = styled(FavoriteIcon)<{
   theme: themeProps;
 }>`
-  color: #FF9993;
+  color: #ff9993;
 `;
 
 export const Title = styled.text<{ theme: themeProps }>`
@@ -75,7 +73,7 @@ export const miniTitle = styled.text<{ theme: themeProps }>`
 
 export const Wall = styled.div<{ theme: themeProps }>`
   color: ${(props) => props.theme.font.mid};
-  width: 2.5em; 
+  width: 2.5em;
   font-size: 17px;
   font-weight: bold;
   text-align: center;
@@ -83,7 +81,7 @@ export const Wall = styled.div<{ theme: themeProps }>`
 `;
 
 export const likeCount = styled.div`
-  color: #FF9993;
+  color: #ff9993;
   font-size: 17px;
   font-weight: bold;
-`
+`;

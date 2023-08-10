@@ -1,5 +1,5 @@
 import { themeProps } from "@emotion/react";
-import { useTheme } from "@mui/material";
+import { List, useTheme } from "@mui/material";
 import * as S from "./InGameChat.styled";
 import { useRef, useState, useEffect } from "react";
 import { InGameChatStatus } from "atoms/atoms";
@@ -12,6 +12,7 @@ import { useRecoilState } from "recoil";
 // webSocket 관련
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { response } from "express";
 
 type Message = {
   content: string;
@@ -66,19 +67,23 @@ const RightContainer = () => {
     setRoomId(roomId);
     //client.current.connect로 연결하고 fetch를 통해서 해당 접속이랑 연동(?)을 시켜줘야됨
     roomMake();
+    requestChatHistory(1);
   };
 
-  // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러와야하나?
-  const requestChatHistory = async () => {
-    fetch("http://localhost:9999/api/chat/rooms/1/messages").then((res) =>
-      // console.log("res: " + res)
-      console.log(res.body)
-    );
+  // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러오는 부분
+  const requestChatHistory = async (roomId: number) => {
+    fetch(`http://localhost:9999/api/chat/rooms/${roomId}/messages`)
+      .then((response) => response.json())
+      .then((data: Message[]) => {
+        for (let i = 0; i < data.length; i++) {
+          addItem(data[i]);
+        }
+      });
   };
 
+  // 렌더링 후 연결
   useEffect(() => {
     connectHandler(1);
-    requestChatHistory();
   }, []);
 
   const addItem = (item: Message) => {
@@ -95,7 +100,7 @@ const RightContainer = () => {
     setMessage(e.target.value);
   };
 
-  // client에 있는 loginUser 정보를 받아와야 함
+  // client에 있는 토큰 이용해서 loginUser 정보를 받아와야 함
   // const user = "A"
   const [user, setUser] = useState<string>("");
 
@@ -106,7 +111,6 @@ const RightContainer = () => {
   const messageSending: Message = {
     content: message,
     message_type: "TALK",
-    // 보내는 사람이 지금 로그인해 있는 유저여야 함
     sender: user,
     meeting_room_id: roomId,
   };
@@ -126,22 +130,20 @@ const RightContainer = () => {
         alert("메시지를 입력해주세요");
       }
     }
-
-    setTimeout(() => {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
   };
 
   useEffect(() => {
     if (!chatScreenRef.current?.scrollTop) return;
-    // if (chatScreenRef.current?.scrollTop > 0.5) {
-    console.log("메시지 입력중...");
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    chatScreenRef.current.scrollTop = 0;
-    // }
+    if (chatScreenRef.current?.scrollTop > 0.5) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   }, [message]);
 
-  useEffect(() => {}, [lastMessage]);
+  useEffect(() => {
+    if (inGameChatStatus) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [lastMessage]);
 
   const bottomRef = useRef<HTMLDivElement>(null);
 

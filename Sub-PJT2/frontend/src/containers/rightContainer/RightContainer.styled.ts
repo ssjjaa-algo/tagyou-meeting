@@ -2,10 +2,10 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 
 export const Container = styled.div<{ theme: themeProps }>`
+  /* border: solid white; */
   background-color: ${(props) => props.theme.bg.light};
   transition: width, 500ms;
   min-height: 100vh;
-  max-width: calc(100vw - 4rem);
   margin: auto;
 `;
 
