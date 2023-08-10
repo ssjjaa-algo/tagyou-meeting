@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import OpenViduVideoComponent from './OvVideo';
 import './UserVideo.css';
 
-interface UserVideoComponentProps {
-    streamManager: any; // Update with the correct type if available
-}
+export default class UserVideoComponent extends Component {
 
-export default class UserVideoComponent extends Component<UserVideoComponentProps> {
     getNicknameTag() {
         // Gets the nickName of the user
         return JSON.parse(this.props.streamManager.stream.connection.data).clientData;

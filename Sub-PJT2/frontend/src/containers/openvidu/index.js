@@ -1,7 +1,7 @@
 import { OpenVidu } from 'openvidu-browser';
 import './index.css'
 import axios from 'axios';
-import { Component } from 'react';
+import { Component, useState } from 'react';
 import UserVideoComponent from './UserVideoComponent';
 
 const OPENVIDU_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://tagyou.site:8443';
@@ -14,7 +14,7 @@ class Openvidu extends Component {
 
         // These properties are in the state's component in order to re-render the HTML whenever their values change
         this.state = {
-            mySessionId: undefined,
+            myToken: undefined,
             myUserName: undefined,
             session: undefined,
             mainStreamManager: undefined,
@@ -25,8 +25,7 @@ class Openvidu extends Component {
         this.joinSession = this.joinSession.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
         this.switchCamera = this.switchCamera.bind(this);
-        this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
-        this.handleChangeUserName = this.handleChangeUserName.bind(this);
+        this.handleChangeToken = this.handleChangeToken.bind(this);
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         this.onbeforeunload = this.onbeforeunload.bind(this);
     }
@@ -43,9 +42,9 @@ class Openvidu extends Component {
         this.leaveSession();
     }
 
-    handleChangeSessionId(e) {
+    handleChangeToken(e) {
         this.setState({
-            mySessionId: e.target.value,
+            myToken: e.target.value,
         });
     }
 
@@ -119,11 +118,12 @@ class Openvidu extends Component {
                 // --- 4) Connect to the session with a valid user token ---
 
                 // Get a token from the OpenVidu deployment
-                this.getToken().then((token) => {
+                // this.getToken().then((token) => {
                     // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
                     // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+                    
                     mySession
-                        .connect(token, { clientData: this.state.myUserName })
+                        .connect(this.state.myToken, { clientData: this.state.myUserName })
                         .then(async () => {
 
                             // --- 5) Get your own camera stream ---
@@ -162,8 +162,8 @@ class Openvidu extends Component {
                             console.log('There was an error connecting to the session:', error.code, error.message);
                         });
                 });
-            },
-        );
+            // },
+        // );
     }
 
     leaveSession() {
@@ -183,6 +183,7 @@ class Openvidu extends Component {
             subscribers: [],
             mySessionId: undefined,
             myUserName: undefined,
+            myToken: undefined,
             mainStreamManager: undefined,
             publisher: undefined
         });
@@ -224,8 +225,9 @@ class Openvidu extends Component {
     }
 
     render() {
-        const mySessionId = this.state.mySessionId;
+        // const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
+        const myToken = this.state.myToken;
 
         return (
             <div className="container">
@@ -249,13 +251,13 @@ class Openvidu extends Component {
                                     />
                                 </p>
                                 <p>
-                                    <label> Session: </label>
+                                    <label> Token: </label>
                                     <input
                                         className="form-control"
                                         type="text"
-                                        id="sessionId"
-                                        value={mySessionId}
-                                        onChange={this.handleChangeSessionId}
+                                        id="myToken"
+                                        value={myToken}
+                                        onChange={this.handleChangeToken}
                                         required
                                     />
                                 </p>
@@ -270,7 +272,7 @@ class Openvidu extends Component {
                 {this.state.session !== undefined ? (
                     <div id="session">
                         <div id="session-header">
-                            <h1 id="session-title">{mySessionId}</h1>
+                            {/* <h1 id="session-title">{mySessionId}</h1> */}
                             <input
                                 className="btn btn-large btn-danger"
                                 type="button"
@@ -329,64 +331,24 @@ class Openvidu extends Component {
      * Visit https://docs.openvidu.io/en/stable/application-server to learn
      * more about the integration of OpenVidu in your application server.
      */
-    getToken() {
-        return this.createSession(this.state.mySessionId).then((sessionId) =>
-          this.createToken(sessionId)
-        );
-      }
-    
-    createSession(sessionId) {
-    return new Promise((resolve, reject) => {
-        let data = JSON.stringify({ customSessionId: sessionId });
-        axios
-        .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
-            headers: {
-            Authorization: `Basic ${btoa(
-                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-            )}`,
-            'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => {
-            resolve(response.data.id);
-        })
-        .catch((response) => {
-            let error = { ...response };
-            if (error?.response?.status === 409) {
-            resolve(sessionId);
-            } else if (
-            window.confirm(
-                `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
-                `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
-            )
-            ) {
-            window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-            }
-        });
-    });
-    }
-    
-    createToken(sessionId) {
-    return new Promise((resolve, reject) => {
-        let data = {};
-        axios
-        .post(
-            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-            data,
-            {
-            headers: {
-                Authorization: `Basic ${btoa(
-                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-                )}`,
-                'Content-Type': 'application/json',
-            },
-            }
-        )
-        .then((response) => {
-            resolve(response.data.token);
-        })
-        .catch((error) => reject(error));
-    });
-    }
+
+    // async getToken() {
+    //     const sessionId = await this.createSession(this.state.mySessionId);
+    //     return await this.createToken(sessionId);
+    // }
+
+    // async createSession(sessionId) {
+    //     const response = await axios.post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, { customSessionId: sessionId }, {
+    //         headers: { 'Content-Type': 'application/json', },
+    //     });
+    //     return response.data; // The sessionId
+    // }
+
+    // async createToken(sessionId) {
+    //     const response = await axios.post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
+    //         headers: { 'Content-Type': 'application/json', },
+    //     });
+    //     return response.data; // The token
+    // }
 }
 export default Openvidu;

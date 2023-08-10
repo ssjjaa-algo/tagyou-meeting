@@ -4,10 +4,10 @@ import Test from "./components/test/Test";
 
 import Home from "./containers/home";
 import MyPage from "containers/myPage/MyPage";
-// import Openvidu from "containers/meeting/meeting";
+import Openvidu from "containers/openvidu";
 // import ChatList from "containers/chatList/ChatList";
 import ChatRoom from "containers/chatRoom/ChatRoom";
-// import Meeting from "containers/meeting";
+import Meeting from "containers/meeting";
 // import LandingStart from "containers/landing/LandingStart/LandingStart";
 // import LandingLogin from "containers/landing/LandingLogin/LandingLogin";
 import LandingContainer from "containers/landingContainer/Landing";
@@ -25,11 +25,11 @@ const Router = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/test" element={<Test />} />
       <Route path="/mypage" element={<MyPage />} />
-      {/* <Route path="/openvidu" element={<Openvidu />} /> */}
+      <Route path="/openvidu" element={<Openvidu />} />
       <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
       {/* <Route path="/chatList" element={<ChatList />} /> */}
       <Route id="pnf" path="*" element={<PageNotFound />} />
-      {/* <Route path="/meeting" element={<Meeting />} /> */}
+      <Route path="/meeting" element={<Meeting />} />
     </Routes>
   );
 };
