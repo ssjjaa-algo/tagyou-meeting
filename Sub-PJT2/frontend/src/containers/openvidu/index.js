@@ -14,8 +14,8 @@ class Openvidu extends Component {
 
         // These properties are in the state's component in order to re-render the HTML whenever their values change
         this.state = {
-            myToken: undefined,
-            myUserName: undefined,
+            myToken: '',
+            myUserName: '',
             session: undefined,
             mainStreamManager: undefined,
             publisher: undefined,
@@ -26,6 +26,7 @@ class Openvidu extends Component {
         this.leaveSession = this.leaveSession.bind(this);
         this.switchCamera = this.switchCamera.bind(this);
         this.handleChangeToken = this.handleChangeToken.bind(this);
+        this.handleChangeUserName = this.handleChangeUserName.bind(this);
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         this.onbeforeunload = this.onbeforeunload.bind(this);
     }

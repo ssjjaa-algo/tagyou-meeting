@@ -39,8 +39,8 @@ export const PlayerVidBundle = styled.div`
 export const PlayerVid = styled.div`
   border: solid red;
   display: flex;
-  width: 30%;
-  height: 90%;
+  width: 20%;
+  height: 80%;
   min-width: 20rem;
   min-height: 15rem;
   position: relative;

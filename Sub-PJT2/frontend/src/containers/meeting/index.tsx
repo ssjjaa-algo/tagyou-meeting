@@ -206,14 +206,13 @@ const Meeting = () => {
         className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}
         >
           <S.InnerContainer>
-          <div>
+          {/* <div>
             <button onClick={leaveSession}>세션 떠나기</button>    
-          </div>
+          </div> */}
             <S.PlayerVidBundle>
               <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-              {/* <S.PlayerVid></S.PlayerVid> */}
-              <S.PlayerVid></S.PlayerVid>
-              <S.PlayerVid></S.PlayerVid>
+              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
             </S.PlayerVidBundle>
             <S.Middle>
               <select
@@ -228,9 +227,9 @@ const Meeting = () => {
               <button onClick={() => setGameStart(true)}>게임 시작</button>
             </S.Middle>
             <S.PlayerVidBundle>
-              <S.PlayerVid></S.PlayerVid>
-              <S.PlayerVid></S.PlayerVid>
-              <S.PlayerVid></S.PlayerVid>
+              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
             </S.PlayerVidBundle>
           </S.InnerContainer>
         </S.Container>
