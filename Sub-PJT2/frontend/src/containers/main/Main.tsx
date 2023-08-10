@@ -23,8 +23,12 @@ function Main() {
 
   const showSideBar = () => {
     const position = document.location.pathname;
-    if (position === "/chatList" || position.search("chatRoom") === 1
-    || position === "/mypage" || position === "/home") {
+    if (
+      position === "/chatList" ||
+      position.search("chatRoom") === 1 ||
+      position === "/mypage" ||
+      position === "/home"
+    ) {
       return true;
     }
     return false;
@@ -44,8 +48,9 @@ function Main() {
                 age={leftContainerData.age}
               />
             ) : null}
+            <RightContainer>
               <Router />
-            <RightContainer/>
+            </RightContainer>
           </Container>
         </BrowserRouter>
       </ThemeProvider>
