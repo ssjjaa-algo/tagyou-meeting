@@ -15,8 +15,7 @@ const Button = ({ content }: btnProps) => {
   };
 
   const handleLogin = () => {
-    const KAKAO_AUTH_URI =
-      "http://localhost:9999/api/oauth2/authorization/kakao";
+    const KAKAO_AUTH_URI = "https://tagyou.site/api/oauth2/authorization/kakao"
     window.location.href = KAKAO_AUTH_URI;
   };
 
