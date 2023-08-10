@@ -113,7 +113,7 @@ class Openvidu extends Component {
 
                 // On every asynchronous exception...
                 mySession.on('exception', (exception) => {
-                    console.warn(exception);
+                    // console.warn(exception);
                 });
 
                 // --- 4) Connect to the session with a valid user token ---
@@ -122,10 +122,13 @@ class Openvidu extends Component {
                 // this.getToken().then((token) => {
                     // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
                     // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-                    
+                // console.log(this.state.myToken)
+                // console.log(typeof this.state.myToken)
                     mySession
                         .connect(this.state.myToken, { clientData: this.state.myUserName })
+                        // .then('Session connected!')
                         .then(async () => {
+                            
 
                             // --- 5) Get your own camera stream ---
 
@@ -246,7 +249,7 @@ class Openvidu extends Component {
                                         className="form-control"
                                         type="text"
                                         id="userName"
-                                        value={myUserName}
+                                        value={this.state.myUserName}
                                         onChange={this.handleChangeUserName}
                                         required
                                     />
@@ -257,7 +260,7 @@ class Openvidu extends Component {
                                         className="form-control"
                                         type="text"
                                         id="myToken"
-                                        value={myToken}
+                                        value={this.state.myToken}
                                         onChange={this.handleChangeToken}
                                         required
                                     />
