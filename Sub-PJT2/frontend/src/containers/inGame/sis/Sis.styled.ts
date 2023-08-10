@@ -11,6 +11,7 @@ export const Container = styled.div`
   height: 100%;
   /* min-width: fit-content !important; */
   min-height: 40rem;
+  margin-top: 4rem;
 `;
 
 export const PlayerVidBundle = styled.div`

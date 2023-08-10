@@ -2,7 +2,8 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 
 export const Header = styled.header<{ theme: themeProps }>`
-  border: solid black;
+  /* border: solid black; */
+  border-bottom: solid ${(props) => props.theme.point.mid};
   position: fixed;
   top: 0;
   display: flex;

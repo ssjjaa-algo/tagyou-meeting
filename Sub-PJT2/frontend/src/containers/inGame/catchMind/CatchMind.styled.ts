@@ -2,10 +2,12 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 
 export const Container = styled.div`
+  /* border: solid 2px black; */
   display: flex;
   flex-direction: row;
   width: 100%;
   justify-content: space-evenly;
+  margin-top: 6rem;
 `;
 
 export const CanvasBox = styled.div<{ theme: themeProps }>`
