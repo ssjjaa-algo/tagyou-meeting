@@ -23,7 +23,26 @@ const GlobalStyle = css`
     src: url("/fonts/woff2/Pretendard-Bold.woff2") format("woff2"),
       url("/fonts/woff/Pretendard-Bold.woff") format("woff");
   }
-  html,
+  
+  html{
+    overflow-x: hidden;
+  }
+  ::-webkit-scrollbar {
+    width: 0.7rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(208, 208, 208);
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px transparent;
+    /* background-color: transparent; */
+    /* display: none; */
+    background: transparent;
+  }
   body {
     font-family: "Pretendard";
     font-size: 10px;
