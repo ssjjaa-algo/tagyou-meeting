@@ -56,13 +56,13 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("이메일에 해당하는 유저가 없습니다."));
     }
 
-    public FirstLoginRspDto hasDetailInfo(Long userId) {
+    public boolean hasDetailInfo(Long userId) {
         User u = findUser(userId)
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
         if(u.getPhoneNumber() == null)
-            return new FirstLoginRspDto(true);
+            return true;
 
-        return new FirstLoginRspDto(false);
+        return false;
     }
 
     public UserInfoRspDto getUserInfo(Long userId) {
