@@ -25,13 +25,14 @@ function Main() {
     const position = document.location.pathname;
     if (
       position === "/chatList" ||
-      position.search("chatRoom") === 1 ||
+      position.search("/chatRoom") === 1 ||
       position === "/mypage" ||
       position === "/home"
     ) {
       return true;
+    } else {
+      return false;
     }
-    return false;
   };
 
   return (
