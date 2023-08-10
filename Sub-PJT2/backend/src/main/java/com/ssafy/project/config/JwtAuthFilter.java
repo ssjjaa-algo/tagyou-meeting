@@ -28,7 +28,7 @@ public class JwtAuthFilter extends GenericFilterBean {
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String clientId;
     private String state = "stateee";
-    private String redirectUri = "localhost:3030/home";
+    private String redirectUri = "localhost:3000/home";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
