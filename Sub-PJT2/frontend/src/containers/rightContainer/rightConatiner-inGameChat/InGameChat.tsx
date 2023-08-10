@@ -31,6 +31,7 @@ const RightContainer = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
+  const [pullDown, setPullDown] = useState<boolean>(true);
 
   const client = useRef<CompatClient>();
 
@@ -125,6 +126,13 @@ const RightContainer = () => {
           {},
           JSON.stringify(messageSending)
         );
+        console.log("박스 보이냐?" + bottomRef.current?.offsetHeight);
+        console.log(
+          "박스 보이냐?" + bottomRef.current?.getBoundingClientRect().top
+        );
+        console.log(
+          "박스 보이냐?" + contentRef.current?.getBoundingClientRect().top
+        );
         setMessage("");
       } else {
         alert("메시지를 입력해주세요");
@@ -133,19 +141,28 @@ const RightContainer = () => {
   };
 
   useEffect(() => {
-    if (!chatScreenRef.current?.scrollTop) return;
-    if (chatScreenRef.current?.scrollTop > 0.5) {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [message]);
-
-  useEffect(() => {
-    if (inGameChatStatus) {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!inGameChatStatus) return;
+    console.log(bottomRef.current?.offsetHeight);
+    if (bottomRef.current && contentRef.current) {
+      if (
+        lastMessage?.sender === user ||
+        bottomRef.current?.getBoundingClientRect().bottom >
+          contentRef.current?.getBoundingClientRect().top
+      ) {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      }
     }
   }, [lastMessage]);
 
+  // useEffect(() => {
+  //   console.log("여기가 작동");
+  //   if (inGameChatStatus) {
+  //     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, [lastMessage]);
+
   const bottomRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // 메시지 아이콘 누르면 채팅 창 열리고 닫히기 기능
   const handleClickMessage = () => {
@@ -207,10 +224,14 @@ const RightContainer = () => {
                 </S.Messages>
               ))}
               {/* 스크롤 맨 아래로 내리기 위한 레퍼런스 */}
-              <div ref={bottomRef}></div>
+              <S.RefDiv ref={bottomRef}></S.RefDiv>
             </S.ChatRoomMainChatsContent>
           </S.ChatRoomMainChats>
-          <S.ChatRoomMainInput className="chatRoom-main-input" theme={theme}>
+          <S.ChatRoomMainInput
+            ref={contentRef}
+            className="chatRoom-main-input"
+            theme={theme}
+          >
             <input
               value={message}
               onChange={handleChangeText}

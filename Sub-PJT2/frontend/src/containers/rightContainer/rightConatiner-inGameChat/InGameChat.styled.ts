@@ -8,6 +8,7 @@ export const Container = styled.div`
   flex-direction: row;
   overflow: hidden;
   position: fixed;
+  top: 0;
   right: 0;
   padding-left: 1rem;
   margin-top: 3.5rem;
@@ -107,4 +108,9 @@ export const Button = styled.button<{ theme: themeProps }>`
   border-radius: 0.5rem;
   width: 3rem;
   height: 2.5rem;
+`;
+
+export const RefDiv = styled.div`
+  border: solid green;
+  height: 0.1rem;
 `;
