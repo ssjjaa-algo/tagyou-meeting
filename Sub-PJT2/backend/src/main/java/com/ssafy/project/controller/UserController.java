@@ -83,5 +83,4 @@ public class UserController {
         return userService.editUserImage(id, file);
     }
 
-
 }

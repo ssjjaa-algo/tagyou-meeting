@@ -22,8 +22,10 @@ public class OneMeetingRoom extends MeetingRoom{
     private User femaleUser; // 여자
 
     @Builder
-    public OneMeetingRoom(User maleUser, User femaleUser) {
-        this.maleUser = maleUser;
-        this.femaleUser = femaleUser;
+    public OneMeetingRoom(User newUser) {
+        if(newUser.getUserGender().equals("MALE"))
+            this.maleUser = newUser;
+        if(newUser.getUserGender().equals("FEMALE"))
+            this.femaleUser = newUser;
     }
 }

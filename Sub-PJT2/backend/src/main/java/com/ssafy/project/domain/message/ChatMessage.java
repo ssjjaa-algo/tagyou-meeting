@@ -17,7 +17,7 @@ public class ChatMessage {
     private String content;
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.ORDINAL)
+    @Enumerated(value = EnumType.STRING)
     private MessageType type;
 
     @Column(name = "is_read", nullable = false)

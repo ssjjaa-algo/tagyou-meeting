@@ -23,4 +23,11 @@ public class ChatMessagePayload {
     @NotNull
     @JsonProperty(value = "meeting_room_id")
     private Long meetingRoomId;
+
+    public ChatMessagePayload(ChatMessage message){
+        this.content = message.getContent();
+        this.sender = message.getSender();
+        this.messageType = message.getType();
+        this.meetingRoomId = message.getMeetingRoom().getId();
+    }
 }
