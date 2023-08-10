@@ -20,7 +20,7 @@ public class Profile extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_profile_id")
+    @Column(name="profile_id")
     private Long id;
 
     @JsonBackReference
