@@ -23,7 +23,7 @@ type Message = {
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const [roomId, setRoomId] = useState<number>();
+  const [roomId, setRoomId] = useState<number>(0);
   const [items, setItems] = useState<Message[]>([]);
   const [lastMessage, setLastMessage] = useState<Message>();
   const [message, setMessage] = useState("");
@@ -64,6 +64,7 @@ const RightContainer = () => {
       }
     );
     setRoomId(roomId);
+    //client.current.connect로 연결하고 fetch를 통해서 해당 접속이랑 연동(?)을 시켜줘야됨
     roomMake();
   };
 
@@ -94,11 +95,20 @@ const RightContainer = () => {
     setMessage(e.target.value);
   };
 
+  // client에 있는 loginUser 정보를 받아와야 함
+  // const user = "A"
+  const [user, setUser] = useState<string>("");
+
+  const handleUserChange = (e: any) => {
+    setUser(e.target.value);
+  };
+
   const messageSending: Message = {
     content: message,
     message_type: "TALK",
-    sender: "A",
-    meeting_room_id: 1,
+    // 보내는 사람이 지금 로그인해 있는 유저여야 함
+    sender: user,
+    meeting_room_id: roomId,
   };
 
   const handleClickSubmit = () => {
@@ -181,10 +191,8 @@ const RightContainer = () => {
           theme={theme}
           className={inGameChatStatus ? "chatBoxShown" : "chatBoxHidden"}
         >
-          {/* 테스트용 버튼 */}
-          {/* <S.Button theme={theme} onClick={testHandler}>
-            Test
-          </S.Button> */}
+          {/* 테스트용 User Input */}
+          <input type="text" value={user} onChange={handleUserChange} />
           <S.ChatRoomMainChats
             className="chatRoom-main-chats"
             theme={theme}

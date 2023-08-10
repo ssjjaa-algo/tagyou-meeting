@@ -10,6 +10,7 @@ export const Container = styled.div`
   position: fixed;
   right: 0;
   padding-left: 1rem;
+  margin-top: 3.5rem;
 `;
 
 export const ChatRoomMain = styled.div`

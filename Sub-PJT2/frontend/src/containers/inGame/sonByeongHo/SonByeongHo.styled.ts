@@ -7,8 +7,9 @@ export const Container = styled.div`
   flex-direction: row;
   /* height: 100vh; */
   transition: all 1s;
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
+  margin-top: 2rem;
 `;
 
 export const InnerContainer = styled.div`
@@ -21,6 +22,7 @@ export const InnerContainer = styled.div`
   height: 100%;
   min-width: fit-content;
   min-height: 40rem;
+  margin-top: 4rem;
 `;
 
 export const PlayerVidBundle = styled.div`
@@ -34,8 +36,8 @@ export const PlayerVidBundle = styled.div`
   min-width: fit-content;
   min-height: fit-content;
   gap: 2rem;
-  padding: 2rem 0 2rem 0;
-  margin: 1rem;
+  /* padding: 2rem 0 2rem 0; */
+  margin-top: 1rem;
 `;
 
 export const PlayerVid = styled.div`
@@ -44,7 +46,7 @@ export const PlayerVid = styled.div`
   width: 30%;
   height: 90%;
   min-width: 20rem;
-  min-height: 15rem;
+  min-height: 16rem;
   position: relative;
 `;
 
@@ -74,6 +76,7 @@ export const Middle = styled.div`
   align-items: center;
   width: 100%;
   height: 10%;
+  margin-top: 1rem;
 `;
 
 export const Confess = styled.button<{ theme: themeProps }>`
