@@ -15,7 +15,7 @@ class Openvidu extends Component {
         // These properties are in the state's component in order to re-render the HTML whenever their values change
         this.state = {
             myToken: '',
-            myUserName: '',
+            myUserName: 'name',
             session: undefined,
             mainStreamManager: undefined,
             publisher: undefined,
@@ -154,6 +154,7 @@ class Openvidu extends Component {
                             let videoDevices = devices.filter(device => device.kind === 'videoinput');
                             let currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
                             let currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
+                            console.log(this.state.myUserName)
 
                             // Set the main video in the page to display our webcam and store our Publisher
                             this.setState({
@@ -185,8 +186,8 @@ class Openvidu extends Component {
         this.setState({
             session: undefined,
             subscribers: [],
-            mySessionId: undefined,
-            myUserName: undefined,
+            mySessionId: 'id',
+            myUserName: 'name',
             myToken: undefined,
             mainStreamManager: undefined,
             publisher: undefined
