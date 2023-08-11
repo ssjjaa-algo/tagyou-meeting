@@ -1,5 +1,6 @@
 package com.ssafy.project.domain.room;
 
+import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -23,9 +24,10 @@ public class OneMeetingRoom extends MeetingRoom{
 
     @Builder
     public OneMeetingRoom(User newUser) {
-        if(newUser.getUserGender().equals("MALE"))
+        if(newUser.getUserGender().equals(Gender.MALE))
             this.maleUser = newUser;
-        if(newUser.getUserGender().equals("FEMALE"))
+        if(newUser.getUserGender().equals(Gender.FEMALE))
             this.femaleUser = newUser;
     }
+
 }
