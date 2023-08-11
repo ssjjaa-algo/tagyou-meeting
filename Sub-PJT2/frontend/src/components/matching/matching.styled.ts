@@ -78,6 +78,6 @@ export const LogoutBtn = styled.button`
 export const Loading = styled.div<{ theme: themeProps }>`
   padding-top: 10%;
   font-size: 20px;
-  color: ${(props) => props.theme.font.deep};
+  color: ${(props) => props.theme.point.mid};
   font-weight: 400;
 `;
