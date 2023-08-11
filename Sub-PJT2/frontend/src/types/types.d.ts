@@ -1,4 +1,4 @@
-// user, profile 테이블 join 예정 -- 아래 type은 임시로 작성한 것임
+
 export type userProps = {
   userEmail: string;
   userName: string;
