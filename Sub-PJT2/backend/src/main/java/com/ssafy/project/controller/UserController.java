@@ -41,8 +41,8 @@ public class UserController {
     @GetMapping("/first")
     public ResponseEntity firstLogin(HttpServletRequest request) {
         if(userService.hasDetailInfo(tokenService.parseUId(request.getHeader("Auth"))))
-            return ResponseEntity.ok().body(true);
-        return ResponseEntity.badRequest().body(false);
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 
 
