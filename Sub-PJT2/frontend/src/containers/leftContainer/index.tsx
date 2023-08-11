@@ -1,7 +1,7 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
-import { useRecoilState } from "recoil";
-import { IsDark, IsOpen } from "../../atoms/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { IsDark, IsOpen, TokenValue, UserInfo } from "../../atoms/atoms";
 import * as S from "./LeftContainer.styled";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
@@ -16,6 +16,9 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
   const [isDark, setIsDark] = useRecoilState(IsDark);
   const [isLogout, setIsLogout] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  const userInfo = useRecoilValue(UserInfo);
+  const token = useRecoilValue(TokenValue);
 
   useEffect(() => {
     const rightContainer = document.querySelector(
@@ -79,7 +82,11 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
           </S.ArrowBtn>
         </S.BtnBox>
 
-        <Profile imgSrc={imgSrc} name={name} age={age} />
+        <Profile
+          imgSrc={imgSrc}
+          name={userInfo.userName}
+          age={userInfo.userAge}
+        />
 
         <S.ListBox>
           <S.List theme={theme}>
