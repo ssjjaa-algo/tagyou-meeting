@@ -25,7 +25,7 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
       // console.log("open", isOpen);
       rightContainer.style.width = isOpen
         ? "calc(100vw - 500px)"
-        : "calc(100vw)";
+        : "calc(100%)";
     }
   }, [isOpen]);
 
