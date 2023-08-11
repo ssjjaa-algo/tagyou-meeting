@@ -143,12 +143,14 @@ const SelectBox = ({
   }
 
   return (
-    <Select
-      placeholder={placeholderType}
-      style={{ width: 100, display: "inline-block", marginRight: "3px" }}
-      onChange={handleChange}
-      options={name === "userGugun" ? gugunList : optionList}
-    />
+    // <Select
+    //   placeholder={placeholderType}
+    //   style={{ width: 100, display: "inline-block", marginRight: "3px" }}
+    //   onChange={handleChange}
+    //   options={name === "userGugun" ? gugunList : optionList}
+    // />
+    <>
+    </>
   );
 };
 
