@@ -50,7 +50,7 @@ public class CommentController {
 
     // ===================== 코멘트 삭제 =========================
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("{commentId}")
+    @DeleteMapping("/{commentId}")
     public String deleteComments(HttpServletRequest request, @PathVariable String commentId) throws IllegalAccessException {
         Long uId = tokenService.parseUId(request.getHeader("Auth"));
         return commentService.deleteComment(uId, Long.parseLong(commentId));

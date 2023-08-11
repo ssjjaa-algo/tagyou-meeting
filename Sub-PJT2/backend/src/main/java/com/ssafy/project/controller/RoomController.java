@@ -1,23 +1,18 @@
 package com.ssafy.project.controller;
 
-import com.ssafy.project.domain.group.MeetingGroup;
-import com.ssafy.project.domain.room.GroupMeetingRoom;
 import com.ssafy.project.domain.room.MeetingRoom;
 import com.ssafy.project.domain.room.OneMeetingRoom;
-import com.ssafy.project.domain.user.User;
-import com.ssafy.project.exception.NotFoundException;
-import com.ssafy.project.repository.MeetingRoomRepository;
-import com.ssafy.project.service.UserService;
-import com.ssafy.project.service.redis.RedisSubscriber;
+import com.ssafy.project.dto.response.OneRoomRspDto;
+import com.ssafy.project.repository.OneMeetingRoomRepository;
+import com.ssafy.project.service.ChatService;
+import com.ssafy.project.service.RoomService;
+import com.ssafy.project.service.TokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -25,31 +20,33 @@ import java.util.Queue;
 @RequestMapping(value = "/rooms", produces = "application/json; charset=utf8")
 public class RoomController {
 
-    private final RedisSubscriber redisSubscriber;
-    private final RedisMessageListenerContainer redisMessageListener;  // 채팅방(Topic)에 발행되는 메시지를 처리할 Listener(Subscriber)
-    private final UserService userService;
-    private final MeetingRoomRepository meetingRoomRepository;
+    private final OneMeetingRoomRepository oneMeetingRoomRepository;
+    private final TokenService tokenService;
+    private final RoomService roomService;
+    private final ChatService chatService;
 
 
-    // ====================== 미팅방 개설 ============================
+    // ====================== 일대일 미팅방 생성 ============================
     @PostMapping
-    public MeetingRoom createChatRoom() {
-        User f1 = userService.findUser(1L).orElseThrow(() ->new NotFoundException("user not found"));
-        User m1 = userService.findUser(2L).orElseThrow(() ->new NotFoundException("user not found"));
-        MeetingRoom newRoom = OneMeetingRoom.builder().maleUser(m1).femaleUser(f1).build();
-        meetingRoomRepository.save(newRoom);
+    @RequestMapping("/one")
+    public OneRoomRspDto createOneMeetRoom(HttpServletRequest request) {
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return roomService.createMeetRoom(userId);
+    }
 
-        //        MeetingRoom newRoom = MeetingRoom.getBuilder()
-//                        .withName(name)
-//                        .build();
-        ChannelTopic topic = ChannelTopic.of(newRoom.getId().toString());
-        redisMessageListener.addMessageListener(redisSubscriber, topic);
-        return newRoom;
+    // ====================== 일대일 미팅방 시작 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/one/{roomId}")
+    public MeetingRoom getMeetRoom(@PathVariable Long roomId) {
+        MeetingRoom meetingRoom = oneMeetingRoomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 방에 입장 불가능합니다."));
+        chatService.enterMeetRoom(meetingRoom.getId());
+        return meetingRoom;
     }
 
     // ====================== 미팅방 목록 ============================
     @GetMapping
-    public List<MeetingRoom> getMeetingRooms() {
-        return meetingRoomRepository.findAll();
+    public List<OneMeetingRoom> getMeetingRooms() {
+        return oneMeetingRoomRepository.findAll();
     }
 }

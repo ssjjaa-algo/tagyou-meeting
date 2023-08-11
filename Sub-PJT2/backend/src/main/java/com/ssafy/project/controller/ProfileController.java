@@ -33,9 +33,8 @@ public class ProfileController {
         else return ResponseEntity.ok().body(new ProfileRspDto(profile));
     }
 
-    @GetMapping("/{uId}")
-    public ResponseEntity<?> getFriendProfile(HttpServletRequest request, @PathVariable String uId) {
-        Long userId = Long.parseLong(uId);
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getFriendProfile(HttpServletRequest request, @PathVariable Long userId) {
         Profile profile = profileService.getProfileByUId(userId);
         if(profile == null)
             return ResponseEntity.ok().body("does not exist");
@@ -75,9 +74,9 @@ public class ProfileController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/image/{imgId}")
-    public String deleteProfileImage(HttpServletRequest request, @PathVariable String imgId) throws IllegalAccessException {
+    public String deleteProfileImage(HttpServletRequest request, @PathVariable Long imgId) throws IllegalAccessException {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
-        profileService.deleteProfileImage(id, Long.parseLong(imgId));
+        profileService.deleteProfileImage(id, imgId);
         return "deleted";
     }
 

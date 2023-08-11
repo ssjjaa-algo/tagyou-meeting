@@ -29,12 +29,5 @@ public abstract class MeetingRoom extends BaseTimeEntity implements Serializable
     @Enumerated(value = EnumType.ORDINAL)
     private MeetingRoomStatus status = MeetingRoomStatus.ACTIVE;
 
-    @OneToMany(mappedBy = "meetingRoom", fetch = FetchType.LAZY)
-    private List<ChatMessage> messages = new ArrayList<>();
-
-    public void addMessage(ChatMessage message) {
-        messages.add(message);
-    }
-
 }
 
