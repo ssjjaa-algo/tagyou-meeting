@@ -126,13 +126,6 @@ const RightContainer = () => {
           {},
           JSON.stringify(messageSending)
         );
-        console.log("박스 보이냐?" + bottomRef.current?.offsetHeight);
-        console.log(
-          "박스 보이냐?" + bottomRef.current?.getBoundingClientRect().top
-        );
-        console.log(
-          "박스 보이냐?" + contentRef.current?.getBoundingClientRect().top
-        );
         setMessage("");
       } else {
         alert("메시지를 입력해주세요");
@@ -143,10 +136,16 @@ const RightContainer = () => {
   useEffect(() => {
     if (!inGameChatStatus) return;
     console.log(bottomRef.current?.offsetHeight);
+    console.log(
+      "초록이 상단높이" + bottomRef.current?.getBoundingClientRect().top
+    );
+    console.log(
+      "빨갱이 상단높이" + contentRef.current?.getBoundingClientRect().top
+    );
     if (bottomRef.current && contentRef.current) {
       if (
         lastMessage?.sender === user ||
-        bottomRef.current?.getBoundingClientRect().bottom >
+        bottomRef.current?.getBoundingClientRect().top <
           contentRef.current?.getBoundingClientRect().top
       ) {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -228,7 +227,6 @@ const RightContainer = () => {
             </S.ChatRoomMainChatsContent>
           </S.ChatRoomMainChats>
           <S.ChatRoomMainInput
-            ref={contentRef}
             className="chatRoom-main-input"
             theme={theme}
           >
@@ -253,6 +251,7 @@ const RightContainer = () => {
               </S.Button>
             </div>
           </S.ChatRoomMainInput>
+          <S.PullDownDiv ref={contentRef}/>
         </S.ChatRoomMainBox>
       </S.ChatRoomMain>
     </S.Container>

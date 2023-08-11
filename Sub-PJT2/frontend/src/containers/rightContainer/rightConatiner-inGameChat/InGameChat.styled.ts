@@ -45,7 +45,7 @@ export const MessageImg = styled.img`
 `;
 
 export const ChatRoomMainBox = styled.div<{ theme: themeProps }>`
-  /* border: solid pink; */
+  border: solid pink;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -111,6 +111,13 @@ export const Button = styled.button<{ theme: themeProps }>`
 `;
 
 export const RefDiv = styled.div`
-  border: solid green;
+  /* border: solid green; */
   height: 0.1rem;
+`;
+
+export const PullDownDiv = styled.div`
+  position: relative;
+  /* border: solid red; */
+  height: 0.2rem;
+  bottom: 0rem;
 `;
