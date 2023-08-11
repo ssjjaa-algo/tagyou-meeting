@@ -2,8 +2,11 @@ import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./matching.styled";
 import './index.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
+import { useRecoilState } from "recoil";
+import { TokenValue } from "atoms/atoms";
+import { Cookies } from "react-cookie";
 
 type MatchingProps = {
   handleOnClick: () => void;
@@ -19,20 +22,30 @@ export const Matching = ({
   };
   const theme: themeProps = useTheme();
   const [isLoading, setIsLoading] = useState(false);
+  const cookies = new Cookies();
+  const [token, setToken] = useRecoilState(TokenValue);
+  
+  useEffect(() => {
+    setToken(cookies.get("Auth"));
+  }, [cookies.get("Auth")]);
 
-  const handleFirstClick = async () => {
-    setIsLoading(true);
-    try {
-      // 여기서 POST 요청을 보내도록 수정합니다.
-      const response = await axios.post('http://localhost:9999/api/rooms/one');
-      // 요청이 성공적으로 처리되었을 때의 동작을 추가합니다.
-      console.log('POST 요청 성공:', response.data);
-      setIsLoading(false);
-    } catch (error) {
-      // 요청이 실패했을 때의 동작을 추가합니다.
-      console.error('POST 요청 실패:', error);
-      setIsLoading(false);
-    }
+  const handleFirstClick = () => {
+    
+    console.log(cookies.get("Auth"))
+    // setIsLoading(true);
+    // try {
+    //   const response = await axios.post('http://localhost:9999/api/rooms/one', {
+    //     headers: {
+    //       Auth: token,
+    //     }
+    //   })
+    //     console.log('POST 요청 성공:', response.data);
+    //     setIsLoading(false);
+    // } catch (error) {
+    //   // 요청이 실패했을 때의 동작을 추가합니다.
+    //   console.error('POST 요청 실패:', error);
+    //   setIsLoading(false);
+    // }
   };
 
 
