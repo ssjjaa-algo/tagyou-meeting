@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://tagyou.site:3306/meeting?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
-    username: root
-    password: 1234
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PW}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -24,18 +24,18 @@ spring:
 
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: tagyou.site
+      port: ${REDIS_PORT}
 
   security:
     oauth2:
       client:
         registration:
           kakao:
-            client-id: fbb08611d97dc25ae84406583996ba60
-#            client-secret: 7OK7BXboZznRDYqhLfJG2tNzT5QLKiLS
-#            redirect-uri: https://tagyou.site/api/login/oauth2/code/kakao
-            redirect-uri: http://localhost:9999/api/login/oauth2/code/kakao
+            client-id: ${KAKAO_CLIENT}
+            #            client-secret: 7OK7BXboZznRDYqhLfJG2tNzT5QLKiLS
+            redirect-uri: https://tagyou.site/api/login/oauth2/code/kakao
+            #            redirect-uri: /login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             client-name: Kakao
@@ -64,9 +64,9 @@ cloud:
     stack.auto: false
     region.static: ap-northeast-2
     credentials:
-      accessKey: AKIA4S2XBYFDNSFC7XBK
-      secretKey: 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
+      accessKey: ${S3_ACCESS}
+      secretKey: ${S3_SECRET}
 
 #OPENVIDU_URL: http://localhost:4443/
-OPENVIDU_URL: https://tagyou.site:8443/
-OPENVIDU_SECRET: tagyou
+OPENVIDU_URL: ${OPENVIDU_URL}
+OPENVIDU_SECRET: ${OPENVIDU_SECRET}
