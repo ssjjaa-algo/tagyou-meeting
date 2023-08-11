@@ -31,7 +31,8 @@ const RightContainer = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
-  const [token, ] = useRecoilState(TokenValue);
+  const [token] = useRecoilState(TokenValue);
+  const [pullDown, setPullDown] = useState<boolean>(true);
   const [newMEssageNoticeStatus, setNewMEssageNoticeStatus] = useState({
     display: "none",
   });
@@ -72,6 +73,7 @@ const RightContainer = () => {
     //client.current.connect로 연결하고 fetch를 통해서 해당 접속이랑 연동(?)을 시켜줘야됨
     roomMake();
     requestChatHistory(1);
+    console.log("token: " + token);
   };
 
   // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러오는 부분
@@ -90,11 +92,24 @@ const RightContainer = () => {
     connectHandler(1);
   }, []);
 
+  const handelScroll = () => {
+    if (!chatScreenRef.current) return;
+    if (chatScreenRef.current.scrollTop >= 0) {
+      setNewMEssageNoticeStatus({ display: "none" });
+    }
+  };
+
   const addItem = (item: Message) => {
     if (item.message_type === "TALK") {
       let newItems: Message[] = [];
       newItems = items;
       newItems.push(item);
+      if (!chatScreenRef.current) return;
+      if (chatScreenRef.current.scrollTop >= 0) {
+        setPullDown(true);
+      } else {
+        setPullDown(false);
+      }
       setItems(newItems);
       setLastMessage(item);
     }
@@ -138,40 +153,23 @@ const RightContainer = () => {
 
   useEffect(() => {
     if (!inGameChatStatus) return;
-    console.log(bottomRef.current?.offsetHeight);
-    console.log(
-      "초록이 상단높이" + bottomRef.current?.getBoundingClientRect().top
-    );
-    console.log(
-      "빨갱이 상단높이" + contentRef.current?.getBoundingClientRect().top
-    );
-    if (bottomRef.current && contentRef.current) {
-      if (
-        lastMessage?.sender === user ||
-        bottomRef.current?.getBoundingClientRect().top <
-          contentRef.current?.getBoundingClientRect().top
-      ) {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-      } else if (
-        bottomRef.current?.getBoundingClientRect().top >
-        contentRef.current?.getBoundingClientRect().top
-      ) {
+    if (chatScreenRef.current) {
+      if (lastMessage?.sender === user || pullDown) {
+        lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+      } else if (!pullDown || chatScreenRef.current.scrollTop >= 0) {
         setNewMEssageNoticeStatus({ display: "flex" });
       }
     }
   }, [lastMessage]);
 
   const handleClickNewMessage = () => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!chatScreenRef.current) return;
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     setNewMEssageNoticeStatus({ display: "none" });
   };
 
-  const bottomRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-
   // 메시지 아이콘 누르면 채팅 창 열리고 닫히기 기능
   const handleClickMessage = () => {
-    // console.log(inGameChatStatus);
     setInGameChatStatus(!inGameChatStatus);
   };
 
@@ -191,6 +189,26 @@ const RightContainer = () => {
   };
 
   const chatScreenRef = useRef<HTMLDivElement>(null);
+  const lastMessageRef = useRef<HTMLDivElement>(null);
+
+  const loadChats = () => {
+    const result = [];
+    for (let i = 0; i < items.length - 1; i++) {
+      result.push(
+        <S.Messages key={i}>
+          {items[i].sender} : {items[i].content}
+        </S.Messages>
+      );
+    }
+    if (lastMessage) {
+      result.push(
+        <S.Messages key={items.length - 1} ref={lastMessageRef}>
+          {lastMessage.sender} : {lastMessage.content}
+        </S.Messages>
+      );
+    }
+    return result;
+  };
 
   return (
     <S.Container
@@ -221,15 +239,15 @@ const RightContainer = () => {
             className="chatRoom-main-chats"
             theme={theme}
             ref={chatScreenRef}
+            onScroll={handelScroll}
           >
             <S.ChatRoomMainChatsContent>
-              {items.map((chat, index) => (
+              {/* {items.map((chat, index) => (
                 <S.Messages key={index}>
                   {chat.sender} : {chat.content}
                 </S.Messages>
-              ))}
-              <S.RefDiv ref={bottomRef}></S.RefDiv>
-              {/* 스크롤 맨 아래로 내리기 위한 레퍼런스 */}
+              ))} */}
+              {loadChats()}
             </S.ChatRoomMainChatsContent>
           </S.ChatRoomMainChats>
           <S.NewMessageNotice
@@ -261,7 +279,6 @@ const RightContainer = () => {
               </S.Button>
             </div>
           </S.ChatRoomMainInput>
-          <S.PullDownDiv ref={contentRef} />
         </S.ChatRoomMainBox>
       </S.ChatRoomMain>
     </S.Container>

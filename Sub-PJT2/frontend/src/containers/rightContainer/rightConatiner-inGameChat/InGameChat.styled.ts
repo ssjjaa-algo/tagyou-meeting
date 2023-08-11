@@ -111,13 +111,13 @@ export const Button = styled.button<{ theme: themeProps }>`
 `;
 
 export const RefDiv = styled.div`
-  /* border: solid green; */
+  border: solid green;
   height: 0.1rem;
 `;
 
 export const PullDownDiv = styled.div`
   position: relative;
-  /* border: solid red; */
+  border: solid red;
   height: 0.2rem;
   bottom: 0rem;
 `;
