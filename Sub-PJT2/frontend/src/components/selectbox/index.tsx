@@ -1,4 +1,4 @@
-import { Select } from "antd";
+// import { Select } from "antd";
 import { ProfileInfo, UserInfo } from "atoms/atoms";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -143,12 +143,14 @@ const SelectBox = ({
   }
 
   return (
-    <Select
-      placeholder={placeholderType}
-      style={{ width: 100, display: "inline-block", marginRight: "3px" }}
-      onChange={handleChange}
-      options={name === "userGugun" ? gugunList : optionList}
-    />
+    // <Select
+    //   placeholder={placeholderType}
+    //   style={{ width: 100, display: "inline-block", marginRight: "3px" }}
+    //   onChange={handleChange}
+    //   options={name === "userGugun" ? gugunList : optionList}
+    // />
+    <>
+    </>
   );
 };
 
