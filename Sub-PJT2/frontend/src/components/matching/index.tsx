@@ -1,6 +1,6 @@
 import * as S from "./matching.styled";
-// import kakaoImg from "../../asset/img/kakao_login_medium_wide.png";
-// import logoImg from "../../asset/img/logo/2.png";
+import kakaoImg from "../../asset/img/kakao_login_medium_wide.png";
+import logoImg from "../../asset/img/logo/2.png";
 
 type modalProps = {
   handleOnClick: () => void;
