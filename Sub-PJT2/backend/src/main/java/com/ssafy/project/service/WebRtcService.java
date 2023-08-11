@@ -48,15 +48,15 @@ public class WebRtcService {
             throw new NotFoundException("해당 아이디에 해당에 세션이 없습니다. ");
         }
         // 들어오는 사람의 권한이 publisher. role()을 어디서 만지지??
-        OpenViduRole role = OpenViduRole.PUBLISHER; // OpenViduRole.SUBSCRIBER;
-        TokenOptions tokenOpts = new TokenOptions.Builder()
-                                        .role(role)
-                                        .data("SERVER= participant num").build();
-        String token = tmpSes.generateToken(tokenOpts);
+//        OpenViduRole role = OpenViduRole.PUBLISHER; // OpenViduRole.SUBSCRIBER;
+//        TokenOptions tokenOpts = new TokenOptions.Builder()
+//                                        .role(role)
+//                                        .data("SERVER= participant num").build();
+//        String token = tmpSes.generateToken(tokenOpts);
+//        return token;
 
-        return token;
-//        Connection connection = session.createConnection();
-//        return connection.getToken();
+        Connection connection = tmpSes.createConnection();
+        return connection.getToken();
     }
 
 }
