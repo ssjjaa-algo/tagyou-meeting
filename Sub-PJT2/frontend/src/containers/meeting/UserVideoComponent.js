@@ -1,35 +1,29 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import OpenViduVideoComponent from './OvVideo';
 
-const StreamComponent = styled.div`
-  width: fit-content;
-  height: fit-content;
-`;
-
-const Nickname = styled.div`
-  text-align: center;
-  position: absolute;
-  width: auto;
-  height: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  font-weight: bold;
-`;
+const style = {
+  blocksize: 'fit-content' // 수정된 부분
+};
 
 export default class UserVideoComponent extends Component {
     getNicknameTag() {
-        // Gets the nickName of the user
-        return JSON.parse(this.props.streamManager.stream.connection.data).clientData;
+        try {
+            const clientData = JSON.parse(this.props.streamManager.stream.connection.data);
+            return clientData.clientData || 'Unknown';
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+            return 'Unknown';
+        }
     }
-
+    
     render() {
         return (
             <div>
                 {this.props.streamManager !== undefined ? (
-                    <StreamComponent className="streamcomponent">
-                        <OpenViduVideoComponent streamManager={this.props.streamManager}/>
-                        <Nickname>{this.getNicknameTag()}</Nickname>
-                    </StreamComponent>
+                    <div style={style}>
+                        <OpenViduVideoComponent streamManager={this.props.streamManager} />
+                        <div><p>{this.getNicknameTag()}</p></div>
+                    </div>
                 ) : null}
             </div>
         );
