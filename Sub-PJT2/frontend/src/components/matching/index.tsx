@@ -29,23 +29,20 @@ export const Matching = ({
     setToken(cookies.get("Auth"));
   }, [cookies.get("Auth")]);
 
-  const handleFirstClick = () => {
-    
-    console.log(cookies.get("Auth"))
-    // setIsLoading(true);
-    // try {
-    //   const response = await axios.post('http://localhost:9999/api/rooms/one', {
-    //     headers: {
-    //       Auth: token,
-    //     }
-    //   })
-    //     console.log('POST 요청 성공:', response.data);
-    //     setIsLoading(false);
-    // } catch (error) {
-    //   // 요청이 실패했을 때의 동작을 추가합니다.
-    //   console.error('POST 요청 실패:', error);
-    //   setIsLoading(false);
-    // }
+  const handleFirstClick = async () => {
+    try {
+      const response = await axios.post('http://localhost:9999/api/rooms/one', {
+        headers: {
+          Auth: token,
+        }
+      })
+        console.log('POST 요청 성공:', response.data);
+        setIsLoading(false);
+    } catch (error) {
+      // 요청이 실패했을 때의 동작을 추가합니다.
+      console.error('POST 요청 실패:', error);
+      setIsLoading(false);
+    }
   };
 
 
