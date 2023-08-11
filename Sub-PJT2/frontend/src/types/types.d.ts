@@ -1,6 +1,7 @@
 // user, profile 테이블 join 예정 -- 아래 type은 임시로 작성한 것임
 
-export type UserData = { // users 테이블
+export type UserData = {
+  // users 테이블
   // userId: BigInt;
   // createdDate: Date;
   // lastUsedDate: Date;
@@ -15,7 +16,18 @@ export type UserData = { // users 테이블
   // groupId: BigInt;
 };
 
-export type ProfileData = { // profile 테이블
+export type testUserData = {
+  profileImage: string;
+  name: string;
+  region: string;
+  lastMessage: string;
+  lastMessageTime: string;
+  age: number;
+  mbti: string;
+};
+
+export type ProfileData = {
+  // profile 테이블
   // userProfileId: BigInt;
   // createdDate: Date;
   // lastUsedDate: Date;
@@ -28,7 +40,8 @@ export type ProfileData = { // profile 테이블
   // userId: BigInt;
 };
 
-export type Message = { // meeting_room_message 테이블
+export type Message = {
+  // meeting_room_message 테이블
   // messageId: BigInt;
   // createdDate: Date;
   // lastUsedDate: Date;
@@ -59,7 +72,6 @@ export type leftContainerProprs = {
   name: string;
   age: number;
 };
-
 
 export type userInfoProps = {
   id: string | null;

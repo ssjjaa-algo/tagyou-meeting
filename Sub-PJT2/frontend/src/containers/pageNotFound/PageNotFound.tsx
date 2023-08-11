@@ -47,8 +47,8 @@ const PageNotFound = () => {
 const Container = styled.div`
   /* border: solid red; */
   display: flex;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 `;
 
 export default PageNotFound;

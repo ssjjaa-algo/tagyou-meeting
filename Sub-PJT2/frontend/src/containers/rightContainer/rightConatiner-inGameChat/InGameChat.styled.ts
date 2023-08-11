@@ -8,6 +8,7 @@ export const Container = styled.div`
   flex-direction: row;
   overflow: hidden;
   position: fixed;
+  top: 0;
   right: 0;
   padding-left: 1rem;
   margin-top: 3.5rem;
@@ -44,7 +45,7 @@ export const MessageImg = styled.img`
 `;
 
 export const ChatRoomMainBox = styled.div<{ theme: themeProps }>`
-  /* border: solid pink; */
+  border: solid pink;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -107,4 +108,16 @@ export const Button = styled.button<{ theme: themeProps }>`
   border-radius: 0.5rem;
   width: 3rem;
   height: 2.5rem;
+`;
+
+export const RefDiv = styled.div`
+  /* border: solid green; */
+  height: 0.1rem;
+`;
+
+export const PullDownDiv = styled.div`
+  position: relative;
+  /* border: solid red; */
+  height: 0.2rem;
+  bottom: 0rem;
 `;

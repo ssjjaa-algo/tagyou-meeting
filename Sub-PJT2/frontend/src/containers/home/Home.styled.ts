@@ -8,6 +8,7 @@ export const Container = styled.div`
   justify-items: center;
   margin: 5rem 0 0 5rem;
   width: calc(100% - 10rem);
+  height: 100%;
 `;
 
 export const ProfileContainer = styled.div`

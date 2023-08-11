@@ -36,26 +36,24 @@ function Main() {
   };
 
   return (
-    <div>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <Global styles={GlobalStyle} />
-        <BrowserRouter>
-          <Container theme={isDark}>
-            {/* {Router.caller.name} */}
-            {showSideBar() ? (
-              <LeftContainer
-                imgSrc={leftContainerData.imgSrc}
-                name={leftContainerData.name}
-                age={leftContainerData.age}
-              />
-            ) : null}
-            <RightContainer>
-              <Router />
-            </RightContainer>
-          </Container>
-        </BrowserRouter>
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <Global styles={GlobalStyle} />
+      <BrowserRouter>
+        <Container theme={isDark}>
+          {/* {Router.caller.name} */}
+          {showSideBar() ? (
+            <LeftContainer
+              imgSrc={leftContainerData.imgSrc}
+              name={leftContainerData.name}
+              age={leftContainerData.age}
+            />
+          ) : null}
+          <RightContainer>
+            <Router />
+          </RightContainer>
+        </Container>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
@@ -63,6 +61,11 @@ const Container = styled.div<{ theme: boolean }>`
   display: flex;
   background-color: ${(props) =>
     props.theme ? darkTheme.bg.light : lightTheme.bg.light};
+  /* border: dotted red 2px; */
+  width: 100% !important;
+  height: 100% !important;
+  min-height: fit-content;
+  min-width: fit-content;
 `;
 
 export default Main;

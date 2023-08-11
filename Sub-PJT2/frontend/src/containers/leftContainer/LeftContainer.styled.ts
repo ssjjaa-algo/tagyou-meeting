@@ -21,8 +21,11 @@ export const BtnBox = styled.div`
 `;
 
 export const HiddenSection = styled.div<{ theme: themeProps }>`
+  position: fixed;
+  display: flex;
   padding-top: 20px;
   width: 30px;
+  height: 100% !important;
   background-color: ${(props) => props.theme.bg.deep};
   transition: all 500ms;
 `;

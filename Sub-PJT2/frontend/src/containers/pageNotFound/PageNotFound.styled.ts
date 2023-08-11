@@ -9,7 +9,6 @@ export const Conatiner = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  padding-top: 3rem;
 `;
 
 export const LogoContainer = styled.div`
@@ -25,14 +24,14 @@ export const Logo = styled.img`
   /* border: solid green; */
   width: 15rem;
   height: 5rem;
-  margin-top: 5rem;
+  margin-top: 3rem;
 `;
 export const SadFace = styled.img`
   /* border: solid green; */
   width: 7rem;
   height: 7rem;
   margin: 5rem 0 0 2rem;
-  margin-top: 5rem;
+  margin-top: 3rem;
 `;
 
 export const NoticeContainer = styled.div`
@@ -42,7 +41,6 @@ export const NoticeContainer = styled.div`
   /* justify-content: center; */
   align-items: center;
   width: 50rem;
-  height: 50rem;
   padding: 3rem;
 `;
 

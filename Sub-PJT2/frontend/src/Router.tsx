@@ -5,7 +5,7 @@ import Test from "./components/test/Test";
 import Home from "./containers/home";
 import MyPage from "containers/myPage/MyPage";
 // import Openvidu from "containers/meeting/meeting";
-// import ChatList from "containers/chatList/ChatList";
+import ChatList from "containers/chatList/ChatList";
 import ChatRoom from "containers/chatRoom/ChatRoom";
 // import Meeting from "containers/meeting";
 // import LandingStart from "containers/landing/LandingStart/LandingStart";
@@ -13,6 +13,7 @@ import ChatRoom from "containers/chatRoom/ChatRoom";
 import LandingContainer from "containers/landingContainer/Landing";
 import InputContainer from "containers/inputContainer";
 import PageNotFound from "containers/pageNotFound/PageNotFound";
+import InGameChat from "containers/rightContainer/rightConatiner-inGameChat/InGameChat";
 
 const Router = () => {
   return (
@@ -27,9 +28,10 @@ const Router = () => {
       <Route path="/mypage" element={<MyPage />} />
       {/* <Route path="/openvidu" element={<Openvidu />} /> */}
       <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
-      {/* <Route path="/chatList" element={<ChatList />} /> */}
-      <Route id="pnf" path="*" element={<PageNotFound />} />
+      <Route path="/chatList" element={<ChatList />} />
       {/* <Route path="/meeting" element={<Meeting />} /> */}
+      <Route id="pnf" path="*" element={<PageNotFound />} />
+      <Route path="/chatTest" element={<InGameChat />} />
     </Routes>
   );
 };
