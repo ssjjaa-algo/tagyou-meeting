@@ -1,4 +1,4 @@
-import { keyframes } from "@emotion/react";
+import { keyframes, themeProps } from "@emotion/react";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -8,15 +8,14 @@ export const ModalWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 `;
 
-export const ModalContent = styled.div`
-  background-color: white;
+export const ModalContent = styled.div<{ theme: themeProps }>`
+  background-color: ${(props) => props.theme.bg.mid};
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -26,6 +25,13 @@ export const ModalContent = styled.div`
   flex-direction: column;
   position: relative;
 `;
+
+export const ButtonContainer = styled.div`
+  padding-top: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 export const CloseIconStyled = styled(CloseIcon)`
   margin-left: auto;
@@ -40,22 +46,19 @@ const Ani = keyframes`
   }
 `;
 
-export const LogoImg = styled.img`
-  width: 200px;
-  margin: 60px auto 0 auto;
-  position: absolute;
-  top: 40px;
-  left: 100px;
-  animation: ${Ani} 1s ease;
-`;
-
-export const KakaoImg = styled.img`
-  width: 280px;
-  margin: 30px auto 60px auto;
-  position: absolute;
-  top: 140px;
-  left: 60px;
-`;
+export const Button = styled.button<{ theme: themeProps }>`
+  background: ${(props) => props.theme.point.deep};
+  color: ${(props) => props.theme.font.light};
+  font-size: 20px;
+  margin: 15px;
+  padding: 0.6em 1em;
+  width: 70%;
+  height: 30%;
+  border-radius: 10px;
+  border-color: ${(props) => props.theme.point.deep};
+  display: inline-block;
+  /* box-shadow: 0px 2px 4px ${(props) => props.theme.font.deep}; */
+`
 
 export const LogoutBtn = styled.button`
   width: 280px;
@@ -70,4 +73,10 @@ export const LogoutBtn = styled.button`
       background-color: silver;
     }
   }
+`;
+
+export const Loading = styled.div<{ theme: themeProps }>`
+  padding-top: 10%;
+  font-size: 20px;
+  color: ${(props) => props.theme.font.light};
 `;
