@@ -26,7 +26,7 @@ public abstract class MeetingRoom extends BaseTimeEntity implements Serializable
     @Column(name = "room_id")
     private Long id;
 
-    @Enumerated(value = EnumType.ORDINAL)
+    @Enumerated(value = EnumType.STRING)
     private MeetingRoomStatus status = MeetingRoomStatus.ACTIVE;
 
 }
