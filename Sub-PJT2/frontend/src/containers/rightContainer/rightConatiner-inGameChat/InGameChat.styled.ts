@@ -121,3 +121,28 @@ export const PullDownDiv = styled.div`
   height: 0.2rem;
   bottom: 0rem;
 `;
+
+export const NewMessageNotice = styled.div<{ theme: themeProps }>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  bottom: 5.5rem;
+  background-color: ${(props) => props.theme.point.mid};
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+  width: 85%;
+  opacity: 0.7;
+  font-weight: 900;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+`;
+
+export const ImgDown = styled.img`
+  width: 1rem;
+  height: 1rem;
+  margin: 0 0.7rem 0 0.5rem;
+`;
