@@ -5,6 +5,7 @@ import { keyframes, themeProps } from "@emotion/react";
 export const Container = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100vh;
   column-gap: 30px;
 `;

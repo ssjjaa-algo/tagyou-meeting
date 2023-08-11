@@ -13,7 +13,7 @@ const Home = () => {
   const theme: themeProps = useTheme();
   const [profileData, setProfileData] = useState<ProfileData>();
   const [userData, setUserData] = useState<UserData>();
-  // const [searchParams] = useSearchParams();g
+  // const [searchParams] = useSearchParams();
 
   // useEffect(() => {
   // const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTE0NzM2NDIsImV4cCI6MTY5MTUzMzY0Mn0.b0m5pVnkqTxgssqXLlrG4n6dBIWTJ6fp1V_3HO52yZs"
