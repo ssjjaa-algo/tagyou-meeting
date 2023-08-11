@@ -13,6 +13,7 @@ import { useRecoilState } from "recoil";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { response } from "express";
+import imgDown from "asset/img/icons8-down-100.png";
 
 type Message = {
   content: string;
@@ -31,7 +32,9 @@ const RightContainer = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
-  const [pullDown, setPullDown] = useState<boolean>(true);
+  const [newMEssageNoticeStatus, setNewMEssageNoticeStatus] = useState({
+    display: "none",
+  });
 
   const client = useRef<CompatClient>();
 
@@ -149,16 +152,19 @@ const RightContainer = () => {
           contentRef.current?.getBoundingClientRect().top
       ) {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      } else if (
+        bottomRef.current?.getBoundingClientRect().top >
+        contentRef.current?.getBoundingClientRect().top
+      ) {
+        setNewMEssageNoticeStatus({ display: "flex" });
       }
     }
   }, [lastMessage]);
 
-  // useEffect(() => {
-  //   console.log("여기가 작동");
-  //   if (inGameChatStatus) {
-  //     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // }, [lastMessage]);
+  const handleClickNewMessage = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    setNewMEssageNoticeStatus({ display: "none" });
+  };
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -222,14 +228,18 @@ const RightContainer = () => {
                   {chat.sender} : {chat.content}
                 </S.Messages>
               ))}
-              {/* 스크롤 맨 아래로 내리기 위한 레퍼런스 */}
               <S.RefDiv ref={bottomRef}></S.RefDiv>
+              {/* 스크롤 맨 아래로 내리기 위한 레퍼런스 */}
             </S.ChatRoomMainChatsContent>
           </S.ChatRoomMainChats>
-          <S.ChatRoomMainInput
-            className="chatRoom-main-input"
+          <S.NewMessageNotice
             theme={theme}
+            style={newMEssageNoticeStatus}
+            onClick={handleClickNewMessage}
           >
+            <S.ImgDown src={imgDown}></S.ImgDown>New Message
+          </S.NewMessageNotice>
+          <S.ChatRoomMainInput className="chatRoom-main-input" theme={theme}>
             <input
               value={message}
               onChange={handleChangeText}
@@ -251,7 +261,7 @@ const RightContainer = () => {
               </S.Button>
             </div>
           </S.ChatRoomMainInput>
-          <S.PullDownDiv ref={contentRef}/>
+          <S.PullDownDiv ref={contentRef} />
         </S.ChatRoomMainBox>
       </S.ChatRoomMain>
     </S.Container>
