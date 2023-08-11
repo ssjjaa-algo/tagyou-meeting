@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { userInfoProps } from "types/types";
+import { userProps, profileProps } from "types/types";
 
 const { persistAtom } = recoilPersist();
 
@@ -27,11 +27,28 @@ export const IsLogin = atom<boolean>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const UserInfo = atom<userInfoProps>({
+export const UserInfo = atom<userProps>({
   key: "UserInfo",
   default: {
-    id: null,
-    nickname: null,
+    userEmail: "",
+    userName: "",
+    phoneNumber: 0,
+    userAge: 0,
+    userGender: "MALE",
+    userLike: 0,
+  },
+});
+
+export const ProfileInfo = atom<profileProps>({
+  key: "ProfileInfo",
+  default: {
+    userSido: "",
+    userSidoCode: 0,
+    userGugun: "",
+    userJob: "",
+    userHobby: "",
+    userMbti: "",
+    content: "",
   },
 });
 
@@ -43,4 +60,4 @@ export const InGameChatStatus = atom<boolean>({
 export const GameStart = atom<boolean>({
   key: "GameStart",
   default: false,
-})
+});
