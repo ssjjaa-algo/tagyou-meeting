@@ -32,7 +32,7 @@ export const UserInfo = atom<userProps>({
   default: {
     userEmail: "",
     userName: "",
-    phoneNumber: 0,
+    phoneNumber: "",
     userAge: 0,
     userGender: "MALE",
     userLike: 0,

@@ -1,7 +1,7 @@
-// import { Select } from "antd";
-import { ProfileInfo, UserInfo } from "atoms/atoms";
+import { Select } from "antd";
+import { ProfileInfo, TokenValue, UserInfo } from "atoms/atoms";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 let placeholderType: string = "";
 
@@ -65,6 +65,7 @@ const SelectBox = ({
   const [profileInfo, setProfileInfo] = useRecoilState(ProfileInfo);
   const [sidoList, setSidoList] = useState<useSidoEleProps[]>();
   const [gugunList, setGugunList] = useState<useGugunProps[]>();
+  const token = useRecoilValue(TokenValue);
 
   const handleChange = (value: any, all: any) => {
     name === "userSido" &&
@@ -74,17 +75,16 @@ const SelectBox = ({
         userSido: all.value,
       });
     name === "userGender" && setUserInfo({ ...userInfo, userGender: value });
-    name === "userMbti" &&
-      setProfileInfo({ ...profileInfo, userMbti: all.code });
+    name === "userMbti" && setProfileInfo({ ...profileInfo, userMbti: value });
     name === "userGugun" &&
-      setProfileInfo({ ...profileInfo, userGugun: all.code });
+      setProfileInfo({ ...profileInfo, userGugun: value });
   };
 
   useEffect(() => {
     const fetchSido = async () => {
       fetch("http://localhost:9999/api/areas", {
         headers: {
-          Auth: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTE3MDgyNTksImV4cCI6MTY5MTc2ODI1OX0.cLTnLUugOZ3WXHOJSBuejWFmXV_X6gI5Nl41m5SxCnY",
+          Auth: token,
         },
       })
         .then((res) => res.json())
@@ -109,7 +109,7 @@ const SelectBox = ({
       setGugunList([]);
       fetch(`http://localhost:9999/api/areas/${profileInfo.userSidoCode}`, {
         headers: {
-          Auth: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTE3MDgyNTksImV4cCI6MTY5MTc2ODI1OX0.cLTnLUugOZ3WXHOJSBuejWFmXV_X6gI5Nl41m5SxCnY",
+          Auth: token,
         },
       })
         .then((res) => res.json())
