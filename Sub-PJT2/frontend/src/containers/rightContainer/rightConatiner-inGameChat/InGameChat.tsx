@@ -2,7 +2,7 @@ import { themeProps } from "@emotion/react";
 import { List, useTheme } from "@mui/material";
 import * as S from "./InGameChat.styled";
 import { useRef, useState, useEffect } from "react";
-import { InGameChatStatus } from "atoms/atoms";
+import { InGameChatStatus, TokenValue } from "atoms/atoms";
 import "css/chat/inGameChat.css";
 
 import sendButton from "asset/img/button_send.png";
@@ -12,7 +12,6 @@ import { useRecoilState } from "recoil";
 // webSocket 관련
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { response } from "express";
 import imgDown from "asset/img/icons8-down-100.png";
 
 type Message = {
@@ -32,6 +31,7 @@ const RightContainer = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
+  const [token, ] = useRecoilState(TokenValue);
   const [newMEssageNoticeStatus, setNewMEssageNoticeStatus] = useState({
     display: "none",
   });
