@@ -20,6 +20,7 @@ public class SecurityConfig {
     private final OAuth2SuccessHandler successHandler;
     private final TokenService tokenService;
     private final CorsConfig corsConfig; ////
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,6 +38,7 @@ public class SecurityConfig {
                 ////
                 .addFilterBefore(new JwtAuthFilter(tokenService),
                         UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandlerFilter, JwtAuthFilter.class)
                 .oauth2Login().loginPage("http://localhost:3000/home") // loginPage("http://localhost:3000/auth")
                 .successHandler(successHandler)
                 .userInfoEndpoint().userService(oAuth2UserService);
