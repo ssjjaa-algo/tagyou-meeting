@@ -37,10 +37,10 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
 
   const theme: themeProps = useTheme();
 
-  useEffect(() => {
-    console.log("theme", theme);
-    console.log("aa", theme.bg.deep);
-  }, [theme]);
+  // useEffect(() => {
+  //   console.log("theme", theme);
+  //   console.log("aa", theme.bg.deep);
+  // }, [theme]);
 
   const style: React.CSSProperties = {
     backgroundColor: `${theme.bg.deep}`,
