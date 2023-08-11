@@ -25,7 +25,7 @@ spring:
   data:
     redis:
       host: tagyou.site
-      port: 6379
+      port: 8421
 
   security:
     oauth2:
