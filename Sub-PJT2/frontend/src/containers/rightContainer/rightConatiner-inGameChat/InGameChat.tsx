@@ -152,7 +152,6 @@ const RightContainer = () => {
   };
 
   useEffect(() => {
-    if (!inGameChatStatus) return;
     if (chatScreenRef.current) {
       if (lastMessage?.sender === user || pullDown) {
         lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -195,15 +194,17 @@ const RightContainer = () => {
     const result = [];
     for (let i = 0; i < items.length - 1; i++) {
       result.push(
-        <S.Messages key={i}>
-          {items[i].sender} : {items[i].content}
+        <S.Messages theme={theme} key={i}>
+          <S.Sender>{items[i].sender}</S.Sender>
+          <S.Content>{items[i].content}</S.Content>
         </S.Messages>
       );
     }
     if (lastMessage) {
       result.push(
-        <S.Messages key={items.length - 1} ref={lastMessageRef}>
-          {lastMessage.sender} : {lastMessage.content}
+        <S.Messages theme={theme} key={items.length - 1} ref={lastMessageRef}>
+          <S.Sender>{lastMessage.sender}</S.Sender>
+          <S.Content>{lastMessage.content}</S.Content>
         </S.Messages>
       );
     }
@@ -219,13 +220,13 @@ const RightContainer = () => {
           : "inGameChatContainerHidden"
       }
     >
-      <S.ChatRoomMain theme={theme}>
+      <S.ChatRoomMain theme={theme} className="chatRoomMain">
         <S.MessageButton
           theme={theme}
           onClick={handleClickMessage}
-          className={isHovering ? "grow" : ""}
-          onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
+          whileHover={{ scale: 1.5 }}
+          whileTap={{ scale: 1.2 }}
         >
           <S.MessageImg src={messageButton} alt="messageButton" />
         </S.MessageButton>
@@ -242,11 +243,6 @@ const RightContainer = () => {
             onScroll={handelScroll}
           >
             <S.ChatRoomMainChatsContent>
-              {/* {items.map((chat, index) => (
-                <S.Messages key={index}>
-                  {chat.sender} : {chat.content}
-                </S.Messages>
-              ))} */}
               {loadChats()}
             </S.ChatRoomMainChatsContent>
           </S.ChatRoomMainChats>
@@ -272,8 +268,9 @@ const RightContainer = () => {
             <div className="button-outer">
               <S.Button
                 theme={theme}
-                className="button-send"
                 onClick={handleClickSubmit}
+                whileHover={{ scale: 1.5 }}
+                whileTap={{ scale: 1.2 }}
               >
                 <img src={sendButton} alt="send" />
               </S.Button>
