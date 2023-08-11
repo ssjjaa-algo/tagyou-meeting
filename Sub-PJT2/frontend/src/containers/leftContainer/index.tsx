@@ -10,12 +10,14 @@ import FriendContainer from "containers/friendContainer";
 import { leftContainerProprs } from "types/types";
 import { useEffect, useState } from "react";
 import { Modal } from "components/modal";
+import { Matching } from "components/matching";
 
 const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);
   const [isDark, setIsDark] = useRecoilState(IsDark);
   const [isLogout, setIsLogout] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showMatching, setShowMatching] = useState<boolean>(false);
 
   useEffect(() => {
     const rightContainer = document.querySelector(
@@ -86,12 +88,12 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
             <S.HomeIconStyled
               theme={theme}
               onClick={() => {
-                window.location.replace("/home");
+                window.location.href = "/home";
               }}
             />
             <S.ListText
               onClick={() => {
-                window.location.replace("/home");
+                window.location.href = "/home";
               }}
             >
               홈
@@ -101,13 +103,13 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
             <S.PlayCircleOutlineIconStyled
               theme={theme}
               onClick={() => {
-                window.location.replace("/meeting");
+                setShowMatching(true);
               }}
             />{" "}
             <S.ListText
-              onClick={() => {
-                window.location.replace("/meeting");
-              }}
+          onClick={() => {
+            setShowMatching(true);
+          }}
             >
               미팅 시작
             </S.ListText>
@@ -132,6 +134,15 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
           formType="logout"
         />
       )}
+      {showMatching && (
+        <Matching
+          handleOnClick={() => console.log("logout")}
+          setShowMatching={setShowMatching}
+        />
+      )}
+
+
+
     </>
   );
 };

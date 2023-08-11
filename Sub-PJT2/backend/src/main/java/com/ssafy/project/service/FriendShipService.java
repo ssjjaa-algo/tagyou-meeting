@@ -33,17 +33,17 @@ public class FriendShipService {
     /**
      * 친구 요청
      */
-    public FriendRspDto requestFriendShip(FriendReqDto friendReqDto) {
+    public FriendRspDto requestFriendShip(Long userId, Long targetUserId) {
         // 동일한 유저인지 체크
-        checkEqualUser(friendReqDto.getUserId(), friendReqDto.getTargetUserId());
+        checkEqualUser(userId, targetUserId);
 
         // 유효한 유저인지 체크
-        User user = userRepository.findById(friendReqDto.getUserId()).orElseThrow(() -> new NotFoundException("현재 유효하지 않은 유저입니다."));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("현재 유효하지 않은 유저입니다."));
 
         // 유효한 친구인지 체크
-        User targetUser = userRepository.findById(friendReqDto.getTargetUserId()).orElseThrow(() -> new NotFoundException("해당하는 친구 유저를 찾을 수 없습니다."));
+        User targetUser = userRepository.findById(targetUserId).orElseThrow(() -> new NotFoundException("해당하는 친구 유저를 찾을 수 없습니다."));
 
-        findFriendShip(friendReqDto.getUserId(), friendReqDto.getTargetUserId())
+        findFriendShip(userId, targetUserId)
                 .ifPresent(friendShip -> {
                     if(friendShip.getFriendShipStatus().equals(FriendShipStatus.REQUESTED)){
                         throw new IllegalStateException("이미 친구 요청을 보냈습니다.");
@@ -61,7 +61,7 @@ public class FriendShipService {
         // 전송 유저
         FriendShip requestToFriend = saveFriendShip(new FriendShip(user, targetUser, FriendShipStatus.REQUESTED));
 
-        findFriendShip(friendReqDto.getTargetUserId(), friendReqDto.getUserId())
+        findFriendShip(targetUserId, userId)
                 .ifPresentOrElse(targetFriendShip -> {
                             // 차단 유저 처리 여부
                             Optional.of(targetFriendShip)
@@ -86,10 +86,10 @@ public class FriendShipService {
     /**
      * 친구 수락
      */
-    public FriendRspDto acceptFriendShip(FriendReqDto friendReqDto) {
+    public FriendRspDto acceptFriendShip(Long userId, Long targetUserId) {
         // 친구 요청 발송 여부
         FriendShip requestUser =
-                findFriendShip(friendReqDto.getTargetUserId(), friendReqDto.getUserId())
+                findFriendShip(targetUserId, userId)
                         .map(friendShip ->
                                 Optional.of(friendShip).filter(friend ->
                                                 friend.getFriendShipStatus().equals(FriendShipStatus.REQUESTED))
@@ -98,7 +98,7 @@ public class FriendShipService {
 
         // 친구 요청 수신 여부
         FriendShip receiveUser =
-                findFriendShip(friendReqDto.getUserId(), friendReqDto.getTargetUserId())
+                findFriendShip(userId, targetUserId)
                         .map(friendShip ->
                                 Optional.of(friendShip).filter(friend ->
                                                 friend.getFriendShipStatus().equals(FriendShipStatus.RECEIVED))
@@ -110,10 +110,10 @@ public class FriendShipService {
         receiveUser.changeStatus(FriendShipStatus.FRIEND);
 
         // 친구 요청 메시지 확인
-        findNoticesByUserId(friendReqDto.getUserId())
+        findNoticesByUserId(userId)
                 .ifPresent(notices -> notices.forEach(notice -> {
                     if(notice.getType().equals(NoticeType.FRIEND_REQUEST) &&
-                            notice.getUser().equals(friendReqDto)){
+                            notice.getUser().getId().equals(receiveUser.getUser().getId())){
                         notice.readNotice();
                     }
                 }));
@@ -124,9 +124,9 @@ public class FriendShipService {
     /**
      * 친구 차단
      */
-    public FriendRspDto blockFriendShip(Long userId, Long targetUserId) {
+    public FriendRspDto blockFriendShip(Long userId, Long friendId) {
 
-        return findFriendShip(targetUserId, userId)
+        return findFriendShip(friendId, userId)
                 .filter(friendShip -> friendShip.getFriendShipStatus().equals(FriendShipStatus.FRIEND))
                 .map(friendShip -> {
                     friendShip.changeStatus(FriendShipStatus.BLOCKED);

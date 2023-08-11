@@ -13,7 +13,7 @@ import { OpenVidu, Publisher, Session, StreamManager } from 'openvidu-browser';
 import axios from 'axios';
 import UserVideoComponent from './UserVideoComponent';
 
-const OPENVIDU_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://tagyou.site:8443';
+const OPENVIDU_SERVER_URL = 'https://tagyou.site:8443';
 const OPENVIDU_SERVER_SECRET = 'tagyou';
 
 const Meeting = () => {

@@ -4,8 +4,8 @@ import Datepicker from "components/datepicker";
 import SelectBox from "components/selectbox";
 import { useState } from "react";
 import { profileProps, userProps } from "types/types";
-import { ProfileInfo, UserInfo } from "atoms/atoms";
-import { useRecoilState } from "recoil";
+import { ProfileInfo, TokenValue, UserInfo } from "atoms/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 type inputModalProps = {
   setShowModal: (value: boolean) => void;
@@ -14,6 +14,7 @@ type inputModalProps = {
 const InputModal = ({ setShowModal }: inputModalProps) => {
   const [userInfo, setUserInfo] = useRecoilState(UserInfo);
   const [profileInfo, setProfileInfo] = useRecoilState(ProfileInfo);
+  const token = useRecoilValue(TokenValue);
 
   const handleCloseModal = () => {
     setShowModal(false); //부모가 보내준 함수를 사용, 즉 부모에서 이 모달을 여닫을 변수를 관리하는 것
@@ -24,14 +25,49 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     source === "phoneNumber" &&
-      setUserInfo({ ...userInfo, [source]: Number(e.target.value) });
+      setUserInfo({ ...userInfo, [source]: e.target.value });
     source !== "phoneNumber" &&
       setProfileInfo({ ...profileInfo, [source]: e.target.value });
   };
 
-  const handleOnClick = () => {
-    console.log(userInfo);
-    console.log(profileInfo);
+  const putProfile = async () => {
+    console.log("putProfile", token, profileInfo);
+    fetch("http://localhost:9999/api/profile", {
+      method: "PUT",
+      headers: {
+        Auth: token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userSido: profileInfo.userSido,
+        userGugun: profileInfo.userGugun,
+        userJob: profileInfo.userJob,
+        userHobby: profileInfo.userHobby,
+        userMbti: profileInfo.userMbti,
+        content: profileInfo.content,
+      }),
+    });
+  };
+
+  const putUsers = async () => {
+    console.log("putUsers", token, userInfo);
+    fetch("http://localhost:9999/api/users/mypage", {
+      method: "PUT",
+      headers: {
+        Auth: token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phoneNumber: userInfo.phoneNumber,
+        userAge: userInfo.userAge,
+        userGender: userInfo.userGender,
+      }),
+    });
+  };
+
+  const handleOnClick = async () => {
+    await putProfile();
+    await putUsers();
     window.location.href = "http://localhost:3000/mypage";
   };
 
@@ -79,7 +115,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
           <S.Section>
             <S.SubTitle> 취미 </S.SubTitle>
             <S.StyledInput
-              onChange={(e) => handleInputChange("userHobby", e)}
+              // onChange={(e) => handleInputChange("userHobby", e)}
               placeholder="취미"
             />
           </S.Section>
@@ -87,7 +123,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
           <S.Section>
             <S.SubTitle> 직업 </S.SubTitle>
             <S.StyledInput
-              onChange={(e) => handleInputChange("userJob", e)}
+              // onChange={(e) => handleInputChange("userJob", e)}
               placeholder="직업"
             />
           </S.Section>
