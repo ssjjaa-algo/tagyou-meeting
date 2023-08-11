@@ -24,15 +24,19 @@ public class FriendShipController {
     // ====================== 친구 요청 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/request")
-    public FriendRspDto requestFriend(@RequestBody FriendReqDto friendReqDto){
-        return friendShipService.requestFriendShip(friendReqDto);
+    public FriendRspDto requestFriend(HttpServletRequest request,
+                                      @RequestParam Long targetId){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return friendShipService.requestFriendShip(userId, targetId);
     }
 
     // ====================== 요청 수락 ============================
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/accept")
-    public FriendRspDto acceptFriend(@RequestBody FriendReqDto friendReqDto){
-        return friendShipService.acceptFriendShip(friendReqDto);
+    public FriendRspDto acceptFriend(HttpServletRequest request,
+                                     @RequestParam Long targetId){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return friendShipService.requestFriendShip(userId, targetId);
     }
 
     // ====================== 친구 리스트 ============================
@@ -45,18 +49,20 @@ public class FriendShipController {
 
     // ====================== 친구 차단 ============================
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/{userId}")
-    public FriendRspDto blockFriend(@PathVariable Long userId,
+    @PostMapping("/block")
+    public FriendRspDto blockFriend(HttpServletRequest request,
                                     @RequestParam Long friendId){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return friendShipService.blockFriendShip(userId, friendId);
     }
 
     // ====================== 사용자 검색 ============================
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/search/{userId}")
-    public List<FriendRspDto> findUsers(@PathVariable Long userId,
+    @GetMapping("/search")
+    public List<FriendRspDto> findUsers(HttpServletRequest request,
                                         @RequestParam(required = false) String keyword,
                                         @RequestParam(required = false) FriendShipStatus status){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return friendShipService.findUsers(userId, keyword, status);
     }
 
