@@ -7,55 +7,57 @@ import { useRecoilState } from "recoil";
 
 const InputContainer = () => {
   const cookies = new Cookies();
-  const [Token, setToken] = useRecoilState(TokenValue);
-  const [IsFirst, setIsFirst] = useState<Boolean>(true);
+  const [token, setToken] = useRecoilState(TokenValue);
+  const [isFirst, setIsFirst] = useState<Boolean>(true);
+
+  // useEffect(() => {
+  //   const fetchSido = async () => {
+  //     fetch("http://localhost:9999/api/areas", {
+  //       headers: {
+  //         Auth: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTE3MTM0OTgsImV4cCI6MTY5MTc3MzQ5OH0.Yj8SUS1EJ5Z3YQ5Ywf77_LXe-sQ3mLJf7hEhBJgI_WA",
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((res) => {
+  //         console.log(res);
+  //       });
+  //   };
+  //   setToken(cookies.get("Auth"));
+  //   fetchSido();
+  // }, []);
+  const movePage = () => {
+    window.location.href = "/home";
+  };
 
   useEffect(() => {
+    console.log("쿠키가 바뀌었어요!!!!!!!!!!!!!!!!!!!!!");
     const fetchFirst = async () => {
       fetch("http://localhost:9999/api/users/first", {
         headers: {
-          Auth: Token,
+          Auth: token,
         },
       })
-        .then((res) => res.json()) // Parse the response as JSON
         .then((data) => {
-          console.log(data); // Check the data received from the server
-          data.firstLogin === true ? setIsFirst(true) : setIsFirst(false);
+          console.log("휴대폰 번호가 없어서 처음이라고 판정", data); // Check the data received from the server
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
+          setIsFirst(false);
+          // movePage();
         });
     };
 
     setToken(cookies.get("Auth"));
     fetchFirst();
-  }, [cookies]);
-
-  // useEffect(() => {
-  //   const fetchFirst = async () => {
-  //     fetch("http://localhost:9999/api/users/first", {
-  //       headers: {
-  //         Auth: Token,
-  //       },
-  //     })
-  //       .then((response) => response.json())
-  //       .then((res) => {
-  //         console.log(res);
-  //         // console.log(JSON.parse(res.body));
-  //         // res.firstLogin === true ? setIsFirst(true) : setIsFirst(false);
-  //       });
-  //   };
-  //   setToken(cookies.get("Auth"));
-  //   fetchFirst();
-  //   console.log("token", Token);
-  // }, [cookies]);
+  }, []);
 
   const [showModal, setShowModal] = useState<boolean>(true);
   return (
     <>
-      {IsFirst
-        ? showModal && <InputModal setShowModal={setShowModal} />
-        : (window.window.location.href = "/home")}
+      {isFirst === true && showModal && (
+        <InputModal setShowModal={setShowModal} />
+      )}
+      {isFirst === false && <div>처음이 아니라서 input받을 필요가 없어요 </div>}
     </>
   );
 };
