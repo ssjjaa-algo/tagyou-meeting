@@ -22,6 +22,7 @@ public class GroupMeetingRoom extends MeetingRoom {
     private int maleCount; // maxCnt = 3
     private int femaleCount; // maxCnt = 3
 
+
     @OneToMany(mappedBy = "meetingRoom", cascade = CascadeType.ALL)
     private List<MeetingGroup> groupMeetingRooms = new ArrayList<>();
 

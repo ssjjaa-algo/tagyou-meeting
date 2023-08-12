@@ -1,7 +1,6 @@
 package com.ssafy.project.controller;
 
 import com.ssafy.project.domain.friend.FriendShipStatus;
-import com.ssafy.project.dto.request.FriendReqDto;
 import com.ssafy.project.dto.response.FriendRspDto;
 import com.ssafy.project.service.FriendShipService;
 import com.ssafy.project.service.TokenService;

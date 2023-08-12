@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface OneMeetingRoomRepository extends JpaRepository<OneMeetingRoom, Long> {
 
     Optional<OneMeetingRoom> findById(Long id);
-
     Optional<OneMeetingRoom> findByMaleUserId(Long userId);
+
+    Optional<OneMeetingRoom> findByFemaleUserId(Long userId);
 }

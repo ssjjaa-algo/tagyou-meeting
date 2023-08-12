@@ -1,13 +1,11 @@
 package com.ssafy.project.controller;
 
-import com.ssafy.project.domain.message.ChatMessagePayload;
+import com.ssafy.project.domain.message.ChatMessageDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.redis.RedisPublisher;
-import com.ssafy.project.service.redis.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +27,7 @@ public class ChatController {
      * Client 에서는 prefix 를 붙여서 /pub/chat/message 로 발행 요청을 보내면 해당 메시지 처리
      */
     @MessageMapping("/message")
-    public void sendMessage(ChatMessagePayload message) {
+    public void sendMessage(ChatMessageDto message) {
         String topic = message.getMeetingRoomId().toString();
         redisPublisher.publish(ChannelTopic.of(topic), message);
     }
@@ -38,7 +36,7 @@ public class ChatController {
     // ====================== 채팅 메시지 가져오기 ============================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/rooms/{meetingRoomId}/messages")
-    public List<ChatMessagePayload> getChatMessages(@PathVariable("meetingRoomId") Long meetingRoomId) {
+    public List<ChatMessageDto> getChatMessages(@PathVariable("meetingRoomId") Long meetingRoomId) {
         return chatService.getChatMessages(meetingRoomId);
     }
 }

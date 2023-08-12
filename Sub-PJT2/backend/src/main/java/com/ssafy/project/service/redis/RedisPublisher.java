@@ -1,7 +1,7 @@
 package com.ssafy.project.service.redis;
 
 import com.ssafy.project.domain.message.ChatMessage;
-import com.ssafy.project.domain.message.ChatMessagePayload;
+import com.ssafy.project.domain.message.ChatMessageDto;
 import com.ssafy.project.domain.room.MeetingRoom;
 import com.ssafy.project.repository.ChatMessageRepository;
 import com.ssafy.project.repository.OneMeetingRoomRepository;
@@ -25,7 +25,7 @@ public class RedisPublisher{
     /**
      *      - 메시지를 Redis Topic(채팅방 고유 아이디)에 발행(Publish)합니다.
      */
-    public void publish(ChannelTopic topic, ChatMessagePayload message) {
+    public void publish(ChannelTopic topic, ChatMessageDto message) {
         log.info("InComming ChatService");
 
         MeetingRoom meetingRoom = oneMeetingRoomRepository.findById(message.getMeetingRoomId())
@@ -35,7 +35,7 @@ public class RedisPublisher{
         ChatMessage publishedMessage = ChatMessage.builder()
                 .meetingRoom(meetingRoom)
                 .content(message.getContent())
-                .sender(message.getSender())
+                .token(message.getSenderToken())
                 .type(message.getMessageType())
                 .build();
 

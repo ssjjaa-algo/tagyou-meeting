@@ -5,7 +5,6 @@ import com.ssafy.project.domain.friend.FriendShipStatus;
 import com.ssafy.project.domain.notice.Notice;
 import com.ssafy.project.domain.notice.NoticeType;
 import com.ssafy.project.domain.user.User;
-import com.ssafy.project.dto.request.FriendReqDto;
 import com.ssafy.project.dto.request.NoticeReqDto;
 import com.ssafy.project.dto.response.FriendRspDto;
 import com.ssafy.project.exception.NotFoundException;
