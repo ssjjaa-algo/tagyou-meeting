@@ -4,6 +4,7 @@ import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.Profile;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.ProfileReqDto;
+import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +67,7 @@ public class ProfileService {
     }
 
     @Transactional
-    public String saveProfileImage(Long uId, MultipartFile file) throws IOException {
+    public ImageRspDto saveProfileImage(Long uId, MultipartFile file) throws IOException {
         // 프로필사진 image 테이블에 저장
         Image img = imageService.initImageInDb(uId);
 
@@ -76,12 +77,12 @@ public class ProfileService {
         Profile p = getProfileByUId(uId);
         img = imageService.editImageInDb(p, img, img.getId().toString(), file);
 
-        return img.getFilePath();
+        return new ImageRspDto(img.getFilePath());
     }
 
-    public List<String> getProfileImages(Long id) {
+    public List<ImageRspDto> getProfileImages(Long id) {
         Profile p = getProfileByUId(id);
-        return imageService.getProfileImages(p);
+        return imageService.getProfileImages(p).stream().map(ImageRspDto::new).toList();
     }
 
     @Transactional(readOnly = false)

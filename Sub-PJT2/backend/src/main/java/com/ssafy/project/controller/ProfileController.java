@@ -2,6 +2,7 @@ package com.ssafy.project.controller;
 
 import com.ssafy.project.domain.user.Profile;
 import com.ssafy.project.dto.request.ProfileReqDto;
+import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.ProfileRspDto;
 import com.ssafy.project.service.ProfileService;
 import com.ssafy.project.service.TokenService;
@@ -59,17 +60,16 @@ public class ProfileController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/image")
-    public List<String> getProfileImages(HttpServletRequest request) {
+    public List<ImageRspDto> getProfileImages(HttpServletRequest request) {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return profileService.getProfileImages(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/image")
-    public String uploadProfileImage(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+    public ImageRspDto uploadProfileImage(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
-        String url = profileService.saveProfileImage(id, file);
-        return url;
+        return profileService.saveProfileImage(id, file);
     }
 
     @ResponseStatus(HttpStatus.OK)
