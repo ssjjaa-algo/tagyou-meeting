@@ -1,4 +1,6 @@
-import { atom } from "recoil";
+import { update } from "@react-spring/web";
+import { useEffect } from "react";
+import { atom, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { userProps, profileProps } from "types/types";
 
@@ -39,6 +41,11 @@ export const UserInfo = atom<userProps>({
   },
 });
 
+export const ProfileImgSrc = atom<string>({
+  key: "ProfileImgSrc",
+  default: "",
+});
+
 export const ProfileInfo = atom<profileProps>({
   key: "ProfileInfo",
   default: {
@@ -49,6 +56,34 @@ export const ProfileInfo = atom<profileProps>({
     userHobby: "",
     userMbti: "",
     content: "",
+  },
+});
+
+export const UpdateUserInfoFromToken = selector({
+  key: "UpdateUserInfoFromToken",
+  get: ({ get }) => {
+    const tokenValue = get(TokenValue);
+
+    let updateUserInfo = {
+      userEmail: "",
+      userName: "",
+      phoneNumber: "",
+      userAge: 0,
+      userGender: "MALE",
+      userLike: 0,
+    };
+    const fetchProfile = async () => {
+      console.log("tokenValue", tokenValue);
+      fetch("http://localhost:9999/api/users/mypage", {
+        headers: {
+          Auth: tokenValue,
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => (updateUserInfo = res));
+    };
+    fetchProfile();
+    return updateUserInfo;
   },
 });
 

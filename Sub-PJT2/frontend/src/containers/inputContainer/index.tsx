@@ -15,27 +15,23 @@ const InputContainer = () => {
   };
 
   useEffect(() => {
-    setToken(cookies.get("Auth"));
-  }, [cookies.get("Auth")]);
+    const authToken = cookies.get("Auth");
+    setToken(authToken);
+  }, []);
 
   useEffect(() => {
     const fetchFirst = async () => {
-      try {
-        const response = await axios.get("http://localhost:9999/api/users/first", {
-          headers: {
-            Auth: token,
-          },
-        });
-
-        console.log("response", response);
-        console.log("response.status", response.status);
-        console.log("typeof(response.status)", typeof response.status);
-
-        if (response.status === 404) {
+      fetch("http://localhost:9999/api/users/first", {
+        headers: {
+          Auth: token,
+        },
+      }).then((data) => {
+        if (data.status === 404) {
           console.log("에러뜬다 :휴대폰 번호 없음 : first임", token);
+          console.log("token", token);
           setIsFirst(true);
         } else {
-          console.log("이거는 무조건 실행인가?");
+          console.log("token", token);
           console.log("에러가 안온다 :휴대폰번호있음: 그냥 지나쳐 ", token);
           // movePage();
         }

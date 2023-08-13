@@ -1,4 +1,3 @@
-
 export type userProps = {
   userEmail: string;
   userName: string;
@@ -80,9 +79,10 @@ export type chatProps = {
 };
 
 export type friendProps = {
-  id: string;
-  name: string;
-  src: string;
+  friendShipStatus: "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";
+  targetId: Number;
+  targetName: string;
+  targetImg: string;
 };
 
 export type leftContainerProprs = {
