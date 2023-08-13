@@ -1,31 +1,76 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { IsDark, IsOpen, TokenValue, UserInfo } from "../../atoms/atoms";
+import { useRecoilState } from "recoil";
+import {
+  IsDark,
+  IsOpen,
+  ProfileImgSrc,
+  TokenValue,
+  UserInfo,
+} from "../../atoms/atoms";
 import * as S from "./LeftContainer.styled";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Profile from "components/profile";
 import FriendContainer from "containers/friendContainer";
-import { leftContainerProprs } from "types/types";
 import { useEffect, useState } from "react";
 import { Modal } from "components/modal";
+import { Cookies } from "react-cookie";
 
-const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
+const LeftContainer = () => {
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);
   const [isDark, setIsDark] = useRecoilState(IsDark);
+  const [token, setToken] = useRecoilState(TokenValue);
   const [isLogout, setIsLogout] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const cookies = new Cookies();
+  const [userInfo, setUserInfo] = useRecoilState(UserInfo);
+  const [authToken, setAuthToken] = useState<string>("");
+  const [imgSrc, setImgSrc] = useRecoilState<string>(ProfileImgSrc);
 
-  const userInfo = useRecoilValue(UserInfo);
-  const token = useRecoilValue(TokenValue);
+  useEffect(() => {
+    setAuthToken(cookies.get("Auth"));
+  }, []);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      console.log("left_container에서 받는 localToken", authToken);
+      fetch("http://localhost:9999/api/users/mypage", {
+        headers: {
+          Auth: authToken,
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => setUserInfo(res))
+        .then(() => console.log("userInfo", userInfo));
+    };
+    authToken && setToken(authToken);
+    authToken && fetchProfile();
+  }, [authToken]);
+
+  useEffect(() => {
+    token !== "" && console.log("left_container에서 확인한 recoilToken", token);
+  }, [token]);
+
+  useEffect(() => {
+    const fetchImgSrc = async () => {
+      console.log("프로필 이미지 받기 전 토큰 확인", token);
+      fetch("http://localhost:9999/api/users/image", {
+        headers: {
+          Auth: token,
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => setImgSrc(res));
+    };
+    token && fetchImgSrc();
+  }, [token]);
 
   useEffect(() => {
     const rightContainer = document.querySelector(
       ".right_container"
     ) as HTMLElement;
     if (rightContainer instanceof Element) {
-      // console.log("open", isOpen);
       rightContainer.style.width = isOpen
         ? "calc(100vw - 500px)"
         : "calc(100%)";
@@ -37,11 +82,6 @@ const LeftContainer = ({ imgSrc, name, age }: leftContainerProprs) => {
   };
 
   const theme: themeProps = useTheme();
-
-  useEffect(() => {
-    console.log("theme", theme);
-    console.log("aa", theme.bg.deep);
-  }, [theme]);
 
   const style: React.CSSProperties = {
     backgroundColor: `${theme.bg.deep}`,
