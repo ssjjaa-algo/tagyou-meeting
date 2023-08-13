@@ -5,6 +5,7 @@ import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
 import com.ssafy.project.dto.response.FirstLoginRspDto;
+import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.dto.response.UserRspDto;
 import com.ssafy.project.exception.NotFoundException;
@@ -107,7 +108,7 @@ public class UserService {
     }
 
     @Transactional
-    public String editUserImage(Long uId, MultipartFile file) throws IOException {
+    public ImageRspDto editUserImage(Long uId, MultipartFile file) throws IOException {
 
         // 먼저 db에 임시 저장
         Image img = imageService.initImageInDb(uId);
@@ -122,16 +123,16 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
         u.changeUserImg(img);
 
-        return img.getFilePath();
+        return new ImageRspDto(img.getFilePath());
     }
 
-    public String getUserImage(Long uId) {
+    public ImageRspDto getUserImage(Long uId) {
         User u = findUser(uId)
                 .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
         Image img = imageService.findImage(u.getMainImage().getId())
                 .orElseThrow(() -> new NotFoundException("이미지아이디에 해당하는 이미지가 없습니다."));
 
-        return img.getFilePath();
+        return new ImageRspDto(img.getFilePath());
     }
 
 
