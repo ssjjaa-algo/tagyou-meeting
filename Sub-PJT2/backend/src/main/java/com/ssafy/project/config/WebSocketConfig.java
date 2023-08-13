@@ -21,6 +21,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/pub");
     }
 
+
     /**
      *  Description:
      *      - Stomp WebSocket 의 연결 엔드포인트 설정
@@ -29,7 +30,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/ws/chat")
-                .setAllowedOrigins("*")
+                .setAllowedOriginPatterns("http://localhost:3000")
                 .withSockJS();
     }
 }

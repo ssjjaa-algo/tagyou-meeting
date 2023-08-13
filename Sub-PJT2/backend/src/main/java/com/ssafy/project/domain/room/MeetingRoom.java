@@ -27,8 +27,17 @@ public abstract class MeetingRoom extends BaseTimeEntity implements Serializable
     private Long id;
 
     @Enumerated(value = EnumType.STRING)
-    private MeetingRoomStatus status = MeetingRoomStatus.ACTIVE;
+    private MeetingRoomStatus status = MeetingRoomStatus.INACTIVE;
 
     private String sessionId;
+
+    public void changeStatus(){
+        this.status = MeetingRoomStatus.ACTIVE;
+    }
+
+    public void setSessionId(String sessionId){
+        this.sessionId = sessionId;
+    }
 }
+
 

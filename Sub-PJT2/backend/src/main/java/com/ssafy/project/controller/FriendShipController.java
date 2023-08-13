@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping(value="/friends", produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class FriendShipController {

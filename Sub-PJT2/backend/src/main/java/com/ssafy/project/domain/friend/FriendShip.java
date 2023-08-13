@@ -27,7 +27,7 @@ public class FriendShip extends BaseTimeEntity {
     private User targetUser;
 
     @Enumerated(EnumType.STRING)
-    private FriendShipStatus friendShipStatus; // FOLLOW, UNFOLLOW
+    private FriendShipStatus friendShipStatus; // NONE, REQUESTED, RECEIVED, FRIEND, BLOCKED
 
     @Builder
     public FriendShip(User user, User targetUser, FriendShipStatus friendShipStatus) {

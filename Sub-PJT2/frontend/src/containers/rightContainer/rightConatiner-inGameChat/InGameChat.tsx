@@ -17,7 +17,7 @@ import imgDown from "asset/img/icons8-down-100.png";
 type Message = {
   content: string;
   message_type: string;
-  sender: string;
+  sender_token: string;
   meeting_room_id: number;
 };
 
@@ -42,22 +42,30 @@ const RightContainer = () => {
   const domainAddress = "www.tagyou.com";
 
   const roomMake = async () => {
-    fetch("http://localhost:9999/api/chat/rooms/1").then((res) =>
+    fetch(`http://localhost:9999/api/chat/rooms/25`, {
+        headers: {
+          Auth: token,
+        },
+      }).then((res) =>
       console.log(res)
     );
   };
 
   // 미팅룸에 들어올때 connectHandler에 roomId와 codeName 변수를 줘야함
-  const connectHandler = (roomId: number = 1) => {
+  const connectHandler = (roomId: number = 25) => {
     client.current = Stomp.over(() => {
       // 여기서 url 조정하면 됨
       // const socket = new SockJS(`http://${domainAddress}/ws/chat`);
-      const socket = new SockJS(`http://localhost:9999/api/ws/chat`);
+      const socket = new SockJS(`http://localhost:9999/api/ws/chat`, {
+        headers: {
+          Auth: token,
+        },
+      });
       return socket;
     });
     client.current.connect(
       {
-        // Authorization: token,
+        Auth: token,
       },
       () => {
         client.current!.subscribe(
@@ -65,7 +73,7 @@ const RightContainer = () => {
           (message) => {
             addItem(JSON.parse(message.body));
           }
-          // { Authorization: token ? token : "", simpDestination: mockId }
+          // { Auth: token ? token : "", simpDestination: mockId }
         );
       }
     );
@@ -78,7 +86,11 @@ const RightContainer = () => {
 
   // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러오는 부분
   const requestChatHistory = async (roomId: number) => {
-    fetch(`http://localhost:9999/api/chat/rooms/${roomId}/messages`)
+    fetch(`http://localhost:9999/api/chat/rooms/${roomId}/messages`, {
+        headers: {
+          Auth: token,
+        },
+      })
       .then((response) => response.json())
       .then((data: Message[]) => {
         for (let i = 0; i < data.length; i++) {
@@ -130,7 +142,7 @@ const RightContainer = () => {
   const messageSending: Message = {
     content: message,
     message_type: "TALK",
-    sender: user,
+    sender_token: user,
     meeting_room_id: roomId,
   };
 
@@ -154,7 +166,7 @@ const RightContainer = () => {
   useEffect(() => {
     if (!inGameChatStatus) return;
     if (chatScreenRef.current) {
-      if (lastMessage?.sender === user || pullDown) {
+      if (lastMessage?.sender_token === user || pullDown) {
         lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
       } else if (!pullDown || chatScreenRef.current.scrollTop >= 0) {
         setNewMEssageNoticeStatus({ display: "flex" });
@@ -196,14 +208,14 @@ const RightContainer = () => {
     for (let i = 0; i < items.length - 1; i++) {
       result.push(
         <S.Messages key={i}>
-          {items[i].sender} : {items[i].content}
+          {items[i].sender_token} : {items[i].content}
         </S.Messages>
       );
     }
     if (lastMessage) {
       result.push(
         <S.Messages key={items.length - 1} ref={lastMessageRef}>
-          {lastMessage.sender} : {lastMessage.content}
+          {lastMessage.sender_token} : {lastMessage.content}
         </S.Messages>
       );
     }

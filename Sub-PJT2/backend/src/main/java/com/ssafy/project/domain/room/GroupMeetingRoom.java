@@ -17,19 +17,13 @@ import java.util.Queue;
 @Entity
 public class GroupMeetingRoom extends MeetingRoom {
 
-    private boolean isReady; // 대기 : 0 대기 완료 : 1
-
     private int maleCount; // maxCnt = 3
     private int femaleCount; // maxCnt = 3
 
-
-    @OneToMany(mappedBy = "meetingRoom", cascade = CascadeType.ALL)
-    private List<MeetingGroup> groupMeetingRooms = new ArrayList<>();
-
     @Builder
-    public GroupMeetingRoom(int maleCount, int femaleCount, Queue<MeetingGroup> groups) {
+    public GroupMeetingRoom(int maleCount, int femaleCount) {
         this.maleCount = maleCount;
         this.femaleCount = femaleCount;
-        this.groupMeetingRooms = new ArrayList<>(groups);
     }
+
 }

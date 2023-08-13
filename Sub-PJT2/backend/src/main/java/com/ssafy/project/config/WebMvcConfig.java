@@ -9,7 +9,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "https://tagyou.site", "https://www.tagyou.site")
+                .allowedOrigins("*") // 안에 해당 주소를 넣어도 됨
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS" , "PATCH")
                 .exposedHeaders("Authorization", "RefreshToken");
