@@ -4,13 +4,13 @@ html {
 }
 
 nav {
-  height: 50px;
-  width: 100%;
-  z-index: 1;
-  background-color: #4d4d4d;
-  border-color: #4d4d4d;
-  border-top-right-radius: 0 !important;
-  border-top-left-radius: 0 !important;
+	height: 50px;
+	width: 100%;
+	z-index: 1;
+	background-color: #4d4d4d ;
+	border-color: #4d4d4d ;
+	border-top-right-radius: 0 ;
+	border-top-left-radius: 0 ;
 }
 
 .navbar-header {
@@ -23,7 +23,7 @@ nav {
 }
 
 nav a {
-  color: #ccc !important;
+	color: #ccc ;
 }
 
 nav i.fa {
@@ -32,7 +32,7 @@ nav i.fa {
 }
 
 nav a:hover {
-  color: #a9a9a9 !important;
+	color: #a9a9a9 ;
 }
 
 nav i.fa:hover {
@@ -72,17 +72,17 @@ input.btn {
 }
 
 .btn {
-  font-weight: bold !important;
+	font-weight: bold ;
 }
 
 .btn-success {
-  background-color: #06d362 !important;
-  border-color: #06d362;
+	background-color: #06d362 ;
+	border-color: #06d362;
 }
 
 .btn-success:hover {
-  background-color: #1abd61 !important;
-  border-color: #1abd61;
+	background-color: #1abd61 ;
+	border-color: #1abd61;
 }
 
 .footer {

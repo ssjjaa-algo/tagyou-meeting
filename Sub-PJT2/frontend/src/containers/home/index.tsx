@@ -1,7 +1,7 @@
 import * as S from "./Home.styled";
 import { themeProps } from "@emotion/react";
-import { UserData } from "types/types";
-import { ProfileData } from "types/types";
+import { userProps } from "types/types";
+import { profileProps } from "types/types";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import Slider from "components/slide";
@@ -11,8 +11,8 @@ import Postit from "components/postit";
 
 const Home = () => {
   const theme: themeProps = useTheme();
-  const [profileData, setProfileData] = useState<ProfileData>();
-  const [userData, setUserData] = useState<UserData>();
+  const [profileData, setProfileData] = useState<profileProps>();
+  const [userData, setUserData] = useState<userProps>();
   // const [searchParams] = useSearchParams();
 
   // useEffect(() => {
@@ -61,6 +61,7 @@ const Home = () => {
           alt="profileImg"
         /> */}
         <S.LeftContainer>
+          <p>{userData?.userAge}</p>
           <S.InnerContent>
             <S.miniTitle theme={theme}>{userData?.userName}</S.miniTitle>
             <S.Wall theme={theme}>|</S.Wall>

@@ -1,16 +1,14 @@
 package com.ssafy.project.service;
 
 import com.ssafy.project.dto.request.Token;
-import com.ssafy.project.dto.response.UserInfoRspDto;
-import com.ssafy.project.dto.response.UserRspDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.ServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
 
@@ -58,7 +56,7 @@ public class TokenService{
     }
 
 
-    public boolean verifyToken(String token) {
+    public boolean verifyToken(String token, ServletResponse response) throws IOException {
 //        System.out.println(">>> secretKey: " + secretKey);
 //        System.out.println("!!!!!----->>> token: "+token);
         System.out.print(">>> verifyToken -> ");
@@ -70,12 +68,27 @@ public class TokenService{
             return claims.getBody()
                     .getExpiration()
                     .after(new Date());
+        } catch (ExpiredJwtException exp) {
+            System.out.println("token expired!!!");
+            SecurityContextHolder.clearContext(); ////
+            throw new TokenNotValidateException("만료된 토큰임!!");
+//            return false;
         } catch (Exception e) {
 //            e.printStackTrace();
             System.out.println("failed verification..");
             return false;
         }
     }
+
+    public class TokenNotValidateException extends JwtException {
+        public TokenNotValidateException(String message) {
+            super(message);
+        }
+        public TokenNotValidateException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
 
     public Long parseUId(String token) {
 //        System.out.println(">>> get user email");

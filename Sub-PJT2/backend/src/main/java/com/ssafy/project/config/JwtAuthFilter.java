@@ -23,13 +23,6 @@ import java.util.Arrays;
 public class JwtAuthFilter extends GenericFilterBean {
     private final TokenService tokenService;
 
-    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
-    private String redirectUrl;
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String clientId;
-    private String state = "stateee";
-    private String redirectUri = "localhost:3000/home";
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         System.out.println(">>> JwtAuthFilter");
@@ -37,7 +30,7 @@ public class JwtAuthFilter extends GenericFilterBean {
         String token = ((HttpServletRequest)request).getHeader("Auth");
         System.out.println(">>> token: "+token);
 
-        if (token != null && tokenService.verifyToken(token)) {
+        if (token != null && tokenService.verifyToken(token, response)) {
             Long uId = tokenService.parseUId(token);
             System.out.println(">>> after verifyToken");
             // DB연동을 안했으니 이메일 정보로 유저를 만들어주겠습니다
@@ -53,17 +46,6 @@ public class JwtAuthFilter extends GenericFilterBean {
             UserReqDto userReqDto = new UserReqDto(uId, "email", "이름");
             Authentication auth = getAuthentication(userReqDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
-        }
-        else if(token != null && !tokenService.verifyToken(token)) {
-            System.out.println(">>>>>>>>>>>>>>> token problem ");
-            // 토큰 만료 or 잘못된 경우
-//            HttpServletResponse res = (HttpServletResponse) response;
-//            String oauthUrl = String.format(
-//                    "%s?response_type=code&client_id=%s&state=%s&redirect_uri=%s",
-//                    redirectUrl, clientId, state, redirectUri
-//            );
-//            res.sendRedirect(oauthUrl);
-            return;
         }
         chain.doFilter(request, response);
     }

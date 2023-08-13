@@ -115,7 +115,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
           <S.Section>
             <S.SubTitle> 취미 </S.SubTitle>
             <S.StyledInput
-              onChange={(e) => handleInputChange("userHobby", e)}
+              // onChange={(e) => handleInputChange("userHobby", e)}
               placeholder="취미"
             />
           </S.Section>
@@ -123,7 +123,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
           <S.Section>
             <S.SubTitle> 직업 </S.SubTitle>
             <S.StyledInput
-              onChange={(e) => handleInputChange("userJob", e)}
+              // onChange={(e) => handleInputChange("userJob", e)}
               placeholder="직업"
             />
           </S.Section>

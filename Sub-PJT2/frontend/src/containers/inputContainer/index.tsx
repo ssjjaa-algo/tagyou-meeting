@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import { Cookies } from "react-cookie";
 import { TokenValue } from "../../atoms/atoms";
 import { useRecoilState } from "recoil";
+import axios from "axios";
 
 const InputContainer = () => {
   const cookies = new Cookies();
   const [token, setToken] = useRecoilState(TokenValue);
-  const [isFirst, setIsFirst] = useState<Boolean>(false);
+  const [isFirst, setIsFirst] = useState<Boolean>(true);
 
   const movePage = () => {
     window.location.href = "/home";
@@ -32,14 +33,18 @@ const InputContainer = () => {
         } else {
           console.log("token", token);
           console.log("에러가 안온다 :휴대폰번호있음: 그냥 지나쳐 ", token);
-          movePage();
+          // movePage();
         }
-      });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
+
     token.length > 0 && fetchFirst();
   }, [token]);
 
   const [showModal, setShowModal] = useState<boolean>(true);
+
   return (
     <>
       {isFirst === true && showModal && (

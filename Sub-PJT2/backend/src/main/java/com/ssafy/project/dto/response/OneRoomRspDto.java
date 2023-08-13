@@ -10,8 +10,10 @@ public class OneRoomRspDto {
     private String femaleUserNickname;
 
     public OneRoomRspDto(OneMeetingRoom meetingRoom) {
-        this.roomId = roomId;
-        this.maleUserNickname = meetingRoom.getMaleUser().getUserName();
-        this.femaleUserNickname = meetingRoom.getFemaleUser().getUserName();
+        this.roomId = meetingRoom.getId();
+        if(meetingRoom.getMaleUser() != null)
+            this.maleUserNickname = meetingRoom.getMaleUser().getUserName();
+        if(meetingRoom.getFemaleUser() != null)
+            this.femaleUserNickname = meetingRoom.getFemaleUser().getUserName();
     }
 }
