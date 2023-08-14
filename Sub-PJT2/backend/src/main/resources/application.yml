@@ -22,10 +22,10 @@ spring:
     init:
       encoding: UTF-8
 
-  data:x
-  redis:
-    host: tagyou.site
-    port: ${REDIS_PORT}
+  data:
+    redis:
+      host: tagyou.site
+      port: ${REDIS_PORT}
 
   security:
     oauth2:

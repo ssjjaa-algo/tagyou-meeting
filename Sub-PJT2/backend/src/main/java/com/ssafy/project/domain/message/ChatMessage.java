@@ -24,17 +24,17 @@ public class ChatMessage {
     private boolean isRead = false;
 
     @Column(nullable = false)
-    private String token;
+    private String sender;
 
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private MeetingRoom meetingRoom;
 
     @Builder
-    public ChatMessage(String content, MessageType type, String token, MeetingRoom meetingRoom) {
+    public ChatMessage(String content, MessageType type, String sender, MeetingRoom meetingRoom) {
         this.content = content;
         this.type = type;
-        this.token = token;
+        this.sender = sender;
         this.meetingRoom = meetingRoom;
     }
 }
