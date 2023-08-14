@@ -21,12 +21,14 @@ const InputContainer = () => {
 
   useEffect(() => {
     const fetchFirst = async () => {
-      fetch("http://localhost:9999/api/users/first", {
-        headers: {
-          Auth: token,
-        },
-      }).then((data) => {
-        if (data.status === 404) {
+      try {
+        const response = await fetch("http://localhost:9999/api/users/first", {
+          headers: {
+            Auth: token,
+          },
+        });
+
+        if (response.status === 404) {
           console.log("에러뜬다 :휴대폰 번호 없음 : first임", token);
           console.log("token", token);
           setIsFirst(true);
@@ -40,7 +42,9 @@ const InputContainer = () => {
       }
     };
 
-    token.length > 0 && fetchFirst();
+    if (token.length > 0) {
+      fetchFirst();
+    }
   }, [token]);
 
   const [showModal, setShowModal] = useState<boolean>(true);
@@ -55,3 +59,5 @@ const InputContainer = () => {
 };
 
 export default InputContainer;
+
+
