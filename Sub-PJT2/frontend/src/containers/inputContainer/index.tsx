@@ -21,7 +21,7 @@ const InputContainer = () => {
 
   useEffect(() => {
     const fetchFirst = async () => {
-      fetch("http://localhost:9999/api/users/first", {
+      fetch(`${process.env.REACT_APP_BASE_URL}/users/first`, {
         headers: {
           Auth: token,
         },

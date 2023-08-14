@@ -40,7 +40,7 @@ const LeftContainer = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       console.log("left_container에서 받는 localToken", authToken);
-      fetch("http://localhost:9999/api/users/mypage", {
+      fetch(`${process.env.REACT_APP_BASE_URL}/users/mypage`, {
         headers: {
           Auth: authToken,
         },
@@ -60,7 +60,7 @@ const LeftContainer = () => {
   useEffect(() => {
     const fetchImgSrc = async () => {
       console.log("프로필 이미지 받기 전 토큰 확인", token);
-      fetch("http://localhost:9999/api/users/image", {
+      fetch(`${process.env.REACT_APP_BASE_URL}/users/image`, {
         headers: {
           Auth: token,
         },
