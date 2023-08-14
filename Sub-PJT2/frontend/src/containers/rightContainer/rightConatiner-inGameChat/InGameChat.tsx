@@ -1,7 +1,7 @@
 import { themeProps } from "@emotion/react";
 import { List, useTheme } from "@mui/material";
 import * as S from "./InGameChat.styled";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, ReactNode } from "react";
 import { InGameChatStatus, TokenValue } from "atoms/atoms";
 import "css/chat/inGameChat.css";
 
@@ -15,6 +15,7 @@ import SockJS from "sockjs-client";
 import imgDown from "asset/img/icons8-down-100.png";
 
 type Message = {
+  [x: string]: ReactNode;
   content: string;
   message_type: string;
   sender: string;
