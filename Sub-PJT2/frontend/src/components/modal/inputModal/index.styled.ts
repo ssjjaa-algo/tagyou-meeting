@@ -108,4 +108,5 @@ export const Button = styled.button`
   color: white;
   animation: ${Ani2} 1s ease;
   cursor: pointer;
+  }
 `;
