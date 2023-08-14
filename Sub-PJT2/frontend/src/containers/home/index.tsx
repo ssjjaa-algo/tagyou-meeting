@@ -8,48 +8,48 @@ import Slider from "components/slide";
 import Tags from "components/tags";
 import Intro from "components/intro";
 import Postit from "components/postit";
+import { useRecoilValue } from "recoil";
+import { TokenValue } from "atoms/atoms";
 
 const Home = () => {
   const theme: themeProps = useTheme();
   const [profileData, setProfileData] = useState<profileProps>();
   const [userData, setUserData] = useState<userProps>();
-  // const [searchParams] = useSearchParams();
+  const token = useRecoilValue(TokenValue);
 
-  // useEffect(() => {
-  // const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTE0NzM2NDIsImV4cCI6MTY5MTUzMzY0Mn0.b0m5pVnkqTxgssqXLlrG4n6dBIWTJ6fp1V_3HO52yZs"
-  // 토큰 받아오는 과정에서 막혀서 일단 주석 처리하였습니다.
-  // fetch("api/users/tmp/token", {
-  //   headers: {
-  //     'Auth': 'master',
-  //     'userId': '7'
-  //   }})
-  //   .then((res) =>
-  //     console.log(res)
-  //   )
-  //   const fetchData = async () => {
-  //     fetch("api/users/profile", {
-  //       headers: {
-  //         Auth: token,
-  //       },
-  //     }).then(async (res) => {
-  //       const data = await res.json();
-  //       if (data !== undefined) {
-  //         setProfileData(data);
-  //       }
-  //     });
-  //     fetch("api/users/mypage", {
-  //       headers: {
-  //         Auth: token,
-  //       },
-  //     }).then(async (res) => {
-  //       const data = await res.json();
-  //       if (data !== undefined) {
-  //         setUserData(data);
-  //       }
-  //     });
-  //   };
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+		// console.log 찍는 코드 없애지 않고 둬서 디버깅 할 때 좋게합니다
+		console.log("user api 실행 전 token 확인", token)
+    const fetchImgSrc = async () => {
+      fetch(`${process.env.REACT_APP_BASE_URL}/users/mypage`, {
+        headers: {
+          Auth: token,
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => console.log(res));
+    };
+
+		// 토큰이 있을 때만 api fecth 함수 실행하도록 이렇게 코드 작성합니다
+    token && fetchImgSrc();
+  }, [token]);
+
+    useEffect(() => {
+		// console.log 찍는 코드 없애지 않고 둬서 디버깅 할 때 좋게합니다
+		console.log("user api 실행 전 token 확인", token)
+    const fetchImgSrc = async () => {
+      fetch(`${process.env.REACT_APP_BASE_URL}/users/mypage`, {
+        headers: {
+          Auth: token,
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => console.log(res));
+    };
+
+		// 토큰이 있을 때만 api fecth 함수 실행하도록 이렇게 코드 작성합니다
+    token && fetchImgSrc();
+  }, [token]);
 
   return (
     <S.Container>
@@ -97,12 +97,4 @@ const Home = () => {
         <S.Title theme={theme}>한 줄 소개</S.Title>
         <Intro data={profileData?.content}></Intro>
       </S.OtherContainer>
-      <S.OtherContainer>
-        <S.Title theme={theme}>방명록</S.Title>
-        <Postit></Postit>
-      </S.OtherContainer>
-    </S.Container>
-  );
-};
-
-export default Home;
+      <S
