@@ -30,14 +30,8 @@ public class ChatController {
      * Client 에서는 prefix 를 붙여서 /pub/chat/message 로 발행 요청을 보내면 해당 메시지 처리
      */
     @MessageMapping("/message")
-<<<<<<< HEAD
-    public void sendMessage(ChatMessageDto message) {
-        System.out.println("메시지 수신");
-        System.out.println(message);
-=======
     public void sendMessage(HttpServletRequest request, RoomMessageReqDto message) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
->>>>>>> 472e3f060703d17ba8ab47dd03042c2dfbd43c55
         String topic = message.getMeetingRoomId().toString();
         redisPublisher.publish(ChannelTopic.of(topic), userId, message);
     }

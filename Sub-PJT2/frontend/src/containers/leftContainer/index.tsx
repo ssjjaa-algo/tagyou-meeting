@@ -145,30 +145,26 @@ const LeftContainer = () => {
               window.location.href = "/home";
             }}
           >
-            <S.HomeIconStyled theme={theme} />
-            <S.ListText>홈</S.ListText>
+            <S.ListText>
+              <S.Tmp>🏡</S.Tmp> H O M E
+            </S.ListText>
           </S.List>
           <S.List
             theme={theme}
             onClick={() => (window.location.href = "/mypage")}
           >
-            <S.GroupIconStyled theme={theme} />
-            <S.ListText>내 정보</S.ListText>
+            <S.ListText>
+              <S.Tmp>🏝️</S.Tmp> M Y P A G E
+            </S.ListText>
           </S.List>
 
           <S.List theme={theme}>
-            <S.PlayCircleOutlineIconStyled
-              theme={theme}
-              onClick={() => {
-                setShowMatching(true);
-              }}
-            />{" "}
             <S.ListText
               onClick={() => {
                 setShowMatching(true);
               }}
             >
-              미팅 시작
+              <S.Tmp>👨‍❤️‍👨</S.Tmp> M E E T I N G
             </S.ListText>
           </S.List>
         </S.ListBox>

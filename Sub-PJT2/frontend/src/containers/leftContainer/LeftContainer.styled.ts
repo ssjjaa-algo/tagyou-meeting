@@ -56,12 +56,18 @@ export const GroupIconStyled = styled(GroupIcon)<{
   color: ${(props) => props.theme.font.light};
 `;
 
+export const Tmp = styled.strong`
+  margin-right: 10px;
+`;
+
 export const ListBox = styled.ul`
   margin-top: 50px;
+  align-items: center;
+  text-align: center;
 `;
 
 export const ListText = styled.div`
-  margin-left: 10px;
+  margin-left: 35px;
   font-weight: 400;
 `;
 
