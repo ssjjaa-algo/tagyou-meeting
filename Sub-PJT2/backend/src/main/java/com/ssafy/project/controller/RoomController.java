@@ -25,8 +25,8 @@ public class RoomController {
     @RequestMapping("/one")
     public OneRoomRspDto enterOneMeetRoom(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-//        return roomService.enterOneMeetRoom(userId);
-        return roomService.createOneMeetRoom(userId);
+        return roomService.enterOneMeetRoom(userId);
+//        return roomService.createOneMeetRoom(userId);
     }
 
     // ====================== 일대일 미팅방 나가기 ============================
