@@ -11,12 +11,12 @@ export const Profile = styled.div`
 export const ProfileImgBox = styled.div`
   display: block;
   overflow: hidden;
-  height: 120px;
-  width: 120px;
+  height: 90px;
+  width: 90px;
 `;
 
 export const ProfileText = styled.div`
-  margin: auto 0 auto 0;
+  margin: auto 0 auto 15px;
 `;
 
 export const ProfileImg = styled.img`
@@ -25,7 +25,6 @@ export const ProfileImg = styled.img`
   display: block;
   min-width: 100%;
   min-height: 100%;
-  padding: 15px;
 `;
 
 export const Name = styled.div<{ theme: themeProps }>`
