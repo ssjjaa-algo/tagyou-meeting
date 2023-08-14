@@ -58,7 +58,7 @@ public class UserController {
     }
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/mypage/{uId}") // 마이페이지(users 테이블) 정보 받아오기
-    public UserInfoRspDto getFriendPage(HttpServletRequest request, @PathVariable String uId) {
+    public UserInfoRspDto getFriendPage(@PathVariable String uId) {
         Long id = Long.parseLong(uId);
         return userService.getUserInfo(id);
     }
@@ -68,6 +68,12 @@ public class UserController {
     public ImageRspDto getMyImage(HttpServletRequest request) {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.getUserImage(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/image/{uId}")
+    public ImageRspDto getMyImage(@PathVariable Long uId) {
+        return userService.getUserImage(uId);
     }
 
 
@@ -84,28 +90,6 @@ public class UserController {
     public ImageRspDto changeUserImg(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.editUserImage(id, file);
-    }
-
-    // ========================== 취미 ====================================
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/hobby")
-    public List<HobbyRspDto> getHobby(HttpServletRequest request) {
-        Long id = tokenService.parseUId(request.getHeader("Auth"));
-        return userService.getHobby(id);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/hobby")
-    public HobbyRspDto addHobby(HttpServletRequest request, @RequestBody HobbyReqDto hobbyReqDto) {
-        Long id = tokenService.parseUId(request.getHeader("Auth"));
-        return userService.addHobby(id, hobbyReqDto);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/hobby")
-    public HobbyRspDto deleteHobby(HttpServletRequest request, @RequestBody HobbyReqDto hobbyReqDto) {
-        Long id = tokenService.parseUId(request.getHeader("Auth"));
-        return userService.deleteHobby(id, hobbyReqDto);
     }
 
 }

@@ -46,9 +46,6 @@ public class User extends BaseTimeEntity {
     @Column//(nullable = false)
     private int userLike;
 
-    @Column
-    private String hobby;
-
     @Enumerated(EnumType.STRING)
     private RoleType roleType = RoleType.USER;
 
@@ -94,16 +91,5 @@ public class User extends BaseTimeEntity {
 
     public void setMeetingRoom(MeetingRoom meetingRoom) {
         this.meetingRoom = meetingRoom;
-    }
-
-    public void addHobby(String hobby) {
-        if(this.hobby == null) this.hobby = hobby+"/";
-        else this.hobby += hobby+"/";
-    }
-
-    public void deleteHobby(String hobby) {
-        if(this.hobby != null) {
-            this.hobby = this.hobby.replace(hobby+"/", "");
-        }
     }
 }

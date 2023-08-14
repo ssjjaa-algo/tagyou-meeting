@@ -1,7 +1,9 @@
 package com.ssafy.project.controller;
 
 import com.ssafy.project.domain.user.Profile;
+import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.ProfileReqDto;
+import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.ProfileRspDto;
 import com.ssafy.project.service.ProfileService;
@@ -78,6 +80,28 @@ public class ProfileController {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         profileService.deleteProfileImage(id, imgId);
         return "deleted";
+    }
+
+    // ========================== 취미 ====================================
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/hobby")
+    public List<HobbyRspDto> getHobby(HttpServletRequest request) {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        return profileService.getHobby(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/hobby")
+    public HobbyRspDto addHobby(HttpServletRequest request, @RequestBody HobbyReqDto hobbyReqDto) {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        return profileService.addHobby(id, hobbyReqDto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/hobby")
+    public HobbyRspDto deleteHobby(HttpServletRequest request, @RequestBody HobbyReqDto hobbyReqDto) {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        return profileService.deleteHobby(id, hobbyReqDto);
     }
 
 }
