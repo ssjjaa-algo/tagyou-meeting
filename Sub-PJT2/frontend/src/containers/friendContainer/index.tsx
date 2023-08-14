@@ -7,6 +7,7 @@ import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { friendProps } from "types/types";
+import { FriendSearchModal } from "components/modal/friendSearchModal";
 
 const FriendContainer = () => {
   const theme = useTheme<themeProps>();
@@ -14,6 +15,7 @@ const FriendContainer = () => {
   const [friendList, setFriendList] = useState<friendProps[]>();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useRecoilState(TokenValue);
+  const [showModal, setShowModal] = useState<boolean>();
   const style: React.CSSProperties = {
     backgroundColor: theme.bg.deep,
   };
@@ -45,28 +47,30 @@ const FriendContainer = () => {
   };
 
   return (
-    <Drawer
-      open={isOpen}
-      onClose={toggleDrawer}
-      direction="right"
-      overlayOpacity={0}
-      style={style}
-    >
-      <S.Container>
-        <S.Title theme={theme}>친구목록</S.Title>
-        {friendList?.map((item: friendProps, idx: number) => (
-          <Friend
-            friendShipStatus={item.friendShipStatus}
-            targetId={item.targetId}
-            targetName={item.targetName}
-            targetImg={item.targetImg}
-            key={idx}
-          />
-        ))}
-        {/* {showModal && NestedModal} */}
-        <button>친구요청</button>
-      </S.Container>
-    </Drawer>
+    <>
+      <Drawer
+        open={isOpen}
+        onClose={toggleDrawer}
+        direction="right"
+        overlayOpacity={0}
+        style={style}
+      >
+        <S.Container>
+          <S.Title theme={theme}>친구목록</S.Title>
+          {friendList?.map((item: friendProps, idx: number) => (
+            <Friend
+              friendShipStatus={item.friendShipStatus}
+              targetId={item.targetId}
+              targetName={item.targetName}
+              targetImg={item.targetImg}
+              key={idx}
+            />
+          ))}
+          <button onClick={() => setShowModal(true)}>친구 검색</button>
+        </S.Container>
+      </Drawer>
+      {showModal && <FriendSearchModal setShowModal={setShowModal} />}
+    </>
   );
 };
 

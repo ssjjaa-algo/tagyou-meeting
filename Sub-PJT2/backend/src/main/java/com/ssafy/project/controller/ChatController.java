@@ -28,6 +28,7 @@ public class ChatController {
      */
     @MessageMapping("/message")
     public void sendMessage(ChatMessageDto message) {
+        System.out.println(message);
         String topic = message.getMeetingRoomId().toString();
         redisPublisher.publish(ChannelTopic.of(topic), message);
     }
