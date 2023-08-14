@@ -135,56 +135,5 @@ public class UserService {
         return new ImageRspDto(img.getFilePath());
     }
 
-    public List<HobbyRspDto> getHobby(Long uId) {
-        User u = findUser(uId)
-                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
-        if(u.getHobby() == null) return null;
-        return Arrays.stream(u.getHobby().split("/")).map(HobbyRspDto::new).toList();
-    }
-
-    @Transactional
-    public HobbyRspDto addHobby(Long uId, HobbyReqDto hobbyReqDto) {
-        User u = findUser(uId)
-                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
-        u.addHobby(hobbyReqDto.getHobby());
-        return new HobbyRspDto(u.getHobby());
-    }
-
-    @Transactional
-    public HobbyRspDto deleteHobby(Long uId, HobbyReqDto hobbyReqDto) {
-        User u = findUser(uId)
-                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
-        u.deleteHobby(hobbyReqDto.getHobby());
-        return new HobbyRspDto(u.getHobby());
-    }
-
-
-//    /**
-//     * 회원 가입
-//     */
-//    @Transactional
-//    public Long join(User user) {
-//
-//        validateDuplicateUser(user); //중복 회원 검증
-//        userRepository.save(user);
-//        return user.getUserId();
-//    }
-//
-//    private void validateDuplicateUser(User user) {
-//        List<User> findUsers = userRepository.findByUserName(user.getUserName());
-//        if (!findUsers.isEmpty()) {
-//            throw new IllegalStateException("이미 존재하는 회원입니다.");
-//        }
-//    }
-//
-//    //회원 전체 조회
-//    public List<User> findUsers() {
-//        return userRepository.findAll();
-//    }
-//
-//    public User findOne(Long userId) {
-//        return userRepository.findById(userId).orElseThrow(()-> new NotFoundException("잘못된 접근입니다."));
-//    }
-
 }
 

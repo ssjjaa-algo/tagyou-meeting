@@ -1,6 +1,7 @@
 import { Select } from "antd";
 import { ProfileInfo, TokenValue, UserInfo } from "atoms/atoms";
 import { useEffect, useState } from "react";
+import { Cookies } from "react-cookie";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 let placeholderType: string = "";
@@ -66,7 +67,8 @@ const SelectBox = ({
   const [sidoList, setSidoList] = useState<useSidoEleProps[]>();
   const [gugunList, setGugunList] = useState<useGugunProps[]>();
   const token = useRecoilValue(TokenValue);
-
+  const cookies = new Cookies();
+  const [authToken, setAuthToken] = useState<string>("");
   const handleChange = (value: any, all: any) => {
     name === "userSido" &&
       setProfileInfo({
@@ -81,41 +83,51 @@ const SelectBox = ({
   };
 
   useEffect(() => {
-    const fetchSido = async () => {
-      fetch("http://localhost:9999/api/areas", {
-        headers: {
-          Auth: token,
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          res.forEach((item: getSidoEleProps) =>
-            setSidoList((pre) => [
-              ...(pre ?? []),
-              {
-                code: item.sido_code,
-                value: item.sido_name,
-                label: item.sido_name,
-              },
-            ])
-          );
-        });
-    };
-    name === "userSido" && fetchSido();
+    setAuthToken(cookies.get("Auth"));
   }, []);
 
   useEffect(() => {
-    const fetchGugun = async () => {
-      setGugunList([]);
-      fetch(`http://localhost:9999/api/areas/${profileInfo.userSidoCode}`, {
+    console.log("fetchSido 전 token", authToken);
+    const fetchSido = async () => {
+      fetch(`${process.env.REACT_APP_BASE_URL}/areas`, {
         headers: {
-          Auth: token,
+          Auth: authToken,
         },
       })
         .then((res) => res.json())
         .then((res) => {
-          res.length > 0 &&
-            res.forEach((item: getGugunEleProps) =>
+          res?.length > 0 &&
+            res?.forEach((item: getSidoEleProps) =>
+              setSidoList((pre) => [
+                ...(pre ?? []),
+                {
+                  code: item.sido_code,
+                  value: item.sido_name,
+                  label: item.sido_name,
+                },
+              ])
+            );
+        });
+    };
+    authToken && name === "userSido" && fetchSido();
+  }, [authToken]);
+
+  useEffect(() => {
+    console.log("fetchGugun 전 token", authToken);
+    const fetchGugun = async () => {
+      setGugunList([]);
+      fetch(
+        `${process.env.REACT_APP_BASE_URL}/areas/${profileInfo.userSidoCode}`,
+        {
+          headers: {
+            Auth: authToken,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          res?.length > 0 &&
+            res?.forEach((item: getGugunEleProps) =>
               setGugunList((pre) => [
                 ...(pre ?? []),
                 {
@@ -126,7 +138,7 @@ const SelectBox = ({
             );
         });
     };
-    name === "userGugun" && fetchGugun();
+    authToken && name === "userGugun" && fetchGugun();
   }, [profileInfo.userSidoCode]);
 
   if (name === "userGender") {
@@ -143,14 +155,12 @@ const SelectBox = ({
   }
 
   return (
-    // <Select
-    //   placeholder={placeholderType}
-    //   style={{ width: 100, display: "inline-block", marginRight: "3px" }}
-    //   onChange={handleChange}
-    //   options={name === "userGugun" ? gugunList : optionList}
-    // />
-    <>
-    </>
+    <Select
+      placeholder={placeholderType}
+      style={{ width: 100, display: "inline-block", marginRight: "3px" }}
+      onChange={handleChange}
+      options={name === "userGugun" ? gugunList : optionList}
+    />
   );
 };
 
