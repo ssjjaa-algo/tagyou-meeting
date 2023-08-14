@@ -64,6 +64,7 @@ public class SecurityConfig {
 //                                .requestMatchers("/api/token/**", "/api/login/oauth2/kakao").permitAll()
                                 .requestMatchers("/swagger-resources/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll() // 스웨거 경로 허용
+                                .requestMatchers("/ws/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class) // CorsConfig를 먼저 실행하도록 변경

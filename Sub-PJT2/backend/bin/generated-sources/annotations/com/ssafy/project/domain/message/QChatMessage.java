@@ -26,13 +26,11 @@ public class QChatMessage extends EntityPathBase<ChatMessage> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final BooleanPath isRead = createBoolean("isRead");
-
     public final com.ssafy.project.domain.room.QMeetingRoom meetingRoom;
 
-    public final StringPath sender = createString("sender");
+    public final EnumPath<MessageType> messageType = createEnum("messageType", MessageType.class);
 
-    public final EnumPath<MessageType> type = createEnum("type", MessageType.class);
+    public final com.ssafy.project.domain.user.QUser sender;
 
     public QChatMessage(String variable) {
         this(ChatMessage.class, forVariable(variable), INITS);
@@ -53,6 +51,7 @@ public class QChatMessage extends EntityPathBase<ChatMessage> {
     public QChatMessage(Class<? extends ChatMessage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.meetingRoom = inits.isInitialized("meetingRoom") ? new com.ssafy.project.domain.room.QMeetingRoom(forProperty("meetingRoom")) : null;
+        this.sender = inits.isInitialized("sender") ? new com.ssafy.project.domain.user.QUser(forProperty("sender"), inits.get("sender")) : null;
     }
 
 }

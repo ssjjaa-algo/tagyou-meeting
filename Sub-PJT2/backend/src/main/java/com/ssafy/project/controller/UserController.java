@@ -72,7 +72,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/image/{uId}")
-    public ImageRspDto getMyImage(@PathVariable Long uId) {
+    public ImageRspDto getImage(@PathVariable Long uId) {
         return userService.getUserImage(uId);
     }
 
