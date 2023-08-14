@@ -35,7 +35,7 @@ public class RedisPublisher{
         ChatMessage publishedMessage = ChatMessage.builder()
                 .meetingRoom(meetingRoom)
                 .content(message.getContent())
-                .token(message.getSenderToken())
+                .sender(message.getSender())
                 .type(message.getMessageType())
                 .build();
 
