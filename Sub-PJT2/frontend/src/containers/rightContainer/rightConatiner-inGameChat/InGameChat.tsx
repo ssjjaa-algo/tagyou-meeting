@@ -196,6 +196,7 @@ const RightContainer = () => {
       if (message.length > 0) {
         client.current!.send(
           "/pub/chat/message",
+          // "/chat/message",
           {},
           JSON.stringify(messageSending)
         );
@@ -280,8 +281,8 @@ const RightContainer = () => {
           theme={theme}
           onClick={handleClickMessage}
           onMouseOut={handleMouseOut}
-          whileHover={{ scale: 1.5 }}
-          whileTap={{ scale: 1.2 }}
+          whileHover={{ scale: 1.3 }}
+          whileTap={{ scale: 1.1 }}
         >
           <S.MessageImg src={messageButton} alt="messageButton" />
         </S.MessageButton>
@@ -330,8 +331,8 @@ const RightContainer = () => {
               <S.Button
                 theme={theme}
                 onClick={handleClickSubmit}
-                whileHover={{ scale: 1.5 }}
-                whileTap={{ scale: 1.2 }}
+                whileHover={{ scale: 1.3 }}
+                whileTap={{ scale: 1.1 }}
               >
                 <img src={sendButton} alt="send" />
               </S.Button>
