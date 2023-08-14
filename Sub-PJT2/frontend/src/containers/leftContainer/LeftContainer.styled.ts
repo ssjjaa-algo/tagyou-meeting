@@ -6,19 +6,14 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LogoutIcon from "@mui/icons-material/Logout";
 
+export const Container = styled.div<{ theme: themeProps }>`
+  width: 250px;
+  background-color: ${(props) => props.theme.bg.deep};
+`;
+
 export const BtnBox = styled.div`
   width: fit-content;
   margin: 20px 10px 30px 10px;
-`;
-
-export const HiddenSection = styled.div<{ theme: themeProps }>`
-  position: fixed;
-  display: flex;
-  padding-top: 20px;
-  width: 30px;
-  height: 100% !important;
-  background-color: ${(props) => props.theme.bg.deep};
-  transition: all 500ms;
 `;
 
 export const List = styled.li<{ theme: themeProps }>`

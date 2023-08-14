@@ -33,14 +33,19 @@ export const InputArea = styled.div`
 `;
 
 export const Input = styled.input<{ theme: themeProps }>`
-  background-image: linear-gradient(${(props) => props.theme.point.deep}, ${(props) => props.theme.point.deep}),
-    linear-gradient(${(props) => props.theme.font.mid}, ${(props) => props.theme.font.mid});
+  background-image: linear-gradient(
+      ${(props) => props.theme.point.deep},
+      ${(props) => props.theme.point.deep}
+    ),
+    linear-gradient(
+      ${(props) => props.theme.font.mid},
+      ${(props) => props.theme.font.mid}
+    );
   border: 0 none;
   /* border-radius: 0; */
   float: none;
   background-color: transparent;
   /* border-radius: 10%; */
-  background-position: center bottom, center calc(100% - 1px);
   background-repeat: no-repeat;
   background-size: 0 2px, 100% 1px;
   padding: 15px 15px;
@@ -89,7 +94,7 @@ export const SaveButton = styled.button<{ theme: themeProps }>`
 `;
 
 export const Notice = styled.p<{ theme: themeProps }>`
-  margin-left:20px;
+  margin-left: 20px;
   vertical-align: middle;
   font-size: 13px;
   color: ${(props) => props.theme.font.mid};

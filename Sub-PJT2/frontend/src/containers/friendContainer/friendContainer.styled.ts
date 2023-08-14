@@ -2,6 +2,11 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 import { Badge } from "antd";
 
+export const MainContainer = styled.div<{ theme: themeProps }>`
+  width: 250px;
+  background-color: ${(props) => props.theme.bg.deep};
+`;
+
 export const Container = styled.div`
   padding: 22px 16px 20px 16px;
 `;

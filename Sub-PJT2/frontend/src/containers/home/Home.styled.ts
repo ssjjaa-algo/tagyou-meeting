@@ -7,7 +7,6 @@ export const Container = styled.div`
   /* border: solid yellow 3px; */
   justify-items: center;
   margin: 5rem 0 0 5rem;
-  width: calc(100% - 10rem);
   height: 100%;
 `;
 

@@ -11,16 +11,11 @@ import { FriendSearchModal } from "components/modal/friendSearchModal";
 import { Button } from "antd";
 const FriendContainer = () => {
   const theme = useTheme<themeProps>();
-  const [isOpen, setIsOpen] = useRecoilState(IsOpen);
   const [friendList, setFriendList] = useState<friendProps[]>();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useRecoilState(TokenValue);
   const [showModal, setShowModal] = useState<boolean>();
   const isDark = useRecoilValue(IsDark);
-
-  const style: React.CSSProperties = {
-    backgroundColor: theme.bg.deep,
-  };
 
   const ButtonStyles: React.CSSProperties = {
     backgroundColor: isDark ? "#4d4d4c" : "#f65b76",
@@ -52,19 +47,9 @@ const FriendContainer = () => {
     token && fetchData();
   }, [token]);
 
-  const toggleDrawer = () => {
-    setIsOpen((prevState) => !prevState);
-  };
-
   return (
     <>
-      <Drawer
-        open={isOpen}
-        onClose={toggleDrawer}
-        direction="right"
-        overlayOpacity={0}
-        style={style}
-      >
+      <S.MainContainer theme={theme}>
         <S.Container>
           <S.SubTitle theme={theme}>친구목록</S.SubTitle>
           <S.FriendContainer>
@@ -151,7 +136,7 @@ const FriendContainer = () => {
             친구 검색
           </Button>
         </S.Container>
-      </Drawer>
+      </S.MainContainer>
       {showModal && <FriendSearchModal setShowModal={setShowModal} />}
     </>
   );
