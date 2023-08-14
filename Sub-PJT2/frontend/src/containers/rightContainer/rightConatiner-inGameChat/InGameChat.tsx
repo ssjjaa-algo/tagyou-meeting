@@ -7,7 +7,7 @@ import "css/chat/inGameChat.css";
 
 import sendButton from "asset/img/button_send.png";
 import messageButton from "asset/img/message.png";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 // webSocket 관련
 import { CompatClient, Stomp } from "@stomp/stompjs";
@@ -31,7 +31,7 @@ const RightContainer = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
-  const [token] = useRecoilState(TokenValue);
+  const token = useRecoilValue(TokenValue);
   const [pullDown, setPullDown] = useState<boolean>(true);
   const [newMEssageNoticeStatus, setNewMEssageNoticeStatus] = useState({
     display: "none",
@@ -41,20 +41,34 @@ const RightContainer = () => {
 
   const domainAddress = "www.tagyou.site";
 
-  const roomMake = async () => {
-    fetch(`http://localhost:9999/api/chat/rooms/25`, {
+  // 방번호 조회
+  const getRoomId = async () => {
+    fetch(`${process.env.REACT_APP_BASE_URL}/one`, {
+      headers: {
+        Auth: token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data: number) => {
+        console.log(data);
+        setRoomId(data);
+      });
+  };
+
+  const roomConnect = async () => {
+    fetch(`${process.env.REACT_APP_BASE_URL}/chat/rooms/${roomId}`, {
       headers: {
         Auth: token,
       },
     }).then((res) => console.log(res));
   };
 
-  // 미팅룸에 들어올때 connectHandler에 roomId 변수를 줘야함
-  const connectHandler = (roomId: number = 25) => {
+  // 미팅룸에 들어올때 connectHandler에 roomId와 codeName 변수를 줘야함
+  const connectHandler = (roomId: number) => {
     client.current = Stomp.over(() => {
       // 여기서 url 조정하면 됨
       // const socket = new SockJS(`http://${domainAddress}/ws/chat`);
-      const socket = new SockJS(`http://localhost:9999/api/ws/chat`, {
+      const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`, {
         headers: {
           Auth: token,
         },
@@ -70,21 +84,18 @@ const RightContainer = () => {
           `/sub/chat/rooms/${roomId}`,
           (message) => {
             addItem(JSON.parse(message.body));
-          }
-          // { Auth: token ? token : "", simpDestination: mockId }
+          },
+          { Auth: token ? token : "" }
         );
       }
     );
-    setRoomId(roomId);
-    //client.current.connect로 연결하고 fetch를 통해서 해당 접속이랑 연동(?)을 시켜줘야됨
-    roomMake();
-    requestChatHistory(1);
+    requestChatHistory(roomId);
     console.log("token: " + token);
   };
 
   // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러오는 부분
   const requestChatHistory = async (roomId: number) => {
-    fetch(`http://localhost:9999/api/chat/rooms/${roomId}/messages`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/chat/rooms/${roomId}/messages`, {
       headers: {
         Auth: token,
       },
@@ -99,8 +110,12 @@ const RightContainer = () => {
 
   // 렌더링 후 연결
   useEffect(() => {
-    connectHandler(1);
-  }, []);
+    if (!token) {
+      alert("유저 인증 정보가 없습니다.");
+    }
+    if (!roomId) roomConnect();
+    roomId && connectHandler(roomId);
+  }, [token]);
 
   const handelScroll = () => {
     if (!chatScreenRef.current) return;
