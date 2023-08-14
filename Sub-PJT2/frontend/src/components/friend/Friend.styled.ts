@@ -1,22 +1,23 @@
 import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 import { Link } from "react-router-dom";
+import { Button } from "antd";
 
 export const Profile = styled(Link)`
   display: flex;
   vertical-align: middle;
-  margin-top: 5px;
 `;
 
 export const ProfileImgBox = styled.div`
   display: block;
   overflow: hidden;
-  height: 80px;
-  width: 80px;
+  height: 60px;
+  width: 60px;
 `;
 
 export const ProfileText = styled.div`
   margin: auto 0 auto 0;
+  padding-left: 5px;
 `;
 
 export const ProfileImg = styled.img`
@@ -25,17 +26,33 @@ export const ProfileImg = styled.img`
   display: block;
   min-width: 100%;
   min-height: 100%;
-  padding: 15px;
+  padding: 10px;
 `;
 
 export const Name = styled.div<{ theme: themeProps }>`
   color: ${(props) => props.theme.font.light};
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 600;
 `;
 
-export const Age = styled(Name)`
-  font-size: 14px;
+export const StyledBtn = styled(Button)<{
+  source: "accept" | "reject";
+  theme: themeProps;
+}>`
+  background-color: ${(props) =>
+    props.source === "accept" ? "##5d85be" : "#da3350"} !important;
+  font-size: 4px !important;
+  font-weight: 600;
+  width: 35px;
+  margin-right: 5px;
+`;
+
+export const Intro = styled(Name)`
+  font-size: 8px;
   font-weight: normal;
-  margin-top: 10px;
+  margin-top: 5px;
+`;
+
+export const BtnContainer = styled.div`
+  margin-left: 120px;
 `;
