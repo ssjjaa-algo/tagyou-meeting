@@ -39,19 +39,17 @@ const RightContainer = () => {
 
   const client = useRef<CompatClient>();
 
-  const domainAddress = "www.tagyou.com";
+  const domainAddress = "www.tagyou.site";
 
   const roomMake = async () => {
     fetch(`http://localhost:9999/api/chat/rooms/25`, {
-        headers: {
-          Auth: token,
-        },
-      }).then((res) =>
-      console.log(res)
-    );
+      headers: {
+        Auth: token,
+      },
+    }).then((res) => console.log(res));
   };
 
-  // 미팅룸에 들어올때 connectHandler에 roomId와 codeName 변수를 줘야함
+  // 미팅룸에 들어올때 connectHandler에 roomId 변수를 줘야함
   const connectHandler = (roomId: number = 25) => {
     client.current = Stomp.over(() => {
       // 여기서 url 조정하면 됨
@@ -87,10 +85,10 @@ const RightContainer = () => {
   // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러오는 부분
   const requestChatHistory = async (roomId: number) => {
     fetch(`http://localhost:9999/api/chat/rooms/${roomId}/messages`, {
-        headers: {
-          Auth: token,
-        },
-      })
+      headers: {
+        Auth: token,
+      },
+    })
       .then((response) => response.json())
       .then((data: Message[]) => {
         for (let i = 0; i < data.length; i++) {
