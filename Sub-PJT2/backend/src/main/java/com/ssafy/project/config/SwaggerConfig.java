@@ -26,11 +26,11 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         return new Docket(DocumentationType.OAS_30)
                 .useDefaultResponseMessages(false)
                 .apiInfo(getApiInfo())
-                .pathMapping("/api/") //  base URL 설정
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ssafy.project"))
                 .paths(PathSelectors.any())
                 .build()
+                .pathMapping("/api/") //  base URL 설정
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()));
     }

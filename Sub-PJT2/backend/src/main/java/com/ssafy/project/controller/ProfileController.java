@@ -68,6 +68,12 @@ public class ProfileController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/image/{uId}")
+    public List<ImageRspDto> getFriendsProfileImages(@PathVariable Long uId) {
+        return profileService.getProfileImages(uId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/image")
     public ImageRspDto uploadProfileImage(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
@@ -89,6 +95,12 @@ public class ProfileController {
     public HobbyRspDto getHobby(HttpServletRequest request) {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return profileService.getHobby(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/hobby/{uId}")
+    public HobbyRspDto getFriendsHobby(@PathVariable Long uId) {
+        return profileService.getHobby(uId);
     }
 
     @ResponseStatus(HttpStatus.OK)

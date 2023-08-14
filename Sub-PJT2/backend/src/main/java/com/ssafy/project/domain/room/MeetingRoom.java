@@ -23,7 +23,7 @@ public abstract class MeetingRoom extends BaseTimeEntity implements Serializable
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_id")
+    @Column(name = "meeting_room_id")
     private Long id;
 
     @Enumerated(value = EnumType.STRING)

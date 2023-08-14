@@ -16,7 +16,13 @@ import imgDown from "asset/img/icons8-down-100.png";
 import { Cookies } from "react-cookie";
 import e from "express";
 
-type Message = {
+type SendingMessage = {
+  content: string;
+  message_type: string;
+  meeting_room_id: number;
+};
+
+type ReceivingMessage = {
   content: string;
   message_type: string;
   sender: string;
@@ -33,8 +39,8 @@ const RightContainer = () => {
   const theme: themeProps = useTheme();
 
   const [roomId, setRoomId] = useState<number>(1);
-  const [items, setItems] = useState<Message[]>([]);
-  const [lastMessage, setLastMessage] = useState<Message>();
+  const [items, setItems] = useState<ReceivingMessage[]>([]);
+  const [lastMessage, setLastMessage] = useState<ReceivingMessage>();
   const [message, setMessage] = useState("");
   const [isHovering, setIsHovering] = useState(false);
   const [inGameChatStatus, setInGameChatStatus] =
@@ -62,7 +68,7 @@ const RightContainer = () => {
       .then((res) => res.json())
       .then((data: Room) => {
         console.log(data);
-        setRoomId(data.roomId);
+        setRoomId(1);
       });
   };
 
@@ -80,51 +86,45 @@ const RightContainer = () => {
     client.current = Stomp.over(() => {
       // 여기서 url 조정하면 됨
       // const socket = new SockJS(`http://${domainAddress}/ws/chat`);
-      const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`, {
-        headers: {
-          Auth: token,
-        },
-      });
-      // const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`);
+      // const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`, {
+      //   headers: {
+      //     Auth: token,
+      //   },
+      // });
+      const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`);
       return socket;
     });
-    console.log("여까진 오냐?");
-    client.current.connect(
-      {
-        Auth: token,
-      },
-      () => {
-        console.log("연결 성공");
-        // 해당 방과 동기화(?)
-        // roomSync();
-        client.current!.subscribe(
-          `/sub/chat/rooms/${roomId}`,
-          (message) => {
-            addItem(JSON.parse(message.body));
-          },
-          { Auth: token ? token : "" }
-        );
-      },
-      () => {
-        console.log("연결 실패");
-      },
-      () => {
-        console.log("closeEventCallback");
-      }
-    );
+    client.current.connect({ Authorization: token }, () => {
+      // 해당 방과 동기화(?)
+      // roomSync();
+      client.current!.subscribe(`/sub/chat/rooms/${roomId}`, (message) => {
+        addItem(JSON.parse(message.body));
+      });
+      const enteringMessageRoom: SendingMessage = {
+        content: "님이 입장하셨습니다.",
+        message_type: "ENTER",
+        meeting_room_id: roomId,
+      };
+      client.current!.send(
+        "/pub/chat/message",
+        {},
+        JSON.stringify(enteringMessageRoom)
+      );
+    });
     requestChatHistory(roomId);
     console.log("token: " + token);
   };
 
   // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러오는 부분
   const requestChatHistory = async (roomId: number) => {
+    console.log("chatHistory 조회하기 전 토큰 확인: " + token);
     fetch(`${process.env.REACT_APP_BASE_URL}/chat/rooms/${roomId}/messages`, {
       headers: {
         Auth: token,
       },
     })
       .then((response) => response.json())
-      .then((data: Message[]) => {
+      .then((data: ReceivingMessage[]) => {
         for (let i = 0; i < data.length; i++) {
           addItem(data[i]);
         }
@@ -138,13 +138,11 @@ const RightContainer = () => {
   }, [cookies.get("Auth")]);
 
   useEffect(() => {
-    console.log(token);
-    if (!token) return;
     // 연결됐던 방이 있다면 RoomId 조회
     // getRoomId();
     console.log("방 번호: " + roomId);
     // 채팅 웹소켓 연결
-    connectHandler(roomId);
+    token && connectHandler(roomId);
   }, [token]);
 
   const handelScroll = () => {
@@ -154,9 +152,9 @@ const RightContainer = () => {
     }
   };
 
-  const addItem = (item: Message) => {
-    if (item.message_type === "TALK") {
-      let newItems: Message[] = [];
+  const addItem = (item: ReceivingMessage) => {
+    if (item.message_type === "TALK" || "ENTER" || "EXIT") {
+      let newItems: ReceivingMessage[] = [];
       newItems = items;
       newItems.push(item);
       if (!chatScreenRef.current) return;
@@ -182,10 +180,9 @@ const RightContainer = () => {
     setUser(e.target.value);
   };
 
-  const messageSending: Message = {
+  const messageSending: SendingMessage = {
     content: message,
     message_type: "TALK",
-    sender: user,
     meeting_room_id: roomId,
   };
 
