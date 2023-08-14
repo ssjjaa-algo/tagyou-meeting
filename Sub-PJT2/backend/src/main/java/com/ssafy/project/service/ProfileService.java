@@ -3,7 +3,9 @@ package com.ssafy.project.service;
 import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.Profile;
 import com.ssafy.project.domain.user.User;
+import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.ProfileReqDto;
+import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.ProfileRepository;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -100,15 +103,27 @@ public class ProfileService {
     }
 
 
-    /**
-     * 프로필 등록
-     */
+    public List<HobbyRspDto> getHobby(Long uId) {
+        Profile p = profileRepository.findByUserId(uId)
+                .orElseThrow(()->new NotFoundException("해당 유저아이디의 프로필이 존재하지 않습니다. "));
+        if(p.getUserHobby() == null) return null;
+        return Arrays.stream(p.getUserHobby().split("/")).map(HobbyRspDto::new).toList();
+    }
 
-    /**
-     * 프로필 수정
-     */
+    @Transactional
+    public HobbyRspDto addHobby(Long uId, HobbyReqDto hobbyReqDto) {
+        Profile p = profileRepository.findByUserId(uId)
+                .orElseThrow(()->new NotFoundException("해당 유저아이디의 프로필이 존재하지 않습니다. "));
+        p.addHobby(hobbyReqDto.getHobby());
+        return new HobbyRspDto(p.getUserHobby());
+    }
 
-    /**
-     * 프로필 삭제
-     */
+    @Transactional
+    public HobbyRspDto deleteHobby(Long uId, HobbyReqDto hobbyReqDto) {
+        Profile p = profileRepository.findByUserId(uId)
+                .orElseThrow(()->new NotFoundException("해당 유저아이디의 프로필이 존재하지 않습니다. "));
+        p.deleteHobby(hobbyReqDto.getHobby());
+        return new HobbyRspDto(p.getUserHobby());
+    }
+
 }

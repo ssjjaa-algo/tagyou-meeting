@@ -28,12 +28,10 @@ const InputContainer = () => {
       }).then((data) => {
         if (data.status === 404) {
           console.log("에러뜬다 :휴대폰 번호 없음 : first임", token);
-          console.log("token", token);
           setIsFirst(true);
         } else {
-          console.log("token", token);
           console.log("에러가 안온다 :휴대폰번호있음: 그냥 지나쳐 ", token);
-          // movePage();
+          movePage();
         }
       });
     };
@@ -50,5 +48,3 @@ const InputContainer = () => {
 };
 
 export default InputContainer;
-
-

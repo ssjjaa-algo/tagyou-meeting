@@ -2,12 +2,10 @@ package com.ssafy.project.service;
 
 import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.User;
+import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
-import com.ssafy.project.dto.response.FirstLoginRspDto;
-import com.ssafy.project.dto.response.ImageRspDto;
-import com.ssafy.project.dto.response.UserInfoRspDto;
-import com.ssafy.project.dto.response.UserRspDto;
+import com.ssafy.project.dto.response.*;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -134,34 +134,6 @@ public class UserService {
 
         return new ImageRspDto(img.getFilePath());
     }
-
-
-//    /**
-//     * 회원 가입
-//     */
-//    @Transactional
-//    public Long join(User user) {
-//
-//        validateDuplicateUser(user); //중복 회원 검증
-//        userRepository.save(user);
-//        return user.getUserId();
-//    }
-//
-//    private void validateDuplicateUser(User user) {
-//        List<User> findUsers = userRepository.findByUserName(user.getUserName());
-//        if (!findUsers.isEmpty()) {
-//            throw new IllegalStateException("이미 존재하는 회원입니다.");
-//        }
-//    }
-//
-//    //회원 전체 조회
-//    public List<User> findUsers() {
-//        return userRepository.findAll();
-//    }
-//
-//    public User findOne(Long userId) {
-//        return userRepository.findById(userId).orElseThrow(()-> new NotFoundException("잘못된 접근입니다."));
-//    }
 
 }
 

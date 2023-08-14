@@ -1,6 +1,8 @@
 package com.ssafy.project.controller;
 
+import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
+import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.service.TokenService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,7 +58,7 @@ public class UserController {
     }
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/mypage/{uId}") // 마이페이지(users 테이블) 정보 받아오기
-    public UserInfoRspDto getFriendPage(HttpServletRequest request, @PathVariable String uId) {
+    public UserInfoRspDto getFriendPage(@PathVariable String uId) {
         Long id = Long.parseLong(uId);
         return userService.getUserInfo(id);
     }
@@ -65,6 +68,12 @@ public class UserController {
     public ImageRspDto getMyImage(HttpServletRequest request) {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.getUserImage(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/image/{uId}")
+    public ImageRspDto getMyImage(@PathVariable Long uId) {
+        return userService.getUserImage(uId);
     }
 
 

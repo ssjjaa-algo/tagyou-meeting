@@ -92,5 +92,4 @@ public class User extends BaseTimeEntity {
     public void setMeetingRoom(MeetingRoom meetingRoom) {
         this.meetingRoom = meetingRoom;
     }
-
 }
