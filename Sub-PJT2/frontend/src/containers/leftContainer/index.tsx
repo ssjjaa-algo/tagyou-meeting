@@ -139,21 +139,23 @@ const LeftContainer = () => {
         />
 
         <S.ListBox>
-          <S.List theme={theme}>
-            <S.HomeIconStyled
-              theme={theme}
-              onClick={() => {
-                window.location.href = "/home";
-              }}
-            />
-            <S.ListText
-              onClick={() => {
-                window.location.href = "/home";
-              }}
-            >
-              홈
-            </S.ListText>
+          <S.List
+            theme={theme}
+            onClick={() => {
+              window.location.href = "/home";
+            }}
+          >
+            <S.HomeIconStyled theme={theme} />
+            <S.ListText>홈</S.ListText>
           </S.List>
+          <S.List
+            theme={theme}
+            onClick={() => (window.location.href = "/mypage")}
+          >
+            <S.GroupIconStyled theme={theme} />
+            <S.ListText>내 정보</S.ListText>
+          </S.List>
+
           <S.List theme={theme}>
             <S.PlayCircleOutlineIconStyled
               theme={theme}
@@ -170,6 +172,7 @@ const LeftContainer = () => {
             </S.ListText>
           </S.List>
         </S.ListBox>
+
         <S.FootBox
           theme={theme}
           onClick={() => {
