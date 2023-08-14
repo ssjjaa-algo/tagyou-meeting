@@ -110,13 +110,14 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
             />
           </S.Section>
 
-          <S.Section>
+          {/* 취미는 home에서 따로 입력해서 받는 것으로 수정하였습니다 */}
+          {/* <S.Section> 
             <S.SubTitle> 취미 </S.SubTitle>
             <S.StyledInput
               // onChange={(e) => handleInputChange("userHobby", e)}
               placeholder="취미"
             />
-          </S.Section>
+          </S.Section> */}
 
           <S.Section>
             <S.SubTitle> 직업 </S.SubTitle>
