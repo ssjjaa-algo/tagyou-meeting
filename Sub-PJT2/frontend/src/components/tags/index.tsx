@@ -2,22 +2,24 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as S from './Tags.styled';
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
+import { useRecoilValue } from "recoil";
+import { TokenValue } from "atoms/atoms";
 
-const Tags = (data: any) => {
+const Tags = () => {
   const isBrowser = typeof window !== 'undefined';
   const theme : themeProps = useTheme();
-  // console.log(data.hobby)
   const [hashtag, setHashtag] = useState<string>('')
-  const [hashArr, setHashArr] = useState<string[]>([])  
+  const [hashArr, setHashArr] = useState<string[]>([])
+  const token = useRecoilValue(TokenValue);
 
   useEffect(() => {
     const $HashWrapOuter = document.querySelector('.HashWrapOuter')
     const $HashWrapInner_before = document.createElement('div')
     $HashWrapInner_before.className = 'HashWrapInner'
-    if (data.hobby !== undefined) {
-      $HashWrapInner_before.innerHTML = '#' + data.hobby
+    if (hashtag !== undefined) {
+      $HashWrapInner_before.innerHTML = '#' + hashtag
       $HashWrapOuter?.appendChild($HashWrapInner_before)
-      let new_content = data.hobby
+      let new_content = hashtag
       // console.log(new_content+'ddd')
 
 
@@ -29,10 +31,25 @@ const Tags = (data: any) => {
       // console.log(new_content)
     })
     }
-  }, [data.hobby])
+  }, [hashtag, hashArr])
 
 
-
+  useEffect(() => {
+		// console.log 찍는 코드 없애지 않고 둬서 디버깅 할 때 좋게합니다
+		console.log("hobby api 실행 전 token 확인", token)
+    const fetchHobbySrc = async () => {
+      fetch(`${process.env.REACT_APP_BASE_URL}/profile/hobby`, {
+        headers: {
+          Auth: token,
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => { for (let i = 0; i < res.length; i++) {
+          setHashArr([...hashArr], res[i]["hobby"]) }})
+        }
+    
+    token && fetchHobbySrc();
+  }, [token]);
 
   const onKeyUp = useCallback(
     (e:React.KeyboardEvent<HTMLInputElement>) => {
@@ -88,5 +105,5 @@ const Tags = (data: any) => {
     </>
   );
 };
-
+  
 export default Tags;
