@@ -78,4 +78,14 @@ public class Profile extends BaseTimeEntity {
 //        profileImage.setProfile(this);
 //    }
 
+    public void addHobby(String hobby) {
+        if(this.userHobby == null) this.userHobby = hobby+"/";
+        else this.userHobby += hobby+"/";
+    }
+
+    public void deleteHobby(String hobby) {
+        if(this.userHobby != null) {
+            this.userHobby = this.userHobby.replace(hobby+"/", "");
+        }
+    }
 }
