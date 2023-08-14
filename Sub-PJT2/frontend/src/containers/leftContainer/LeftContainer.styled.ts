@@ -4,16 +4,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import HomeIcon from "@mui/icons-material/Home";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import GroupIcon from "@mui/icons-material/Group";
-import { Link } from "react-router-dom";
-export const HomeIconStyled = styled(HomeIcon)<{
-  theme: themeProps;
-}>`
-  color: ${(props) => props.theme.font.light};
-  font-size: 25px;
-`;
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export const BtnBox = styled.div`
   width: fit-content;
@@ -44,18 +35,6 @@ export const List = styled.li<{ theme: themeProps }>`
   vertical-align: middle;
 `;
 
-export const PlayCircleOutlineIconStyled = styled(PlayCircleOutlineIcon)<{
-  theme: themeProps;
-}>`
-  color: ${(props) => props.theme.font.light};
-`;
-
-export const GroupIconStyled = styled(GroupIcon)<{
-  theme: themeProps;
-}>`
-  color: ${(props) => props.theme.font.light};
-`;
-
 export const Tmp = styled.strong`
   margin-right: 10px;
 `;
@@ -69,6 +48,15 @@ export const ListBox = styled.ul`
 export const ListText = styled.div`
   margin-left: 35px;
   font-weight: 400;
+`;
+
+export const LogoutIconStyled = styled(LogoutIcon)<{
+  theme: themeProps;
+}>`
+  margin-top: 10px;
+  font-size: 14px;
+  bold: bold;
+  color: ${(props) => props.theme.font.light};
 `;
 
 export const LightModeIconStyled = styled(LightModeIcon)<{
@@ -102,6 +90,6 @@ export const ArrowBackIosIconStyled = styled(ArrowBackIosIcon)<{
 export const FootBox = styled.div<{ theme: themeProps }>`
   color: ${(props) => props.theme.font.light};
   position: relative;
-  left: 150px;
-  top: 230px;
+  left: 160px;
+  top: 240px;
 `;

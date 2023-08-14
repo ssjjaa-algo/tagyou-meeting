@@ -176,7 +176,7 @@ const LeftContainer = () => {
             setIsLogout(true);
           }}
         >
-          로그아웃
+          LOGOUT
         </S.FootBox>
       </Drawer>
       <FriendContainer />
