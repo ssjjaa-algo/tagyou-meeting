@@ -1,7 +1,8 @@
 package com.ssafy.project.service.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.project.domain.message.ChatMessageDto;
+import com.ssafy.project.dto.request.RoomMessageReqDto;
+import com.ssafy.project.dto.response.RoomMessageRspDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
@@ -31,7 +32,7 @@ public class RedisSubscriber implements MessageListener {
             String publishedMessage = redisTemplate.getStringSerializer().deserialize(message.getBody());
 
             // ChatMessage 객체로 매핑
-            ChatMessageDto chatMessage = objectMapper.readValue(publishedMessage, ChatMessageDto.class);
+            RoomMessageRspDto chatMessage = objectMapper.readValue(publishedMessage, RoomMessageRspDto.class);
 
             // WebSocket 구독자에게 채팅 메시지 전송
             messagingTemplate.convertAndSend("/sub/chat/rooms/" + chatMessage.getMeetingRoomId(), chatMessage);
