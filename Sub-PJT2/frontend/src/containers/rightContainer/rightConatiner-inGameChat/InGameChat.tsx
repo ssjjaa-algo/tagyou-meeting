@@ -94,7 +94,7 @@ const RightContainer = () => {
       const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`);
       return socket;
     });
-    client.current.connect({ Authorization: token }, () => {
+    client.current.connect({ Auth: token }, () => {
       // 해당 방과 동기화(?)
       // roomSync();
       client.current!.subscribe(`/sub/chat/rooms/${roomId}`, (message) => {
