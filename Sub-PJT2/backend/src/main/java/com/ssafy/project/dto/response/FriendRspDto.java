@@ -9,7 +9,7 @@ import lombok.Getter;
 public class FriendRspDto {
     private Long targetId;
     private String targetName;
-//    private String mainImageUrl;
+    private String targetImageUrl;
     private FriendShipStatus friendShipStatus;
 
     public FriendRspDto(FriendShip friendShip) {
@@ -18,7 +18,7 @@ public class FriendRspDto {
 
         this.targetId = friendUser.getId();
         this.targetName = friendUser.getUserName();
-//        this.mainImageUrl = friendUser.getMainImage().getFilePath();
+        this.targetImageUrl = friendUser.getMainImage().getFilePath();
         this.friendShipStatus = friendShip.getFriendShipStatus();
     }
 }

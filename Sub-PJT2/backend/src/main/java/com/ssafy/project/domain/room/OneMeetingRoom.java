@@ -25,9 +25,9 @@ public class OneMeetingRoom extends MeetingRoom{
     @Builder
     public OneMeetingRoom(User newUser) {
         if(newUser.getUserGender().equals(Gender.MALE))
-            this.maleUser = newUser;
+            setMaleUser(newUser);
         if(newUser.getUserGender().equals(Gender.FEMALE))
-            this.femaleUser = newUser;
+            setFemaleUser(newUser);
     }
 
     // 연관관계 편의 메소드
