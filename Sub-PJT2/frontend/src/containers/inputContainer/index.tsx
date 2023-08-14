@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 const InputContainer = () => {
   const cookies = new Cookies();
   const [token, setToken] = useRecoilState(TokenValue);
-  const [isFirst, setIsFirst] = useState<Boolean>(true);
+  const [isFirst, setIsFirst] = useState<Boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(true);
 
   const movePage = () => {
