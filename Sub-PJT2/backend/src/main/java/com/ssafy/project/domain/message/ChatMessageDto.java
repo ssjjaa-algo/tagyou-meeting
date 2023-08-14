@@ -12,7 +12,7 @@ public class ChatMessageDto {
 
     private String content;
 
-    private String senderToken;
+    private String sender;
 
     @JsonProperty(value = "message_type")
     private MessageType messageType;
@@ -22,7 +22,7 @@ public class ChatMessageDto {
 
     public ChatMessageDto(ChatMessage message){
         this.content = message.getContent();
-        this.senderToken = message.getToken();
+        this.sender = message.getSender();
         this.messageType = message.getType();
         this.meetingRoomId = message.getMeetingRoom().getId();
     }
