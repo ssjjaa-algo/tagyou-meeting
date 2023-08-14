@@ -3,6 +3,7 @@ package com.ssafy.project.controller;
 import com.ssafy.project.dto.response.AreaGugunDto;
 import com.ssafy.project.dto.response.AreaSidoDto;
 import com.ssafy.project.service.AreaInfoService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/areas", produces = "application/json; charset=utf8")
+@Api(value = "유저 지역 API", tags = {"AreaInfo"})
 public class AreaInfoController {
     private final AreaInfoService areaInfoService;
 
