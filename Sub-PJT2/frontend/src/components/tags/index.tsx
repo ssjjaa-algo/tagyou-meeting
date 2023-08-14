@@ -4,6 +4,9 @@ import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import { TokenValue } from "atoms/atoms";
+import { string } from "prop-types";
+import axios from "axios";
+
 
 const Tags = () => {
   const isBrowser = typeof window !== 'undefined';
@@ -13,30 +16,7 @@ const Tags = () => {
   const token = useRecoilValue(TokenValue);
 
   useEffect(() => {
-    const $HashWrapOuter = document.querySelector('.HashWrapOuter')
-    const $HashWrapInner_before = document.createElement('div')
-    $HashWrapInner_before.className = 'HashWrapInner'
-    if (hashtag !== undefined) {
-      $HashWrapInner_before.innerHTML = '#' + hashtag
-      $HashWrapOuter?.appendChild($HashWrapInner_before)
-      let new_content = hashtag
-      // console.log(new_content+'ddd')
-
-
-      /* 태그를 클릭 이벤트 관련 로직 */
-      $HashWrapInner_before.addEventListener('click', () => {
-      $HashWrapOuter?.removeChild($HashWrapInner_before)
-      setHashArr(hashArr.filter((hashtag) => hashtag))
-      // let new_content = new_content.replace(data.hobby, 'ff')
-      // console.log(new_content)
-    })
-    }
-  }, [hashtag, hashArr])
-
-
-  useEffect(() => {
-		// console.log 찍는 코드 없애지 않고 둬서 디버깅 할 때 좋게합니다
-		console.log("hobby api 실행 전 token 확인", token)
+    // console.log("hobby api 실행 전 token 확인", token)
     const fetchHobbySrc = async () => {
       fetch(`${process.env.REACT_APP_BASE_URL}/profile/hobby`, {
         headers: {
@@ -44,12 +24,28 @@ const Tags = () => {
         },
       })
         .then((response) => response.json())
-        .then((res) => { for (let i = 0; i < res.length; i++) {
-          setHashArr([...hashArr], res[i]["hobby"]) }})
-        }
-    
+        .then((res) =>
+          { if (res['hobby'] === undefined) {
+
+          } else if (res['hobby'] === '') {
+            setHashArr([])
+          } else {
+            setHashArr(res['hobby'].split('/').filter((item: string) => item !== ''));
+          }})
+      }
     token && fetchHobbySrc();
   }, [token]);
+
+  // input 입력 시 hashtag 변경
+  const onChangeHashtag = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setHashtag(e.target.value);
+    },
+    []
+  );
+
+  // Enter 시 hashArr에 넣기, post 요청
+
 
   const onKeyUp = useCallback(
     (e:React.KeyboardEvent<HTMLInputElement>) => {
@@ -66,27 +62,61 @@ const Tags = () => {
         })
 
         /* enter 키 코드 :13 */
-        if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
-          $HashWrapInner.innerHTML = '#' + e.currentTarget.value
+        if (e.key === 'Enter' && hashtag.trim() !== '') {
+          console.log('Enter Key 입력됨!', hashtag)
+          $HashWrapInner.innerHTML = '#' + hashtag
           $HashWrapOuter?.appendChild($HashWrapInner)
-          
-          
-          // console.log('/' + e.currentTarget.value)
           setHashArr((hashArr) => [...hashArr, hashtag])
           setHashtag('')
-          /* '취미1/취미2/취미3' 의 형태로 content 변경해서 PUT 요청 보내기 */
         }
       }
     },
-    [hashArr]
+    [hashtag, hashArr]
   )
+
+
+  // onKeyUp = useCallback(
+  //   (e:React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (hashtag !== '') {
+  //     try {
+  //       await axios.post(
+  //         `${process.env.REACT_APP_BASE_URL}/profile/hobby`,
+  //         {
+  //           hobby: hashtag,
+  //         },
+  //         {
+  //           headers: {
+  //             Auth: token,
+  //           },
+  //         }
+  //       );
+  //       setHashArr((prevHashArr) => [...prevHashArr, hashtag]);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  // }
+  //   setHashtag('');
+  // }
   
-  const onChangeHashtag = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setHashtag(e.target.value);
-    },
-    []
-  );
+  // useEffect(() => {
+  //   const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+  //   const $HashWrapInner = document.createElement('div')
+  //   $HashWrapInner.className = 'HashWrapInner'
+
+  //   if (hashtag !== '') {
+  //     $HashWrapInner.innerHTML = '#' + hashtag
+  //     $HashWrapOuter?.appendChild($HashWrapInner)
+  //     setHashArr((prevHashArr) => [...prevHashArr, hashtag]);
+
+  //     /* 클릭 시 사라짐 */
+  //     $HashWrapInner.addEventListener('click', () => {
+  //     $HashWrapOuter?.removeChild($HashWrapInner)
+  //     setHashArr(hashArr.filter((hashtag) => hashtag))
+  //     // let new_content = new_content.replace(data.hobby, 'ff')
+  //     // console.log(new_content)
+  //   })
+  //   }
+  // }, [hashArr])
 
   return (
     <>
@@ -104,6 +134,6 @@ const Tags = () => {
       />
     </>
   );
-};
+}
   
 export default Tags;
