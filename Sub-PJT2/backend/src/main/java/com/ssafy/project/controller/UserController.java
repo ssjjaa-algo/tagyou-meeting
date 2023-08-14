@@ -1,6 +1,8 @@
 package com.ssafy.project.controller;
 
+import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
+import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.service.TokenService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -81,6 +84,28 @@ public class UserController {
     public ImageRspDto changeUserImg(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.editUserImage(id, file);
+    }
+
+    // ========================== 취미 ====================================
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/hobby")
+    public List<HobbyRspDto> getHobby(HttpServletRequest request) {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        return userService.getHobby(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/hobby")
+    public HobbyRspDto addHobby(HttpServletRequest request, @RequestBody HobbyReqDto hobbyReqDto) {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        return userService.addHobby(id, hobbyReqDto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/hobby")
+    public HobbyRspDto deleteHobby(HttpServletRequest request, @RequestBody HobbyReqDto hobbyReqDto) {
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        return userService.deleteHobby(id, hobbyReqDto);
     }
 
 }

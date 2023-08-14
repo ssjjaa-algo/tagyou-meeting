@@ -2,12 +2,10 @@ package com.ssafy.project.service;
 
 import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.User;
+import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
-import com.ssafy.project.dto.response.FirstLoginRspDto;
-import com.ssafy.project.dto.response.ImageRspDto;
-import com.ssafy.project.dto.response.UserInfoRspDto;
-import com.ssafy.project.dto.response.UserRspDto;
+import com.ssafy.project.dto.response.*;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -133,6 +133,29 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("이미지아이디에 해당하는 이미지가 없습니다."));
 
         return new ImageRspDto(img.getFilePath());
+    }
+
+    public List<HobbyRspDto> getHobby(Long uId) {
+        User u = findUser(uId)
+                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
+        if(u.getHobby() == null) return null;
+        return Arrays.stream(u.getHobby().split("/")).map(HobbyRspDto::new).toList();
+    }
+
+    @Transactional
+    public HobbyRspDto addHobby(Long uId, HobbyReqDto hobbyReqDto) {
+        User u = findUser(uId)
+                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
+        u.addHobby(hobbyReqDto.getHobby());
+        return new HobbyRspDto(u.getHobby());
+    }
+
+    @Transactional
+    public HobbyRspDto deleteHobby(Long uId, HobbyReqDto hobbyReqDto) {
+        User u = findUser(uId)
+                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
+        u.deleteHobby(hobbyReqDto.getHobby());
+        return new HobbyRspDto(u.getHobby());
     }
 
 
