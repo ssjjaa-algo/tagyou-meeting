@@ -10,14 +10,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends GenericFilterBean {
@@ -28,6 +34,7 @@ public class JwtAuthFilter extends GenericFilterBean {
         System.out.println(">>> JwtAuthFilter");
 
         String token = ((HttpServletRequest)request).getHeader("Auth");
+
         System.out.println(">>> token: "+token);
 
         if (token != null && tokenService.verifyToken(token, response)) {
