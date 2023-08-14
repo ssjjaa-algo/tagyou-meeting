@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,12 +28,13 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement((sessionManagement) ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                ).authorizeHttpRequests((authorizeRequests) ->
-                        authorizeRequests.anyRequest().permitAll()
-                );
+//        http.csrf(AbstractHttpConfigurer::disable)
+//                .sessionManagement((sessionManagement) ->
+//                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                ).authorizeHttpRequests((authorizeRequests) ->
+//                        authorizeRequests.anyRequest().permitAll()
+//                );
+
 //        http.httpBasic().disable()
 //                .csrf().disable()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -48,10 +50,32 @@ public class SecurityConfig {
 //                .addFilterBefore(new JwtAuthFilter(tokenService),
 //                        UsernamePasswordAuthenticationFilter.class)
 //                .addFilterBefore(exceptionHandlerFilter, JwtAuthFilter.class)
-//                .oauth2Login() // loginPage("http://localhost:3000/auth")
+//                .oauth2Login().loginPage("http://localhost:3000/home") // loginPage("http://localhost:3000/auth")
 //                .successHandler(successHandler)
 //                .userInfoEndpoint().userService(oAuth2UserService);
 //        http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+
+        http.httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+//                                .requestMatchers("/api/token/**", "/api/login/oauth2/kakao").permitAll()
+                                .requestMatchers("/swagger-resources/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll() // 스웨거 경로 허용
+                                .anyRequest().authenticated()
+                )
+                .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class) // CorsConfig를 먼저 실행하도록 변경
+                .addFilterBefore(new JwtAuthFilter(tokenService), CorsFilter.class) // JwtAuthFilter를 CorsFilter 뒤로 이동
+                .addFilterBefore(exceptionHandlerFilter, JwtAuthFilter.class)
+                .oauth2Login(oauth2Login ->
+                        oauth2Login
+//                                .loginPage("http://localhost:3000/home")
+                                .successHandler(successHandler)
+                                .userInfoEndpoint().userService(oAuth2UserService)
+                );
+
         return http.build();
     }
 
@@ -60,7 +84,10 @@ public class SecurityConfig {
         return web -> {
             web.ignoring()
                     .requestMatchers(
-                            "api/swagger-ui/**"
+                            "/swagger-ui/**",
+                            "/v2/api-docs",  "/configuration/ui",
+                            "/swagger-resources", "/configuration/security",
+                            "/swagger-ui.html", "/webjars/**","/swagger/**"
                     );
         };
     }
