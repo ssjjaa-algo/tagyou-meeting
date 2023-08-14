@@ -17,7 +17,7 @@ import imgDown from "asset/img/icons8-down-100.png";
 type Message = {
   content: string;
   message_type: string;
-  sender_token: string;
+  sender: string;
   meeting_room_id: number;
 };
 
@@ -142,7 +142,7 @@ const RightContainer = () => {
   const messageSending: Message = {
     content: message,
     message_type: "TALK",
-    sender_token: user,
+    sender: user,
     meeting_room_id: roomId,
   };
 
@@ -165,7 +165,7 @@ const RightContainer = () => {
 
   useEffect(() => {
     if (chatScreenRef.current) {
-      if (lastMessage?.sender_token === user || pullDown) {
+      if (lastMessage?.sender === user || pullDown) {
         lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
       } else if (!pullDown || chatScreenRef.current.scrollTop >= 0) {
         setNewMEssageNoticeStatus({ display: "flex" });
