@@ -85,7 +85,8 @@ public class ProfileController {
     // ========================== 취미 ====================================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/hobby")
-    public List<HobbyRspDto> getHobby(HttpServletRequest request) {
+//    public List<HobbyRspDto> getHobby(HttpServletRequest request) {
+    public HobbyRspDto getHobby(HttpServletRequest request) {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return profileService.getHobby(id);
     }

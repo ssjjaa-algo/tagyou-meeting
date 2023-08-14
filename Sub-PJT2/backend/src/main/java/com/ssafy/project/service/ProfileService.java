@@ -103,11 +103,13 @@ public class ProfileService {
     }
 
 
-    public List<HobbyRspDto> getHobby(Long uId) {
+//    public List<HobbyRspDto> getHobby(Long uId) {
+    public HobbyRspDto getHobby(Long uId) {
         Profile p = profileRepository.findByUserId(uId)
                 .orElseThrow(()->new NotFoundException("해당 유저아이디의 프로필이 존재하지 않습니다. "));
         if(p.getUserHobby() == null) return null;
-        return Arrays.stream(p.getUserHobby().split("/")).map(HobbyRspDto::new).toList();
+        return new HobbyRspDto(p.getUserHobby());
+//        return Arrays.stream(p.getUserHobby().split("/")).map(HobbyRspDto::new).toList();
     }
 
     @Transactional
