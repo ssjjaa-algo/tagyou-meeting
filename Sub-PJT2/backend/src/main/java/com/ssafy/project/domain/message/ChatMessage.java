@@ -1,6 +1,7 @@
 package com.ssafy.project.domain.message;
 
 import com.ssafy.project.domain.room.MeetingRoom;
+import com.ssafy.project.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,22 +19,20 @@ public class ChatMessage {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private MessageType type;
+    private MessageType messageType;
 
-    @Column(name = "is_read", nullable = false)
-    private boolean isRead = false;
-
-    @Column(nullable = false)
-    private String sender;
+    @JoinColumn(name = "sender_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User sender;
 
     @JoinColumn(name = "meeting_room_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private MeetingRoom meetingRoom;
 
     @Builder
-    public ChatMessage(String content, MessageType type, String sender, MeetingRoom meetingRoom) {
+    public ChatMessage(String content, MessageType messageType, User sender, MeetingRoom meetingRoom) {
         this.content = content;
-        this.type = type;
+        this.messageType = messageType;
         this.sender = sender;
         this.meetingRoom = meetingRoom;
     }

@@ -1,18 +1,16 @@
-package com.ssafy.project.domain.message;
+package com.ssafy.project.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.ssafy.project.domain.message.ChatMessage;
+import com.ssafy.project.domain.message.MessageType;
 import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ChatMessageDto {
+public class RoomMessageReqDto {
 
     private String content;
-
-    private String sender;
 
     @JsonProperty(value = "message_type")
     private MessageType messageType;
@@ -20,10 +18,9 @@ public class ChatMessageDto {
     @JsonProperty(value = "meeting_room_id")
     private Long meetingRoomId;
 
-    public ChatMessageDto(ChatMessage message){
+    public RoomMessageReqDto(ChatMessage message){
         this.content = message.getContent();
-        this.sender = message.getSender();
-        this.messageType = message.getType();
+        this.messageType = message.getMessageType();
         this.meetingRoomId = message.getMeetingRoom().getId();
     }
 }
