@@ -51,7 +51,7 @@ const LeftContainer = () => {
     };
     authToken && setToken(authToken);
     authToken && fetchProfile();
-  }, [authToken]);
+  }, []);
 
   useEffect(() => {
     token !== "" && console.log("left_container에서 확인한 recoilToken", token);
@@ -66,10 +66,15 @@ const LeftContainer = () => {
         },
       })
         .then((response) => response.json())
-        .then((res) => setImgSrc(res));
+        // .then((res) => console.log("res", res))z
+        .then((res) => console.log(setImgSrc(res.imageUrl)));
     };
     token && fetchImgSrc();
   }, [token]);
+
+  useEffect(() => {
+    console.log("imgSrc바뀜", imgSrc);
+  }, [imgSrc]);
 
   useEffect(() => {
     const rightContainer = document.querySelector(
