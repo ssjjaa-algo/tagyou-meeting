@@ -1,6 +1,7 @@
 package com.ssafy.project.controller;
 
 import com.ssafy.project.dto.request.UserInfoReqDto;
+import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
@@ -13,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/users", produces = "application/json; charset=utf8")
@@ -62,7 +62,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/image")
-    public String getMyImage(HttpServletRequest request) {
+    public ImageRspDto getMyImage(HttpServletRequest request) {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.getUserImage(id);
     }
@@ -78,7 +78,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/image")
-    public String changeUserImg(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+    public ImageRspDto changeUserImg(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         return userService.editUserImage(id, file);
     }
