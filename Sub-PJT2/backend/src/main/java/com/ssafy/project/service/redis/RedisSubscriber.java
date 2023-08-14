@@ -1,10 +1,9 @@
 package com.ssafy.project.service.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.project.domain.message.ChatMessagePayload;
+import com.ssafy.project.domain.message.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,7 +31,7 @@ public class RedisSubscriber implements MessageListener {
             String publishedMessage = redisTemplate.getStringSerializer().deserialize(message.getBody());
 
             // ChatMessage 객체로 매핑
-            ChatMessagePayload chatMessage = objectMapper.readValue(publishedMessage, ChatMessagePayload.class);
+            ChatMessageDto chatMessage = objectMapper.readValue(publishedMessage, ChatMessageDto.class);
 
             // WebSocket 구독자에게 채팅 메시지 전송
             messagingTemplate.convertAndSend("/sub/chat/rooms/" + chatMessage.getMeetingRoomId(), chatMessage);

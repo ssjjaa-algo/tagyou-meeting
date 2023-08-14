@@ -8,25 +8,21 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ChatMessagePayload {
+public class ChatMessageDto {
 
-    @NotBlank
     private String content;
 
-    @NotBlank
-    private String sender;
+    private String senderToken;
 
-    @NotBlank
     @JsonProperty(value = "message_type")
     private MessageType messageType;
 
-    @NotNull
     @JsonProperty(value = "meeting_room_id")
     private Long meetingRoomId;
 
-    public ChatMessagePayload(ChatMessage message){
+    public ChatMessageDto(ChatMessage message){
         this.content = message.getContent();
-        this.sender = message.getSender();
+        this.senderToken = message.getToken();
         this.messageType = message.getType();
         this.meetingRoomId = message.getMeetingRoom().getId();
     }

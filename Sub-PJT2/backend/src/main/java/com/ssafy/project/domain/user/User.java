@@ -71,4 +71,26 @@ public class User extends BaseTimeEntity {
     public void changeUserImg(Image img) {
         this.mainImage = img;
     }
+
+    public void quitMeetingGroup() {
+        this.meetingGroup = null;
+    }
+
+    public void quitRoom() {
+        this.meetingRoom = null;
+    }
+
+    // 연관관계 편의 메서드
+    public void setMeetingGroup(MeetingGroup meetingGroup) {
+        if(this.getMeetingGroup() != null){
+            this.getMeetingGroup().quitGroup(this);
+        }
+        this.meetingGroup = meetingGroup;
+        meetingGroup.getGroupUser().add(this);
+    }
+
+    public void setMeetingRoom(MeetingRoom meetingRoom) {
+        this.meetingRoom = meetingRoom;
+    }
+
 }

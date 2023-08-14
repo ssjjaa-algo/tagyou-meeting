@@ -31,18 +31,16 @@ public class Notice extends BaseTimeEntity implements Serializable {
     private String content;
 
     @Column(nullable = false, name = "notice_read_status")
-    private boolean read;
+    private boolean read = false;
 
     @Column(nullable = false, name = "notice_valid_status")
-    private boolean valid;
+    private boolean valid = true;
 
     @Builder
     public Notice(User user, NoticeType type, String content){
         this.user = user;
         this.type = type;
         this.content = content;
-        this.read = false;
-        this.valid = true;
     }
 
     public boolean isValid() {

@@ -1,6 +1,6 @@
 package com.ssafy.project.service;
 
-import com.ssafy.project.domain.message.ChatMessagePayload;
+import com.ssafy.project.domain.message.ChatMessageDto;
 import com.ssafy.project.repository.ChatMessageRepository;
 import com.ssafy.project.service.redis.RedisSubscriber;
 import jakarta.annotation.PostConstruct;
@@ -43,8 +43,8 @@ public class ChatService {
     /**
      *  해당 방의 전체 채팅 리스트를 가져옵니다.
      */
-    public List<ChatMessagePayload> getChatMessages(Long roomId) {
+    public List<ChatMessageDto> getChatMessages(Long roomId) {
         return chatMessageRepository.findAllByMeetingRoomId(roomId).orElseGet(() -> null)
-                .stream().map(ChatMessagePayload::new).toList();
+                .stream().map(ChatMessageDto::new).toList();
     }
 }

@@ -16,7 +16,7 @@ public class GroupRspDto {
     private Long groupId;
     private Gender groupGender;
 //    private List<UserRspDto> groupMembers;
-    private Queue<UserRspDto> groupUser;
+    private List<UserRspDto> groupUser;
 
     public GroupRspDto(MeetingGroup group) {
         this.groupId = group.getId();
