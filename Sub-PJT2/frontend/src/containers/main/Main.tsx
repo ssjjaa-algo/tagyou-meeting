@@ -7,20 +7,12 @@ import { darkTheme, lightTheme } from "../../styles/ColorSystem";
 import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer";
 import RightContainer from "../rightContainer";
-import TestImg from "../../asset/img/imgSrcTest.jpg";
 import Router from "../../Router";
-import { leftContainerProprs } from "types/types";
+
 import { BrowserRouter } from "react-router-dom";
 
 function Main() {
   const isDark = useRecoilValue(IsDark);
-
-  const leftContainerData: leftContainerProprs = {
-    imgSrc: TestImg,
-    name: "스티븐",
-    age: 32,
-  };
-
   const showSideBar = () => {
     const position = document.location.pathname;
     if (
@@ -41,13 +33,7 @@ function Main() {
       <BrowserRouter>
         <Container theme={isDark}>
           {/* {Router.caller.name} */}
-          {showSideBar() ? (
-            <LeftContainer
-              imgSrc={leftContainerData.imgSrc}
-              name={leftContainerData.name}
-              age={leftContainerData.age}
-            />
-          ) : null}
+          {showSideBar() ? <LeftContainer /> : null}
           <RightContainer>
             <Router />
           </RightContainer>

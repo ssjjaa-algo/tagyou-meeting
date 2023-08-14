@@ -1,4 +1,4 @@
-import { IsOpen } from "atoms/atoms";
+import { IsOpen, TokenValue } from "atoms/atoms";
 import Friend from "components/friend";
 import Drawer from "react-modern-drawer";
 import { useRecoilState } from "recoil";
@@ -13,22 +13,32 @@ const FriendContainer = () => {
   const [isOpen, setIsOpen] = useRecoilState(IsOpen);
   const [friendList, setFriendList] = useState<friendProps[]>();
   const [loading, setLoading] = useState(true);
-
+  const [token, setToken] = useRecoilState(TokenValue);
   const style: React.CSSProperties = {
     backgroundColor: theme.bg.deep,
   };
 
   useEffect(() => {
+    token !== "" && console.log("left_container에서 확인한 recoilToken", token);
+  }, [token]);
+
+  useEffect(() => {
     const fetchData = async () => {
-      fetch("friends/list")
+      console.log("친구목록에서 token확인", token);
+      fetch("http://localhost:9999/api/friends/list", {
+        headers: {
+          Auth: token,
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
+          console.log(data);
           setFriendList(data);
           setLoading(false);
         });
     };
-    fetchData();
-  }, []);
+    token && fetchData();
+  }, [token]);
 
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
@@ -45,7 +55,13 @@ const FriendContainer = () => {
       <S.Container>
         <S.Title theme={theme}>친구목록</S.Title>
         {friendList?.map((item: friendProps, idx: number) => (
-          <Friend id={item.id} name={item.name} src={item.src} key={idx} />
+          <Friend
+            friendShipStatus={item.friendShipStatus}
+            targetId={item.targetId}
+            targetName={item.targetName}
+            targetImg={item.targetImg}
+            key={idx}
+          />
         ))}
         {/* {showModal && NestedModal} */}
         <button>친구요청</button>

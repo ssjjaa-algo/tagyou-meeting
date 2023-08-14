@@ -7,18 +7,15 @@
   transition: all 1s;
 }
 
+
 .chatBoxShown {
+  /* border: solid green; */
   transition: all 0.7s;
 }
 .chatBoxHidden {
+  /* border: solid green; */
   margin-left: 50rem !important;
   transition: all 1s;
-}
-
-.grow {
-  /* background-color: black; */
-  background-color: #ff5563 !important;
-  cursor: pointer;
 }
 
 .chatRoom-main-input > input {
@@ -38,12 +35,3 @@
   box-shadow: 0px 0px 10px 5px #ff5664;
 }
 
-.button-send:hover {
-  cursor: pointer;
-  border: solid 0.1px pink;
-}
-.button-send:active {
-  background-color: #ff5563;
-  width: 2.7rem;
-  height: 2.3rem;
-}

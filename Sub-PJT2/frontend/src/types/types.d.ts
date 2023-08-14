@@ -1,4 +1,3 @@
-// user, profile 테이블 join 예정 -- 아래 type은 임시로 작성한 것임
 export type userProps = {
   userEmail: string;
   userName: string;
@@ -80,9 +79,10 @@ export type chatProps = {
 };
 
 export type friendProps = {
-  id: string;
-  name: string;
-  src: string;
+  friendShipStatus: "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";
+  targetId: Number;
+  targetName: string;
+  targetImg: string;
 };
 
 export type leftContainerProprs = {
