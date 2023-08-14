@@ -27,31 +27,31 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf(AbstractHttpConfigurer::disable)
-//                .sessionManagement((sessionManagement) ->
-//                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                ).authorizeHttpRequests((authorizeRequests) ->
-//                        authorizeRequests.anyRequest().permitAll()
-//                );
-        http.httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .requestMatchers("/api/token/**").permitAll()
-                .requestMatchers("/api/login/oauth2/kakao").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                ////
-                .addFilter(corsConfig.corsFilter())
-                ////
-                .addFilterBefore(new JwtAuthFilter(tokenService),
-                        UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(exceptionHandlerFilter, JwtAuthFilter.class)
-                .oauth2Login().loginPage("http://localhost:3000/home") // loginPage("http://localhost:3000/auth")
-                .successHandler(successHandler)
-                .userInfoEndpoint().userService(oAuth2UserService);
-        http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+        http.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((sessionManagement) ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                ).authorizeHttpRequests((authorizeRequests) ->
+                        authorizeRequests.anyRequest().permitAll()
+                );
+//        http.httpBasic().disable()
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .requestMatchers("/api/token/**").permitAll()
+//                .requestMatchers("/api/login/oauth2/kakao").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                ////
+//                .addFilter(corsConfig.corsFilter())
+//                ////
+//                .addFilterBefore(new JwtAuthFilter(tokenService),
+//                        UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(exceptionHandlerFilter, JwtAuthFilter.class)
+//                .oauth2Login() // loginPage("http://localhost:3000/auth")
+//                .successHandler(successHandler)
+//                .userInfoEndpoint().userService(oAuth2UserService);
+//        http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

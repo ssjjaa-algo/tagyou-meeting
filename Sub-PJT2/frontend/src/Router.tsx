@@ -30,8 +30,8 @@ const Router = () => {
       <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
       <Route path="/chatList" element={<ChatList />} />
       <Route path="/meeting" element={<Meeting />} />
-      <Route id="pnf" path="*" element={<PageNotFound />} />
       <Route path="/chatTest" element={<InGameChat />} />
+      <Route id="pnf" path="*" element={<PageNotFound />} />
     </Routes>
   );
 };
