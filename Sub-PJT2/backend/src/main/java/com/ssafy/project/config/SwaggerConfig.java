@@ -1,5 +1,6 @@
 package com.ssafy.project.config;
 
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -22,15 +23,14 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig extends WebMvcConfigurationSupport {
     @Bean
-    public Docket api() {
+    public Docket api(TypeResolver typeResolver) {
         return new Docket(DocumentationType.OAS_30)
-                .useDefaultResponseMessages(false)
+                .useDefaultResponseMessages(true)
                 .apiInfo(getApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ssafy.project"))
                 .paths(PathSelectors.any())
                 .build()
-                .pathMapping("/api/") //  base URL 설정
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()));
     }
