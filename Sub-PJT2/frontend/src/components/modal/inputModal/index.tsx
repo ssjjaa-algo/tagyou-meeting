@@ -2,8 +2,6 @@ import * as S from "./index.styled";
 import logoImg from "../../../asset/img/logo/2.png";
 import Datepicker from "components/datepicker";
 import SelectBox from "components/selectbox";
-import { useState } from "react";
-import { profileProps, userProps } from "types/types";
 import { ProfileInfo, TokenValue, UserInfo } from "atoms/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -32,7 +30,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
 
   const putProfile = async () => {
     console.log("putProfile", token, profileInfo);
-    fetch("http://localhost:9999/api/profile", {
+    fetch(`${process.env.REACT_APP_BASE_URL}/profile`, {
       method: "PUT",
       headers: {
         Auth: token,
@@ -51,7 +49,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
 
   const putUsers = async () => {
     console.log("putUsers", token, userInfo);
-    fetch("http://localhost:9999/api/users/mypage", {
+    fetch(`${process.env.REACT_APP_BASE_URL}/users/mypage`, {
       method: "PUT",
       headers: {
         Auth: token,
@@ -68,7 +66,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
   const handleOnClick = async () => {
     await putProfile();
     await putUsers();
-    window.location.href = "http://localhost:3000/mypage";
+    window.location.href = "/mypage";
   };
 
   return (

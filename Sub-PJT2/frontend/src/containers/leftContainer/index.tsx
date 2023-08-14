@@ -29,6 +29,9 @@ const LeftContainer = () => {
   const [authToken, setAuthToken] = useState<string>("");
   const [imgSrc, setImgSrc] = useRecoilState<string>(ProfileImgSrc);
   const [showMatching, setShowMatching] = useState<boolean>(false);
+  useEffect(() => {
+    console.log("leftcontainer");
+  }, []);
 
   useEffect(() => {
     setAuthToken(cookies.get("Auth"));
@@ -37,7 +40,7 @@ const LeftContainer = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       console.log("left_container에서 받는 localToken", authToken);
-      fetch("http://localhost:9999/api/users/mypage", {
+      fetch(`${process.env.REACT_APP_BASE_URL}/users/mypage`, {
         headers: {
           Auth: authToken,
         },
@@ -57,7 +60,7 @@ const LeftContainer = () => {
   useEffect(() => {
     const fetchImgSrc = async () => {
       console.log("프로필 이미지 받기 전 토큰 확인", token);
-      fetch("http://localhost:9999/api/users/image", {
+      fetch(`${process.env.REACT_APP_BASE_URL}/users/image`, {
         headers: {
           Auth: token,
         },
@@ -67,7 +70,6 @@ const LeftContainer = () => {
     };
     token && fetchImgSrc();
   }, [token]);
- 
 
   useEffect(() => {
     const rightContainer = document.querySelector(
@@ -155,9 +157,9 @@ const LeftContainer = () => {
               }}
             />{" "}
             <S.ListText
-          onClick={() => {
-            setShowMatching(true);
-          }}
+              onClick={() => {
+                setShowMatching(true);
+              }}
             >
               미팅 시작
             </S.ListText>
@@ -188,9 +190,6 @@ const LeftContainer = () => {
           setShowMatching={setShowMatching}
         />
       )}
-
-
-
     </>
   );
 };
