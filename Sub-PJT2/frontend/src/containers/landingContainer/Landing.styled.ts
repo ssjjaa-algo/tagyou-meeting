@@ -8,6 +8,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
+  width: 100vw;
   column-gap: 30px;
 `;
 
@@ -44,7 +45,7 @@ const upAni = keyframes`
 export const Img = styled.img`
   display: inline-block;
   position: absolute;
-  top: 20px;
-  left: 980px;
+  top: 30px;
+  left: 1200px;
   animation: ${upAni} 1s ease;
 `;
