@@ -66,7 +66,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
   const handleOnClick = async () => {
     await putProfile();
     await putUsers();
-    window.location.href = "/mypage";
+    // window.location.href = "/home";
   };
 
   return (

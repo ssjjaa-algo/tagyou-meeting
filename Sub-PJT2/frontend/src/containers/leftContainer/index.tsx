@@ -3,13 +3,12 @@ import { useTheme } from "@mui/material";
 import { useRecoilState } from "recoil";
 import {
   IsDark,
-  IsOpen,
+  ProfileInfo,
   ProfileImgSrc,
   TokenValue,
   UserInfo,
 } from "../../atoms/atoms";
 import * as S from "./LeftContainer.styled";
-import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Profile from "components/profile";
 import { useEffect, useState } from "react";
@@ -23,6 +22,7 @@ const LeftContainer = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const cookies = new Cookies();
   const [userInfo, setUserInfo] = useRecoilState(UserInfo);
+  const [profileInfo, setProfileInfo] = useRecoilState(ProfileInfo);
   const [authToken, setAuthToken] = useState<string>("");
   const [imgSrc, setImgSrc] = useRecoilState<string>(ProfileImgSrc);
   const [showMatching, setShowMatching] = useState<boolean>(false);
@@ -44,8 +44,21 @@ const LeftContainer = () => {
         },
       })
         .then((response) => response.json())
-        .then((res) => setUserInfo(res))
-        .then(() => console.log("userInfo", userInfo));
+        .then((res) => setUserInfo(res));
+    };
+    authToken && setToken(authToken);
+    authToken && fetchProfile();
+  }, [authToken]);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      fetch(`${process.env.REACT_APP_BASE_URL}/profile`, {
+        headers: {
+          Auth: authToken,
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => setProfileInfo(res));
     };
     authToken && setToken(authToken);
     authToken && fetchProfile();
