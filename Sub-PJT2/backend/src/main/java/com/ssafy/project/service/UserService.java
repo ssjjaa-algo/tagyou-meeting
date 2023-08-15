@@ -3,6 +3,7 @@ package com.ssafy.project.service;
 import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.HobbyReqDto;
+import com.ssafy.project.dto.request.UserProfileReqDto;
 import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
 import com.ssafy.project.dto.response.*;
@@ -135,5 +136,11 @@ public class UserService {
         return new ImageRspDto(img.getFilePath());
     }
 
+    @Transactional
+    public void editUserName(Long uId, UserProfileReqDto userProfileReqDto) {
+        User u = findUser(uId)
+                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
+        u.changeUserName(userProfileReqDto.getUserName());
+    }
 }
 

@@ -27,7 +27,7 @@ public class User extends BaseTimeEntity {
 //    @Column//(nullable = false)
 //    private String userPassword;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String userName;
 
     @Column//(nullable = false)
@@ -91,5 +91,9 @@ public class User extends BaseTimeEntity {
 
     public void setMeetingRoom(MeetingRoom meetingRoom) {
         this.meetingRoom = meetingRoom;
+    }
+
+    public void changeUserName(String userName) {
+        this.userName = userName;
     }
 }
