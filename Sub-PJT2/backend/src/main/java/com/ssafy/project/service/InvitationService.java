@@ -17,7 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class InvitationService {
-    private final UserRepository userRepository;
     private final InvitationRepository invitationRepository;
 
     /**
@@ -61,6 +60,5 @@ public class InvitationService {
     public MeetingGroupInvitation saveInvitation(MeetingGroupInvitation invitation){
         return invitationRepository.save(invitation);
     }
-
 
 }

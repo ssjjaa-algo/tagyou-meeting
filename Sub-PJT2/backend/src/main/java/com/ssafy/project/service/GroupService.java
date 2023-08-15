@@ -26,7 +26,7 @@ import java.util.Optional;
 @Transactional
 public class GroupService {
     private final GroupRepository groupRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final NoticeService noticeService;
     private final InvitationService invitationService;
 
@@ -34,7 +34,7 @@ public class GroupService {
      * 그룹 생성
      */
     public GroupRspDto createGroup(Long userId){
-        User user = findUser(userId)
+        User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 만들 유저가 존재하지 않습니다."));
 
         MeetingGroup meetingGroup = MeetingGroup.builder()
@@ -53,9 +53,9 @@ public class GroupService {
         // 동일한 유저인지 체크
         checkEqualUser(userId, groupReqDto.getTargetUserId());
 
-        User targetUser = findUser(groupReqDto.getTargetUserId())
+        User targetUser = userService.findUser(groupReqDto.getTargetUserId())
                 .orElseThrow(() -> new NotFoundException("그룹에 초대할 해당 유저가 존재하지 않습니다."));
-        User sendUser = findUser(userId)
+        User sendUser = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 초대할 유저가 존재하지 않습니다."));
 
         return findMeetingGroup(groupReqDto.getGroupId())
@@ -81,7 +81,7 @@ public class GroupService {
      * 그룹원 수락
      */
     public GroupRspDto acceptGroup(Long userId, Long groupId){
-        User user = findUser(userId)
+        User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹에 수락할 유저가 존재하지 않습니다."));
 
         return findMeetingGroup(groupId)
@@ -101,7 +101,7 @@ public class GroupService {
      * 그룹원 거절
      */
     public GroupRspDto rejectGroup(Long userId, Long groupId){
-        User user = findUser(userId)
+        User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹에 수락할 유저가 존재하지 않습니다."));
 
         return findMeetingGroup(groupId)
@@ -120,7 +120,7 @@ public class GroupService {
      * 그룹 탈퇴
      */
     public GroupRspDto LeaveGroup(Long userId, Long groupId){
-        User user = userRepository.findById(userId)
+        User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 탈퇴할 유저가 존재하지 않습니다."));
 
         return findMeetingGroup(groupId)
@@ -161,10 +161,6 @@ public class GroupService {
 
     private Optional<MeetingGroup> findMeetingGroup(Long groupId){
         return Optional.ofNullable(groupId).flatMap(groupRepository::findById);
-    }
-
-    private Optional<User> findUser(Long userId){
-        return Optional.ofNullable(userId).flatMap(userRepository::findById);
     }
 
 }

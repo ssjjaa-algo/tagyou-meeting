@@ -51,13 +51,13 @@ public class RoomController {
         return roomService.endOneMeetRoom(roomId);
     }
 
-//    // ====================== 그룹 미팅방 입장 ============================
-//    @PostMapping
-//    @RequestMapping("/groups")
-//    public OneRoomRspDto createGroupMeetRoom(HttpServletRequest request) {
-//        Long userId = tokenService.parseUId(request.getHeader("Auth"));
-//        return roomService.enterOneMeetRoom(userId);
-//    }
+    // ====================== 그룹 미팅방 입장 ============================
+    @PostMapping
+    @RequestMapping("/groups")
+    public OneRoomRspDto createGroupMeetRoom(HttpServletRequest request) {
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return roomService.enterGroupMeetRoom(userId);
+    }
 //
 //    // ====================== 그룹 미팅방 시작 ============================
 //    @ResponseStatus(HttpStatus.OK)
@@ -68,5 +68,5 @@ public class RoomController {
 //        chatService.enterMeetRoom(meetingRoom.getId());
 //        return meetingRoom;
 //    }
-//
+
 }

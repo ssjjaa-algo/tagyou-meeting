@@ -26,6 +26,7 @@ public class RoomService {
     private final GroupRoomRepository groupRepository;
     private final ChatService chatService;
     private final UserService userService;
+    private final GroupService groupService;
     private final WebRtcService webRtcService;
 
     /**
@@ -119,15 +120,20 @@ public class RoomService {
     }
 
     /**
-     * 그룹 미팅방 개설 확인
+     * 그룹 미팅방 입장
      */
+    public OneRoomRspDto enterGroupMeetRoom(Long userId) {
+        User user = userService.findUser(userId)
+                .orElseThrow(() -> new NotFoundException("방에 들어가는 유저의 정보가 조회되지 않습니다."));
 
+        return groupRepository.
+    }
 
 
 
 
     private Optional<OneMeetingRoom> findOneMeetRoom(Long roomId) {
-        return oneRepository.findById(roomId);
+        return Optional.ofNullable(roomId).flatMap(oneRepository::findById);
     }
     private OneMeetingRoom saveOneMeetRoom(OneMeetingRoom oneMeetingRoom) {
         return oneRepository.save(oneMeetingRoom);

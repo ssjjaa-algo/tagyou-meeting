@@ -20,14 +20,14 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 @Transactional
 public class NoticeService {
-    private final UserRepository userRepository;
     private final NoticeRepository noticeRepository;
+    private final UserService userService;
 
     /**
      * 공지 추가
      */
     public NoticeRspDto insertNotice(NoticeReqDto noticeReqDto){
-        return userRepository.findById(noticeReqDto.getUserId())
+        return userService.findUser(noticeReqDto.getUserId())
                 .map(user -> saveNotice(noticeReqDto.toEntity(user))
                         .map(NoticeRspDto::new)
                         .orElseThrow(()-> new IllegalStateException("맞지 않는 형식입니다.")))
