@@ -21,8 +21,8 @@ public class RoomController {
     private final ChatService chatService;
 
     // ====================== 일대일 미팅방 입장 ============================
-    @PostMapping
-    @RequestMapping("/one")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(path = "/one")
     public OneRoomRspDto enterOneMeetRoom(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return roomService.enterOneMeetRoom(userId);
@@ -44,12 +44,12 @@ public class RoomController {
         return roomService.startOneMeetRoom(roomId);
     }
 
-    // ====================== 일대일 미팅방 종료 ============================
-//    @ResponseStatus(HttpStatus.OK)
-//    @DeleteMapping(path = "/one/{roomId}")
-//    public OneRoomRspDto endOneMeetRoom(@PathVariable Long roomId) {
-//        return roomService.endOneMeetRoom(roomId);
-//    }
+//     ====================== 일대일 미팅방 종료 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(path = "/one/{roomId}")
+    public OneRoomRspDto endOneMeetRoom(@PathVariable Long roomId) {
+        return roomService.endOneMeetRoom(roomId);
+    }
 
 //    // ====================== 그룹 미팅방 입장 ============================
 //    @PostMapping

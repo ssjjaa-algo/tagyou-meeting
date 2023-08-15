@@ -33,11 +33,13 @@ public class OneMeetingRoom extends MeetingRoom{
     // 연관관계 편의 메소드
     public void setMaleUser(User user){
         this.maleUser = user;
-        user.setMeetingRoom(this);
+        if(user != null)
+            user.setMeetingRoom(this);
     }
     public void setFemaleUser(User user){
         this.femaleUser = user;
-        user.setMeetingRoom(this);
+        if(user != null)
+            user.setMeetingRoom(this);
     }
 
 }
