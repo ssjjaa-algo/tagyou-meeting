@@ -31,8 +31,8 @@ public abstract class MeetingRoom extends BaseTimeEntity implements Serializable
 
     private String sessionId;
 
-    public void changeStatus(){
-        this.status = MeetingRoomStatus.ACTIVE;
+    public void changeStatus(MeetingRoomStatus status){
+        this.status = status;
     }
 
     public void setSessionId(String sessionId){
