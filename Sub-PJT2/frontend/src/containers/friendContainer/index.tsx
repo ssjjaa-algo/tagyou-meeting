@@ -1,6 +1,5 @@
 import { IsDark, IsOpen, TokenValue } from "atoms/atoms";
 import Friend from "components/friend";
-import Drawer from "react-modern-drawer";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as S from "./friendContainer.styled";
 import { themeProps } from "@emotion/react";
