@@ -4,6 +4,7 @@ import com.ssafy.project.dto.response.OneRoomRspDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.RoomService;
 import com.ssafy.project.service.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/rooms", produces = "application/json; charset=utf8")
+@Tag(name = "방 room", description = "meeting room 관련 API")
 public class RoomController {
 
     private final TokenService tokenService;
