@@ -31,6 +31,12 @@ export const FriendContainer = styled.div`
   margin-bottom: 20px;
 `;
 
+export const Tmp = styled.span`
+  font-weight: light;
+  font-size: 12px;
+  color: #efefef;
+`;
+
 export const OtherFriendContainer = styled(FriendContainer)`
   height: 100px;
   overflow-y: auto;

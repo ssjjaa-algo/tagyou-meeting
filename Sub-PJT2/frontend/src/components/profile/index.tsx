@@ -1,9 +1,10 @@
 import * as S from "./Profile.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
+import React from "react";
 import { leftContainerProprs } from "types/types";
 
-const Profile = ({ imgSrc, name, age }: leftContainerProprs) => {
+const Profile = React.memo(({ imgSrc, name, age }: leftContainerProprs) => {
   const theme: themeProps = useTheme();
   return (
     <S.Profile>
@@ -18,6 +19,6 @@ const Profile = ({ imgSrc, name, age }: leftContainerProprs) => {
       </S.ProfileText>
     </S.Profile>
   );
-};
+});
 
 export default Profile;
