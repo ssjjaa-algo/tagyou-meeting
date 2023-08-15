@@ -216,5 +216,9 @@ public class FriendShipService {
                 .filter(noticeList -> !noticeList.isEmpty());
     }
 
-
+    @Transactional
+    public void rejectFriendShip(Long userId, Long otherId) {
+        friendShipRepository.deleteByUserIdAndTargetUserId(userId, otherId);
+        friendShipRepository.deleteByUserIdAndTargetUserId(otherId, userId);
+    }
 }
