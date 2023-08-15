@@ -60,14 +60,16 @@ export const LogoImg = styled.img`
 export const RequestBtn = styled.button`
   width: 280px;
   height: 40px;
-  background-color: #f2f2f2;
+  background-color: #f43f5e;
   position: absolute;
   border-radius: 10px;
   top: 200px;
   left: 60px;
+  color: white;
+  cursor: pointer;
   & {
     :hover {
-      background-color: silver;
+      background-color: #f75873;
     }
   }
 `;

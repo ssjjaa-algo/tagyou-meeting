@@ -3,6 +3,7 @@ package com.ssafy.project.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.project.domain.message.ChatMessage;
 import com.ssafy.project.domain.message.MessageType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 

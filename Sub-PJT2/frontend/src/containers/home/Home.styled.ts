@@ -1,54 +1,78 @@
 import styled from "@emotion/styled";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { themeProps } from "@emotion/react";
-import { getThemeProps } from "@mui/system";
 
 export const Container = styled.div`
-  /* border: solid yellow 3px; */
-  justify-items: center;
-  margin: 5rem 0 0 5rem;
-  width: calc(100% - 10rem);
+  width: 100%;
   height: 100%;
+  display: flex;
+  vertical-align: center;
+`;
+
+export const T = styled.svg`
+  margin-left: auto;
+  margin-right: 20px;
+`;
+
+export const TitleImg = styled.div`
+  position: absolute;
+  font-size: 30px;
+  top: -10px;
 `;
 
 export const ProfileContainer = styled.div`
+  width: 70%;
+  display: flex;
+  border-radius: 5px;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+`;
+
+export const Img = styled.img`
+  width: 50%;
+`;
+export const Insta = styled.div`
+  border-top: 1px solid rgb(239, 239, 239);
+  min-height: 30px;
+`;
+
+export const SVG = styled.svg`
+  margin: 10px;
+`;
+
+export const Sec = styled.div`
+  display: inline-block;
+  width: 87%;
+`;
+
+export const SContainer = styled.div`
   display: flex;
   /* margin-right: 150px; */
   max-width: 40vw;
   padding-bottom: 50px;
-  align-items: center;
 `;
 
 export const OtherContainer = styled.div`
   padding-bottom: 50px;
-  align-items: center;
 `;
 
 export const InnerContent = styled.div`
   display: flex;
-  align-items: center;
+  margin-top: 10px;
+  margin-left: 20px;
+  border-bottom: 1px solid rgb(239, 239, 239);
+`;
+
+export const Contents = styled.div`
+  margin-top: 10px;
+  margin-left: 20px;
 `;
 
 export const LeftContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
-`;
-export const RightContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-top: 13px;
-`;
-
-export const ProfileImg = styled.img`
-  border-radius: 100px;
-  object-fit: cover;
-  display: block;
-  min-width: 200px;
-  min-height: 200px;
-  padding: 20px;
+  width: inherit;
+  height: inherit;
+  border-bottom: 1px solid rgb(239, 239, 239);
 `;
 
 export const FavoriteIconStyled = styled(FavoriteIcon)<{
@@ -57,6 +81,9 @@ export const FavoriteIconStyled = styled(FavoriteIcon)<{
   color: #ff9993;
 `;
 
+export const IMG = styled.img`
+  margin: 10px;
+`;
 export const Title = styled.text<{ theme: themeProps }>`
   color: ${(props) => props.theme.point.deep};
   font-size: 25px;
@@ -65,10 +92,21 @@ export const Title = styled.text<{ theme: themeProps }>`
 `;
 
 export const miniTitle = styled.text<{ theme: themeProps }>`
+  color: #262625;
+  font-size: 18px;
+  padding-bottom: 15px;
+`;
+
+export const SubText = styled.div<{ theme: themeProps }>`
   color: ${(props) => props.theme.font.mid};
-  font-size: 17px;
+  font-size: 16px;
+  padding-bottom: 15px;
+`;
+
+export const Strong = styled.strong`
+  color: #404040;
+  font-size: 16px;
   font-weight: bold;
-  text-align: center;
   padding-bottom: 15px;
 `;
 
@@ -82,7 +120,50 @@ export const Wall = styled.div<{ theme: themeProps }>`
 `;
 
 export const likeCount = styled.div`
-  color: #ff9993;
-  font-size: 17px;
+  color: #f43f5e;
+  font-size: 18px;
   font-weight: bold;
+`;
+
+export const Dat = styled.div`
+  display: inline-block;
+  background-color: red;
+  line-height: 5px;
+`;
+
+export const TTmp = styled.div`
+  position: relative;
+  height: 45px;
+  line-height: 45px;
+`;
+
+export const Tmp = styled.img`
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-indent: -1000px;
+  overflow: hidden;
+`;
+
+export const InstaIn = styled.div`
+  margin: 0px 10px 0px 10px;
+`;
+
+export const TTTmp = styled.svg`
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  text-indent: -1000px;
+  overflow: hidden;
+`;
+
+export const Temp = styled.span`
+  padding: 0 0 0 55px;
+  font-size: 14px;
 `;

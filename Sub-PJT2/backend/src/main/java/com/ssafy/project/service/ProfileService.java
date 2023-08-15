@@ -5,6 +5,7 @@ import com.ssafy.project.domain.user.Profile;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.ProfileReqDto;
+import com.ssafy.project.dto.request.UserProfileReqDto;
 import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.exception.NotFoundException;
@@ -60,13 +61,15 @@ public class ProfileService {
 
     @Transactional
     public Profile editProfile(Long userId, ProfileReqDto profileReqDto) {
-        Profile p = profileRepository.findByUserId(userId).orElse(null);
-        if(p == null) return null;
+        Profile p = profileRepository.findByUserId(userId).orElseThrow(()-> new NotFoundException("해당 유저아이디에 대한 프로필 없음"));
         p.updateProfile(profileReqDto);
         return p;
-//        return profileRepository.findByUserId(userId)
-//                .ifPresent(p -> p.updateProfile(profileReqDto))
-//                .orElseThrow(()->new NotFoundException("해당 유저아이디의 프로필이 존재하지 않습니다. "));
+    }
+
+    @Transactional
+    public void editProfile(Long userId, UserProfileReqDto userProfileReqDto) {
+        Profile p = profileRepository.findByUserId(userId).orElseThrow(()-> new NotFoundException("해당 유저아이디에 대한 프로필 없음"));
+        p.updateProfile(userProfileReqDto);
     }
 
     @Transactional
@@ -102,8 +105,8 @@ public class ProfileService {
         imageService.deleteImage(imgId);
     }
 
-
 //    public List<HobbyRspDto> getHobby(Long uId) {
+
     public HobbyRspDto getHobby(Long uId) {
         Profile p = profileRepository.findByUserId(uId)
                 .orElseThrow(()->new NotFoundException("해당 유저아이디의 프로필이 존재하지 않습니다. "));
@@ -127,5 +130,4 @@ public class ProfileService {
         p.deleteHobby(hobbyReqDto.getHobby());
         return new HobbyRspDto(p.getUserHobby());
     }
-
 }

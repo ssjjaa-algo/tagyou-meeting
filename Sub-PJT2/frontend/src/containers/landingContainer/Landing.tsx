@@ -1,8 +1,6 @@
 import * as S from "./Landing.styled";
-import { Link } from "react-router-dom";
 import Landing from "components/landing";
 import tmpLogo from "../../asset/img/logo/2.png";
-import { useState } from "react";
 
 const LandingContainer = () => {
   return (

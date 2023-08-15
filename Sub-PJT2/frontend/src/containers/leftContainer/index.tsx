@@ -3,29 +3,25 @@ import { useTheme } from "@mui/material";
 import { useRecoilState } from "recoil";
 import {
   IsDark,
-  IsOpen,
+  ProfileInfo,
   ProfileImgSrc,
   TokenValue,
   UserInfo,
 } from "../../atoms/atoms";
 import * as S from "./LeftContainer.styled";
-import Drawer from "react-modern-drawer";
-import "react-modern-drawer/dist/index.css";
 import Profile from "components/profile";
-import FriendContainer from "containers/friendContainer";
 import { useEffect, useState } from "react";
 import { Modal } from "components/modal";
 import { Cookies } from "react-cookie";
 import { Matching } from "components/matching";
 
 const LeftContainer = () => {
-  const [isOpen, setIsOpen] = useRecoilState(IsOpen);
   const [isDark, setIsDark] = useRecoilState(IsDark);
   const [token, setToken] = useRecoilState(TokenValue);
-  const [isLogout, setIsLogout] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const cookies = new Cookies();
   const [userInfo, setUserInfo] = useRecoilState(UserInfo);
+  const [profileInfo, setProfileInfo] = useRecoilState(ProfileInfo);
   const [authToken, setAuthToken] = useState<string>("");
   const [imgSrc, setImgSrc] = useRecoilState<string>(ProfileImgSrc);
   const [showMatching, setShowMatching] = useState<boolean>(false);
@@ -47,8 +43,21 @@ const LeftContainer = () => {
         },
       })
         .then((response) => response.json())
-        .then((res) => setUserInfo(res))
-        .then(() => console.log("userInfo", userInfo));
+        .then((res) => setUserInfo(res));
+    };
+    authToken && setToken(authToken);
+    authToken && fetchProfile();
+  }, [authToken]);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      fetch(`${process.env.REACT_APP_BASE_URL}/profile`, {
+        headers: {
+          Auth: authToken,
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => setProfileInfo(res));
     };
     authToken && setToken(authToken);
     authToken && fetchProfile();
@@ -76,45 +85,11 @@ const LeftContainer = () => {
     console.log("imgSrc바뀜", imgSrc);
   }, [imgSrc]);
 
-  useEffect(() => {
-    const rightContainer = document.querySelector(
-      ".right_container"
-    ) as HTMLElement;
-    if (rightContainer instanceof Element) {
-      rightContainer.style.width = isOpen
-        ? "calc(100vw - 500px)"
-        : "calc(100%)";
-    }
-  }, [isOpen]);
-
-  const toggleDrawer = () => {
-    setIsOpen((prevState) => !prevState);
-  };
-
   const theme: themeProps = useTheme();
-
-  const style: React.CSSProperties = {
-    backgroundColor: `${theme.bg.deep}`,
-  };
 
   return (
     <>
-      {!isOpen && (
-        <S.HiddenSection theme={theme} onClick={toggleDrawer}>
-          {isOpen ? (
-            <S.ArrowBackIosIconStyled theme={theme} />
-          ) : (
-            <S.ArrowForwardIosIconStyled theme={theme} />
-          )}
-        </S.HiddenSection>
-      )}
-      <Drawer
-        open={isOpen}
-        onClose={toggleDrawer}
-        direction="left"
-        overlayOpacity={0}
-        style={style}
-      >
+      <S.Container theme={theme}>
         <S.BtnBox>
           <button onClick={() => setIsDark((cur) => !cur)}>
             {isDark ? (
@@ -123,13 +98,6 @@ const LeftContainer = () => {
               <S.DarkModeIconStyled theme={theme} />
             )}
           </button>
-          <S.ArrowBtn onClick={() => setIsOpen((cur) => !cur)}>
-            {isOpen ? (
-              <S.ArrowBackIosIconStyled theme={theme} />
-            ) : (
-              <S.ArrowForwardIosIconStyled theme={theme} />
-            )}
-          </S.ArrowBtn>
         </S.BtnBox>
 
         <Profile
@@ -145,30 +113,26 @@ const LeftContainer = () => {
               window.location.href = "/home";
             }}
           >
-            <S.HomeIconStyled theme={theme} />
-            <S.ListText>홈</S.ListText>
+            <S.ListText>
+              <S.Tmp>🏡</S.Tmp> H O M E
+            </S.ListText>
           </S.List>
           <S.List
             theme={theme}
             onClick={() => (window.location.href = "/mypage")}
           >
-            <S.GroupIconStyled theme={theme} />
-            <S.ListText>내 정보</S.ListText>
+            <S.ListText>
+              <S.Tmp>🏝️</S.Tmp> M Y P A G E
+            </S.ListText>
           </S.List>
 
           <S.List theme={theme}>
-            <S.PlayCircleOutlineIconStyled
-              theme={theme}
-              onClick={() => {
-                setShowMatching(true);
-              }}
-            />{" "}
             <S.ListText
               onClick={() => {
                 setShowMatching(true);
               }}
             >
-              미팅 시작
+              <S.Tmp>👨‍❤️‍👨</S.Tmp> M E E T I N G
             </S.ListText>
           </S.List>
         </S.ListBox>
@@ -177,13 +141,11 @@ const LeftContainer = () => {
           theme={theme}
           onClick={() => {
             setShowModal(true);
-            setIsLogout(true);
           }}
         >
-          로그아웃
+          LOGOUT
         </S.FootBox>
-      </Drawer>
-      <FriendContainer />
+      </S.Container>
 
       {showModal && (
         <Modal

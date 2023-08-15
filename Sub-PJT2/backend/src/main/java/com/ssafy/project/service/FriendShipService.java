@@ -25,9 +25,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FriendShipService {
     private final FriendShipRepository friendShipRepository;
+    private final UserRepository userRepository;
     private final NoticeRepository noticeRepository;
     private final NoticeService noticeService;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     /**
      * 친구 요청
@@ -37,10 +38,10 @@ public class FriendShipService {
         checkEqualUser(userId, targetUserId);
 
         // 유효한 유저인지 체크
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("현재 유효하지 않은 유저입니다."));
+        User user = userService.findUser(userId).orElseThrow(() -> new NotFoundException("현재 유효하지 않은 유저입니다."));
 
         // 유효한 친구인지 체크
-        User targetUser = userRepository.findById(targetUserId).orElseThrow(() -> new NotFoundException("해당하는 친구 유저를 찾을 수 없습니다."));
+        User targetUser = userService.findUser(targetUserId).orElseThrow(() -> new NotFoundException("해당하는 친구 유저를 찾을 수 없습니다."));
 
         findFriendShip(userId, targetUserId)
                 .ifPresent(friendShip -> {
@@ -138,42 +139,45 @@ public class FriendShipService {
      * 친구 리스트 조회
      */
     public List<FriendRspDto> findFriendShips(Long userId) {
-        List<FriendShip> friendShips = findFriendShipsByUserId(userId)
+        return
+                findFriendShipsByUserId(userId)
+                        .map(fList -> fList.stream()
+                                .map(FriendRspDto::new)
+                                .toList()
+                        )
                 .orElseGet(ArrayList::new);
 
-        return friendShips.stream()
-                .filter(friendShip -> friendShip.getFriendShipStatus().equals(FriendShipStatus.FRIEND))
-                .map(FriendRspDto::new)
-                .toList();
+//        return friendShips.stream()
+//                .filter(friendShip -> friendShip.getFriendShipStatus().equals(FriendShipStatus.FRIEND))
+//                .map(FriendRspDto::new)
+//                .toList();
     }
 
     /**
      * 사용자 검색
      */
     // 아직 완벽하지 않음
-    public List<FriendRspDto> findUsers(Long userId, String word, FriendShipStatus status) {
+    public List<FriendRspDto> findUsers(Long userId, String word) {
 
-        User user = userRepository.findById(userId)
+        User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("현재 유효하지 않은 유저입니다."));
 
+//        List<FriendRspDto> friendRspDtoList =
+//                findFriendShipsByUserId(userId).map(fList -> fList.stream()
+////                                .filter(friendShip -> friendShip.getFriendShipStatus().equals(status))
+//                                .map(FriendRspDto::new)
+//                                .collect(Collectors.toList()))
+//                        .orElseGet(ArrayList::new);
+
         List<FriendRspDto> friendRspDtoList =
-                findFriendShipsByUserId(userId).map(fList -> fList.stream()
-                                .filter(friendShip -> friendShip.getFriendShipStatus().equals(status))
-                                .map(FriendRspDto::new)
-                                .collect(Collectors.toList()))
-                        .orElseGet(ArrayList::new);
-
-        // status 가 있을 때 없을 때 구분이 필요함
-
-        friendRspDtoList.addAll(
-                findUsersByKeyWord(word)
+                userService.findUsersByKeyWord(word)
                         .map(targetUsers -> targetUsers.stream()
                                 .map(targetUser ->{
                                     FriendShip friendShip = findFriendShip(userId, targetUser.getId())
-                                            .orElseGet(() -> new FriendShip(user, targetUser, FriendShipStatus.NONE));
+                                            .orElseGet(() -> new FriendShip(user, targetUser, null));
                                     return new FriendRspDto(friendShip);
                                 }).collect(Collectors.toList())
-                        ).orElseGet(ArrayList::new));
+                        ).orElseGet(ArrayList::new);
 
         return friendRspDtoList.stream()
                 .filter(friendRspDto -> !friendRspDto.getTargetId().equals(userId))
@@ -212,9 +216,5 @@ public class FriendShipService {
                 .filter(noticeList -> !noticeList.isEmpty());
     }
 
-    private Optional<List<User>> findUsersByKeyWord(String keyword) {
-        return Optional.ofNullable(userRepository.findBysearchKeyword(keyword))
-                .filter(users -> users.isPresent() && !users.get().isEmpty())
-                .orElseGet(Optional::empty);
-    }
+
 }

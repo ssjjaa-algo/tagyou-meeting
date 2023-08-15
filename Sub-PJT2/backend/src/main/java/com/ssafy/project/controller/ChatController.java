@@ -4,6 +4,7 @@ import com.ssafy.project.dto.request.RoomMessageReqDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.redis.RedisPublisher;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/chat")
+@Tag(name = "채팅", description = "chat message 테이블 관련 API")
 public class ChatController {
 
     private final RedisPublisher redisPublisher;
@@ -33,10 +35,10 @@ public class ChatController {
     public void sendMessage(HttpServletRequest request, RoomMessageReqDto message) {
         System.out.println("열로 메시지가 와야됨");
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        log.info("발행 시작은 되는 건가요?");
         String topic = message.getMeetingRoomId().toString();
         redisPublisher.publish(ChannelTopic.of(topic), userId, message);
     }
-
 
     // ====================== 채팅 메시지 가져오기 ============================
     @ResponseStatus(HttpStatus.OK)

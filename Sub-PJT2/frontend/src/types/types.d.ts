@@ -1,3 +1,5 @@
+import internal from "stream";
+
 export type userProps = {
   userEmail: string;
   userName: string;
@@ -17,22 +19,6 @@ export type profileProps = {
   content: string;
 };
 
-export type UserData = {
-  // users 테이블
-  // userId: BigInt;
-  // createdDate: Date;
-  // lastUsedDate: Date;
-  phoneNumber: string;
-  // roleType: string;
-  userAge: Int;
-  userEmail: string;
-  userGender: string;
-  userLike: Int;
-  userName: string;
-  // userImageId: BigInt;
-  // groupId: BigInt;
-};
-
 export type testUserData = {
   profileImage: string;
   name: string;
@@ -43,19 +29,12 @@ export type testUserData = {
   mbti: string;
 };
 
-export type ProfileData = {
-  // profile 테이블
-  // userProfileId: BigInt;
-  // createdDate: Date;
-  // lastUsedDate: Date;
-  userSido: string;
-  userGugun: string;
-  userJob: string;
-  userHobby: string;
-  userMbti: string;
-  content: string;
-  // userId: BigInt;
-};
+export type roomProps = {
+  roomType: string;
+  roomId: number;
+  sessionId: string;
+  status: string;
+}
 
 export type Message = {
   // meeting_room_message 테이블
@@ -79,10 +58,10 @@ export type chatProps = {
 };
 
 export type friendProps = {
-  friendShipStatus: "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";
+  friendShipStatus: "REQUESTED" | "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";
   targetId: Number;
   targetName: string;
-  targetImg: string;
+  targetImageUrl: string;
 };
 
 export type leftContainerProprs = {

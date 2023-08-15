@@ -4,6 +4,7 @@ import com.ssafy.project.domain.friend.FriendShipStatus;
 import com.ssafy.project.dto.response.FriendRspDto;
 import com.ssafy.project.service.FriendShipService;
 import com.ssafy.project.service.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value="/friends", produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
+@Tag(name = "친구", description = "friend ship 관련 API")
 public class FriendShipController {
 
     private final FriendShipService friendShipService;
@@ -34,12 +36,12 @@ public class FriendShipController {
     public FriendRspDto acceptFriend(HttpServletRequest request,
                                      @RequestParam Long targetId){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return friendShipService.requestFriendShip(userId, targetId);
+        return friendShipService.acceptFriendShip(userId, targetId);
     }
 
     // ====================== 친구 리스트 ============================
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/list")
+    @GetMapping("/list") // none, block 빼고 다 가져오기
     public List<FriendRspDto> friendsList(HttpServletRequest request){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return friendShipService.findFriendShips(userId);
@@ -56,12 +58,12 @@ public class FriendShipController {
 
     // ====================== 사용자 검색 ============================
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/search")
+    @GetMapping("/search") // block 빼고 다
     public List<FriendRspDto> findUsers(HttpServletRequest request,
-                                        @RequestParam(required = false) String keyword,
-                                        @RequestParam(required = false) FriendShipStatus status){
+                                        @RequestParam(required = false) String keyword/*,
+                                        @RequestParam(required = false) FriendShipStatus status*/){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return friendShipService.findUsers(userId, keyword, status);
+        return friendShipService.findUsers(userId, keyword/*, status*/);
     }
 
 }

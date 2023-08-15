@@ -27,7 +27,7 @@ public class User extends BaseTimeEntity {
 //    @Column//(nullable = false)
 //    private String userPassword;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String userName;
 
     @Column//(nullable = false)
@@ -54,7 +54,7 @@ public class User extends BaseTimeEntity {
     private MeetingGroup meetingGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "meeting_room_id")
     private MeetingRoom meetingRoom;
 
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐
@@ -91,5 +91,9 @@ public class User extends BaseTimeEntity {
 
     public void setMeetingRoom(MeetingRoom meetingRoom) {
         this.meetingRoom = meetingRoom;
+    }
+
+    public void changeUserName(String userName) {
+        this.userName = userName;
     }
 }

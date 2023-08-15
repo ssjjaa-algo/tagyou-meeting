@@ -1,8 +1,6 @@
-import { update } from "@react-spring/web";
-import { useEffect } from "react";
 import { atom, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { userProps, profileProps } from "types/types";
+import { userProps, profileProps, friendProps, roomProps } from "types/types";
 
 const { persistAtom } = recoilPersist();
 
@@ -10,6 +8,35 @@ export const IsDark = atom<boolean>({
   key: "IsDark",
   default: false,
   effects_UNSTABLE: [persistAtom],
+});
+
+export const FriendList = atom<friendProps[]>({
+  key: "FriendList",
+  default: [],
+});
+
+export const NomalFriendList = selector({
+  key: "NomalFriendList",
+  get: ({ get }) => {
+    const friendList = get(FriendList);
+    return friendList.filter((item) => item.friendShipStatus === "FRIEND");
+  },
+});
+
+export const ReceivedFriendList = selector({
+  key: "ReceivedFriendList",
+  get: ({ get }) => {
+    const friendList = get(FriendList);
+    return friendList.filter((item) => item.friendShipStatus === "RECEIVED");
+  },
+});
+
+export const RequestFriendList = selector({
+  key: "RequestFriendList",
+  get: ({ get }) => {
+    const friendList = get(FriendList);
+    return friendList.filter((item) => item.friendShipStatus === "REQUESTED");
+  },
 });
 
 export const IsOpen = atom<boolean>({
@@ -56,6 +83,16 @@ export const ProfileInfo = atom<profileProps>({
     userHobby: "",
     userMbti: "",
     content: "",
+  },
+});
+
+export const RoomInfo = atom<roomProps>({
+  key: "RoomInfo",
+  default: {
+    roomType: "",
+    roomId: 0,
+    sessionId: "",
+    status: "",
   },
 });
 
