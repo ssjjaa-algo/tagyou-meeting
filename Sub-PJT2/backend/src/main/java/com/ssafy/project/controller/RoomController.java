@@ -1,5 +1,6 @@
 package com.ssafy.project.controller;
 
+import com.ssafy.project.domain.room.OneMeetingRoom;
 import com.ssafy.project.dto.response.OneRoomRspDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.RoomService;
@@ -26,15 +27,14 @@ public class RoomController {
     public OneRoomRspDto enterOneMeetRoom(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return roomService.enterOneMeetRoom(userId);
-//        return roomService.createOneMeetRoom(userId);
     }
 
     // ====================== 일대일 미팅방 나가기 ============================
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(path = "/one/quit")
-    public OneRoomRspDto quitOneMeetRoom(HttpServletRequest request, @RequestParam Long roomId) {
+    public OneRoomRspDto quitOneMeetRoom(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return roomService.quitOneMeetRoom(userId, roomId);
+        return roomService.quitOneMeetRoom(userId);
     }
 
     // ====================== 일대일 미팅방 시작 ============================
@@ -52,13 +52,13 @@ public class RoomController {
     }
 
     // ====================== 그룹 미팅방 입장 ============================
-    @PostMapping
-    @RequestMapping("/groups")
-    public OneRoomRspDto createGroupMeetRoom(HttpServletRequest request) {
-        Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return roomService.enterGroupMeetRoom(userId);
-    }
-//
+//    @PostMapping
+//    @RequestMapping("/groups")
+//    public OneRoomRspDto createGroupMeetRoom(HttpServletRequest request, Long groupId) {
+//        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+//        return roomService.enterGroupMeetRoom(userId, groupId);
+//    }
+////
 //    // ====================== 그룹 미팅방 시작 ============================
 //    @ResponseStatus(HttpStatus.OK)
 //    @GetMapping(path = "/groups/{roomId}")

@@ -159,7 +159,7 @@ public class GroupService {
         return groupRepository.save(meetingGroup);
     }
 
-    private Optional<MeetingGroup> findMeetingGroup(Long groupId){
+    public Optional<MeetingGroup> findMeetingGroup(Long groupId){
         return Optional.ofNullable(groupId).flatMap(groupRepository::findById);
     }
 

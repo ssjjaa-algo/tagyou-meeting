@@ -61,7 +61,7 @@ public class NoticeService {
         .orElseGet(ArrayList::new);
     }
 
-    public Optional<Notice> saveNotice(Notice notice){
+    private Optional<Notice> saveNotice(Notice notice){
         return Optional.of(noticeRepository.save(notice));
     }
 }

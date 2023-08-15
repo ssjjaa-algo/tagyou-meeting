@@ -132,7 +132,7 @@ public class UserService {
         return findUserByEmail(email).isPresent();
     }
 
-    public Optional<User> saveUser(User user){ return Optional.of(userRepository.save(user));}
+    private Optional<User> saveUser(User user){ return Optional.of(userRepository.save(user));}
 
     public Optional<User> findUser(Long userId){
         return Optional.ofNullable(userId).flatMap(userRepository::findById);
