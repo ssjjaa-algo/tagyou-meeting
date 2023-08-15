@@ -17,7 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class InvitationService {
-    private final UserRepository userRepository;
     private final InvitationRepository invitationRepository;
 
     /**
@@ -28,7 +27,7 @@ public class InvitationService {
                 .user(user)
                 .group(group)
                 .build();
-        invitationRepository.save(invitation);
+        saveInvitation(invitation);
     }
     /**
      * 그룹 요청 수락
@@ -58,9 +57,8 @@ public class InvitationService {
         return invitationRepository.findByUserIdAndGroupId(userId, groupId);
     }
 
-    public MeetingGroupInvitation saveInvitation(MeetingGroupInvitation invitation){
+    private MeetingGroupInvitation saveInvitation(MeetingGroupInvitation invitation){
         return invitationRepository.save(invitation);
     }
-
 
 }

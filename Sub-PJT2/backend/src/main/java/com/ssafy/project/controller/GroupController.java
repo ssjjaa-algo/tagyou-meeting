@@ -6,6 +6,7 @@ import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.service.GroupService;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value="/groups", produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
+@Tag(name = "그룹", description = "meeting group 관련 API")
 public class GroupController {
 
     private final GroupService groupService;

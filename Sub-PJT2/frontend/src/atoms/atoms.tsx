@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { userProps, profileProps, friendProps } from "types/types";
+import { userProps, profileProps, friendProps, roomProps } from "types/types";
 
 const { persistAtom } = recoilPersist();
 
@@ -83,6 +83,16 @@ export const ProfileInfo = atom<profileProps>({
     userHobby: "",
     userMbti: "",
     content: "",
+  },
+});
+
+export const RoomInfo = atom<roomProps>({
+  key: "RoomInfo",
+  default: {
+    roomType: "",
+    roomId: 0,
+    sessionId: "",
+    status: "",
   },
 });
 

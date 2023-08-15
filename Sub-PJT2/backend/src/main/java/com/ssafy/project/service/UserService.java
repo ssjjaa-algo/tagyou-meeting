@@ -27,7 +27,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final ImageService imageService;
 
-
     /**
      * 회원 가입
      */
@@ -71,20 +70,6 @@ public class UserService {
         return findUser(userId)
                 .map(UserInfoRspDto::new)
                 .orElseThrow(() -> new NotFoundException("해당하는 유저가 없습니다."));
-    }
-
-    public boolean checkUserExists(String email){
-        return findUserByEmail(email).isPresent();
-    }
-
-    public Optional<User> saveUser(User user){ return Optional.of(userRepository.save(user));}
-
-    public Optional<User> findUser(Long userId){
-        return userRepository.findById(userId);
-    }
-
-    public Optional<User> findUserByEmail(String email){
-        return userRepository.findByUserEmail(email);
     }
 
     @Transactional
@@ -141,6 +126,26 @@ public class UserService {
         User u = findUser(uId)
                 .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
         u.changeUserName(userProfileReqDto.getUserName());
+    }
+
+    public boolean checkUserExists(String email){
+        return findUserByEmail(email).isPresent();
+    }
+
+    private Optional<User> saveUser(User user){ return Optional.of(userRepository.save(user));}
+
+    public Optional<User> findUser(Long userId){
+        return Optional.ofNullable(userId).flatMap(userRepository::findById);
+    }
+
+    public Optional<User> findUserByEmail(String email){
+        return Optional.ofNullable(email).flatMap(userRepository::findByUserEmail);
+    }
+
+    public Optional<List<User>> findUsersByKeyWord(String keyword) {
+        return Optional.ofNullable(userRepository.findBysearchKeyword(keyword))
+                .filter(users -> users.isPresent() && !users.get().isEmpty())
+                .orElseGet(Optional::empty);
     }
 }
 
