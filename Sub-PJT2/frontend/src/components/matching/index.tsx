@@ -3,7 +3,6 @@ import { useTheme } from "@mui/material";
 import * as S from "./matching.styled";
 import './index.css'
 import { useEffect, useState } from "react";
-import axios from 'axios';
 import { useRecoilState } from "recoil";
 import { TokenValue } from "atoms/atoms";
 import { Cookies } from "react-cookie";
@@ -14,37 +13,43 @@ type MatchingProps = {
 };
 
 export const Matching = ({
-  handleOnClick,
+  // handleOnClick,
   setShowMatching,
 }: MatchingProps) => {
   const handleCloseMatching = () => {
     setShowMatching(false);
   };
   const theme: themeProps = useTheme();
+  const [roomId, setRoomId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const cookies = new Cookies();
   const [token, setToken] = useRecoilState(TokenValue);
   
-  useEffect(() => {
-    setToken(cookies.get("Auth"));
-  }, [cookies.get("Auth")]);
-
-  const handleFirstClick = async () => {
-    try {
-      const response = await axios.post('http://localhost:9999/api/rooms/one', {
+  const handleFirstClick = async() => {
+    setIsLoading(true);
+    const postOneRoom = async () => {
+      fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one`, {
+        method: "POST",
         headers: {
           Auth: token,
-        }
+          "Content-Type": "application/json",
+        },
       })
-        console.log('POST 요청 성공:', response.data);
-        setIsLoading(false);
-    } catch (error) {
-      // 요청이 실패했을 때의 동작을 추가합니다.
-      console.error('POST 요청 실패:', error);
-      setIsLoading(false);
-    }
+        .then((response)=> response.json())
+        .then((res)=> {
+          let roomId = res.roomId
+          fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
+            method: "POST",
+            headers: {
+              Auth: token,
+              "Content-Type": "application/json",
+            }}
+          )
+          .then((res) => window.location.href = `/meeting/${roomId}`)
+      })
+    };
+    postOneRoom();
   };
-
 
   const handleSecondClick = async () => {
     setIsLoading(true);

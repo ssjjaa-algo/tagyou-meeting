@@ -2,7 +2,7 @@ import { update } from "@react-spring/web";
 import { useEffect } from "react";
 import { atom, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { userProps, profileProps } from "types/types";
+import { userProps, profileProps, roomProps } from "types/types";
 
 const { persistAtom } = recoilPersist();
 
@@ -56,6 +56,16 @@ export const ProfileInfo = atom<profileProps>({
     userHobby: "",
     userMbti: "",
     content: "",
+  },
+});
+
+export const RoomInfo = atom<roomProps>({
+  key: "RoomInfo",
+  default: {
+    roomType: "",
+    roomId: 0,
+    sessionId: "",
+    status: "",
   },
 });
 
