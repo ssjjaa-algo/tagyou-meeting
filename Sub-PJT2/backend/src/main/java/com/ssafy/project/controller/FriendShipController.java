@@ -39,12 +39,28 @@ public class FriendShipController {
         return friendShipService.requestFriendShip(userId, targetId);
     }
 
+    // ====================== 친구 요청 리스트 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/request/list")
+    public List<FriendRspDto> friendsRequestList(HttpServletRequest request){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return friendShipService.findFriendShipsByStauts(userId, FriendShipStatus.REQUESTED);
+    }
+
+    // ====================== 친구 수신 리스트 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/receive/list")
+    public List<FriendRspDto> friendsReceivedList(HttpServletRequest request){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return friendShipService.findFriendShipsByStauts(userId, FriendShipStatus.RECEIVED);
+    }
+
     // ====================== 친구 리스트 ============================
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/list")
+    @GetMapping("/accept/list")
     public List<FriendRspDto> friendsList(HttpServletRequest request){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return friendShipService.findFriendShips(userId);
+        return friendShipService.findFriendShipsByStauts(userId, FriendShipStatus.FRIEND);
     }
 
     // ====================== 친구 차단 ============================
