@@ -32,28 +32,27 @@ public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
     public ResponseEntity<?> getProfile(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         Profile profile = profileService.getProfileByUId(userId);
-        if(profile == null)
-            return ResponseEntity.ok().body("does not exist");
-        else return ResponseEntity.ok().body(new ProfileRspDto(profile));
+        return ResponseEntity.ok().body(new ProfileRspDto(profile));
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getFriendProfile(HttpServletRequest request, @PathVariable Long userId) {
+    public ProfileRspDto getFriendProfile(HttpServletRequest request, @PathVariable Long userId) {
         Profile profile = profileService.getProfileByUId(userId);
-        if(profile == null)
-            return ResponseEntity.ok().body("does not exist");
-        else return ResponseEntity.ok().body(new ProfileRspDto(profile));
+        return new ProfileRspDto(profile);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("")
-    public ResponseEntity<?> makeProfile(HttpServletRequest request, @RequestBody ProfileReqDto profileReqDto) {
+    public ProfileRspDto makeProfile(HttpServletRequest request, @RequestBody ProfileReqDto profileReqDto) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         Profile profile = profileService.makeProfile(userId, profileReqDto);
-            return new ResponseEntity<>(new ProfileRspDto(profile), HttpStatus.CREATED);
+        return new ProfileRspDto(profile);
     }
 
     @ResponseStatus(HttpStatus.OK)
