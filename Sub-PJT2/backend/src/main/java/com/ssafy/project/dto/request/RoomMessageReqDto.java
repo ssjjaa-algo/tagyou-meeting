@@ -5,9 +5,11 @@ import com.ssafy.project.domain.message.ChatMessage;
 import com.ssafy.project.domain.message.MessageType;
 import lombok.*;
 
+
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@Builder
 public class RoomMessageReqDto {
 
     private String content;

@@ -38,7 +38,7 @@ type Room = {
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const [roomId, setRoomId] = useState<number>(1);
+  const [roomId, setRoomId] = useState<number>(15);
   const [items, setItems] = useState<ReceivingMessage[]>([]);
   const [lastMessage, setLastMessage] = useState<ReceivingMessage>();
   const [message, setMessage] = useState("");
@@ -59,7 +59,7 @@ const RightContainer = () => {
   // 방번호 조회
   const getRoomId = async () => {
     console.log("roomId 확인 전 발급된 토큰 확인: " + token);
-    fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/1`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
       method: "POST",
       headers: {
         Auth: token,
@@ -68,7 +68,7 @@ const RightContainer = () => {
       .then((res) => res.json())
       .then((data: Room) => {
         console.log(data);
-        setRoomId(1);
+        // setRoomId(1);
       });
   };
 
@@ -107,7 +107,7 @@ const RightContainer = () => {
         (message) => {
           addItem(JSON.parse(message.body));
         },
-        { Auth: token }
+        { Auth: token, RoomId: roomId+"" }
       );
       // const enteringRoomMessage: SendingMessage = {
       //   content: "님이 입장하셨습니다.",
