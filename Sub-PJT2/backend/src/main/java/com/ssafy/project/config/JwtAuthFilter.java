@@ -47,12 +47,23 @@ public class JwtAuthFilter extends GenericFilterBean {
             Authentication auth = getAuthentication(userReqDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
+        else if(isSwaggerRequest((HttpServletRequest) request)) {
+            UserReqDto userReqDto = new UserReqDto(0L, "email", "이름");
+            Authentication auth = getAuthentication(userReqDto);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+
         chain.doFilter(request, response);
     }
 
     public Authentication getAuthentication(UserReqDto member) {
         return new UsernamePasswordAuthenticationToken(member, "",
                 Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+    }
+
+    private boolean isSwaggerRequest(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        return uri.contains("swagger") || uri.contains("api-docs") || uri.contains("webjars");
     }
 
 }

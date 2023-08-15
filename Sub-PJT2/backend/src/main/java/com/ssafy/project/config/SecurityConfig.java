@@ -38,8 +38,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/swagger-resources/**").permitAll()
-                                .requestMatchers("/swagger-ui/**").permitAll() // 스웨거 경로 허용
+//                                .requestMatchers("/swagger-resources/**").permitAll()
+//                                .requestMatchers("/swagger-ui/**").permitAll() // 스웨거 경로 허용
                                 .requestMatchers("/ws/**").permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -105,6 +105,7 @@ public class SecurityConfig {
             web.ignoring()
                     .requestMatchers(
                             "/swagger-ui/**",
+                            "v1/**",
                             "/v2/api-docs",  "/configuration/ui",
                             "/swagger-resources/**", "/configuration/security",
                             "/swagger-ui.html", "/webjars/**","/swagger/**"
