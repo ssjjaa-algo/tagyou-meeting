@@ -9,6 +9,11 @@ export const Container = styled.div`
   vertical-align: center;
 `;
 
+export const T = styled.svg`
+  margin-left: auto;
+  margin-right: 20px;
+`;
+
 export const TitleImg = styled.div`
   position: absolute;
   font-size: 30px;
