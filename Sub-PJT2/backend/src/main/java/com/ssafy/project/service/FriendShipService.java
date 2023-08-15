@@ -137,12 +137,12 @@ public class FriendShipService {
     /**
      * 친구 리스트 조회
      */
-    public List<FriendRspDto> findFriendShipsByStauts(Long userId, FriendShipStatus status){
+    public List<FriendRspDto> findFriendShipsByStauts(Long userId){
         List<FriendShip> friendShips = findFriendShipsByUserId(userId)
                 .orElseGet(ArrayList::new);
 
         return friendShips.stream()
-                .filter(friendShip -> friendShip.getFriendShipStatus().equals(status))
+                .filter(friendShip -> friendShip.getFriendShipStatus().equals(FriendShipStatus.FRIEND))
                 .map(FriendRspDto::new)
                 .toList();
     }
