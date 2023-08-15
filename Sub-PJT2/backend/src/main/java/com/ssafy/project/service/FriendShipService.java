@@ -137,14 +137,19 @@ public class FriendShipService {
     /**
      * 친구 리스트 조회
      */
-    public List<FriendRspDto> findFriendShipsByStauts(Long userId){
-        List<FriendShip> friendShips = findFriendShipsByUserId(userId)
+    public List<FriendRspDto> findFriendShips(Long userId) {
+        return
+                findFriendShipsByUserId(userId)
+                        .map(fList -> fList.stream()
+                                .map(FriendRspDto::new)
+                                .toList()
+                        )
                 .orElseGet(ArrayList::new);
 
-        return friendShips.stream()
-                .filter(friendShip -> friendShip.getFriendShipStatus().equals(FriendShipStatus.FRIEND))
-                .map(FriendRspDto::new)
-                .toList();
+//        return friendShips.stream()
+//                .filter(friendShip -> friendShip.getFriendShipStatus().equals(FriendShipStatus.FRIEND))
+//                .map(FriendRspDto::new)
+//                .toList();
     }
 
     /**
@@ -155,6 +160,13 @@ public class FriendShipService {
 
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("현재 유효하지 않은 유저입니다."));
+
+//        List<FriendRspDto> friendRspDtoList =
+//                findFriendShipsByUserId(userId).map(fList -> fList.stream()
+////                                .filter(friendShip -> friendShip.getFriendShipStatus().equals(status))
+//                                .map(FriendRspDto::new)
+//                                .collect(Collectors.toList()))
+//                        .orElseGet(ArrayList::new);
 
         List<FriendRspDto> friendRspDtoList =
                 findUsersByKeyWord(word)
