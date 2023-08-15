@@ -7,7 +7,7 @@ import {
   TokenValue,
 } from "atoms/atoms";
 import Friend from "components/friend";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import * as S from "./friendContainer.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
@@ -21,7 +21,7 @@ const FriendContainer = () => {
   const token = useRecoilValue(TokenValue);
   const [showModal, setShowModal] = useState<boolean>();
   const isDark = useRecoilValue(IsDark);
-  const [friendListAtom, setFriendListAtom] = useRecoilState(FriendList);
+  const setFriendListAtom = useSetRecoilState(FriendList);
   const nomalFriendList = useRecoilValue(NomalFriendList);
   const receivedFriendList = useRecoilValue(ReceivedFriendList);
   const requestFriendList = useRecoilValue(RequestFriendList);
@@ -34,21 +34,46 @@ const FriendContainer = () => {
     marginTop: "10px",
   };
 
+  const fetchReceived = (targetId: number) => {
+    console.log("fetchReceived token확인", token);
+    fetch(`${process.env.REACT_APP_BASE_URL}/friends/accept`, {
+      method: "POST",
+      headers: {
+        Auth: token,
+      },
+      body: JSON.stringify({ targetId: targetId }),
+    }).then(() => fetchData(token));
+  };
+
+  const fetchRejected = (targetId: number) => {
+    console.log("fetchRejected token확인", token);
+    fetch(`${process.env.REACT_APP_BASE_URL}/friends/reject`, {
+      method: "POST",
+      headers: {
+        Auth: token,
+      },
+      body: JSON.stringify({ targetId: targetId }),
+    }).then(() => fetchData(token));
+  };
+
+  const fetchData = (token: string) => {
+    console.log("친구목록에서 token확인", token);
+    fetch(`${process.env.REACT_APP_BASE_URL}/friends/list`, {
+      headers: {
+        Auth: token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("친구 목록", data);
+        setFriendListAtom(data);
+      });
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      console.log("친구목록에서 token확인", token);
-      fetch(`${process.env.REACT_APP_BASE_URL}/friends/list`, {
-        headers: {
-          Auth: token,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("친구 목록", data);
-          setFriendListAtom(data);
-        });
-    };
-    token && fetchData();
+    if (token) {
+      fetchData(token);
+    }
   }, [token]);
 
   return (
@@ -77,7 +102,7 @@ const FriendContainer = () => {
           </S.FriendContainer>
 
           <S.SubTitle theme={theme}>
-            대기된 친구{" "}
+            대기된 친구
             <S.StyledBadge theme={theme} count={requestFriendList.length} />
             <S.Des theme={theme}>친구 신청을 대기중이에요 😶</S.Des>
           </S.SubTitle>
@@ -90,6 +115,8 @@ const FriendContainer = () => {
                   targetName={item.targetName}
                   targetImageUrl={item.targetImageUrl}
                   key={idx}
+                  handleAccecpt={() => fetchReceived(item.targetId)}
+                  handleReject={() => fetchRejected(item.targetId)}
                 />
               ))
             ) : (
@@ -102,13 +129,13 @@ const FriendContainer = () => {
           </S.OtherFriendContainer>
 
           <S.SubTitle theme={theme}>
-            요청온 친구{" "}
-            <S.StyledBadge theme={theme} count={requestFriendList.length} />
+            요청온 친구
+            <S.StyledBadge theme={theme} count={receivedFriendList.length} />
           </S.SubTitle>
           <S.Des theme={theme}>친구 요청이 들어왔어요 🤩</S.Des>
           <S.OtherFriendContainer>
-            {requestFriendList.length > 0 ? (
-              requestFriendList?.map((item: friendProps, idx: number) => (
+            {receivedFriendList.length > 0 ? (
+              receivedFriendList?.map((item: friendProps, idx: number) => (
                 <Friend
                   friendShipStatus={item.friendShipStatus}
                   targetId={item.targetId}
