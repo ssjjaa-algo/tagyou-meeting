@@ -29,7 +29,7 @@ const Router = () => {
       <Route path="/openvidu" element={<Openvidu />} />
       <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
       <Route path="/chatList" element={<ChatList />} />
-      <Route path="/meeti ng" element={<Meeting />} />
+      <Route path="/meeting/:roomId" element={<Meeting />} />
       <Route path="/chatTest" element={<InGameChat />} />
       <Route id="pnf" path="*" element={<PageNotFound />} />
     </Routes>
