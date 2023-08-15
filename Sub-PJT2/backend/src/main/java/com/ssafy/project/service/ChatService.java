@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class ChatService {
 
@@ -26,13 +27,6 @@ public class ChatService {
     private final RedisMessageListenerContainer redisMessageListenerContainer;  // 채팅방(Topic)에 발행되는 메시지를 처리할 Listener(Subscriber)
     private final ChatMessageRepository chatMessageRepository;
 
-    @Autowired
-    public ChatService(RedisSubscriber redisSubscriber, RedisMessageListenerContainer redisMessageListenerContainer,
-                       ChatMessageRepository chatMessageRepository) {
-        this.redisSubscriber = redisSubscriber;
-        this.redisMessageListenerContainer = redisMessageListenerContainer;
-        this.chatMessageRepository = chatMessageRepository;
-    }
 
     private Map<String, ChannelTopic> topics;
 
@@ -48,9 +42,11 @@ public class ChatService {
         log.info("안녕하세요");
         ChannelTopic topic = topics.get(id);
         if (topic == null) {
+            log.info("채팅방 접속됐나?");
             topic = new ChannelTopic(id.toString());
             redisMessageListenerContainer.addMessageListener(redisSubscriber, topic);
             topics.put(id.toString(), topic);
+            log.info("여기까진 제대로 됨");
         }
     }
 
@@ -62,4 +58,16 @@ public class ChatService {
                 .stream().map(RoomMessageReqDto::new).toList();
     }
 
+//    public void sendChatMessage(ChatMessage chatMessage) {
+//        log.info("InComming ChatService");
+////        if (ChatMessage.MessageType.ENTER.equals(chatMessage.getType())) {
+////            chatMessage.setMessage(chatMessage.getSender() + "님이 방에 입장했습니다.");
+////            chatMessage.setSender("[알림]");
+////        } else if (ChatMessage.MessageType.QUIT.equals(chatMessage.getType())) {
+////            chatMessage.setMessage(chatMessage.getSender() + "님이 방에서 나갔습니다.");
+////            chatMessage.setSender("[알림]");
+////        }
+//        redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+//        log.info("Service :  " + chatMessage.getType());
+//    }
 }

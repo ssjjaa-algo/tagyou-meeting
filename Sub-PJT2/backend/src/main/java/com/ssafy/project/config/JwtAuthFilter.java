@@ -9,7 +9,12 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,15 +22,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.filter.GenericFilterBean;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthFilter extends GenericFilterBean {
     private final TokenService tokenService;
 

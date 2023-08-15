@@ -15,18 +15,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@EnableWebSocketMessageBroker
 public class RedisPublisher{
     private final UserRepository userRepository;
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final ChatMessageRepository chatMessageRepository;
     private final OneRoomRepository oneRoomRepository;
-    private final ChatService chatService;
 
     /**
      *      - 메시지를 Redis Topic(채팅방 고유 아이디)에 발행(Publish)합니다.

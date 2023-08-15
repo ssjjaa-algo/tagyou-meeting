@@ -1,5 +1,6 @@
 package com.ssafy.project.attribute;
 
+import com.ssafy.project.controller.ChatController;
 import com.ssafy.project.domain.constants.AuthConstants;
 import com.ssafy.project.domain.message.ChatMessage;
 import com.ssafy.project.domain.message.MessageType;
@@ -13,7 +14,9 @@ import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
 import com.ssafy.project.service.redis.RedisPublisher;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -29,18 +32,19 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Log4j2
-@RequiredArgsConstructor
 @Component
 public class StompHandler implements ChannelInterceptor {
 
     private final TokenService tokenService;
-    private final RedisTemplate redisTemplate;
-
-//    private final RedisPublisher redisPublisher;
-//    private final OneRoomRepository oneRoomRepository;
-//    private final UserRepository memberRepository;
+    private final RedisPublisher redisPublisher;
     private final ChatService chatService;
-//    private final UserService userService;
+
+
+    public StompHandler(TokenService tokenService, @Lazy ChatService chatService, @Lazy RedisPublisher redisPublisher) {
+        this.tokenService = tokenService;
+        this.chatService = chatService;
+        this.redisPublisher = redisPublisher;
+    }
 
     @Override // websocket을 통해 들어온 요청이 처리 되기 전 실행된다.
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -49,6 +53,8 @@ public class StompHandler implements ChannelInterceptor {
 //        String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
 //        log.info("StompHandler JWT : " + jwt);
         log.info("무슨 메시지?: " + accessor.getCommand());
+        log.info("메시지 내용: " + accessor.getMessage());
+        log.info("메시지 헤더: " + accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER));
         if (StompCommand.CONNECT == accessor.getCommand()) {
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
             log.info("StompHandler JWT : " + jwt);
@@ -60,6 +66,7 @@ public class StompHandler implements ChannelInterceptor {
                 boolean validToken = false;
                 try {
                     validToken = tokenService.verifyToken(accessToken);
+                    System.out.println(validToken);
                 } catch (IOException e) {
                     log.info("Exception occurred");
                     throw new RuntimeException(e);
@@ -69,8 +76,6 @@ public class StompHandler implements ChannelInterceptor {
                 Long uid = tokenService.parseUId(accessToken);
                 if (!validToken) {
                     return null;
-                } else{
-                    chatService.enterMeetRoom(Long.parseLong(accessor.getFirstNativeHeader(AuthConstants.ROOM_ID)));
                 }
             }
         }
@@ -84,12 +89,16 @@ public class StompHandler implements ChannelInterceptor {
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
             String accessToken = jwt;
             Long uId = tokenService.parseUId(accessToken);
+            Long rID = Long.parseLong(accessor.getFirstNativeHeader(AuthConstants.ROOM_ID));
+            System.out.println("룸: " + rID);
 
             // DB연동을 안했으니 이메일 정보로 유저를 만들어주겠습니다
             UserReqDto userReqDto = new UserReqDto(uId, "email", "이름");
 
             log.info("user : " + uId);
             log.info("userInfo : " + userReqDto.getEmail());
+            chatService.enterMeetRoom(rID);
+            log.info("채팅방 입장");
 
             // 입장메시지?같은데 뭔지 잘 모르겠음
 //            oneRoomRepository.setUserEnterInfo(user, roomId);
@@ -101,7 +110,7 @@ public class StompHandler implements ChannelInterceptor {
 //
 //            // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
 //            redisTemplate.convertAndSend(roomId, ChatMessage.builder().messageType(MessageType.ENTER).content("입장").build());
-//            redisPublisher.publish(ChannelTopic.of(roomId), uId, RoomMessageReqDto.builder().messageType(MessageType.ENTER).content("내용").meetingRoomId(Long.parseLong(roomId)).build());
+            redisPublisher.publish(ChannelTopic.of(roomId), uId, RoomMessageReqDto.builder().messageType(MessageType.ENTER).content("내용").meetingRoomId(Long.parseLong(roomId)).build());
         }
 //        } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
 //            // 연결이 종료된 클라이언트 sesssionId로 채팅방 id를 얻는다.

@@ -4,8 +4,6 @@ server:
     context-path: /api
 
 spring:
-  main:
-    allow-circular-references: true
   datasource:
     url: jdbc:mysql://tagyou.site:3306/meeting?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: root

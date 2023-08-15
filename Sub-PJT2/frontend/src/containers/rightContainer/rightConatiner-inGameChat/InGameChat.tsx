@@ -107,7 +107,7 @@ const RightContainer = () => {
         (message) => {
           addItem(JSON.parse(message.body));
         },
-        { Auth: token, RoomId: roomId+"" }
+        { Auth: token, RoomId: roomId + "" }
       );
       // const enteringRoomMessage: SendingMessage = {
       //   content: "님이 입장하셨습니다.",
@@ -203,7 +203,7 @@ const RightContainer = () => {
         client.current!.send(
           "/pub/chat/message",
           // "/chat/message",
-          {},
+          { Auth: token },
           JSON.stringify(messageSending)
         );
         setMessage("");

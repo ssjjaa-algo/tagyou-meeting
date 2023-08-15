@@ -31,6 +31,7 @@ public class ChatController {
      */
     @MessageMapping("/message")
     public void sendMessage(HttpServletRequest request, RoomMessageReqDto message) {
+        System.out.println("열로 메시지가 와야됨");
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         String topic = message.getMeetingRoomId().toString();
         redisPublisher.publish(ChannelTopic.of(topic), userId, message);

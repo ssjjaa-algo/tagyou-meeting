@@ -7,7 +7,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class ChatMessage {
 
     @Id
