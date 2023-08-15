@@ -86,11 +86,14 @@ public class RoomService {
     public OneRoomRspDto quitOneMeetRoom(Long userId, Long roomId) {
         userService.findUser(userId).orElseThrow(() -> new NotFoundException("방을 나가는 유저의 정보가 조회되지 않습니다."));
         return oneRepository.findById(roomId).map(room ->{
+
             if(room.getMaleUser().getId().equals(userId)) {
                 room.setMaleUser(null);
             } else if(room.getFemaleUser().getId().equals(userId)) {
                 room.setFemaleUser(null);
             }
+            else throw new NotFoundException("해당 유저가 방에 존재 하지 않습니다.");
+
             return room;})
                 .map(OneRoomRspDto::new)
                 .orElseThrow(() -> new NotFoundException("나가려는 방이 조회되지 않습니다."));
