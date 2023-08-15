@@ -1,22 +1,36 @@
 import styled from "@emotion/styled";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { themeProps } from "@emotion/react";
-import { getThemeProps } from "@mui/system";
 
 export const Container = styled.div`
-  /* border: solid yellow 3px; */
-  justify-items: center;
-  margin: 5rem 0 0 5rem;
-  width: calc(100% - 10rem);
+  width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: red;
+  vertical-align: center;
 `;
 
 export const ProfileContainer = styled.div`
+  width: 80%;
+  display: flex;
+  background-color: blue;
+  border-radius: 5px;
+  margin: auto;
+  overflow: hidden;
+`;
+
+export const Img = styled.img`
+  width: 50%;
+`;
+
+export const SContainer = styled.div`
   display: flex;
   /* margin-right: 150px; */
   max-width: 40vw;
   padding-bottom: 50px;
   align-items: center;
+  background-color: yellow;
 `;
 
 export const OtherContainer = styled.div`
@@ -29,11 +43,14 @@ export const InnerContent = styled.div`
   align-items: center;
 `;
 
+export const Contents = styled.div`
+  margin: 30px 30px 30px 10px;
+  background-color: silver;
+`;
+
 export const LeftContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
+  width: inherit;
+  background-color: brown;
 `;
 export const RightContainer = styled.div`
   display: flex;
@@ -65,8 +82,8 @@ export const Title = styled.text<{ theme: themeProps }>`
 `;
 
 export const miniTitle = styled.text<{ theme: themeProps }>`
-  color: ${(props) => props.theme.font.mid};
-  font-size: 17px;
+  color: ${(props) => props.theme.font.deep};
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
   padding-bottom: 15px;

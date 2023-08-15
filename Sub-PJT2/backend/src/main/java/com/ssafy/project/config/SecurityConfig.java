@@ -72,7 +72,7 @@ public class SecurityConfig {
                 .addFilterBefore(exceptionHandlerFilter, JwtAuthFilter.class)
                 .oauth2Login(oauth2Login ->
                         oauth2Login
-//                                .loginPage("http://localhost:3000/home")
+                                .loginPage("http://localhost:3000/home")
                                 .successHandler(successHandler)
                                 .userInfoEndpoint().userService(oAuth2UserService)
                 );
@@ -87,7 +87,7 @@ public class SecurityConfig {
                     .requestMatchers(
                             "/swagger-ui/**",
                             "/v2/api-docs",  "/configuration/ui",
-                            "/swagger-resources", "/configuration/security",
+                            "/swagger-resources/**", "/configuration/security",
                             "/swagger-ui.html", "/webjars/**","/swagger/**"
                     );
         };

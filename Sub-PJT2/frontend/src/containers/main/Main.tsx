@@ -10,6 +10,7 @@ import RightContainer from "../rightContainer";
 import Router from "../../Router";
 
 import { BrowserRouter } from "react-router-dom";
+import FriendContainer from "containers/friendContainer";
 
 function Main() {
   const isDark = useRecoilValue(IsDark);
@@ -37,6 +38,7 @@ function Main() {
           <RightContainer>
             <Router />
           </RightContainer>
+          {showSideBar() ? <FriendContainer /> : null}
         </Container>
       </BrowserRouter>
     </ThemeProvider>
