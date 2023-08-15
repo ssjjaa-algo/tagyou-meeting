@@ -30,6 +30,12 @@ public class RoomService {
     private final GroupService groupService;
     private final WebRtcService webRtcService;
 
+    // 임시
+    public OneRoomRspDto getRoom(Long roomId) {
+        return oneRepository.findById(roomId).map(OneRoomRspDto::new)
+                .orElseThrow(() -> new NotFoundException("방이 조회되지 않습니다."));
+    }
+
     /**
      * 일대일 미팅방 입장
      */
@@ -56,8 +62,6 @@ public class RoomService {
                 else {
                     throw new NotFoundException("들어갈 수 있는 방이 없습니다.");
                 }
-                log.info("room : " + room.getMaleUser().getUserName());
-                log.info("room : " + room.getFemaleUser().getUserName());
                 return room;
             })
                 .map(OneRoomRspDto::new)
@@ -97,11 +101,6 @@ public class RoomService {
         } catch (OpenViduHttpException e) {
             throw new RuntimeException(e);
         }
-
-        log.info("남자 아이디" + meetingRoom.getMaleUser().getId());
-        log.info("남자 이름" + meetingRoom.getMaleUser().getUserName());
-        log.info("여자 아이디" + meetingRoom.getFemaleUser().getId());
-        log.info("여자 이름" + meetingRoom.getFemaleUser().getUserName());
 
         meetingRoom.changeStatus(MeetingRoomStatus.ACTIVE);
         chatService.enterMeetRoom(meetingRoom.getId());
