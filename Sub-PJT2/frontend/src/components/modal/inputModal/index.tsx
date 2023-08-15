@@ -22,16 +22,23 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
     source: "phoneNumber" | "content" | "userHobby" | "userJob",
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    source === "phoneNumber" &&
-      setUserInfo({ ...userInfo, [source]: e.target.value });
-    source !== "phoneNumber" &&
-      setProfileInfo({ ...profileInfo, [source]: e.target.value });
+    // console.log("source", source, "value", e.target.value);
+    if (source === "content") {
+      let tmp = e.target.value;
+      let replaced_str = tmp.replace(/_/g, " ");
+      setProfileInfo({ ...profileInfo, [source]: replaced_str });
+    } else {
+      source === "phoneNumber" &&
+        setUserInfo({ ...userInfo, [source]: e.target.value });
+      source !== "phoneNumber" &&
+        setProfileInfo({ ...profileInfo, [source]: e.target.value });
+    }
   };
 
   const putProfile = async () => {
-    console.log("putProfile", token, profileInfo);
+    console.log("POSTProfile", token, profileInfo);
     fetch(`${process.env.REACT_APP_BASE_URL}/profile`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         Auth: token,
         "Content-Type": "application/json",
@@ -66,7 +73,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
   const handleOnClick = async () => {
     await putProfile();
     await putUsers();
-    // window.location.href = "/home";
+    window.location.href = "/home";
   };
 
   return (
@@ -110,19 +117,18 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
             />
           </S.Section>
 
-          {/* 취미는 home에서 따로 입력해서 받는 것으로 수정하였습니다 */}
-          {/* <S.Section> 
+          <S.Section>
             <S.SubTitle> 취미 </S.SubTitle>
             <S.StyledInput
-              // onChange={(e) => handleInputChange("userHobby", e)}
+              onChange={(e) => handleInputChange("userHobby", e)}
               placeholder="취미"
             />
-          </S.Section> */}
+          </S.Section>
 
           <S.Section>
             <S.SubTitle> 직업 </S.SubTitle>
             <S.StyledInput
-              // onChange={(e) => handleInputChange("userJob", e)}
+              onChange={(e) => handleInputChange("userJob", e)}
               placeholder="직업"
             />
           </S.Section>
