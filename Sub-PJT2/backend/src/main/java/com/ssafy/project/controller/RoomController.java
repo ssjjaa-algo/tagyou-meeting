@@ -23,6 +23,14 @@ public class RoomController {
     private final RoomService roomService;
     private final ChatService chatService;
 
+    // ====================== 미팅방 조회 ============================
+    @ResponseStatus(HttpStatus.CREATED)
+    @GetMapping(path = "/one")
+    public OneRoomRspDto getRoom(HttpServletRequest request) {
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return roomService.enterOneMeetRoom(userId);
+    }
+
     // ====================== 일대일 미팅방 입장 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/one")

@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FriendShipService {
     private final FriendShipRepository friendShipRepository;
+    private final UserRepository userRepository;
     private final NoticeRepository noticeRepository;
     private final NoticeService noticeService;
     private final UserService userService;

@@ -37,6 +37,8 @@ public class RoomService {
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("방에 들어가는 유저의 정보가 조회되지 않습니다."));
 
+        checkUserGender(user);
+
         if (user.getMeetingRoom() != null) {
             throw new IllegalStateException("이미 미팅룸에 들어간 사용자입니다.");
         }
@@ -72,6 +74,10 @@ public class RoomService {
                         .orElseThrow(() -> new NotFoundException("유저의 정보가 조회되지 않습니다.")))
                 .build();
         saveOneMeetRoom(newRoom);
+        if(newRoom.getMaleUser() != null)
+            log.info("room : " + newRoom.getMaleUser().getUserName());
+        if(newRoom.getMaleUser() != null)
+            log.info("room : " + newRoom.getFemaleUser().getUserName());
         return new OneRoomRspDto(newRoom);
     }
 
@@ -156,7 +162,11 @@ public class RoomService {
 
 
 
-
+    private void checkUserGender(User user) {
+        if (user.getUserGender() == null) {
+            throw new IllegalStateException("성별이 설정되지 않은 유저입니다.");
+        }
+    }
 
     private OneMeetingRoom saveOneMeetRoom(OneMeetingRoom oneMeetingRoom) {
         return oneRepository.save(oneMeetingRoom);
