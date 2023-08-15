@@ -82,7 +82,7 @@ export type friendProps = {
   friendShipStatus: "REQUESTED" | "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";
   targetId: Number;
   targetName: string;
-  targetImg: string;
+  targetImageUrl: string;
 };
 
 export type leftContainerProprs = {
