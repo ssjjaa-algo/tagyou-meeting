@@ -3,6 +3,7 @@ package com.ssafy.project.domain.user;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.project.domain.BaseTimeEntity;
 import com.ssafy.project.dto.request.ProfileReqDto;
+import com.ssafy.project.dto.request.UserProfileReqDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -69,14 +70,15 @@ public class Profile extends BaseTimeEntity {
         this.userHobby = profileReqDto.getUserHobby();
         this.userMbti = profileReqDto.getUserMbti();
         this.content = profileReqDto.getContent();
-//        this.profileImages = new ArrayList<>();
-//        profileImages.forEach(this::addImage);
     }
 
-//    public void addImage(Image profileImage) {
-//        profileImages.add(profileImage);
-//        profileImage.setProfile(this);
-//    }
+    public void updateProfile(UserProfileReqDto userProfileReqDto) {
+        this.userSido = userProfileReqDto.getUserSido();
+        this.userGugun = userProfileReqDto.getUserGugun();
+        this.userJob = userProfileReqDto.getUserJob();
+        this.userMbti = userProfileReqDto.getUserMbti();
+    }
+
 
     public void addHobby(String hobby) {
         if(this.userHobby == null) this.userHobby = hobby+"/";

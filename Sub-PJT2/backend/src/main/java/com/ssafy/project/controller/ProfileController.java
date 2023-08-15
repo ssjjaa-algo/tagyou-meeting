@@ -3,15 +3,19 @@ package com.ssafy.project.controller;
 import com.ssafy.project.domain.user.Profile;
 import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.ProfileReqDto;
+import com.ssafy.project.dto.request.UserProfileReqDto;
 import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.ProfileRspDto;
+import com.ssafy.project.dto.response.UserProfileRspDto;
 import com.ssafy.project.service.ProfileService;
 import com.ssafy.project.service.TokenService;
+import com.ssafy.project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +30,7 @@ public class ProfileController {
 
     private final TokenService tokenService;
     private final ProfileService profileService;
+    private final UserService userService;
 
     @GetMapping("")
     public ResponseEntity<?> getProfile(HttpServletRequest request) {
@@ -51,15 +56,6 @@ public class ProfileController {
             return new ResponseEntity<>(new ProfileRspDto(profile), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
-    public ResponseEntity<?> editProfile(HttpServletRequest request, @RequestBody ProfileReqDto profileReqDto) {
-        Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        Profile profile = profileService.editProfile(userId, profileReqDto);
-        if(profile == null)
-            return ResponseEntity.ok().body("not found");
-        return ResponseEntity.ok().body(new ProfileRspDto(profile));
-    }
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/image")
     public List<ImageRspDto> getProfileImages(HttpServletRequest request) {
@@ -71,6 +67,23 @@ public class ProfileController {
     @GetMapping("/image/{uId}")
     public List<ImageRspDto> getFriendsProfileImages(@PathVariable Long uId) {
         return profileService.getProfileImages(uId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("")
+    public ProfileRspDto editProfile(HttpServletRequest request, @RequestBody ProfileReqDto profileReqDto) {
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        Profile profile = profileService.editProfile(userId, profileReqDto);
+        return new ProfileRspDto(profile);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/name")
+    public UserProfileRspDto editNameProfile(HttpServletRequest request, @RequestBody UserProfileReqDto userProfileReqDto) {
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        profileService.editProfile(userId, userProfileReqDto);
+        userService.editUserName(userId, userProfileReqDto);
+        return new UserProfileRspDto(userProfileReqDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
