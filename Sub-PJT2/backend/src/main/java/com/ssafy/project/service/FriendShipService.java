@@ -169,7 +169,7 @@ public class FriendShipService {
 //                        .orElseGet(ArrayList::new);
 
         List<FriendRspDto> friendRspDtoList =
-                findUsersByKeyWord(word)
+                userService.findUsersByKeyWord(word)
                         .map(targetUsers -> targetUsers.stream()
                                 .map(targetUser ->{
                                     FriendShip friendShip = findFriendShip(userId, targetUser.getId())
@@ -214,5 +214,6 @@ public class FriendShipService {
         return Optional.of(notices)
                 .filter(noticeList -> !noticeList.isEmpty());
     }
+
 
 }

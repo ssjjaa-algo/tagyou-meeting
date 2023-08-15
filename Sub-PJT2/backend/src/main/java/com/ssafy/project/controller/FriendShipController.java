@@ -44,7 +44,7 @@ public class FriendShipController {
     @GetMapping("/list") // none, block 빼고 다 가져오기
     public List<FriendRspDto> friendsList(HttpServletRequest request){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return friendShipService.findFriendShipsByStauts(userId);
+        return friendShipService.findFriendShips(userId);
     }
 
     // ====================== 친구 차단 ============================
