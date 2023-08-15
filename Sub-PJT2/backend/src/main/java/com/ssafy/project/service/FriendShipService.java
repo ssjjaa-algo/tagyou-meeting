@@ -151,29 +151,20 @@ public class FriendShipService {
      * 사용자 검색
      */
     // 아직 완벽하지 않음
-    public List<FriendRspDto> findUsers(Long userId, String word, FriendShipStatus status) {
+    public List<FriendRspDto> findUsers(Long userId, String word) {
 
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("현재 유효하지 않은 유저입니다."));
 
         List<FriendRspDto> friendRspDtoList =
-                findFriendShipsByUserId(userId).map(fList -> fList.stream()
-                                .filter(friendShip -> friendShip.getFriendShipStatus().equals(status))
-                                .map(FriendRspDto::new)
-                                .collect(Collectors.toList()))
-                        .orElseGet(ArrayList::new);
-
-        // status 가 있을 때 없을 때 구분이 필요함
-
-        friendRspDtoList.addAll(
-                userService.findUsersByKeyWord(word)
+                findUsersByKeyWord(word)
                         .map(targetUsers -> targetUsers.stream()
                                 .map(targetUser ->{
                                     FriendShip friendShip = findFriendShip(userId, targetUser.getId())
-                                            .orElseGet(() -> new FriendShip(user, targetUser, FriendShipStatus.NONE));
+                                            .orElseGet(() -> new FriendShip(user, targetUser, null));
                                     return new FriendRspDto(friendShip);
                                 }).collect(Collectors.toList())
-                        ).orElseGet(ArrayList::new));
+                        ).orElseGet(ArrayList::new);
 
         return friendRspDtoList.stream()
                 .filter(friendRspDto -> !friendRspDto.getTargetId().equals(userId))

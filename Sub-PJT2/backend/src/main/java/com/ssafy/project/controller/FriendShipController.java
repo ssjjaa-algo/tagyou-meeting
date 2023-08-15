@@ -41,7 +41,7 @@ public class FriendShipController {
 
     // ====================== 친구 리스트 ============================
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/list")
+    @GetMapping("/list") // none, block 빼고 다 가져오기
     public List<FriendRspDto> friendsList(HttpServletRequest request){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return friendShipService.findFriendShipsByStauts(userId);
@@ -58,12 +58,12 @@ public class FriendShipController {
 
     // ====================== 사용자 검색 ============================
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/search")
+    @GetMapping("/search") // block 빼고 다
     public List<FriendRspDto> findUsers(HttpServletRequest request,
-                                        @RequestParam(required = false) String keyword,
-                                        @RequestParam(required = false) FriendShipStatus status){
+                                        @RequestParam(required = false) String keyword/*,
+                                        @RequestParam(required = false) FriendShipStatus status*/){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return friendShipService.findUsers(userId, keyword, status);
+        return friendShipService.findUsers(userId, keyword/*, status*/);
     }
 
 }
