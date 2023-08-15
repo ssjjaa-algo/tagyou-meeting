@@ -36,7 +36,7 @@ public class FriendShipController {
     public FriendRspDto acceptFriend(HttpServletRequest request,
                                      @RequestParam Long targetId){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return friendShipService.requestFriendShip(userId, targetId);
+        return friendShipService.acceptFriendShip(userId, targetId);
     }
 
     // ====================== 친구 리스트 ============================

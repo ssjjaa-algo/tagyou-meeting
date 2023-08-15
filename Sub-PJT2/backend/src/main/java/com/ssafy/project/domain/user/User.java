@@ -54,7 +54,7 @@ public class User extends BaseTimeEntity {
     private MeetingGroup meetingGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "meeting_room_id")
     private MeetingRoom meetingRoom;
 
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐

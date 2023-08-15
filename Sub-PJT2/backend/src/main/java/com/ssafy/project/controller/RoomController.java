@@ -1,6 +1,5 @@
 package com.ssafy.project.controller;
 
-import com.ssafy.project.domain.room.OneMeetingRoom;
 import com.ssafy.project.dto.response.OneRoomRspDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.RoomService;
@@ -24,11 +23,10 @@ public class RoomController {
     private final ChatService chatService;
 
     // ====================== 미팅방 조회 ============================
-    @ResponseStatus(HttpStatus.CREATED)
-    @GetMapping(path = "/one")
-    public OneRoomRspDto getRoom(HttpServletRequest request) {
-        Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return roomService.enterOneMeetRoom(userId);
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/one/{roomId}")
+    public OneRoomRspDto getRoom(@PathVariable Long roomId) {
+        return roomService.getRoom(roomId);
     }
 
     // ====================== 일대일 미팅방 입장 ============================
