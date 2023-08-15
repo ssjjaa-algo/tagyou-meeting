@@ -4,6 +4,7 @@ import com.ssafy.project.domain.friend.FriendShipStatus;
 import com.ssafy.project.dto.response.FriendRspDto;
 import com.ssafy.project.service.FriendShipService;
 import com.ssafy.project.service.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value="/friends", produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
+@Tag(name = "친구", description = "friend ship 관련 API")
 public class FriendShipController {
 
     private final FriendShipService friendShipService;

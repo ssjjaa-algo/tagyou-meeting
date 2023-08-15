@@ -4,6 +4,7 @@ import com.ssafy.project.dto.request.RoomMessageReqDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.redis.RedisPublisher;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/chat")
+@Tag(name = "채팅", description = "chat message 테이블 관련 API")
 public class ChatController {
 
     private final RedisPublisher redisPublisher;

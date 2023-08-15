@@ -4,6 +4,7 @@ import com.ssafy.project.dto.request.CommentReqDto;
 import com.ssafy.project.dto.response.CommentRspDto;
 import com.ssafy.project.service.CommentService;
 import com.ssafy.project.service.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/comments", produces = "application/json; charset=utf8")
-
+@Tag(name = "댓글", description = "comment 관련 API")
 public class CommentController {
 
     private final CommentService commentService;

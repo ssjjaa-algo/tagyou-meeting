@@ -4,6 +4,8 @@ import java.util.Map;
 //import javax.annotation.PostConstruct;
 
 import com.ssafy.project.service.WebRtcService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +23,7 @@ import io.openvidu.java.client.SessionProperties;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "태스트용, 프런트에서 안쓰이는 API임!) WebRTC", description = "")
 public class WebRtcController {
 
 //    @Value("${OPENVIDU_URL}")
@@ -69,11 +72,13 @@ public class WebRtcController {
     private final WebRtcService webRtcService;
 
     @GetMapping("/session")
+    @Operation(summary = "미팅룸 세션 만들기", description = "반환되는 string은 session의 아이디")
     public String createSession() throws OpenViduJavaClientException, OpenViduHttpException {
         return webRtcService.initializeSession();
     }
 
     @GetMapping("/token/{sessionId}")
+    @Operation(summary = "미팅룸 토큰 만들기", description = "반환되는 string은 session에 참여할 수 있도록 해주는 token")
     public String getToken(@PathVariable String sessionId) throws OpenViduJavaClientException, OpenViduHttpException {
         return webRtcService.createConnection(sessionId);
     }
