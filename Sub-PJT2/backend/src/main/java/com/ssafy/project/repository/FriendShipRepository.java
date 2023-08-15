@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface FriendShipRepository extends JpaRepository<FriendShip, Long> {
     Optional<FriendShip> findByUserIdAndTargetUserId(Long userId, Long targetId);
     Optional<List<FriendShip>> findAllByUserId(Long userId);
+
+    void deleteByUserIdAndTargetUserId(Long userId, Long targetId);
+
 }
