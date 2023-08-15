@@ -51,8 +51,6 @@ public class RoomService {
 
         return oneRepository.findRamdomRoom(user)
             .map(room -> {
-                log.info("room : " + room.getMaleUser().getUserName());
-                log.info("room : " + room.getFemaleUser().getUserName());
                 if(user.getUserGender() == Gender.MALE){
                     room.setMaleUser(user);
                 }
@@ -78,10 +76,6 @@ public class RoomService {
                         .orElseThrow(() -> new NotFoundException("유저의 정보가 조회되지 않습니다.")))
                 .build();
         saveOneMeetRoom(newRoom);
-        if(newRoom.getMaleUser() != null)
-            log.info("room : " + newRoom.getMaleUser().getUserName());
-        if(newRoom.getMaleUser() != null)
-            log.info("room : " + newRoom.getFemaleUser().getUserName());
         return new OneRoomRspDto(newRoom);
     }
 
