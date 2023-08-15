@@ -15,14 +15,12 @@ public class GroupRspDto {
 
     private Long groupId;
     private Gender groupGender;
-//    private List<UserRspDto> groupMembers;
     private List<UserRspDto> groupUser;
 
     public GroupRspDto(MeetingGroup group) {
         this.groupId = group.getId();
         this.groupGender = group.getGroupGender();
         this.groupUser = group.getGroupUser().stream().map(UserRspDto::new).collect(Collectors.toCollection(LinkedList::new));
-//        this.groupMembers = group.getGroupUser().stream().map(UserRspDto::new).toList();
     }
 
 }

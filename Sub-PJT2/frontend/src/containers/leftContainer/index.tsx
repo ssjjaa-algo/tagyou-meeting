@@ -9,7 +9,6 @@ import {
   UserInfo,
 } from "../../atoms/atoms";
 import * as S from "./LeftContainer.styled";
-import "react-modern-drawer/dist/index.css";
 import Profile from "components/profile";
 import { useEffect, useState } from "react";
 import { Modal } from "components/modal";

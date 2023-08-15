@@ -5,13 +5,16 @@ import SonByeonHo from "containers/inGame/sonByeongHo";
 import Sis from "containers/inGame/sis";
 import { useEffect, useState } from "react";
 import Header from "components/header/Header";
-import { GameStart as GameStartAtom } from "atoms/atoms";
+import { GameStart as GameStartAtom, UserInfo } from "atoms/atoms";
 import { useRecoilState } from "recoil";
-import { InGameChatStatus } from "atoms/atoms";
+import { RoomInfo, InGameChatStatus } from "atoms/atoms";
+import { useRecoilValue } from "recoil";
+
 // OpenVidu
 import { OpenVidu, Publisher, Session, StreamManager } from 'openvidu-browser';
 import axios from 'axios';
 import UserVideoComponent from './UserVideoComponent';
+import userEvent from "@testing-library/user-event";
 
 const OPENVIDU_SERVER_URL = 'https://tagyou.site:8443';
 const OPENVIDU_SERVER_SECRET = 'tagyou';
@@ -20,12 +23,15 @@ const Meeting = () => {
   const [GameStart, setGameStart] = useRecoilState(GameStartAtom);
   const [selectedGame, setSelectedGame] = useState("");
   const [inGameChatStatus, setInGameChatStatus] = useRecoilState(InGameChatStatus);
+  const userInfo = useRecoilValue(UserInfo);
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo); // 추가
   const [mySessionId, setMySessionId] = useState('test_sessionid');
-  const [myUserName, setMyUserName] = useState('test_name');
+  const [myUserName, setMyUserName] = useState(userInfo.userName);
   const [mainStreamManager, setMainStreamManager] = useState<StreamManager | null>(null);
   const [publisher, setPublisher] = useState<Publisher | undefined>(undefined)
-  const [session, setSession] = useState<Session | undefined>(undefined);
-  const [subscribers, setSubscribers] = useState<any[]>([]);
+  const [publishers, setPublishers] = useState<any[]>([]); // 추가
+  const [session, setSession] = useState<Session | null>(null);
+  // const [subscribers, setSubscribers] = useState<any[]>([]);
   // const [device, setDevice] = useState<Device | undefined>(undefined)
 
   useEffect(() => {
@@ -57,28 +63,32 @@ const Meeting = () => {
     let mySession: Session = OV.initSession()
     setSession(mySession)
 
+    mySession.on("streamCreated", function (event) {
+      mySession.subscribe(event.stream, "subscriber");
+    });
+
     // --- 3) Specify the actions when events take place in the session ---
     // On every new Stream received...
-    mySession.on('streamCreated', (event) => {
-        // Subscribe to the Stream to receive it. Second parameter is undefined
-        // so OpenVidu doesn't create an HTML video by its own
-        let subscriber = mySession.subscribe(event.stream, undefined);
-        // Update the state with the new subscribers
-        subscribers.push(subscriber)
-        // setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
-      });
+    // mySession.on('streamCreated', (event) => {
+    //     // Subscribe to the Stream to receive it. Second parameter is undefined
+    //     // so OpenVidu doesn't create an HTML video by its own
+    //     let subscriber = mySession.subscribe(event.stream, undefined);
+    //     // Update the state with the new subscribers
+    //     subscribers.push(subscriber)
+    //     // setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
+    //   });
         
     // On every Stream destroyed...
-    mySession.on('streamDestroyed', (event) => {
-      const deleteSubscriber = (streamManagerToDelete: any) => {
-        setSubscribers(prevSubscribers => prevSubscribers.filter(subscriber => subscriber !== streamManagerToDelete));
-      };
-      deleteSubscriber(mainStreamManager);
-    });
+    // mySession.on('streamDestroyed', (event) => {
+    //   const deleteSubscriber = (streamManagerToDelete: any) => {
+    //     // setSubscribers(prevSubscribers => prevSubscribers.filter(subscriber => subscriber !== streamManagerToDelete));
+    //   };
+    //   deleteSubscriber(mainStreamManager);
+    // });
 
     // --- 4) Connect to the session with a valid user token ---
     // Get a token from the OpenVidu deployment
-    getToken().then((token: any) => {
+    getToken(mySessionId).then((token: any) => {
       // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
       mySession
@@ -95,11 +105,15 @@ const Meeting = () => {
               resolution: '640x480', // The resolution of your video
               frameRate: 30, // The frame rate of your video
               insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-              mirror: false, // Whether to mirror your local video or not
-          });
+              mirror: false}) // Whether to mirror your local video or not
+              // --- 6) Publish your stream ---
+              mySession.publish(publisher);
+        })
+        .catch(error => {
+          console.log("There was an error connecting to the session:", error.code, error.message);
+        });
+    })
 
-          // --- 6) Publish your stream ---
-          mySession.publish(publisher);
 
           // Obtain the current video device in use
           // let devices = await OV.getDevices();
@@ -109,15 +123,14 @@ const Meeting = () => {
 
           // Set the main video in the page to display our webcam and store our Publisher
           // setDevice(currentVideoDevice)
-          setMainStreamManager(publisher)
-          setPublisher(publisher)
-        })
-        .catch((error) => {
-            console.log('There was an error connecting to the session:', error.code, error.message);
-        });
-    });
-    }
-
+    //       setMainStreamManager(publisher)
+    //       setPublisher(publisher)
+    //     })
+    //     .catch((error) => {
+    //         console.log('There was an error connecting to the session:', error.code, error.message);
+    //     });
+    // });
+  };
 
   const leaveSession = () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
@@ -127,20 +140,19 @@ const Meeting = () => {
     
     // Empty all properties...
     // setOV(undefined)
-    setSession(undefined)
-    setSubscribers([])
-    setMySessionId('test_sessonid')
-    setMyUserName('test_name')
+    setSession(null)
+    // setSubscribers([])
     setMainStreamManager(null)
     setPublisher(undefined)
   }
 
-  const getToken = () => {
-    return createSession(mySessionId).then((sessionId: any) =>
+  const getToken = (mySessionId: string) => {
+    return createSession(mySessionId).then((sessionId) =>
       createToken(sessionId)
     );
   }
 
+  // 여기서 sessionId 받기
   const createSession = (sessionId: any) => {
   return new Promise((resolve, reject) => {
     let data = JSON.stringify({ customSessionId: sessionId });
@@ -206,9 +218,6 @@ const Meeting = () => {
         className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}
         >
           <S.InnerContainer>
-          {/* <div>
-            <button onClick={leaveSession}>세션 떠나기</button>    
-          </div> */}
             <S.PlayerVidBundle>
               <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
               <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>

@@ -34,10 +34,10 @@ public class ChatController {
     @MessageMapping("/message")
     public void sendMessage(HttpServletRequest request, RoomMessageReqDto message) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        log.info("발행 시작은 되는 건가요?");
         String topic = message.getMeetingRoomId().toString();
         redisPublisher.publish(ChannelTopic.of(topic), userId, message);
     }
-
 
     // ====================== 채팅 메시지 가져오기 ============================
     @ResponseStatus(HttpStatus.OK)

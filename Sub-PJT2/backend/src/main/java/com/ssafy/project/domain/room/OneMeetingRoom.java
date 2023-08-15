@@ -14,19 +14,21 @@ import lombok.NoArgsConstructor;
 @Entity
 public class OneMeetingRoom extends MeetingRoom{
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="male_user_id")
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="male_user_id")
+    @OneToOne(mappedBy = "meetingRoom", cascade = CascadeType.ALL)
     private User maleUser; // 남자
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="female_user_id")
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="female_user_id")
+    @OneToOne(mappedBy = "meetingRoom", cascade = CascadeType.ALL)
     private User femaleUser; // 여자
 
     @Builder
     public OneMeetingRoom(User newUser) {
-        if(newUser.getUserGender().equals(Gender.MALE))
+        if(newUser.getUserGender() == Gender.MALE)
             setMaleUser(newUser);
-        if(newUser.getUserGender().equals(Gender.FEMALE))
+        else
             setFemaleUser(newUser);
     }
 
@@ -38,6 +40,15 @@ public class OneMeetingRoom extends MeetingRoom{
     public void setFemaleUser(User user){
         this.femaleUser = user;
         user.setMeetingRoom(this);
+    }
+
+    public void removeMaleUser(){
+        this.maleUser.quitRoom();
+        this.maleUser = null;
+    }
+    public void removeFemaleUser(){
+        this.femaleUser.quitRoom();
+        this.femaleUser = null;
     }
 
 }

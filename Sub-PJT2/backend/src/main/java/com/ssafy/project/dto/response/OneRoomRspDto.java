@@ -6,14 +6,18 @@ import lombok.Getter;
 @Getter
 public class OneRoomRspDto {
     private Long roomId;
-    private String maleUserNickname;
-    private String femaleUserNickname;
+    private String roomType;
+    private String sessionId;
+    private String maleUserName;
+    private String femaleUserName;
 
     public OneRoomRspDto(OneMeetingRoom meetingRoom) {
         this.roomId = meetingRoom.getId();
+        this.roomType = "One";
+        this.sessionId = meetingRoom.getSessionId();
         if(meetingRoom.getMaleUser() != null)
-            this.maleUserNickname = meetingRoom.getMaleUser().getUserName();
+            this.maleUserName = meetingRoom.getMaleUser().getUserName();
         if(meetingRoom.getFemaleUser() != null)
-            this.femaleUserNickname = meetingRoom.getFemaleUser().getUserName();
+            this.femaleUserName = meetingRoom.getFemaleUser().getUserName();
     }
 }
