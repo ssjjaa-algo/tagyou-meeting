@@ -22,7 +22,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
     source: "phoneNumber" | "content" | "userHobby" | "userJob",
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log("source", source, "value", e.target.value);
+    // console.log("source", source, "value", e.target.value);
     if (source === "content") {
       let tmp = e.target.value;
       let replaced_str = tmp.replace(/_/g, " ");
@@ -73,7 +73,7 @@ const InputModal = ({ setShowModal }: inputModalProps) => {
   const handleOnClick = async () => {
     await putProfile();
     await putUsers();
-    // window.location.href = "/home";
+    window.location.href = "/home";
   };
 
   return (
