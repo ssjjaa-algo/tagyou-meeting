@@ -1,8 +1,8 @@
 import { Global } from "@emotion/react";
 import styled from "@emotion/styled";
 import { ThemeProvider } from "@emotion/react";
-import { IsDark } from "../../atoms/atoms";
-import { useRecoilValue } from "recoil";
+import { IsDark, TokenValue } from "../../atoms/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { darkTheme, lightTheme } from "../../styles/ColorSystem";
 import GlobalStyle from "../../styles/GlobalStyle";
 import LeftContainer from "../leftContainer";
@@ -11,6 +11,8 @@ import Router from "../../Router";
 
 import { BrowserRouter } from "react-router-dom";
 import FriendContainer from "containers/friendContainer";
+import { Cookies } from "react-cookie";
+import { useEffect, useState } from "react";
 
 function Main() {
   const isDark = useRecoilValue(IsDark);

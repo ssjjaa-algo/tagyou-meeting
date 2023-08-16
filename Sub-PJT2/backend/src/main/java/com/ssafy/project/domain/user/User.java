@@ -65,12 +65,14 @@ public class User extends BaseTimeEntity {
         this.userEmail = userEmail;
         this.userName = userName;
     }
-    public void changeUser(UserInfoReqDto userInfoReqDto){
+
+    public void changeUser(UserInfoReqDto userInfoReqDto) {
         this.phoneNumber = userInfoReqDto.getPhoneNumber();
         this.userAge = userInfoReqDto.getUserAge();
         this.userGender = userInfoReqDto.getUserGender();
         this.userLike = 0;
     }
+
     public void changeUserImg(Image img) {
         this.mainImage = img;
     }
@@ -85,7 +87,7 @@ public class User extends BaseTimeEntity {
 
     // 연관관계 편의 메서드
     public void setMeetingGroup(MeetingGroup meetingGroup) {
-        if(this.getMeetingGroup() != null){
+        if (this.getMeetingGroup() != null) {
             this.getMeetingGroup().quitGroup(this);
         }
         this.meetingGroup = meetingGroup;

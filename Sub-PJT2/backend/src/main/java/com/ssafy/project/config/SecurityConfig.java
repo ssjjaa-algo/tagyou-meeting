@@ -43,6 +43,7 @@ public class SecurityConfig {
 //                                .requestMatchers("/swagger-resources/**").permitAll()
 //                                .requestMatchers("/swagger-ui/**").permitAll() // 스웨거 경로 허용
                                 .requestMatchers("/ws/**").permitAll()
+//                                .requestMatchers("/users/setUserStatus").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class) // CorsConfig를 먼저 실행하도록 변경
