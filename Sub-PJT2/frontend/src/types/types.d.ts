@@ -34,7 +34,7 @@ export type roomProps = {
   roomId: number;
   sessionId: string;
   status: string;
-}
+};
 
 export type Message = {
   // meeting_room_message 테이블
@@ -59,7 +59,7 @@ export type chatProps = {
 
 export type friendProps = {
   friendShipStatus: "REQUESTED" | "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";
-  targetId: Number;
+  targetId: number;
   targetName: string;
   targetImageUrl: string;
 };

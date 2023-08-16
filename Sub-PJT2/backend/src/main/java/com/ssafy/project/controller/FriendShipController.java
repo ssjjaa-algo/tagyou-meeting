@@ -66,4 +66,13 @@ public class FriendShipController {
         return friendShipService.findUsers(userId, keyword/*, status*/);
     }
 
+    //  ====================== 친구요청 거절 ===========================
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/reject")
+    public String rejectFriendShip(HttpServletRequest request, @RequestParam Long otherId){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        friendShipService.rejectFriendShip(userId, otherId);
+        return "rejected";
+    }
+
 }

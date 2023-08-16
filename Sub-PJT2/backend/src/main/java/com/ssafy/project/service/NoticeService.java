@@ -64,4 +64,7 @@ public class NoticeService {
     private Optional<Notice> saveNotice(Notice notice){
         return Optional.of(noticeRepository.save(notice));
     }
+    public Optional<List<Notice>> findAllByUserId(Long userId){
+        return noticeRepository.findAllByUserId(userId);
+    }
 }
