@@ -1,9 +1,8 @@
 package com.ssafy.project.repository;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.room.OneMeetingRoom;
 import com.ssafy.project.domain.room.QOneMeetingRoom;
 import com.ssafy.project.domain.user.QUser;
@@ -23,39 +22,24 @@ public class OneRoomRepositoryImpl implements OneRoomRepositoryCustom{
 
     @Override
     public Optional<OneMeetingRoom> findRamdomRoom(User user) {
-        QOneMeetingRoom qRoom = QOneMeetingRoom.oneMeetingRoom;
+        QOneMeetingRoom qOneRoom = QOneMeetingRoom.oneMeetingRoom;
         QUser qUser = QUser.user;
 
-        Gender userGender = user.getUserGender();
-
-        BooleanBuilder userExistNeGender = new BooleanBuilder()
-                .and(qUser.meetingRoom.isNotNull())
-                .and(qUser.userGender.ne(userGender));
-
-        List<Long> otherUserRoomId = queryFactory
-                .select(qUser.meetingRoom.id)
-                .from(qUser)
-                .where(userExistNeGender)
-                .fetch();
-
-        if(otherUserRoomId == null)
-            return Optional.empty();
-
-        BooleanBuilder roomExistEqGender = new BooleanBuilder()
-                .and(qRoom.id.in(otherUserRoomId));
-
-        if (userGender == Gender.MALE) {
-            roomExistEqGender.and(qRoom.maleUser.isNull());
-        } else if (userGender == Gender.FEMALE) {
-            roomExistEqGender.and(qRoom.femaleUser.isNull());
-        }
-
-        log.info("otherUserRoomId " + otherUserRoomId);
         Optional<OneMeetingRoom> oneMeetingRoom = Optional.ofNullable(
-                queryFactory.selectFrom(qRoom)
-                .where(roomExistEqGender)
-                .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
-                .fetchFirst());
+                queryFactory.selectFrom(qOneRoom)
+                        .where(qOneRoom.id.in(
+                                JPAExpressions.select(qUser.meetingRoom.id)
+                                        .from(qUser)
+                                        .where(qUser.userGender.ne(user.getUserGender()),
+                                                qUser.meetingRoom.id.in(
+                                                        JPAExpressions.select(qUser.meetingRoom.id)
+                                                                .from(qUser)
+                                                                .groupBy(qUser.meetingRoom.id)
+                                                                .having(qUser.meetingRoom.id.count().eq(1L))
+                                                ))
+                        ))
+                        .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                        .fetchFirst());
 
         log.info("oneMeetingRoom " + oneMeetingRoom);
         return oneMeetingRoom;
