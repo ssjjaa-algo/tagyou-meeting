@@ -6,6 +6,7 @@ import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.service.GroupService;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class GroupController {
     // ====================== 그룹 생성 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
+    @Operation(summary = "그룹 생성하기", description = "")
     public GroupRspDto createGroup(HttpServletRequest request){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.createGroup(userId);
@@ -39,6 +41,7 @@ public class GroupController {
     // ====================== 그룹 초대 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/request")
+    @Operation(summary = "그룹으로 초대하기", description = "")
     public GroupRspDto inviteGroup(HttpServletRequest request, @RequestBody GroupReqDto groupReqDto){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.inviteGroup(userId, groupReqDto);
@@ -47,6 +50,7 @@ public class GroupController {
     // ====================== 그룹 수락 ============================
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/accept")
+    @Operation(summary = "그룹 초대 수락하기", description = "")
     public GroupRspDto acceptGroup(HttpServletRequest request, @RequestParam Long groupId){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.acceptGroup(userId, groupId);
@@ -55,6 +59,7 @@ public class GroupController {
     // ====================== 그룹 거절 ============================
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/reject")
+    @Operation(summary = "그룹 초대 거절하기", description = "")
     public GroupRspDto rejectGroup(HttpServletRequest request, @RequestParam Long groupId){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.rejectGroup(userId, groupId);
@@ -63,6 +68,7 @@ public class GroupController {
     // ====================== 그룹 탈퇴 ============================
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/quit")
+    @Operation(summary = "그룹에서 나가기", description = "")
     public GroupRspDto quitGroup(HttpServletRequest request, @RequestParam Long groupId){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.LeaveGroup(userId, groupId);
@@ -71,6 +77,7 @@ public class GroupController {
     // ====================== 그룹 삭제 ============================
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{groupId}")
+    @Operation(summary = "그룹 삭제하기", description = "")
     public GroupRspDto removeGroup(HttpServletRequest request, @PathVariable Long groupId){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.removeGroup(userId, groupId);

@@ -29,12 +29,24 @@ const RightContainer = ({ children }: RightContinaerProp) => {
   useEffect(() => {
     console.log(token);
     console.log("위치: " + location);
-    if (location.search("meeting") != 1 && location !== "" && location !== "/") {
-      fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
-        headers: {
-          Auth: token,
-        },
-      });
+    if (location.search("meeting") != 1 && location !== "" && location !== "/" && location !=="/input") {
+      if(location.search("meeting") === 1){
+        fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
+          method: "POST",
+          body: "INGAME",
+          headers: {
+            Auth: token,
+          },
+        });
+      } else {
+        fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
+          method: "POST",
+          body: "ONLINE",
+          headers: {
+            Auth: token,
+          },
+        });
+      }
     }
   }, [location]);
   return (

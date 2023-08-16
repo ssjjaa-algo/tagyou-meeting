@@ -1,5 +1,6 @@
 package com.ssafy.project.controller;
 
+import com.ssafy.project.domain.user.UserStatus;
 import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
 import com.ssafy.project.dto.response.HobbyRspDto;
@@ -113,11 +114,23 @@ public class UserController {
         return ResponseEntity.badRequest().body("유효하지 않은 폰번호(13자리 아님)");
     }
 
-    @GetMapping("/setUserStatus")
-    public void SetUserStatus(HttpServletRequest request){
+    @PostMapping("/setUserStatus")
+    public void SetUserStatus(HttpServletRequest request, @RequestBody String status){
         System.out.println("열로 들어오냐?");
         Long id = tokenService.parseUId(request.getHeader("Auth"));
-        userService.editUserStatus(id, null);
+        System.out.println("상태: " + status);
+        switch(status){
+            case "ONLINE":
+                userService.editUserStatus(id, UserStatus.ONLINE);
+                break;
+            case "OFFLINE":
+                userService.editUserStatus(id, UserStatus.OFFLINE);
+                break;
+            case "INGAME":
+                userService.editUserStatus(id, UserStatus.INGAME);
+                break;
+        }
+
     }
 
 }
