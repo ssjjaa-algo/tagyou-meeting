@@ -12,7 +12,7 @@ public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_message_id")
+    @Column(name = "message_id")
     private Long id;
 
     @Column(nullable = false)
@@ -22,7 +22,7 @@ public class ChatMessage {
     @Enumerated(value = EnumType.STRING)
     private MessageType messageType;
 
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "sender_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User sender;
 

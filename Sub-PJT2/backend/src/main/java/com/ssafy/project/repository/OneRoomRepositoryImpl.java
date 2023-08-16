@@ -41,19 +41,18 @@ public class OneRoomRepositoryImpl implements OneRoomRepositoryCustom{
         if(otherUserRoomId == null)
             return Optional.empty();
 
-        BooleanBuilder roomExistEqGender = new BooleanBuilder();
+        BooleanBuilder roomExistEqGender = new BooleanBuilder()
+                .and(qRoom.id.in(otherUserRoomId));
 
         if (userGender == Gender.MALE) {
-            roomExistEqGender.and(qRoom.id.in(otherUserRoomId))
-                    .and(qRoom.maleUser.isNull());
+            roomExistEqGender.and(qRoom.maleUser.isNull());
         } else if (userGender == Gender.FEMALE) {
-            roomExistEqGender.and(qRoom.id.in(otherUserRoomId))
-                    .and(qRoom.femaleUser.isNull());
+            roomExistEqGender.and(qRoom.femaleUser.isNull());
         }
 
         log.info("otherUserRoomId " + otherUserRoomId);
-        Optional<OneMeetingRoom> oneMeetingRoom = Optional.ofNullable(queryFactory
-                .selectFrom(qRoom)
+        Optional<OneMeetingRoom> oneMeetingRoom = Optional.ofNullable(
+                queryFactory.selectFrom(qRoom)
                 .where(roomExistEqGender)
                 .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .fetchFirst());

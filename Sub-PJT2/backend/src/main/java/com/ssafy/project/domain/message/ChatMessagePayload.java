@@ -27,11 +27,11 @@ public class ChatMessagePayload {
     @JsonProperty(value = "meeting_room_id")
     private Long meetingRoomId;
 
-//    public ChatMessagePayload(ChatMessage message){
-//        this.content = message.getContent();
-//        this.sender = message.getSender().getUserName();
-//        this.messageType = getMessageType();
-//        this.meetingRoomId = message.getMeetingRoom().getId();
-//    }
+    public ChatMessagePayload(ChatMessage message){
+        this.content = message.getContent();
+        this.sender = message.getSender().getUserName();
+        this.messageType = getMessageType();
+        this.meetingRoomId = message.getMeetingRoom().getId();
+    }
 
 }
