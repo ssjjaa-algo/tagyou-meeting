@@ -101,8 +101,8 @@ public class StompHandler implements ChannelInterceptor {
             log.info("채팅방 입장");
 //            // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
 //            redisTemplate.convertAndSend(roomId, ChatMessage.builder().messageType(MessageType.ENTER).content("입장").build());
-            redisPublisher.publish(ChannelTopic.of(roomId), uId, RoomMessageReqDto.builder().messageType(MessageType.ENTER).content("내용").meetingRoomId(Long.parseLong(roomId)).build());
-        }
+            redisPublisher.publish(ChannelTopic.of(roomId), uId, RoomMessageReqDto.builder().messageType(MessageType.ENTER).content("님께서 입장하셨습니다.").meetingRoomId(Long.parseLong(roomId)).build());
+        } 
 //        } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
 //            // 연결이 종료된 클라이언트 sesssionId로 채팅방 id를 얻는다.
 //            String sessionId = (String) message.getHeaders().get("simpSessionId");

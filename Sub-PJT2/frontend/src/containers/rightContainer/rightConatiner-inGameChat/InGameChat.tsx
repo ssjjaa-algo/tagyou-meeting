@@ -14,7 +14,6 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import imgDown from "asset/img/icons8-down-100.png";
 import { Cookies } from "react-cookie";
-import e from "express";
 
 type SendingMessage = {
   content: string;
@@ -163,6 +162,10 @@ const RightContainer = () => {
 
   const addItem = (item: ReceivingMessage) => {
     if (item.message_type === "TALK" || "ENTER" || "EXIT") {
+      console.log("발신자: " + item.sender);
+      console.log("내용: " + item.content);
+      console.log("타입: " + item.message_type);
+      console.log("방번호: " + item.meeting_room_id);
       let newItems: ReceivingMessage[] = [];
       newItems = items;
       newItems.push(item);

@@ -1,6 +1,8 @@
 package com.ssafy.project.service.redis;
 
 import com.ssafy.project.domain.message.ChatMessage;
+import com.ssafy.project.domain.message.ChatMessagePayload;
+import com.ssafy.project.domain.message.MessageType;
 import com.ssafy.project.dto.request.RoomMessageReqDto;
 import com.ssafy.project.domain.room.MeetingRoom;
 import com.ssafy.project.domain.user.User;
@@ -10,10 +12,12 @@ import com.ssafy.project.repository.OneRoomRepository;
 import com.ssafy.project.repository.UserRepository;
 import com.ssafy.project.service.ChatService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
@@ -51,7 +55,16 @@ public class RedisPublisher{
                 .build();
         log.info(publishedMessage.getContent());
         chatMessageRepository.save(publishedMessage);
+        log.info(user.getUserName());
+        ChatMessagePayload newMessage= null;
+        if(message.getMessageType() == MessageType.ENTER){
+            newMessage = ChatMessagePayload.builder().content("< " + user.getUserName() + " > 님이 입장하셨습니다.").sender("[알림]").messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
+        } else{
+            newMessage = ChatMessagePayload.builder().content(message.getContent()).sender(user.getUserName()).messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
+        }
+
         log.info("여까진 온다.");
-        redisTemplate.convertAndSend(topic.getTopic(), message);
+        // reidsTemplate으로 넘어가는 message 형식이 잘못됨
+        redisTemplate.convertAndSend(topic.getTopic(), newMessage);
     }
 }
