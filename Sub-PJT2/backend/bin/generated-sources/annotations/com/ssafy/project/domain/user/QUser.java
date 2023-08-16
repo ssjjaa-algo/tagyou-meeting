@@ -52,6 +52,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath userName = createString("userName");
 
+    public final EnumPath<UserStatus> userStatus = createEnum("userStatus", UserStatus.class);
+
     public QUser(String variable) {
         this(User.class, forVariable(variable), INITS);
     }

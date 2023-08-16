@@ -3,6 +3,7 @@ package com.ssafy.project.service.redis;
 import com.ssafy.project.domain.message.ChatMessage;
 import com.ssafy.project.domain.message.ChatMessagePayload;
 import com.ssafy.project.domain.message.MessageType;
+import com.ssafy.project.domain.user.UserStatus;
 import com.ssafy.project.dto.request.RoomMessageReqDto;
 import com.ssafy.project.domain.room.MeetingRoom;
 import com.ssafy.project.domain.user.User;
@@ -59,8 +60,9 @@ public class RedisPublisher {
         ChatMessagePayload newMessage = null;
         if (message.getMessageType() == MessageType.ENTER) {
             log.info("입장해있는 채팅방: " + user.getMeetingRoom().getId());
-            if(user.getMeetingRoom().getId() != message.getMeetingRoomId()) {
+            if(user.getUserStatus() != UserStatus.MATCHED) {
                 newMessage = ChatMessagePayload.builder().content("< " + user.getUserName() + " > 님이 입장하셨습니다.").sender("[알림]").messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
+                user.setUserStatus(UserStatus.MATCHED);
             }
         } else {
             newMessage = ChatMessagePayload.builder().content(message.getContent()).sender(user.getUserName()).messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
