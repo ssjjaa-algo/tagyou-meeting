@@ -36,7 +36,7 @@ public class ChatController {
      * @MessageMapping 을 통해 WebSocket 으로 들어오는 메시지를 발행
      * Client 에서는 prefix 를 붙여서 /pub/chat/message 로 발행 요청을 보내면 해당 메시지 처리
      */
-    @MessageMapping("/chat/message")
+    @MessageMapping("/pub/chat/message")
     public void sendMessage(Message<?> header, RoomMessageReqDto message) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(header);
         System.out.println("열로 메시지가 와야됨");
