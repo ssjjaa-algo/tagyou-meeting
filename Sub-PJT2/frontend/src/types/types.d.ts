@@ -33,8 +33,9 @@ export type roomProps = {
   roomType: string;
   roomId: number;
   sessionId: string;
-  status: string;
-};
+  maleUserName: string;
+  femaleUserName: string;
+}
 
 export type Message = {
   // meeting_room_message 테이블

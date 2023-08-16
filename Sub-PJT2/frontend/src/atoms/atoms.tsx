@@ -92,7 +92,8 @@ export const RoomInfo = atom<roomProps>({
     roomType: "",
     roomId: 0,
     sessionId: "",
-    status: "",
+    maleUserName: "",
+    femaleUserName: "",
   },
 });
 
