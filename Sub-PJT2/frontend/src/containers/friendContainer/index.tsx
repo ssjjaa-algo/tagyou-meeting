@@ -57,7 +57,6 @@ const FriendContainer = () => {
   };
 
   const fetchData = (token: string) => {
-    console.log("친구목록에서 token확인", token);
     fetch(`${process.env.REACT_APP_BASE_URL}/friends/list`, {
       headers: {
         Auth: token,
