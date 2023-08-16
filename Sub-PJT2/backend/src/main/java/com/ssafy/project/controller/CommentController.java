@@ -4,6 +4,7 @@ import com.ssafy.project.dto.request.CommentReqDto;
 import com.ssafy.project.dto.response.CommentRspDto;
 import com.ssafy.project.service.CommentService;
 import com.ssafy.project.service.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class CommentController {
     // ===================== 코멘트 조회 =========================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{profileId}")
+    @Operation(summary = "댓글 가져오기", description = "{profileId} -> 댓글 가져올 프로필 아이디")
     public List<CommentRspDto> getComments(@PathVariable String profileId) {
         Long pId = Long.parseLong(profileId);
         return commentService.getComments(pId);
@@ -33,6 +35,7 @@ public class CommentController {
     // ===================== 코멘트 등록 =========================
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{profileId}")
+    @Operation(summary = "댓글 달기", description = "{profileId} -> 댓글 달 프로필 아이디")
     public CommentRspDto postComments(HttpServletRequest request, @RequestBody CommentReqDto commentReqDto,
                                             @PathVariable String profileId) {
         Long uId = tokenService.parseUId(request.getHeader("Auth"));
@@ -42,6 +45,7 @@ public class CommentController {
     // ===================== 코멘트 수정 =========================
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{commentId}")
+    @Operation(summary = "댓글 수정하기", description = "{commentId} -> 댓글 아이디")
     public CommentRspDto editComments(HttpServletRequest request, @RequestBody CommentReqDto commentReqDto,
                                       @PathVariable String commentId) throws IllegalAccessException {
         Long uId = tokenService.parseUId(request.getHeader("Auth"));
@@ -51,6 +55,7 @@ public class CommentController {
     // ===================== 코멘트 삭제 =========================
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{commentId}")
+    @Operation(summary = "댓글 삭제하기", description = "{commentId} -> 댓글 아이디")
     public String deleteComments(HttpServletRequest request, @PathVariable String commentId) throws IllegalAccessException {
         Long uId = tokenService.parseUId(request.getHeader("Auth"));
         return commentService.deleteComment(uId, Long.parseLong(commentId));
