@@ -177,7 +177,7 @@ const CatchMind = () => {
         </S.PlayerVidBundle>
         {/* 그림판 */}
         <S.CanvasBox theme={theme}>
-          <S.Canvas ref={canvasRef} width="700" height="350" theme={theme} />
+          <S.Canvas ref={canvasRef} width="550" height="350" theme={theme} />
           <S.WordContainer>
             <S.WordText theme={theme}>
               <S.WordTitle theme={theme}>제시어</S.WordTitle>
