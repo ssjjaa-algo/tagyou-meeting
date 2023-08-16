@@ -62,9 +62,9 @@ public class RedisPublisher {
         ChatMessagePayload newMessage = null;
         if (message.getMessageType() == MessageType.ENTER) {
             log.info("입장해있는 채팅방: " + user.getMeetingRoom().getId());
-            if(user.getUserStatus() != UserStatus.MATCHED) {
+            if(user.getUserStatus() != UserStatus.INGAME) {
                 newMessage = ChatMessagePayload.builder().content("< " + user.getUserName() + " > 님이 입장하셨습니다.").sender("[알림]").messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
-                userService.editUserStatus(userId, UserStatus.MATCHED);
+                userService.editUserStatus(userId, UserStatus.INGAME);
                 // reidsTemplate으로 넘어가는 message 형식이 잘못됨
                 redisTemplate.convertAndSend(topic.getTopic(), newMessage);
                 log.info("여까진 온다.");

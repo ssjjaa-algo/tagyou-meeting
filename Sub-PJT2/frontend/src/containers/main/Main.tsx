@@ -12,7 +12,10 @@ import Router from "../../Router";
 import { BrowserRouter } from "react-router-dom";
 import FriendContainer from "containers/friendContainer";
 import { Cookies } from "react-cookie";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import React from "react";
+import { CompatClient, Stomp } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 function Main() {
   const isDark = useRecoilValue(IsDark);
@@ -29,6 +32,77 @@ function Main() {
       return false;
     }
   };
+
+  const cookies = new Cookies();
+  const [token, setToken] = useRecoilState(TokenValue);
+  useEffect(() => {
+    const T = cookies.get("Auth");
+    setToken(T);
+  }, [cookies.get("Auth")]);
+  useEffect(() => {
+    token && connectHandler(0);
+  }, [token]);
+
+  const client = useRef<CompatClient>();
+  const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`);
+  const connectHandler = (roomId: number) => {
+    client.current = Stomp.over(() => {
+      // 여기서 url 조정하면 됨
+      return socket;
+    });
+    console.log("바로직전: " + token);
+    const headers = {
+      Auth: token,
+      Info: "online",
+    };
+    client.current.connect(headers, () => {
+      console.log("연결됨");
+    });
+  };
+  const headers = {
+    Auth: token,
+  };
+  socket.onclose = () => {
+    socket.close(1000, token);
+  };
+
+  // if (window.onbeforeunload) {
+  //   alert(token);
+  //   fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
+  //     method: "POST",
+  //     body: "OFFLINE",
+  //     headers: {
+  //       Auth: token,
+  //     },
+  //   });
+  // }
+
+  // window.addEventListener("beforeunload", (event) =>{
+  //   event?.preventDefault();
+  //   alert(token);
+  //   fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
+  //     method: "POST",
+  //     body: "OFFLINE",
+  //     headers: {
+  //       Auth: token,
+  //     },
+  //   });
+  //   return event.returnValue = '';
+  // })
+
+  // window.addEventListener("beforeunload", (event) => {
+  //   event.preventDefault();
+  //   // alert("종료?");
+  //   fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
+  //     method: "POST",
+  //     body: "OFFLINE",
+  //     headers: {
+  //       Auth: token,
+  //     },
+  //   });
+  //   event.returnValue = "";
+  //   return ".";
+  // });
 
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
