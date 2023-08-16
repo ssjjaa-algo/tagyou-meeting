@@ -23,7 +23,7 @@ import io.openvidu.java.client.SessionProperties;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "태스트용, 프런트에서 안쓰이는 API임!) WebRTC", description = "")
+@Tag(name = "WebRTC", description = "")
 public class WebRtcController {
 
 //    @Value("${OPENVIDU_URL}")
@@ -72,7 +72,7 @@ public class WebRtcController {
     private final WebRtcService webRtcService;
 
     @GetMapping("/session")
-    @Operation(summary = "미팅룸 세션 만들기", description = "반환되는 string은 session의 아이디")
+    @Operation(summary = "프런트에서 안쓰는 API임!) 미팅룸 세션 만들기", description = "반환되는 string은 session의 아이디")
     public String createSession() throws OpenViduJavaClientException, OpenViduHttpException {
         return webRtcService.initializeSession();
     }
