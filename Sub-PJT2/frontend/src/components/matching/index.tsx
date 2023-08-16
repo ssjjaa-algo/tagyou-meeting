@@ -4,7 +4,7 @@ import * as S from "./matching.styled";
 import './index.css'
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { TokenValue } from "atoms/atoms";
+import { RoomInfo, TokenValue } from "atoms/atoms";
 import { Cookies } from "react-cookie";
 
 type MatchingProps = {
@@ -20,10 +20,10 @@ export const Matching = ({
     setShowMatching(false);
   };
   const theme: themeProps = useTheme();
-  const [roomId, setRoomId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const cookies = new Cookies();
   const [token, setToken] = useRecoilState(TokenValue);
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
   
   const handleFirstClick = async() => {
     setIsLoading(true);
@@ -35,9 +35,11 @@ export const Matching = ({
           "Content-Type": "application/json",
         },
       })
-        .then((response)=> response.json())
+        .then((res)=> res.json())
         .then((res)=> {
-          let roomId = res.roomId
+          console.log(res.data)
+          if (res.data !== undefined) {
+          let roomId = res.data.roomId;      
           fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
             method: "POST",
             headers: {
@@ -45,7 +47,19 @@ export const Matching = ({
               "Content-Type": "application/json",
             }}
           )
-          .then((res) => window.location.href = `/meeting/${roomId}`)
+          .then((res) => res.json())
+          .then((res) => {
+            // Update the RoomInfo atom
+              setRoomInfo({
+                roomType: res.data.roomType,
+                roomId: res.data.roomId,
+                sessionId: res.data.sessionId,
+                maleUserName: res.data.maleUserName,
+                femaleUserName: res.data.femaleUserName,
+              })})
+              .then(()=> console.log("TEEEST", roomInfo))
+              // window.location.href = `/meeting/${roomId}`
+          }
       })
     };
     postOneRoom();

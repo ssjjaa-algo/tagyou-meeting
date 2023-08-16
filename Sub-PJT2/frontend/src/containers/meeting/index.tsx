@@ -25,12 +25,12 @@ const Meeting = () => {
   const [inGameChatStatus, setInGameChatStatus] = useRecoilState(InGameChatStatus);
   const userInfo = useRecoilValue(UserInfo);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo); // 추가
-  const [mySessionId, setMySessionId] = useState('test_sessionid');
   const [myUserName, setMyUserName] = useState(userInfo.userName);
+  const [session, setSession] = useState<Session | null>();
   const [mainStreamManager, setMainStreamManager] = useState<StreamManager | null>(null);
   const [publisher, setPublisher] = useState<Publisher | undefined>(undefined)
   const [publishers, setPublishers] = useState<any[]>([]); // 추가
-  const [session, setSession] = useState<Session | null>(null);
+
   // const [subscribers, setSubscribers] = useState<any[]>([]);
   // const [device, setDevice] = useState<Device | undefined>(undefined)
 
@@ -88,7 +88,7 @@ const Meeting = () => {
 
     // --- 4) Connect to the session with a valid user token ---
     // Get a token from the OpenVidu deployment
-    getToken(mySessionId).then((token: any) => {
+    getToken(roomInfo.sessionId).then((token: any) => {
       // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
       mySession
@@ -97,17 +97,25 @@ const Meeting = () => {
           // --- 5) Get your own camera stream ---
           // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
           // element: we will manage it on our own) and with the desired properties
-          let publisher = await OV.initPublisherAsync(undefined, {
-              audioSource: undefined, // The source of audio. If undefined default microphone
-              videoSource: undefined, // The source of video. If undefined default webcam
-              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-              publishVideo: true, // Whether you want to start publishing with your video enabled or not
-              resolution: '640x480', // The resolution of your video
-              frameRate: 30, // The frame rate of your video
-              insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-              mirror: false}) // Whether to mirror your local video or not
-              // --- 6) Publish your stream ---
-              mySession.publish(publisher);
+
+
+          if (roomInfo.roomType === "O") {
+            let publisher = OV.initPublisher("publisher");
+            mySession.publish(publisher);
+          } else {
+            let publisher = await OV.initPublisherAsync(undefined, {
+          audioSource: undefined, // The source of audio. If undefined default microphone
+          videoSource: undefined, // The source of video. If undefined default webcam
+          publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+          publishVideo: true, // Whether you want to start publishing with your video enabled or not
+          resolution: '640x480', // The resolution of your video
+          frameRate: 30, // The frame rate of your video
+          insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
+          mirror: false}) // Whether to mirror your local video or not
+          // --- 6) Publish your stream ---
+          mySession.publish(publisher);
+          }
+          console.log(roomInfo)
         })
         .catch(error => {
           console.log("There was an error connecting to the session:", error.code, error.message);
@@ -140,13 +148,13 @@ const Meeting = () => {
     
     // Empty all properties...
     // setOV(undefined)
-    setSession(null)
+    // setSession(null)
     // setSubscribers([])
-    setMainStreamManager(null)
-    setPublisher(undefined)
+    // setMainStreamManager(null)
+    // setPublisher(undefined)
   }
 
-  const getToken = (mySessionId: string) => {
+  const getToken = (mySessionId: any) => {
     return createSession(mySessionId).then((sessionId) =>
       createToken(sessionId)
     );
@@ -218,11 +226,18 @@ const Meeting = () => {
         className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}
         >
           <S.InnerContainer>
-            <S.PlayerVidBundle>
-              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-            </S.PlayerVidBundle>
+              { roomInfo.roomType === "O" ? (
+                <S.PlayerVidBundle>
+                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                </S.PlayerVidBundle>
+              ) : (
+                <S.PlayerVidBundle>
+                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                </S.PlayerVidBundle>
+              )
+              }
             <S.Middle>
               <select
                 value={selectedGame}
@@ -235,11 +250,18 @@ const Meeting = () => {
               </select>
               <button onClick={() => setGameStart(true)}>게임 시작</button>
             </S.Middle>
-            <S.PlayerVidBundle>
-              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-              <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-            </S.PlayerVidBundle>
+            { roomInfo.roomType === "O" ? (
+                <S.PlayerVidBundle>
+                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                </S.PlayerVidBundle>
+              ) : (
+                <S.PlayerVidBundle>
+                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                </S.PlayerVidBundle>
+              )
+              }
           </S.InnerContainer>
         </S.Container>
       ) : (
