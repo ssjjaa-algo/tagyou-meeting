@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomMessageRspDto {
 
-    private String senderName;
+    private String sender;
 
     private String content;
 
@@ -24,7 +24,8 @@ public class RoomMessageRspDto {
     private Long meetingRoomId;
 
     public RoomMessageRspDto(ChatMessage message){
-        this.senderName = message.getSender().getUserName();
+        this.sender = message.getSender().getUserName();
+//        this.sender = message.getSender().getId();
         this.content = message.getContent();
         this.messageType = message.getMessageType();
         this.meetingRoomId = message.getMeetingRoom().getId();

@@ -9,8 +9,6 @@ import com.ssafy.project.dto.request.NoticeReqDto;
 import com.ssafy.project.dto.response.FriendRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.FriendShipRepository;
-import com.ssafy.project.repository.NoticeRepository;
-import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FriendShipService {
     private final FriendShipRepository friendShipRepository;
-    private final UserRepository userRepository;
-    private final NoticeRepository noticeRepository;
     private final NoticeService noticeService;
     private final UserService userService;
 
@@ -208,7 +204,7 @@ public class FriendShipService {
 
     private Optional<List<Notice>> findNoticesByUserId(Long userId) {
         List<Notice> notices = new ArrayList<>();
-        noticeRepository.findAllByUserId(userId).ifPresent(noticeList -> notices.addAll(
+        noticeService.findAllByUserId(userId).ifPresent(noticeList -> notices.addAll(
                 noticeList.stream().filter(Notice::isValid).toList())
         );
 
@@ -216,5 +212,9 @@ public class FriendShipService {
                 .filter(noticeList -> !noticeList.isEmpty());
     }
 
-
+    @Transactional
+    public void rejectFriendShip(Long userId, Long otherId) {
+        friendShipRepository.deleteByUserIdAndTargetUserId(userId, otherId);
+        friendShipRepository.deleteByUserIdAndTargetUserId(otherId, userId);
+    }
 }

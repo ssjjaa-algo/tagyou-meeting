@@ -14,13 +14,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class OneMeetingRoom extends MeetingRoom{
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="male_user_id")
     @OneToOne(mappedBy = "meetingRoom", cascade = CascadeType.ALL)
     private User maleUser; // 남자
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="female_user_id")
     @OneToOne(mappedBy = "meetingRoom", cascade = CascadeType.ALL)
     private User femaleUser; // 여자
 

@@ -2,12 +2,20 @@ import { friendProps } from "types/types";
 import * as S from "./Friend.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
+
+type friendCompoentProps = friendProps & {
+  handleAccecpt?: (targetId: number) => void;
+  handleReject?: (targetId: number) => void;
+};
+
 const Friend = ({
   friendShipStatus,
   targetId,
   targetName,
   targetImageUrl,
-}: friendProps) => {
+  handleAccecpt,
+  handleReject,
+}: friendCompoentProps) => {
   const theme: themeProps = useTheme();
   return (
     <>
@@ -32,6 +40,9 @@ const Friend = ({
             size="small"
             source="accept"
             theme={theme}
+            onClick={() => {
+              handleAccecpt && handleAccecpt(targetId);
+            }}
           >
             수락
           </S.StyledBtn>
@@ -42,6 +53,9 @@ const Friend = ({
             size="small"
             source="reject"
             theme={theme}
+            onClick={() => {
+              handleReject && handleReject(targetId);
+            }}
           >
             거절
           </S.StyledBtn>

@@ -60,7 +60,7 @@ export type chatProps = {
 
 export type friendProps = {
   friendShipStatus: "REQUESTED" | "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";
-  targetId: Number;
+  targetId: number;
   targetName: string;
   targetImageUrl: string;
 };

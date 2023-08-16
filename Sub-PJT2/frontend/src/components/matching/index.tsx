@@ -1,21 +1,18 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./matching.styled";
-import './index.css'
+import "./index.css";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { RoomInfo, TokenValue } from "atoms/atoms";
 import { Cookies } from "react-cookie";
+import { GroupModal } from "components/modal/groupModal";
 
 type MatchingProps = {
-  handleOnClick: () => void;
   setShowMatching: (value: boolean) => void;
 };
 
-export const Matching = ({
-  // handleOnClick,
-  setShowMatching,
-}: MatchingProps) => {
+export const Matching = ({ setShowMatching }: MatchingProps) => {
   const handleCloseMatching = () => {
     setShowMatching(false);
   };
@@ -35,11 +32,9 @@ export const Matching = ({
           "Content-Type": "application/json",
         },
       })
-        .then((res)=> res.json())
-        .then((res)=> {
-          console.log(res.data)
-          if (res.data !== undefined) {
-          let roomId = res.data.roomId;      
+        .then((response) => response.json())
+        .then((res) => {
+          let roomId = res.roomId;
           fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
             method: "POST",
             headers: {
@@ -67,6 +62,7 @@ export const Matching = ({
 
   const handleSecondClick = async () => {
     setIsLoading(true);
+    setShowModal(true);
   };
 
   return (
@@ -76,7 +72,9 @@ export const Matching = ({
         <S.ButtonContainer>
           {isLoading ? (
             <>
-              <div className="lds-heart"><div></div></div>
+              <div className="lds-heart">
+                <div></div>
+              </div>
               <S.Loading theme={theme}>로딩 중...</S.Loading>
             </>
           ) : (
@@ -87,6 +85,8 @@ export const Matching = ({
               <S.Button theme={theme} onClick={handleSecondClick}>
                 다대다 매칭
               </S.Button>
+
+              {showModal && <GroupModal setShowModal={() => setShowModal} />}
             </>
           )}
         </S.ButtonContainer>

@@ -103,4 +103,14 @@ public class UserController {
         return userService.editUserImage(id, file);
     }
 
+    // ========================== 유효성 검사 ====================================
+    // 전화번호 길이 확인
+    @GetMapping("/phone")
+    @Operation(summary = "폰 번호 길이 유효성 검사", description = "000-0000-0000 -> 13자리 인지 아닌지")
+    public ResponseEntity<?> checkPhoneNum(@RequestParam String phoneNum) {
+        if(userService.chkPhoneNum(phoneNum))
+            return ResponseEntity.ok().body("유효한 폰번호(13자리)");
+        return ResponseEntity.badRequest().body("유효하지 않은 폰번호(13자리 아님)");
+    }
+
 }

@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -24,7 +25,7 @@ public class QGroupMeetingRoom extends EntityPathBase<GroupMeetingRoom> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
-    public final NumberPath<Integer> femaleCount = createNumber("femaleCount", Integer.class);
+    public final ListPath<com.ssafy.project.domain.user.User, com.ssafy.project.domain.user.QUser> femaleList = this.<com.ssafy.project.domain.user.User, com.ssafy.project.domain.user.QUser>createList("femaleList", com.ssafy.project.domain.user.User.class, com.ssafy.project.domain.user.QUser.class, PathInits.DIRECT2);
 
     //inherited
     public final NumberPath<Long> id = _super.id;
@@ -32,7 +33,7 @@ public class QGroupMeetingRoom extends EntityPathBase<GroupMeetingRoom> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastUsedDate = _super.lastUsedDate;
 
-    public final NumberPath<Integer> maleCount = createNumber("maleCount", Integer.class);
+    public final ListPath<com.ssafy.project.domain.user.User, com.ssafy.project.domain.user.QUser> maleList = this.<com.ssafy.project.domain.user.User, com.ssafy.project.domain.user.QUser>createList("maleList", com.ssafy.project.domain.user.User.class, com.ssafy.project.domain.user.QUser.class, PathInits.DIRECT2);
 
     //inherited
     public final StringPath sessionId = _super.sessionId;

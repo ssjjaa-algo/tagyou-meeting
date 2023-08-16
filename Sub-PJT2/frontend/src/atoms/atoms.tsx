@@ -19,7 +19,7 @@ export const NomalFriendList = selector({
   key: "NomalFriendList",
   get: ({ get }) => {
     const friendList = get(FriendList);
-    return friendList.filter((item) => item.friendShipStatus === "FRIEND");
+    return friendList?.filter((item) => item.friendShipStatus === "FRIEND");
   },
 });
 
@@ -27,7 +27,7 @@ export const ReceivedFriendList = selector({
   key: "ReceivedFriendList",
   get: ({ get }) => {
     const friendList = get(FriendList);
-    return friendList.filter((item) => item.friendShipStatus === "RECEIVED");
+    return friendList?.filter((item) => item.friendShipStatus === "RECEIVED");
   },
 });
 
@@ -35,7 +35,7 @@ export const RequestFriendList = selector({
   key: "RequestFriendList",
   get: ({ get }) => {
     const friendList = get(FriendList);
-    return friendList.filter((item) => item.friendShipStatus === "REQUESTED");
+    return friendList?.filter((item) => item.friendShipStatus === "REQUESTED");
   },
 });
 

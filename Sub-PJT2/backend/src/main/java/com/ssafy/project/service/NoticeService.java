@@ -5,7 +5,6 @@ import com.ssafy.project.dto.request.NoticeReqDto;
 import com.ssafy.project.dto.response.NoticeRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.NoticeRepository;
-import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,5 +62,8 @@ public class NoticeService {
 
     private Optional<Notice> saveNotice(Notice notice){
         return Optional.of(noticeRepository.save(notice));
+    }
+    public Optional<List<Notice>> findAllByUserId(Long userId){
+        return noticeRepository.findAllByUserId(userId);
     }
 }

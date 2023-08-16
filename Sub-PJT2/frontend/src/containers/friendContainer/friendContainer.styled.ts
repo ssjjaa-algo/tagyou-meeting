@@ -74,4 +74,5 @@ export const SpecialDes = styled(Des)`
 export const StyledBadge = styled(Badge)<{ theme: themeProps }>`
   background-color: : ${(props) => props.theme.bg.light};
   height: 23px;
+  margin-left: 10px;
 `;

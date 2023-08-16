@@ -37,6 +37,8 @@ public class GroupService {
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 만들 유저가 존재하지 않습니다."));
 
+        userService.checkUserGender(user);
+
         MeetingGroup meetingGroup = MeetingGroup.builder()
                 .groupGender(user.getUserGender())
                 .build();
