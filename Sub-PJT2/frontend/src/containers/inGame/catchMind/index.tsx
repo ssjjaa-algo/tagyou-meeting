@@ -1,4 +1,5 @@
 import * as S from "./CatchMind.styled";
+import * as M from "../../meeting/Meeting.styled";
 import { useRef, useState, useCallback, useEffect } from "react";
 import styled from "@emotion/styled";
 import UserVideoComponent from "../../meeting/UserVideoComponent"
@@ -298,13 +299,13 @@ const CatchMind = ({ publisher }: { publisher: Publisher | undefined }) => {
         {/* 사람 영상 뜰 자리 */}
         { roomInfo.roomType === "One" ? (
           <S.PlayerVidBundle>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
           </S.PlayerVidBundle>
         ) : (
           <S.PlayerVidBundle>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
           </S.PlayerVidBundle>
         )
         }
