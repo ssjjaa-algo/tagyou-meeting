@@ -5,14 +5,10 @@ export const GroupModal = ({
 }: {
   setShowModal: (value: boolean) => void;
 }) => {
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
   return (
-    <S.ModalWrapper onClick={handleCloseModal}>
+    <S.ModalWrapper onClick={() => setShowModal(false)}>
       <S.ModalContent onClick={(e) => e.stopPropagation()}>
-        <S.CloseIconStyled onClick={handleCloseModal} />
+        <S.CloseIconStyled onClick={() => setShowModal(false)} />
       </S.ModalContent>
     </S.ModalWrapper>
   );

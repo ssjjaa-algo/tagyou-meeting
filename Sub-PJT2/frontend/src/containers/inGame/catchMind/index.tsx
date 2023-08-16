@@ -1,26 +1,30 @@
 import * as S from "./CatchMind.styled";
+import * as M from "../../meeting/Meeting.styled";
 import { useRef, useState, useCallback, useEffect } from "react";
 import styled from "@emotion/styled";
+import UserVideoComponent from "../../meeting/UserVideoComponent"
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import brush from "asset/img/brush.png";
-
+import { RoomInfo } from "atoms/atoms";
+import { useRecoilState } from "recoil";
+import { Publisher } from "openvidu-browser";
 interface Coordinate {
   x: number;
   y: number;
 }
 
-const CatchMind = () => {
+const CatchMind = ({ publisher }: { publisher: Publisher | undefined }) => {
   const theme: themeProps = useTheme();
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
   const [color, setColor] = useState<string>("black");
   const [mousePosition, setMousePosition] = useState<Coordinate | undefined>(
     undefined
   );
   const [isPainting, setIsPainting] = useState(false);
-  const [thickness, setThickness] = useState(1);
+  const [thickness, setThickness] = useState(1); 
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo); // 추가
+
 
   const getCoordinates = (event: MouseEvent): Coordinate | undefined => {
     if (!canvasRef.current) {
@@ -170,11 +174,18 @@ const CatchMind = () => {
     <S.Container>
       <S.Body>
         {/* 사람 영상 뜰 자리 */}
-        <S.PlayerVidBundle>
-          <S.PlayerVid></S.PlayerVid>
-          <S.PlayerVid></S.PlayerVid>
-          <S.PlayerVid></S.PlayerVid>
-        </S.PlayerVidBundle>
+        { roomInfo.roomType === "One" ? (
+          <S.PlayerVidBundle>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+          </S.PlayerVidBundle>
+        ) : (
+          <S.PlayerVidBundle>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+          </S.PlayerVidBundle>
+        )
+        }
         {/* 그림판 */}
         <S.CanvasBox theme={theme}>
           <S.Canvas ref={canvasRef} width="550" height="350" theme={theme} />
@@ -286,14 +297,29 @@ const CatchMind = () => {
           </S.PaletteBody>
         </S.CanvasBox>
         {/* 사람 영상 뜰 자리 */}
-        <S.PlayerVidBundle>
-          <S.PlayerVid></S.PlayerVid>
-          <S.PlayerVid></S.PlayerVid>
-          <S.PlayerVid></S.PlayerVid>
-        </S.PlayerVidBundle>
+        { roomInfo.roomType === "One" ? (
+          <S.PlayerVidBundle>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
+          </S.PlayerVidBundle>
+        ) : (
+          <S.PlayerVidBundle>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
+            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
+          </S.PlayerVidBundle>
+        )
+        }
       </S.Body>
     </S.Container>
   );
 };
 
 export default CatchMind;
+function setRoomInfo(parsedRoomInfo: any) {
+  throw new Error("Function not implemented.");
+}
+
+function joinSession(parsedRoomInfo: any) {
+  throw new Error("Function not implemented.");
+}
+

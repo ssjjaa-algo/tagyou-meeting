@@ -3,6 +3,8 @@ import logoImg from "../../../asset/img/logo/2.png";
 import { useRecoilState } from "recoil";
 import { TokenValue } from "atoms/atoms";
 import { useState } from "react";
+import { friendProps } from "types/types";
+import { Userlist } from "components/userList";
 
 type modalProps = {
   setShowModal: (value: boolean) => void;
@@ -11,25 +13,31 @@ type modalProps = {
 export const FriendSearchModal = ({ setShowModal }: modalProps) => {
   const [token, setToken] = useRecoilState(TokenValue);
   const [searchName, setSearchName] = useState<string>();
+  const [isFirst, setIsFirst] = useState<boolean>(true);
+  const [allUsersList, setAllUsersList] = useState<friendProps[]>();
 
   const handleCloseModal = () => {
+    console.log("clicked");
     setShowModal(false);
   };
 
   const searchFriend = () => {
-    console.log("zz");
-    // //searchName를 넣어 api 요청하도룩 수정해야함
-    // console.log("searchFriend api 실행 전 token 확인", token);
-    // const fetchSearchFriendByName = async () => {
-    //   fetch(`${process.env.REACT_APP_BASE_URL}`, {
-    //     headers: {
-    //       Auth: token,
-    //     },
-    //   })
-    //     .then((response) => response.json())
-    //     .then((res) => console.log(res));
-    // };
-    // token && fetchSearchFriendByName();
+    const fetchAllUser = async () => {
+      console.log("fetchAllUser", token);
+      console.log("searchName", searchName);
+      fetch(
+        `${process.env.REACT_APP_BASE_URL}/friends/search?keyword=${searchName}`,
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((res) => setAllUsersList(res));
+    };
+    token && fetchAllUser();
+    setIsFirst(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +55,15 @@ export const FriendSearchModal = ({ setShowModal }: modalProps) => {
           placeholder="이름으로 친구 검색"
         ></S.StyledInput>
         <S.RequestBtn onClick={searchFriend}>검색하기</S.RequestBtn>
+        <S.ListContainer>
+          <S.ListContainerInner>
+            {allUsersList ? (
+              <Userlist dataList={allUsersList} />
+            ) : (
+              <S.MSG>🍀 친구를 이름으로 검색해보세요 🍀</S.MSG>
+            )}
+          </S.ListContainerInner>
+        </S.ListContainer>
       </S.ModalContent>
     </S.ModalWrapper>
   );

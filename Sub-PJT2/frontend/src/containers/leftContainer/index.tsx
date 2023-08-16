@@ -154,7 +154,9 @@ const LeftContainer = () => {
           formType="logout"
         />
       )}
-      {/* {showMatching && <Matching setShowMatching={setShowMatching} />} */}
+      {showMatching && <Matching setShowMatching={setShowMatching} handleOnClick={function (): void {
+        throw new Error("Function not implemented.");
+      } } />}
     </>
   );
 };
