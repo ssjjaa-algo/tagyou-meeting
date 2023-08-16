@@ -12,7 +12,7 @@ import * as S from "./LeftContainer.styled";
 import Profile from "components/profile";
 import { useEffect, useState } from "react";
 import { Modal } from "components/modal";
-import { Cookies } from "react-cookie";
+import { Cookies, useCookies } from "react-cookie";
 import { Matching } from "components/matching";
 
 const LeftContainer = () => {
@@ -25,18 +25,14 @@ const LeftContainer = () => {
   const [authToken, setAuthToken] = useState<string>("");
   const [imgSrc, setImgSrc] = useRecoilState<string>(ProfileImgSrc);
   const [showMatching, setShowMatching] = useState<boolean>(false);
-  useEffect(() => {
-    console.log("leftcontainer");
-  }, []);
 
   useEffect(() => {
-    console.log("localAuthSetting");
     setAuthToken(cookies.get("Auth"));
   }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      console.log("left_container에서 받는 localToken", authToken);
+      // console.log("left_container에서 받는 localToken", authToken);
       fetch(`${process.env.REACT_APP_BASE_URL}/users/mypage`, {
         headers: {
           Auth: authToken,
@@ -64,12 +60,8 @@ const LeftContainer = () => {
   }, [authToken]);
 
   useEffect(() => {
-    token !== "" && console.log("left_container에서 확인한 recoilToken", token);
-  }, [token]);
-
-  useEffect(() => {
     const fetchImgSrc = async () => {
-      console.log("프로필 이미지 받기 전 토큰 확인", token);
+      // console.log("프로필 이미지 받기 전 토큰 확인", token);
       fetch(`${process.env.REACT_APP_BASE_URL}/users/image`, {
         headers: {
           Auth: token,
@@ -86,6 +78,14 @@ const LeftContainer = () => {
   }, [imgSrc]);
 
   const theme: themeProps = useTheme();
+
+  const [, , removeCookie] = useCookies(["Auth"]);
+
+  const handleLogout = () => {
+    removeCookie("Auth");
+    setToken("");
+    window.location.href = "/";
+  };
 
   return (
     <>
@@ -149,17 +149,12 @@ const LeftContainer = () => {
 
       {showModal && (
         <Modal
-          handleOnClick={() => console.log("logout")}
+          handleOnClick={() => handleLogout}
           setShowModal={setShowModal}
           formType="logout"
         />
       )}
-      {showMatching && (
-        <Matching
-          handleOnClick={() => console.log("logout")}
-          setShowMatching={setShowMatching}
-        />
-      )}
+      {showMatching && <Matching setShowMatching={setShowMatching} />}
     </>
   );
 };
