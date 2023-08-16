@@ -6,13 +6,21 @@ import { useRecoilState } from "recoil";
 import exitImg from "asset/img/icons8-exit-50.png";
 import homeImg from "asset/img/home.png";
 import tmpLogo from "asset/img/logo/2.png";
+// import { roomProps } from "types/types";
+
 
 const Header = () => {
+  // const storedRoomInfo = localStorage.getItem('roomInfo');
+  // if (storedRoomInfo) {
+  //   const parsedRoomInfo = JSON.parse(storedRoomInfo);
+  //   setRoomInfo(parsedRoomInfo);
+  // }
+
   const theme: themeProps = useTheme();
   const [GameStart, setGameStart] = useRecoilState(GameStartAtom);
 
   const GotoMeeting = () => {
-    window.location.href = "/meeting";  
+    window.location.href = `/meeting/`;
   };
 
   const GotoHome = () => {
@@ -32,3 +40,7 @@ const Header = () => {
 };
 
 export default Header;
+function setRoomInfo(parsedRoomInfo: any) {
+  throw new Error("Function not implemented.");
+}
+

@@ -15,9 +15,15 @@ import { OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvid
 import axios from 'axios';
 import UserVideoComponent from './UserVideoComponent';
 import { storiesOf } from "@storybook/react";
+// import { roomProps } from "types/types";
+import { parse } from "path";
+import { roomProps } from "types/types";
 
 const OPENVIDU_SERVER_URL = 'https://tagyou.site:8443';
 const OPENVIDU_SERVER_SECRET = 'tagyou';
+// const OPENVIDU_SERVER_URL = 'https://tagyou.site:5443'
+// const OPENVIDU_SERVER_SECRET = 'tagyou';
+
 
 const Meeting = () => {
   const [GameStart, setGameStart] = useRecoilState(GameStartAtom);
@@ -31,24 +37,22 @@ const Meeting = () => {
   const [publisher, setPublisher] = useState<Publisher | undefined>(undefined)
   // const [subscriber, setSubscriber] = useState<Subscriber | undefined>(undefined)
   const [publishers, setPublishers] = useState<any[]>([]); // 추가
-
+  const [token, setToken] = useState<any>()
   // const [subscribers, setSubscribers] = useState<any[]>([]);
   // const [device, setDevice] = useState<Device | undefined>(undefined)
 
-  useEffect(() => {
-    const storedRoomInfo = localStorage.getItem('roomInfo');
-    if (storedRoomInfo) {
-      const parsedRoomInfo = JSON.parse(storedRoomInfo);
-      setRoomInfo(parsedRoomInfo);
-      joinSession(parsedRoomInfo);
-    }
 
+  useEffect(() => {
+    const storedRoomInfo = localStorage.getItem('recoil-persist');
+    setRoomInfo(storedRoomInfo ? JSON.parse(storedRoomInfo)['RoomInfo'] : null);
+    console.log(roomInfo)
     const rightContainer = document.querySelector(
       ".right_container"
     ) as HTMLElement;
     if (rightContainer instanceof Element) {
       rightContainer.style.width = "100vw";
     }
+    joinSession(roomInfo)
   }, []);
 
   const renderSelectedGame = () => {
@@ -66,9 +70,9 @@ const Meeting = () => {
         session.disconnect();
     }
   }
-  
+
   // Openvidu
-  const joinSession = (roomInfo: any) => {
+  const joinSession = (roomInfo: roomProps) => {
     const OV = new OpenVidu();
     let mySession: Session = OV.initSession()
 
@@ -76,32 +80,56 @@ const Meeting = () => {
       mySession.subscribe(event.stream, "subscriber");
     });
     
-    new Promise((resolve, reject) => {
-      let data = {};
+    new Promise<void>((resolve, reject) => {
+      const data = {
+        type: "WEBRTC",
+        data: "My Server Data",
+        record: true,
+        role: "PUBLISHER",
+        kurentoOptions: {
+          videoMaxRecvBandwidth: 1000,
+          videoMinRecvBandwidth: 300,
+          videoMaxSendBandwidth: 1000,
+          videoMinSendBandwidth: 300,
+          allowedFilters: ["GStreamerFilter", "ZBarFilter"],
+        },
+        customIceServers: [
+          {
+            url: "turn:turn-domain.com:443",
+            username: "usertest",
+            credential: "userpass",
+          },
+        ],
+      };
+    
       axios
         .post(
-            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${roomInfo.sessionId}/connection`,
-            data,
-            {
+          `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${roomInfo.sessionId}/connection`,
+          data,
+          {
             headers: {
-                Authorization: `Basic ${btoa(
+              Authorization: `Basic ${btoa(
                 `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-                )}`,
-                'Content-Type': 'application/json',
+              )}`,
+              'Content-Type': 'application/json',
+              'Auth': token
             },
-            }
+          }
         )
         .then((response) => {
-          const token = response.data.token
-          mySession.connect(token)
-          .then(() => {
-            let publisher = OV.initPublisher("publisher");
+          setToken(response.data.token);
+          mySession.connect(token).then(() => {
+            const publisher = OV.initPublisher("publisher");
             mySession.publish(publisher);
             setPublisher(publisher);
-          })
+          });
+          resolve(); // Resolve the Promise once everything is done
         })
-          .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          reject(error); // Reject the Promise in case of an error
         });
+    });    
   };
 
   return (
@@ -109,7 +137,7 @@ const Meeting = () => {
     <S.Container
     className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}
     >
-      <Header />
+      <Header/>
       {!GameStart ? (
         <S.Container
         className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}

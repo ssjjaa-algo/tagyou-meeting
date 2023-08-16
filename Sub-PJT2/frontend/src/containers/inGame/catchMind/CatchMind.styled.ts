@@ -114,8 +114,8 @@ export const PlayerVidBundle = styled.div`
 export const PlayerVid = styled.div`
   border: solid red;
   display: flex;
-  width: 60%;
-  height: 40%;
+  width: 80%;
+  /* height: ; */
   min-width: 15rem;
   min-height: 10rem;
 `;
