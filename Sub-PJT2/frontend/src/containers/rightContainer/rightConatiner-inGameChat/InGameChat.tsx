@@ -14,7 +14,6 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import imgDown from "asset/img/icons8-down-100.png";
 import { Cookies } from "react-cookie";
-import e from "express";
 
 type SendingMessage = {
   content: string;
@@ -59,7 +58,7 @@ const RightContainer = () => {
   // 방번호 조회
   const getRoomId = async () => {
     console.log("roomId 확인 전 발급된 토큰 확인: " + token);
-    fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/1`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
       method: "POST",
       headers: {
         Auth: token,
@@ -68,7 +67,7 @@ const RightContainer = () => {
       .then((res) => res.json())
       .then((data: Room) => {
         console.log(data);
-        setRoomId(1);
+        // setRoomId(1);
       });
   };
 
@@ -87,6 +86,7 @@ const RightContainer = () => {
       // 여기서 url 조정하면 됨
       // const socket = new SockJS(`http://${domainAddress}/ws/chat`);
       // const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`, {
+      //   // http://localhost:9999/api/ws/chat/
       //   headers: {
       //     Auth: token,
       //   },
@@ -94,21 +94,19 @@ const RightContainer = () => {
       const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`);
       return socket;
     });
-    client.current.connect({ Auth: token }, () => {
+    console.log("바로직전: " + token);
+    const headers = {
+      Auth: token,
+    };
+    client.current.connect(headers, () => {
       // 해당 방과 동기화(?)
       // roomSync();
-      client.current!.subscribe(`/sub/chat/rooms/${roomId}`, (message) => {
-        addItem(JSON.parse(message.body));
-      });
-      const enteringMessageRoom: SendingMessage = {
-        content: "님이 입장하셨습니다.",
-        message_type: "ENTER",
-        meeting_room_id: roomId,
-      };
-      client.current!.send(
-        "/pub/chat/message",
-        {},
-        JSON.stringify(enteringMessageRoom)
+      client.current?.subscribe(
+        `/sub/chat/rooms/${roomId}`,
+        (message) => {
+          addItem(JSON.parse(message.body));
+        },
+        { Auth: token, RoomId: roomId + "" }
       );
     });
     requestChatHistory(roomId);
@@ -154,6 +152,10 @@ const RightContainer = () => {
 
   const addItem = (item: ReceivingMessage) => {
     if (item.message_type === "TALK" || "ENTER" || "EXIT") {
+      console.log("발신자: " + item.sender);
+      console.log("내용: " + item.content);
+      console.log("타입: " + item.message_type);
+      console.log("방번호: " + item.meeting_room_id);
       let newItems: ReceivingMessage[] = [];
       newItems = items;
       newItems.push(item);
@@ -194,7 +196,7 @@ const RightContainer = () => {
         client.current!.send(
           "/pub/chat/message",
           // "/chat/message",
-          {},
+          { Auth: token },
           JSON.stringify(messageSending)
         );
         setMessage("");
