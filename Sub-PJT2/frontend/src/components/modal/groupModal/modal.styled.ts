@@ -19,8 +19,8 @@ export const ModalContent = styled.div`
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  width: 400px;
-  height: 300px;
+  width: 1000px;
+  height: 700px;
   display: flex;
   flex-direction: column;
   position: relative;

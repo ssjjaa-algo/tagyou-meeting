@@ -19,7 +19,6 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
   const theme: themeProps = useTheme();
   const [roomId, setRoomId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const cookies = new Cookies();
   const [token, setToken] = useRecoilState(TokenValue);
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -48,37 +47,46 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
     postOneRoom();
   };
 
-  const handleSecondClick = async () => {
-    setIsLoading(true);
+  const handleSecondClick = () => {
+    // setIsLoading(true);
+    console.log("hhello");
     setShowModal(true);
+    //자식에게까지 상속되는 것 같다
+    // setShowMatching(false);
+    console.log("이건 되남");
   };
 
-  return (
-    <S.ModalWrapper onClick={handleCloseMatching}>
-      <S.ModalContent onClick={(e) => e.stopPropagation()} theme={theme}>
-        <S.CloseIconStyled onClick={handleCloseMatching} />
-        <S.ButtonContainer>
-          {isLoading ? (
-            <>
-              <div className="lds-heart">
-                <div></div>
-              </div>
-              <S.Loading theme={theme}>로딩 중...</S.Loading>
-            </>
-          ) : (
-            <>
-              <S.Button theme={theme} onClick={handleFirstClick}>
-                일대일 매칭
-              </S.Button>
-              <S.Button theme={theme} onClick={handleSecondClick}>
-                다대다 매칭
-              </S.Button>
+  useEffect(() => {
+    console.log("showmodal", showModal);
+  }, [showModal]);
 
-              {showModal && <GroupModal setShowModal={() => setShowModal} />}
-            </>
-          )}
-        </S.ButtonContainer>
-      </S.ModalContent>
-    </S.ModalWrapper>
+  return (
+    <>
+      <S.ModalWrapper onClick={handleCloseMatching}>
+        <S.ModalContent onClick={(e) => e.stopPropagation()} theme={theme}>
+          <S.CloseIconStyled onClick={handleCloseMatching} />
+          <S.ButtonContainer>
+            {isLoading ? (
+              <>
+                <div className="lds-heart">
+                  <div></div>
+                </div>
+                <S.Loading theme={theme}>로딩 중...</S.Loading>
+              </>
+            ) : (
+              <>
+                <S.Button theme={theme} onClick={handleFirstClick}>
+                  일대일 매칭
+                </S.Button>
+                <S.Button theme={theme} onClick={handleSecondClick}>
+                  다대다 매칭
+                </S.Button>
+              </>
+            )}
+            {showModal && <GroupModal setShowModal={setShowModal} />}
+          </S.ButtonContainer>
+        </S.ModalContent>
+      </S.ModalWrapper>
+    </>
   );
 };
