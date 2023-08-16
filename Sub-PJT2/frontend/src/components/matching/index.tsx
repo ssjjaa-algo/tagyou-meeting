@@ -65,7 +65,6 @@ export const Matching = ({
     postOneRoom();
   };
 
-<<<<<<< HEAD
   const handleSecondClick = async () => {
     setIsLoading(true);
   };
@@ -93,48 +92,46 @@ export const Matching = ({
         </S.ButtonContainer>
       </S.ModalContent>
     </S.ModalWrapper>
-=======
-  const handleSecondClick = () => {
-    // setIsLoading(true);
-    console.log("hhello");
-    setShowModal(true);
-    //자식에게까지 상속되는 것 같다
-    // setShowMatching(false);
-    console.log("이건 되남");
-  };
+  // const handleSecondClick = () => {
+  //   // setIsLoading(true);
+  //   console.log("hhello");
+  //   setShowModal(true);
+  //   //자식에게까지 상속되는 것 같다
+  //   // setShowMatching(false);
+  //   console.log("이건 되남");
+  // };
 
-  useEffect(() => {
-    console.log("showmodal", showModal);
-  }, [showModal]);
+  // useEffect(() => {
+  //   console.log("showmodal", showModal);
+  // }, [showModal]);
 
-  return (
-    <>
-      <S.ModalWrapper onClick={handleCloseMatching}>
-        <S.ModalContent onClick={(e) => e.stopPropagation()} theme={theme}>
-          <S.CloseIconStyled onClick={handleCloseMatching} />
-          <S.ButtonContainer>
-            {isLoading ? (
-              <>
-                <div className="lds-heart">
-                  <div></div>
-                </div>
-                <S.Loading theme={theme}>로딩 중...</S.Loading>
-              </>
-            ) : (
-              <>
-                <S.Button theme={theme} onClick={handleFirstClick}>
-                  일대일 매칭
-                </S.Button>
-                <S.Button theme={theme} onClick={handleSecondClick}>
-                  다대다 매칭
-                </S.Button>
-              </>
-            )}
-            {showModal && <GroupModal setShowModal={setShowModal} />}
-          </S.ButtonContainer>
-        </S.ModalContent>
-      </S.ModalWrapper>
-    </>
->>>>>>> 2e7e110a764012e0de7f7c287af2fbe7b7fcf46f
+  // return (
+  //   <>
+  //     <S.ModalWrapper onClick={handleCloseMatching}>
+  //       <S.ModalContent onClick={(e) => e.stopPropagation()} theme={theme}>
+  //         <S.CloseIconStyled onClick={handleCloseMatching} />
+  //         <S.ButtonContainer>
+  //           {isLoading ? (
+  //             <>
+  //               <div className="lds-heart">
+  //                 <div></div>
+  //               </div>
+  //               <S.Loading theme={theme}>로딩 중...</S.Loading>
+  //             </>
+  //           ) : (
+  //             <>
+  //               <S.Button theme={theme} onClick={handleFirstClick}>
+  //                 일대일 매칭
+  //               </S.Button>
+  //               <S.Button theme={theme} onClick={handleSecondClick}>
+  //                 다대다 매칭
+  //               </S.Button>
+  //             </>
+  //           )}
+  //           {showModal && <GroupModal setShowModal={setShowModal} />}
+  //         </S.ButtonContainer>
+  //       </S.ModalContent>
+  //     </S.ModalWrapper>
+  //   </>
   );
 };
