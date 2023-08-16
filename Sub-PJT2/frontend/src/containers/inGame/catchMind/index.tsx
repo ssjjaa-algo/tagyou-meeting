@@ -21,7 +21,7 @@ const CatchMind = ({ publisher }: { publisher: Publisher | undefined }) => {
     undefined
   );
   const [isPainting, setIsPainting] = useState(false);
-  const [thickness, setThickness] = useState(1);
+  const [thickness, setThickness] = useState(1); 
   const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo); // 추가
 
 
