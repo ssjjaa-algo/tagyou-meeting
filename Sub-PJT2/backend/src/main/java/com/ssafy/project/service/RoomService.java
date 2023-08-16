@@ -55,19 +55,14 @@ public class RoomService {
 
         return oneRepository.findRamdomRoom(user)
             .map(room -> {
-                if(user.getUserGender() == Gender.MALE){
-                    room.setMaleUser(user);
+                if(room.getUserList().size() >= 2){
+                    throw new IllegalStateException("일대일 미팅룸 최대 인원을 초과하였습니다.");
                 }
-                else if(user.getUserGender() == Gender.FEMALE){
-                    room.setFemaleUser(user);
-                }
-                else {
-                    throw new NotFoundException("들어갈 수 있는 일대일 미팅룸이 없습니다.");
-                }
+                room.addUser(user);
                 return room;
             })
-                .map(OneRoomRspDto::new)
-                .orElseGet(() -> createOneMeetRoom(userId));
+            .map(OneRoomRspDto::new)
+            .orElseGet(() -> createOneMeetRoom(userId));
     }
 
     /**
@@ -76,7 +71,7 @@ public class RoomService {
     public OneRoomRspDto createOneMeetRoom(Long userId) {
         log.info("createOneMeetRoom : " + userId);
         OneMeetingRoom newOneRoom = OneMeetingRoom.builder()
-                .newUser(userService.findUser(userId)
+                .user(userService.findUser(userId)
                         .orElseThrow(() -> new NotFoundException("유저의 정보가 조회되지 않습니다.")))
                 .build();
         return saveOneMeetRoom(newOneRoom).map(OneRoomRspDto::new)
@@ -88,9 +83,8 @@ public class RoomService {
      */
     public OneRoomRspDto startOneMeetRoom(Long roomId) {
         OneMeetingRoom meetingRoom = findOneMeetRoom(roomId)
-                .filter(room -> room.getMaleUser() != null && room.getFemaleUser() != null)
+                .filter(room -> room.getUserList().size() == 2)
                 .orElseThrow(() -> new NotFoundException("아직 대기 중인 일대일 미팅룸입니다."));
-
         connectWebService(meetingRoom);
         return new OneRoomRspDto(meetingRoom);
     }
@@ -106,13 +100,7 @@ public class RoomService {
         }
 
         return findOneMeetRoom(user.getMeetingRoom().getId()).map(room ->{
-
-            if(user.getUserGender() == Gender.MALE) {
-                room.removeMaleUser();
-            }
-            else if(user.getUserGender() == Gender.FEMALE) {
-                room.removeFemaleUser();
-            }
+            room.removeUser(user);
             return room;})
                 .map(OneRoomRspDto::new)
                 .orElseThrow(() -> new NotFoundException("나가려는 일대일 미팅룸이 조회되지 않습니다."));
@@ -125,8 +113,7 @@ public class RoomService {
        return findOneMeetRoom(roomId)
                .filter(room -> room.getStatus().equals(MeetingRoomStatus.ACTIVE))
                .map(room -> {
-                   room.removeMaleUser();
-                   room.removeFemaleUser();
+                   room.clearUser();
                    room.setSessionId(null);
                    room.changeStatus(MeetingRoomStatus.INACTIVE);
                    return room;
@@ -215,10 +202,10 @@ public class RoomService {
         return findGroupMeetRoom(user.getMeetingRoom().getId()).map(room ->{
 
                     if(user.getUserGender() == Gender.MALE) {
-                        room.removeMaleUserList();
+                        room.removeMaleUserList(group);
                     }
                     else if(user.getUserGender() == Gender.FEMALE) {
-                        room.removeFemaleUserList();
+                        room.removeFemaleUserList(group);
                     }
                     return room;})
                 .map(GroupRoomRspDto::new)
@@ -233,8 +220,7 @@ public class RoomService {
         return findGroupMeetRoom(roomId)
                 .filter(room -> room.getStatus().equals(MeetingRoomStatus.ACTIVE))
                 .map(room -> {
-                    room.removeMaleUserList();
-                    room.removeFemaleUserList();
+                    room.clearGroupUser();
                     room.setSessionId(null);
                     room.changeStatus(MeetingRoomStatus.INACTIVE);
                     return room;
