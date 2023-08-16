@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Button } from "antd";
 
-export const Profile = styled(Link)`
+export const Profile = styled.div`
   display: flex;
   vertical-align: middle;
 `;

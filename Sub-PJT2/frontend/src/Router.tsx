@@ -15,6 +15,7 @@ import InputContainer from "containers/inputContainer";
 import PageNotFound from "containers/pageNotFound/PageNotFound";
 import InGameChat from "containers/rightContainer/rightConatiner-inGameChat/InGameChat";
 import MyPageTmp from "containers/mypagetmp";
+import { GroupModal } from "components/modal/groupModal";
 
 const Router = () => {
   return (
@@ -33,6 +34,7 @@ const Router = () => {
       <Route path="/meeting/:roomId" element={<Meeting />} />
       <Route path="/chatTest" element={<InGameChat />} />
       <Route id="pnf" path="*" element={<PageNotFound />} />
+      <Route path="group" element={<GroupModal />} />
     </Routes>
   );
 };

@@ -13,6 +13,7 @@ export const IsDark = atom<boolean>({
 export const FriendList = atom<friendProps[]>({
   key: "FriendList",
   default: [],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const NomalFriendList = selector({
@@ -39,15 +40,10 @@ export const RequestFriendList = selector({
   },
 });
 
-export const IsOpen = atom<boolean>({
-  key: "IsOpen",
-  default: true,
-  effects_UNSTABLE: [persistAtom],
-});
-
 export const TokenValue = atom<string>({
   key: "TokenValue",
   default: "",
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const IsLogin = atom<boolean>({
@@ -66,6 +62,7 @@ export const UserInfo = atom<userProps>({
     userGender: "MALE",
     userLike: 0,
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const ProfileImgSrc = atom<string>({

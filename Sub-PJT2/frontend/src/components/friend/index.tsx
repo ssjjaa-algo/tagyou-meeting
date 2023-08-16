@@ -24,7 +24,7 @@ const Friend = ({
 
   return (
     <>
-      <S.Profile to={`/chatroom/${targetId}`}>
+      <S.Profile>
         <S.ProfileImgBox>
           <S.ProfileImg
             src={targetImageUrl}
