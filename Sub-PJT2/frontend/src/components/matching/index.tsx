@@ -4,7 +4,7 @@ import * as S from "./matching.styled";
 import "./index.css";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { TokenValue } from "atoms/atoms";
+import { RoomInfo, TokenValue } from "atoms/atoms";
 import { Cookies } from "react-cookie";
 import { GroupModal } from "components/modal/groupModal";
 
@@ -17,13 +17,12 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
     setShowMatching(false);
   };
   const theme: themeProps = useTheme();
-  const [roomId, setRoomId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const cookies = new Cookies();
   const [token, setToken] = useRecoilState(TokenValue);
-  const [showModal, setShowModal] = useState<boolean>(false);
-
-  const handleFirstClick = async () => {
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
+  
+  const handleFirstClick = async() => {
     setIsLoading(true);
     const postOneRoom = async () => {
       fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one`, {
@@ -41,9 +40,22 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
             headers: {
               Auth: token,
               "Content-Type": "application/json",
-            },
-          }).then((res) => (window.location.href = `/meeting/${roomId}`));
-        });
+            }}
+          )
+          .then((res) => res.json())
+          .then((res) => {
+            // Update the RoomInfo atom
+              setRoomInfo({
+                roomType: res.data.roomType,
+                roomId: res.data.roomId,
+                sessionId: res.data.sessionId,
+                maleUserName: res.data.maleUserName,
+                femaleUserName: res.data.femaleUserName,
+              })})
+              .then(()=> console.log("TEEEST", roomInfo))
+              // window.location.href = `/meeting/${roomId}`
+          }
+      })
     };
     postOneRoom();
   };
