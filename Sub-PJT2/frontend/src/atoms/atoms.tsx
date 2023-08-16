@@ -89,9 +89,9 @@ export const RoomInfo = atom<roomProps>({
     roomType: "",
     roomId: 0,
     sessionId: "",
-    maleUserName: "",
-    femaleUserName: "",
+    userList: [],
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const UpdateUserInfoFromToken = selector({

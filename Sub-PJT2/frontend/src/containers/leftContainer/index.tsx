@@ -13,7 +13,7 @@ import Profile from "components/profile";
 import { useEffect, useState } from "react";
 import { Modal } from "components/modal";
 import { Cookies, useCookies } from "react-cookie";
-import { Matching } from "components/matching";
+import Matching from "components/matching";
 
 const LeftContainer = () => {
   const [isDark, setIsDark] = useRecoilState(IsDark);
@@ -154,9 +154,7 @@ const LeftContainer = () => {
           formType="logout"
         />
       )}
-      {showMatching && <Matching setShowMatching={setShowMatching} handleOnClick={function (): void {
-        throw new Error("Function not implemented.");
-      } } />}
+      {showMatching && <Matching setShowMatching={setShowMatching} />}
     </>
   );
 };

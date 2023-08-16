@@ -6,16 +6,15 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { RoomInfo, TokenValue } from "atoms/atoms";
 import { Cookies } from "react-cookie";
+import { Userlist } from "components/userList";
+import { userInfo } from "os";
+import { async } from "q";
+import { useNavigate } from "react-router";
+import { recoilPersist } from 'recoil-persist';
 
-type MatchingProps = {
-  handleOnClick: () => void;
-  setShowMatching: (value: boolean) => void;
-};
-
-export const Matching = ({
-  // handleOnClick,
-  setShowMatching,
-}: MatchingProps) => {
+const Matching = ({
+  setShowMatching
+}:{setShowMatching: (value: boolean) => void}) => {
   const handleCloseMatching = () => {
     setShowMatching(false);
   };
@@ -23,47 +22,81 @@ export const Matching = ({
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useRecoilState(TokenValue);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
-  
-  const handleFirstClick = async() => {
+  // const navigate = useNavigate();
+
+//   let setCookie = function(roomInfo: string, value: any, exp: number) {
+//     var date = new Date();
+//     date.setTime(date.getTime() + exp*60*1000);
+//     document.cookie = roomInfo + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+// };
+
+
+  async function waitAndCheck(
+  ) {
+    return new Promise<void>((resolve) => {
+      console.log(roomInfo.userList.length)
+      // if (roomInfo.userList.length < 2) return
+      const interval = setInterval(() => {
+        if (roomInfo.userList.length === 2) {
+          clearInterval(interval);
+          resolve();
+        } 
+        // console.log("waitAndCheck 함수에서 ",roomInfo.roomId)
+        // const response = await fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomInfo.roomId}`, {
+        //   method: "POST",
+        //   headers: {
+        //     Auth: token,
+        //     "Content-Type": "application/json",
+        //   },
+        // });
+        
+        // const res = await response.json();
+        
+        // if (res['roomId'] !== undefined) {
+        //   let updatedRoomInfo = {
+        //     roomId: res['roomId'],
+        //     roomType: res['roomType'],
+        //     sessionId: res['sessionId'],
+        //     userList: res['userList']
+        //   };
+        //   console.log("setRoominfo 이전", updatedRoomInfo);
+        //   setRoomInfo(updatedRoomInfo);
+        //   console.log("setRoominfo 이후", roomInfo)
+          localStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+          // setCookie('roomInfo',JSON.stringify(roomInfo), 1)
+        // }
+      }, 1000); // 1초마다 체크
+      // navigate(`/meeting/${roomInfo.roomId}`)
+      window.location.href = `/meeting/${roomInfo.roomId}`;
+      // clearInterval(interval);
+      // resolve();
+    })
+  }
+
+  useEffect(() => {
+    roomInfo.roomId !== 0 && waitAndCheck();
+  },[roomInfo])
+
+  const handleFirstClick = () => {
     setIsLoading(true);
-    const postOneRoom = async () => {
-      fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one`, {
-        method: "POST",
-        headers: {
-          Auth: token,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res)=> res.json())
-        .then((res)=> {
-          if (res['roomId'] !== undefined) {
-          let roomId = res['roomId'];      
-          fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
-            method: "POST",
-            headers: {
-              Auth: token,
-              "Content-Type": "application/json",
-            }}
-          )
-          .then((res) => res.json())
-          .then((res) => {
-            const updatedRoomInfo = {
-              roomType: res['roomType'],
-              roomId: res['roomId'],
-              sessionId: res['sessionId'],
-              maleUserName: res['maleUserName'],
-              femaleUserName: res['femaleUserName'],
-            };
-            
-            setRoomInfo(updatedRoomInfo);
-            localStorage.setItem('roomInfo', JSON.stringify(updatedRoomInfo));
-            })
-          .then(()=> window.location.href = `/meeting/${roomId}`)
-          }
-      })
-    };
-    postOneRoom();
-  };
+    fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one`, {
+      method: "POST",
+      headers: {
+        Auth: token,
+        "Content-Type": "application/json",
+      },
+    }).then((response)=> response.json())
+    .then((res)=>{
+      setRoomInfo({          
+      "roomId": res['roomId'],
+      "roomType": res['roomType'],
+      "sessionId": res['sessionId'],
+      "userList": res['userList']
+    })
+    waitAndCheck();
+  })
+}
+  
 
   const handleSecondClick = async () => {
     setIsLoading(true);
@@ -133,5 +166,7 @@ export const Matching = ({
   //       </S.ModalContent>
   //     </S.ModalWrapper>
   //   </>
-  );
-};
+  )
+  };
+
+export default Matching;

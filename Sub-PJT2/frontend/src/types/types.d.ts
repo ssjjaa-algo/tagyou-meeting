@@ -33,8 +33,7 @@ export type roomProps = {
   roomType: string;
   roomId: number;
   sessionId: string;
-  maleUserName: string;
-  femaleUserName: string;
+  userList: string[];
 }
 
 export type Message = {
