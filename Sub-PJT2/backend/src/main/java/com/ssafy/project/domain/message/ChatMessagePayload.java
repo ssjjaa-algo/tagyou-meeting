@@ -6,9 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class ChatMessagePayload {
 
     @NotBlank
@@ -27,11 +25,12 @@ public class ChatMessagePayload {
     @JsonProperty(value = "meeting_room_id")
     private Long meetingRoomId;
 
-//    public ChatMessagePayload(ChatMessage message){
-//        this.content = message.getContent();
-//        this.sender = message.getSender().getUserName();
-//        this.messageType = getMessageType();
-//        this.meetingRoomId = message.getMeetingRoom().getId();
-//    }
+    @Builder
+    public ChatMessagePayload(ChatMessage message){
+        this.content = message.getContent();
+        this.sender = message.getSender().getUserName();
+        this.messageType = getMessageType();
+        this.meetingRoomId = message.getMeetingRoom().getId();
+    }
 
 }
