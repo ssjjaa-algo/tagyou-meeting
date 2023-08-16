@@ -72,7 +72,30 @@ export const SpecialDes = styled(Des)`
 `;
 
 export const StyledBadge = styled(Badge)<{ theme: themeProps }>`
-  background-color: : ${(props) => props.theme.bg.light};
+  background-color: ${(props) => props.theme.bg.light};
   height: 23px;
   margin-left: 10px;
+`;
+
+export const Friend = styled.div`
+  border: solid black;
+  display: flex;
+  flex-direction: row;
+  /* justify-content: stretch; */
+  width: 100%;
+`;
+
+export const StatusDiv = styled.div``;
+
+export const StatusText = styled.div``;
+
+export const Status = styled.div<{ theme: themeProps }>`
+  border: solid black 5px;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  background-color: black;
+  z-index: 999;
+  position: absolute;
+  right: 2rem;
 `;

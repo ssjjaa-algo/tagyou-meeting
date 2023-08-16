@@ -52,6 +52,9 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
+    @Column
+    private String sessionId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private MeetingGroup meetingGroup;
@@ -104,5 +107,9 @@ public class User extends BaseTimeEntity {
 
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
+    }
+
+    public void setSessionId(String sessionId){
+        this.sessionId = sessionId;
     }
 }

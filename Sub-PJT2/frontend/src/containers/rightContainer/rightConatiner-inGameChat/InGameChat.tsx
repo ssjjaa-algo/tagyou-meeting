@@ -38,7 +38,7 @@ type Room = {
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const [roomId, setRoomId] = useState<number>(18);
+  const [roomId, setRoomId] = useState<number>(0);
   const [items, setItems] = useState<ReceivingMessage[]>([]);
   const [lastMessage, setLastMessage] = useState<ReceivingMessage>();
   const [message, setMessage] = useState("");
@@ -59,20 +59,20 @@ const RightContainer = () => {
   const domainAddress = "www.tagyou.site";
 
   // 방번호 조회
-  const getRoomId = async () => {
-    console.log("roomId 확인 전 발급된 토큰 확인: " + token);
-    fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
-      method: "POST",
-      headers: {
-        Auth: token,
-      },
-    })
-      .then((res) => res.json())
-      .then((data: Room) => {
-        // console.log(data);
-        // setRoomId(1);
-      });
-  };
+  // const getRoomId = async () => {
+  //   console.log("roomId 확인 전 발급된 토큰 확인: " + token);
+  //   fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
+  //     method: "POST",
+  //     headers: {
+  //       Auth: token,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data: Room) => {
+  //       // console.log(data);
+  //       // setRoomId(1);
+  //     });
+  // };
 
   // const roomSync = async () => {
   //   console.log("roomConnect 함수 실행");
@@ -95,8 +95,6 @@ const RightContainer = () => {
       Auth: token,
     };
     client.current.connect(headers, () => {
-      // 해당 방과 동기화(?)
-      // roomSync();
       client.current?.subscribe(
         `/sub/chat/rooms/${roomId}`,
         (message) => {

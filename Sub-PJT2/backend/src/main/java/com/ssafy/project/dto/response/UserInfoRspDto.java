@@ -3,6 +3,7 @@ package com.ssafy.project.dto.response;
 import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.user.User;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

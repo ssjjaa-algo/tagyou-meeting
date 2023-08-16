@@ -128,13 +128,6 @@ public class UserService {
         u.changeUserName(userProfileReqDto.getUserName());
     }
 
-    @Transactional
-    public void editUserStatus(Long uId, UserStatus userStatus){
-        User u = findUser(uId)
-                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
-        u.setUserStatus(userStatus);
-    }
-
     public boolean checkUserExists(String email){
         return findUserByEmail(email).isPresent();
     }
@@ -155,6 +148,8 @@ public class UserService {
         return Optional.ofNullable(email).flatMap(userRepository::findByUserEmail);
     }
 
+
+
     public Optional<List<User>> findUsersByKeyWord(String keyword) {
         return Optional.ofNullable(userRepository.findBysearchKeyword(keyword))
                 .filter(users -> users.isPresent() && !users.get().isEmpty())
@@ -164,6 +159,16 @@ public class UserService {
     public boolean chkPhoneNum(String phoneNum) {
         if(phoneNum.length() == 13) return true;
         else return false;
+    }
+
+    public String getUserStatus(long id){
+        User u = findUser(id)
+                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
+        if(u.getUserStatus() != null){
+            return u.getUserStatus().toString();
+        } else{
+            return "";
+        }
     }
 
 }

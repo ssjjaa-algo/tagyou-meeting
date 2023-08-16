@@ -2,6 +2,7 @@ import { friendProps } from "types/types";
 import * as S from "./Friend.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
+import { ReactNode } from "react";
 
 type friendCompoentProps = {
   friendShipStatus: "REQUESTED" | "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";

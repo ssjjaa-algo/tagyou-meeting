@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { Session } from "inspector";
 
 function Main() {
   const isDark = useRecoilValue(IsDark);
@@ -35,13 +36,21 @@ function Main() {
 
   const cookies = new Cookies();
   const [token, setToken] = useRecoilState(TokenValue);
+  const [location, setLocation] = useState<string>("");
+  const [sessionId, setSessionId] = useState<string>("");
   useEffect(() => {
     const T = cookies.get("Auth");
     setToken(T);
   }, [cookies.get("Auth")]);
   useEffect(() => {
-    token && connectHandler(0);
+    setLocation(window.location.pathname);
   }, [token]);
+  useEffect(() => {
+    console.log(location);
+    console.log(location.search("meeting"));
+    if (location.search("meeting") !== 1 && location !== "")
+      token && connectHandler(0);
+  }, [location]);
 
   const client = useRef<CompatClient>();
   const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`);
@@ -59,50 +68,34 @@ function Main() {
       console.log("연결됨");
     });
   };
-  const headers = {
-    Auth: token,
-  };
-  socket.onclose = () => {
-    socket.close(1000, token);
-  };
-
-  // if (window.onbeforeunload) {
-  //   alert(token);
-  //   fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
-  //     method: "POST",
-  //     body: "OFFLINE",
-  //     headers: {
-  //       Auth: token,
-  //     },
-  //   });
-  // }
-
-  // window.addEventListener("beforeunload", (event) =>{
-  //   event?.preventDefault();
-  //   alert(token);
-  //   fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
-  //     method: "POST",
-  //     body: "OFFLINE",
-  //     headers: {
-  //       Auth: token,
-  //     },
-  //   });
-  //   return event.returnValue = '';
-  // })
-
-  // window.addEventListener("beforeunload", (event) => {
-  //   event.preventDefault();
-  //   // alert("종료?");
-  //   fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
-  //     method: "POST",
-  //     body: "OFFLINE",
-  //     headers: {
-  //       Auth: token,
-  //     },
-  //   });
-  //   event.returnValue = "";
-  //   return ".";
-  // });
+  // pathname이 바뀔 경우 pathname이 meeting이 아니면 userStatus를 null로 바꿔야 함
+  useEffect(() => {
+    console.log(token);
+    console.log("위치: " + location);
+    if (
+      location !== "" &&
+      location !== "/" &&
+      location !== "/input"
+    ) {
+      if (location.search("meeting") === 1) {
+        fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
+          method: "POST",
+          body: "INGAME",
+          headers: {
+            Auth: token,
+          },
+        });
+      } else {
+        fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
+          method: "POST",
+          body: "ONLINE",
+          headers: {
+            Auth: token,
+          },
+        });
+      }
+    }
+  }, [location]);
 
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>

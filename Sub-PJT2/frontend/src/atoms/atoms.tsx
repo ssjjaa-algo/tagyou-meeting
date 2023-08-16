@@ -61,6 +61,7 @@ export const UserInfo = atom<userProps>({
     userAge: 0,
     userGender: "MALE",
     userLike: 0,
+    userStatus: "",
   },
   effects_UNSTABLE: [persistAtom],
 });
