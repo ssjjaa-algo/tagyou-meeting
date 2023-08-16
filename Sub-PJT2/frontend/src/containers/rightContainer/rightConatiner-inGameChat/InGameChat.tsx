@@ -37,7 +37,7 @@ type Room = {
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const [roomId, setRoomId] = useState<number>(1);
+  const [roomId, setRoomId] = useState<number>(2);
   const [items, setItems] = useState<ReceivingMessage[]>([]);
   const [lastMessage, setLastMessage] = useState<ReceivingMessage>();
   const [message, setMessage] = useState("");
@@ -70,6 +70,7 @@ const RightContainer = () => {
         // setRoomId(1);
       });
   };
+
 
   // const roomSync = async () => {
   //   console.log("roomConnect 함수 실행");
@@ -133,6 +134,7 @@ const RightContainer = () => {
   useEffect(() => {
     const T = cookies.get("Auth");
     setToken(T);
+    console.log("패쓰네임: " + window.location.pathname);
   }, [cookies.get("Auth")]);
 
   useEffect(() => {
