@@ -3,7 +3,11 @@ import * as S from "./Friend.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 
-type friendCompoentProps = friendProps & {
+type friendCompoentProps = {
+  friendShipStatus: "REQUESTED" | "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";
+  targetId: number;
+  targetName: string;
+  targetImageUrl: string;
   handleAccecpt?: (targetId: number) => void;
   handleReject?: (targetId: number) => void;
 };
@@ -17,6 +21,7 @@ const Friend = ({
   handleReject,
 }: friendCompoentProps) => {
   const theme: themeProps = useTheme();
+
   return (
     <>
       <S.Profile to={`/chatroom/${targetId}`}>
