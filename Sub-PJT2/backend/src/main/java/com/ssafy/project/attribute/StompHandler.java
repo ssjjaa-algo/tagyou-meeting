@@ -53,7 +53,7 @@ public class StompHandler implements ChannelInterceptor {
 //        String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
 //        log.info("StompHandler JWT : " + jwt);
         log.info("무슨 메시지?: " + accessor.getCommand());
-        log.info("메시지 내용: " + accessor.getMessage());
+        log.info("메시지 내용: " + accessor);
         log.info("메시지 헤더: " + accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER));
         if (StompCommand.CONNECT == accessor.getCommand()) {
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
@@ -102,7 +102,7 @@ public class StompHandler implements ChannelInterceptor {
 //            // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
 //            redisTemplate.convertAndSend(roomId, ChatMessage.builder().messageType(MessageType.ENTER).content("입장").build());
             redisPublisher.publish(ChannelTopic.of(roomId), uId, RoomMessageReqDto.builder().messageType(MessageType.ENTER).content("님께서 입장하셨습니다.").meetingRoomId(Long.parseLong(roomId)).build());
-        } 
+        }
 //        } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
 //            // 연결이 종료된 클라이언트 sesssionId로 채팅방 id를 얻는다.
 //            String sessionId = (String) message.getHeaders().get("simpSessionId");

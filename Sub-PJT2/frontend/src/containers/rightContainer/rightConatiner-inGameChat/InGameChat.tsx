@@ -108,36 +108,26 @@ const RightContainer = () => {
         },
         { Auth: token, RoomId: roomId + "" }
       );
-      // const enteringRoomMessage: SendingMessage = {
-      //   content: "님이 입장하셨습니다.",
-      //   message_type: "ENTER",
-      //   meeting_room_id: roomId,
-      // };
-      // client.current!.send(
-      //   "/pub/chat/message",
-      //   {},
-      //   JSON.stringify(enteringRoomMessage)
-      // );
     });
-    // requestChatHistory(roomId);
+    requestChatHistory(roomId);
     console.log("token: " + token);
   };
 
   // 새로고침이나 렌더 후에 채팅방의 기존 채팅을 불러오는 부분
-  // const requestChatHistory = async (roomId: number) => {
-  //   console.log("chatHistory 조회하기 전 토큰 확인: " + token);
-  //   fetch(`${process.env.REACT_APP_BASE_URL}/chat/rooms/${roomId}/messages`, {
-  //     headers: {
-  //       Auth: token,
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data: ReceivingMessage[]) => {
-  //       for (let i = 0; i < data.length; i++) {
-  //         addItem(data[i]);
-  //       }
-  //     });
-  // };
+  const requestChatHistory = async (roomId: number) => {
+    console.log("chatHistory 조회하기 전 토큰 확인: " + token);
+    fetch(`${process.env.REACT_APP_BASE_URL}/chat/rooms/${roomId}/messages`, {
+      headers: {
+        Auth: token,
+      },
+    })
+      .then((response) => response.json())
+      .then((data: ReceivingMessage[]) => {
+        for (let i = 0; i < data.length; i++) {
+          addItem(data[i]);
+        }
+      });
+  };
 
   // 렌더링 후 연결
   useEffect(() => {

@@ -22,7 +22,7 @@ public class ChatMessage {
     @Enumerated(value = EnumType.STRING)
     private MessageType messageType;
 
-    @JoinColumn(name = "sender_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User sender;
 
