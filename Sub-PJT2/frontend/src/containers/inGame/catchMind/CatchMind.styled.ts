@@ -6,8 +6,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 90%;
   justify-content: space-evenly;
-  margin-top: 6rem;
+  margin-top: 3rem;
+  min-width: fit-content;
 `;
 
 export const CanvasBox = styled.div<{ theme: themeProps }>`
@@ -78,7 +80,7 @@ export const PaletteColor = styled.div<{ theme: themeProps }>`
   padding: 0.5rem;
   margin: 0.5rem;
   font-weight: bold;
-  width: 5rem;
+  width: 4rem;
 
   &:hover {
     cursor: pointer;

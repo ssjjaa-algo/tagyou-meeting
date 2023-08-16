@@ -3,6 +3,7 @@ package com.ssafy.project.service.redis;
 import com.ssafy.project.domain.message.ChatMessage;
 import com.ssafy.project.domain.message.ChatMessagePayload;
 import com.ssafy.project.domain.message.MessageType;
+import com.ssafy.project.domain.user.UserStatus;
 import com.ssafy.project.dto.request.RoomMessageReqDto;
 import com.ssafy.project.domain.room.MeetingRoom;
 import com.ssafy.project.domain.user.User;
@@ -26,7 +27,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 @RequiredArgsConstructor
 @Service
 @EnableWebSocketMessageBroker
-public class RedisPublisher{
+public class RedisPublisher {
     private final UserRepository userRepository;
 
     private final RedisTemplate<String, Object> redisTemplate;
@@ -34,7 +35,7 @@ public class RedisPublisher{
     private final OneRoomRepository oneRoomRepository;
 
     /**
-     *      - 메시지를 Redis Topic(채팅방 고유 아이디)에 발행(Publish)합니다.
+     * - 메시지를 Redis Topic(채팅방 고유 아이디)에 발행(Publish)합니다.
      */
     public void publish(ChannelTopic topic, Long userId, RoomMessageReqDto message) {
         log.info("InComming ChatService");
@@ -45,7 +46,7 @@ public class RedisPublisher{
         log.info(user.getUserEmail());
         MeetingRoom meetingRoom = oneRoomRepository.findById(message.getMeetingRoomId())
                 .orElseThrow(() -> new EntityNotFoundException("채팅방을 찾을 수 없습니다."));
-        log.info(meetingRoom.getId()+"");
+        log.info(meetingRoom.getId() + "");
         // 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
         ChatMessage publishedMessage = ChatMessage.builder()
                 .meetingRoom(meetingRoom)
@@ -54,12 +55,16 @@ public class RedisPublisher{
                 .messageType(message.getMessageType())
                 .build();
         log.info(publishedMessage.getContent());
-        chatMessageRepository.save(publishedMessage);
+        if (message.getMessageType() == MessageType.TALK) chatMessageRepository.save(publishedMessage);
         log.info(user.getUserName());
-        ChatMessagePayload newMessage= null;
-        if(message.getMessageType() == MessageType.ENTER){
-            newMessage = ChatMessagePayload.builder().content("< " + user.getUserName() + " > 님이 입장하셨습니다.").sender("[알림]").messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
-        } else{
+        ChatMessagePayload newMessage = null;
+        if (message.getMessageType() == MessageType.ENTER) {
+            log.info("입장해있는 채팅방: " + user.getMeetingRoom().getId());
+            if(user.getUserStatus() != UserStatus.MATCHED) {
+                newMessage = ChatMessagePayload.builder().content("< " + user.getUserName() + " > 님이 입장하셨습니다.").sender("[알림]").messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
+                user.setUserStatus(UserStatus.MATCHED);
+            }
+        } else {
             newMessage = ChatMessagePayload.builder().content(message.getContent()).sender(user.getUserName()).messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
         }
 
