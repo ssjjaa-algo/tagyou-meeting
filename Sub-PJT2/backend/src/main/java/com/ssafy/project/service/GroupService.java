@@ -41,8 +41,8 @@ public class GroupService {
 
         userService.checkUserGender(user);
 
-        if(user.getMeetingRoom() == null){
-            throw new IllegalStateException("3 : 3 대기방에 입장하지 않은 유저입니다.");
+        if(user.getMeetingRoom() != null){
+            throw new IllegalStateException("미팅방에 입장한 유저는 그룹을 생성할 수 없습니다.");
         }
 
         MeetingGroup meetingGroup = MeetingGroup.builder()

@@ -36,8 +36,8 @@ public class OneRoomRepositoryImpl implements OneRoomRepositoryCustom{
 
         Optional<OneMeetingRoom> oneMeetingRoom = Optional.ofNullable(
                 queryFactory.selectFrom(qOneRoom)
-                        .leftJoin(qOneRoom.userList, qUser)
-//                        .join(qOneRoom.userList, qUser)
+//                        .leftJoin(qOneRoom.userList, qUser)
+                        .join(qOneRoom.userList, qUser)
                         .where(notEqGenderOneRoomExist)
                         .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                         .fetchFirst());
