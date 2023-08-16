@@ -76,8 +76,7 @@ public class RoomController {
     }
 
 
-
-    // ====================== 그룹 미팅방 생성 ============================
+    // ====================== 다대다 미팅방 생성 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/groups")
     @Operation(summary = "3:3 대기방 생성하기", description = "그룹 생성이 선행되어야 대기방 생성이 가능함")
@@ -86,7 +85,7 @@ public class RoomController {
         return roomService.enterGroupMeetRoom(userId, groupId);
     }
 
-    // ====================== 그룹 대기방 나가기 ============================
+    // ====================== 다대다 대기방 나가기 ============================
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/groups/quit")
     @Operation(summary = "3:3 대기방 나가기", description = "")
@@ -95,7 +94,7 @@ public class RoomController {
         return roomService.cancelGroupMeetRoom(userId, groupId);
     }
 
-    // ====================== 그룹 미팅방 시작 ============================
+    // ====================== 다대다 미팅방 시작 ============================
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/groups/{roomId}")
     @Operation(summary = "3:3 미팅 시작하기", description = "")
@@ -103,9 +102,9 @@ public class RoomController {
         return roomService.startGroupMeetRoom(roomId);
     }
 
-    // ====================== 그룹 미팅방 나가기 ============================
+    // ====================== 다대다 미팅방 나가기 ============================
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/groups/quit")
+    @PostMapping("/groups/quit/{roomId}")
     @Operation(summary = "3:3 진행 중 미팅방 나가기", description = "")
     public GroupRoomRspDto quitGroupMeetRoom(HttpServletRequest request,@RequestParam Long roomId){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
@@ -113,7 +112,7 @@ public class RoomController {
     }
 
 
-    // ====================== 그룹 미팅방 종료 ============================
+    // ====================== 다대다 미팅방 종료 ============================
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/groups/{roomId}")
     @Operation(summary = "3:3 미팅 끝내기", description = "")

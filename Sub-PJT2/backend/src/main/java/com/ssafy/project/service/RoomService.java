@@ -189,9 +189,10 @@ public class RoomService {
     }
 
     /**
-     * 그룹 대기방 퇴장
+     * 그룹 미팅방 나가기
      */
-    public GroupRoomRspDto quitGroupMeetRoom(Long userId, Long groupId) {
+    public GroupRoomRspDto cancelGroupMeetRoom(Long userId, Long groupId) {
+
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("3:3 미팅룸에 들어가는 유저의 정보가 조회되지 않습니다."));
         MeetingGroup group = groupService.findMeetingGroup(groupId)
@@ -206,15 +207,16 @@ public class RoomService {
         return findGroupMeetRoom(user.getMeetingRoom().getId()).map(room ->{
                     room.removeUserList(group);
                     return room;
-            })
+                })
                 .map(GroupRoomRspDto::new)
                 .orElseThrow(() -> new NotFoundException("나가려는 3:3 미팅룸이 조회되지 않습니다."));
     }
 
     /**
-     * 그룹 미팅방 나가기
+     * 그룹 대기방 퇴장
      */
-    public GroupRoomRspDto cancelGroupMeetRoom(Long userId, Long roomId) {
+    public GroupRoomRspDto quitGroupMeetRoom(Long userId, Long roomId) {
+
         User user = userService.findUser(userId).orElseThrow(() -> new NotFoundException("3:3 미팅룸을 나가는 유저의 정보가 조회되지 않습니다."));
 
         return findGroupMeetRoom(roomId).filter(room -> room.getStatus() == MeetingRoomStatus.ACTIVE)
@@ -228,7 +230,7 @@ public class RoomService {
                 })
                 .map(GroupRoomRspDto::new)
                 .orElseThrow(() -> new IllegalStateException("3:3 미팅룸이 진행되지 않고 있습니다."));
-    }
+       }
 
     /**
      * 그룹 미팅방 종료
