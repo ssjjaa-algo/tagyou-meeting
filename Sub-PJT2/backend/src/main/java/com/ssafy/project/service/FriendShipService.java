@@ -9,8 +9,6 @@ import com.ssafy.project.dto.request.NoticeReqDto;
 import com.ssafy.project.dto.response.FriendRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.FriendShipRepository;
-import com.ssafy.project.repository.NoticeRepository;
-import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
