@@ -53,7 +53,7 @@ public class RoomService {
             throw new IllegalStateException("이미 미팅룸에 들어간 사용자입니다.");
         }
 
-        return oneRepository.findRamdomRoom(user)
+        return oneRepository.findRamdomOneRoom(user)
             .map(room -> {
                 if(room.getUserList().size() >= 2){
                     throw new IllegalStateException("일대일 미팅룸 최대 인원을 초과하였습니다.");
@@ -141,7 +141,7 @@ public class RoomService {
             throw new IllegalStateException("이미 미팅룸에 들어간 그룹장입니다.");
         }
 
-        return groupRepository.findRamdomRoom(group)
+        return groupRepository.findRandomGroupRoom(group)
                 .map(room -> {
                     if(group.getGroupGender() == Gender.MALE){
                         room.addMaleUserList(group);

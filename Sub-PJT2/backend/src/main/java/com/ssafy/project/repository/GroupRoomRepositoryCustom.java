@@ -7,5 +7,5 @@ import com.ssafy.project.domain.room.GroupMeetingRoom;
 import java.util.Optional;
 
 public interface GroupRoomRepositoryCustom {
-    Optional<GroupMeetingRoom> findRamdomRoom(MeetingGroup group) ;
+    Optional<GroupMeetingRoom> findRandomGroupRoom(MeetingGroup group) ;
 }
