@@ -147,5 +147,10 @@ public class UserService {
                 .filter(users -> users.isPresent() && !users.get().isEmpty())
                 .orElseGet(Optional::empty);
     }
+
+    public boolean chkPhoneNum(String phoneNum) {
+        if(phoneNum.length() == 13) return true;
+        else return false;
+    }
 }
 
