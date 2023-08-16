@@ -80,6 +80,31 @@ public class TokenService{
         }
     }
 
+    public boolean verifyToken(String token) throws IOException {
+//        System.out.println(">>> secretKey: " + secretKey);
+//        System.out.println("!!!!!----->>> token: "+token);
+        System.out.print(">>> verifyToken -> ");
+        try {
+            Jws<Claims> claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token);
+            System.out.println("verify succeeded!!");
+            return claims.getBody()
+                    .getExpiration()
+                    .after(new Date());
+        } catch (ExpiredJwtException exp) {
+            System.out.println("token expired!!!");
+            SecurityContextHolder.clearContext(); ////
+            throw new TokenNotValidateException("만료된 토큰임!!");
+//            return false;
+        } catch (Exception e) {
+//            e.printStackTrace();
+            System.out.println("failed verification..");
+            return false;
+        }
+    }
+
+
     public class TokenNotValidateException extends JwtException {
         public TokenNotValidateException(String message) {
             super(message);
