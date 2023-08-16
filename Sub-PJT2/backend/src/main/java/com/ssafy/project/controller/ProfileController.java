@@ -145,4 +145,6 @@ public class ProfileController {
         return profileService.deleteHobby(id, hobbyReqDto);
     }
 
+
+
 }
