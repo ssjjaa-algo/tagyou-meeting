@@ -60,6 +60,10 @@ public class GroupService {
         User sendUser = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 초대할 유저가 존재하지 않습니다."));
 
+        if (targetUser.getMeetingGroup() != null) {
+            throw new IllegalStateException("초대할 유저가 이미 그룹에 가입 되어있습니다.");
+        }
+
         return findMeetingGroup(groupReqDto.getGroupId())
                 .filter(group -> group.getGroupGender().equals(targetUser.getUserGender()))
                 .map(group -> {
@@ -85,6 +89,10 @@ public class GroupService {
     public GroupRspDto acceptGroup(Long userId, Long groupId){
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹에 수락할 유저가 존재하지 않습니다."));
+
+        if (user.getMeetingGroup() != null) {
+            throw new IllegalStateException("이미 그룹에 가입한 유저입니다.");
+        }
 
         return findMeetingGroup(groupId)
                 .map(group -> {
@@ -165,5 +173,9 @@ public class GroupService {
         return Optional.ofNullable(groupId).flatMap(groupRepository::findById);
     }
 
+    public GroupRspDto getGroup(Long groupId) {
+        return groupRepository.findById(groupId).map(GroupRspDto::new)
+                .orElseThrow(() -> new NotFoundException("그룹이 존재하지 않습니다."));
+    }
 }
 

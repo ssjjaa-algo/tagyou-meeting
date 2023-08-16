@@ -21,7 +21,7 @@ public class OneRoomRepositoryImpl implements OneRoomRepositoryCustom{
     }
 
     @Override
-    public Optional<OneMeetingRoom> findRamdomRoom(User user) {
+    public Optional<OneMeetingRoom> findRamdomOneRoom(User user) {
         QOneMeetingRoom qOneRoom = QOneMeetingRoom.oneMeetingRoom;
         QUser qUser = QUser.user;
 

@@ -1,7 +1,7 @@
 package com.ssafy.project.repository;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.project.domain.group.MeetingGroup;
 import com.ssafy.project.domain.group.QMeetingGroup;
@@ -22,32 +22,29 @@ public class GroupRoomRepositoryImpl implements GroupRoomRepositoryCustom{
     }
 
     @Override
-    public Optional<GroupMeetingRoom> findRamdomRoom(MeetingGroup group) {
-        QGroupMeetingRoom qRoom = QGroupMeetingRoom.groupMeetingRoom;
+    public Optional<GroupMeetingRoom> findRandomGroupRoom(MeetingGroup group) {
+        QGroupMeetingRoom qGroupRoom = QGroupMeetingRoom.groupMeetingRoom;
         QMeetingGroup qGroup = QMeetingGroup.meetingGroup;
         QUser qUser = QUser.user;
 
-//        BooleanBuilder subqueryCondition = new BooleanBuilder()
-//                .and(qUser.meetingGroup.isNotNull())
-//                .and(qUser.userGender.ne(group.getGroupGender()));
-//
-//        Long otherUserRoomId = queryFactory
-//                .select(qUser.meetingRoom.id)
-//                .from(qUser)
-//                .where(subqueryCondition)
-//                .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
-//                .fetchFirst();
-//
-//        if(otherUserRoomId != null) {
-//            log.info("otherUserRoomId " + otherUserRoomId);
-//            Optional<OneMeetingRoom> oneMeetingRoom = Optional.ofNullable(queryFactory
-//                    .selectFrom(qRoom)
-//                    .where(qRoom.id.eq(otherUserRoomId))
-//                    .fetchFirst());
-//            log.info("oneMeetingRoom " + oneMeetingRoom);
-//            return oneMeetingRoom;
 
 
-        return Optional.empty();
+        Optional<GroupMeetingRoom> groupMeetingRoom = Optional.ofNullable(
+                queryFactory.selectFrom(qGroupRoom)
+                        .where(qGroupRoom.id.in(
+                                JPAExpressions.select(qUser.meetingRoom.id)
+                                        .from(qUser)
+                                        .where(qUser.userGender.ne(group.getGroupGender()),
+                                                qUser.meetingRoom.id.in(
+                                                        JPAExpressions.select(qUser.meetingRoom.id)
+                                                                .from(qUser)
+                                                                .groupBy(qUser.meetingRoom.id)
+                                                                .having(qUser.meetingRoom.id.count().eq(1L))
+                                                ))
+                        ))
+                        .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                        .fetchFirst());
+        log.info("groupMeetingRoom " + groupMeetingRoom);
+        return groupMeetingRoom;
     }
 }
