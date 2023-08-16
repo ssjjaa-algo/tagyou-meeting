@@ -53,9 +53,9 @@ const Friend = ({
             size="small"
             source="reject"
             theme={theme}
-            onClick={() => {
+            onClick={
               handleReject && handleReject(targetId);
-            }}
+            }
           >
             거절
           </S.StyledBtn>
