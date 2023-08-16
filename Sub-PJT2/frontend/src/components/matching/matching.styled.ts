@@ -11,7 +11,7 @@ export const ModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 10001;
 `;
 
 export const ModalContent = styled.div<{ theme: themeProps }>`
@@ -31,7 +31,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 export const CloseIconStyled = styled(CloseIcon)`
   margin-left: auto;
@@ -58,7 +58,7 @@ export const Button = styled.button<{ theme: themeProps }>`
   border-color: ${(props) => props.theme.point.deep};
   display: inline-block;
   /* box-shadow: 0px 2px 4px ${(props) => props.theme.font.deep}; */
-`
+`;
 
 export const LogoutBtn = styled.button`
   width: 280px;

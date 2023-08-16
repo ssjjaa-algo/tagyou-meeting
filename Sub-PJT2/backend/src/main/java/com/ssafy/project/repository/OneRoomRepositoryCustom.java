@@ -7,5 +7,5 @@ import com.ssafy.project.domain.user.User;
 import java.util.Optional;
 
 public interface OneRoomRepositoryCustom {
-    Optional<OneMeetingRoom> findRamdomRoom(User user);
+    Optional<OneMeetingRoom> findRamdomOneRoom(User user);
 }
