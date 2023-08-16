@@ -34,31 +34,31 @@ public class GroupMeetingRoom extends MeetingRoom {
 
     // 연관관계 편의 메소드
     public void addMaleUserList(MeetingGroup meetingGroup){
-        for (User user : maleList) {
+        for (User user : meetingGroup.getGroupUser()) {
             this.maleList.add(user);
             user.setMeetingRoom(this);
         }
     }
 
     public void addFemaleUserList(MeetingGroup meetingGroup){
-        for (User user : maleList) {
+        for (User user : meetingGroup.getGroupUser()) {
             this.femaleList.add(user);
             user.setMeetingRoom(this);
         }
     }
 
-    public void removeMaleUserList(MeetingGroup meetingGroup){
+    public void removeMaleUserList(){
         for (User user : maleList) {
-            this.maleList.remove(user);
             user.quitRoom();
         }
+        this.maleList.clear();
     }
 
-    public void removeFemaleUserList(MeetingGroup meetingGroup){
-        for (User user : maleList) {
-            this.femaleList.remove(user);
+    public void removeFemaleUserList(){
+        for (User user : femaleList) {
             user.quitRoom();
         }
+        this.femaleList.clear();
     }
 
 }

@@ -31,14 +31,13 @@ public class UserService {
      * 회원 가입
      */
     @Transactional
-    public UserRspDto signUpUser(UserReqDto userReqDto) {
+    public void signUpUser(UserReqDto userReqDto) {
         findUserByEmail(
                 userReqDto.getEmail()).ifPresent(
                         user -> { throw new IllegalStateException("이미 존재하는 회원입니다.");}
         );
 
-        return saveUser(new User(userReqDto.getEmail(), userReqDto.getName()))
-                .map(UserRspDto::new)
+        saveUser(new User(userReqDto.getEmail(), userReqDto.getName()))
                 .orElseThrow(() -> new NotFoundException("유효하지 않은 유저입니다."));
     }
     /**
@@ -130,6 +129,12 @@ public class UserService {
 
     public boolean checkUserExists(String email){
         return findUserByEmail(email).isPresent();
+    }
+
+    public void checkUserGender(User user) {
+        if (user.getUserGender() == null) {
+            throw new IllegalStateException("성별이 설정되지 않은 유저입니다.");
+        }
     }
 
     private Optional<User> saveUser(User user){ return Optional.of(userRepository.save(user));}

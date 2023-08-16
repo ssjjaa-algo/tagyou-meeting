@@ -1,5 +1,6 @@
 package com.ssafy.project.controller;
 
+import com.ssafy.project.dto.response.GroupRoomRspDto;
 import com.ssafy.project.dto.response.OneRoomRspDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.RoomService;
@@ -59,22 +60,34 @@ public class RoomController {
         return roomService.endOneMeetRoom(roomId);
     }
 
-    // ====================== 그룹 미팅방 입장 ============================
-//    @PostMapping
-//    @RequestMapping("/groups")
-//    public OneRoomRspDto createGroupMeetRoom(HttpServletRequest request, Long groupId) {
+//    // ====================== 그룹 미팅방 입장 ============================
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @PostMapping("/groups")
+//    public GroupRoomRspDto createGroupMeetRoom(HttpServletRequest request, Long groupId) {
 //        Long userId = tokenService.parseUId(request.getHeader("Auth"));
 //        return roomService.enterGroupMeetRoom(userId, groupId);
 //    }
-////
+//
+//    // ====================== 그룹 미팅방 나가기 ============================
+//    @ResponseStatus(HttpStatus.OK)
+//    @PostMapping("/groups/quit")
+//    public GroupRoomRspDto quitGroupMeetRoom(HttpServletRequest request, Long groupId){
+//        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+//        return roomService.quitGroupMeetRoom(userId, groupId);
+//    }
+//
 //    // ====================== 그룹 미팅방 시작 ============================
 //    @ResponseStatus(HttpStatus.OK)
-//    @GetMapping(path = "/groups/{roomId}")
-//    public MeetingRoom startGroupMeetRoom(@PathVariable Long roomId) {
-//        MeetingRoom meetingRoom = oneMeetingRoomRepository.findById(roomId)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 방에 입장 불가능합니다."));
-//        chatService.enterMeetRoom(meetingRoom.getId());
-//        return meetingRoom;
+//    @PostMapping("/groups/{roomId}")
+//    public GroupRoomRspDto startGroupMeetRoom(@PathVariable Long roomId) {
+//        return roomService.startGroupMeetRoom(roomId);
+//    }
+//
+//    // ====================== 그룹 미팅방 종료 ============================
+//    @ResponseStatus(HttpStatus.OK)
+//    @DeleteMapping("/groups/{roomId}")
+//    public GroupRoomRspDto endGroupMeetRoom(@PathVariable Long roomId) {
+//        return roomService.endGroupMeetRoom(roomId);
 //    }
 
 }
