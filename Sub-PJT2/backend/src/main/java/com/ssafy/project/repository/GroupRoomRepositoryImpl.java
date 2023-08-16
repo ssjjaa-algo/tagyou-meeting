@@ -43,12 +43,13 @@ public class GroupRoomRepositoryImpl implements GroupRoomRepositoryCustom{
         List<Long> getIdealNumRoomIdList = null;
         boolean flag = false;
 
+        // 성별이 같은 경우가 있는지 탐색
         for(int i = 3 - size; i >= 0; i--) {
             getIdealNumRoomIdList = queryFactory.select(qGroupRoom.id)
                     .from(qGroupRoom)
                     .join(qGroupRoom.userList, qUser)
-                    .where(qUser.userGender.eq(group.getGroupGender()),
-                            qGroupRoom.userList.size().eq(i))
+                    .groupBy(qGroupRoom.id, qUser.userGender)
+                    .having(qGroupRoom.userList.size().eq(i), qUser.userGender.eq(group.getGroupGender()))
                     .fetch();
             if(getIdealNumRoomIdList.size() > 0){
                 flag = true;
@@ -57,22 +58,28 @@ public class GroupRoomRepositoryImpl implements GroupRoomRepositoryCustom{
         }
 
         log.info("getIdealNumRoomIdList " + getIdealNumRoomIdList);
+        Optional<GroupMeetingRoom> groupMeetingRoom = Optional.empty();
 
-        if(!flag){
-            getIdealNumRoomIdList = queryFactory.select(qGroupRoom.id)
-                    .from(qGroupRoom)
+        // 같은 경우가 있을 시에 랜덤하게 뽑아줌
+        if(flag){
+            groupMeetingRoom = Optional.ofNullable(
+                    queryFactory.selectFrom(qGroupRoom)
+                            .where(qGroupRoom.id.in(getIdealNumRoomIdList))
+                            .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                            .fetchFirst());
+
+            log.info("Flag groupMeetingRoom " + groupMeetingRoom);
+        }
+        // 다른 경우만이 존재하는 경우 => 3-size 인 조건에 해당 되는 내림차순으로 찾아줌
+        else{
+            groupMeetingRoom = Optional.ofNullable(queryFactory.selectFrom(qGroupRoom)
                     .join(qGroupRoom.userList, qUser)
-                    .where(qUser.userGender.ne(group.getGroupGender()))
-                    .fetch();
+                    .groupBy(qGroupRoom.id, qUser.userGender)
+                    .having(qGroupRoom.userList.size().loe(3 - size),qUser.userGender.ne(group.getGroupGender()))
+                    .orderBy(qGroupRoom.userList.size().desc())  // 내림차순 정렬
+                    .fetchFirst());
         }
 
-        Optional<GroupMeetingRoom> groupMeetingRoom = Optional.ofNullable(
-                queryFactory.selectFrom(qGroupRoom)
-                        .where(qGroupRoom.id.in(getIdealNumRoomIdList))
-                        .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
-                        .fetchFirst());
-
-        log.info("groupMeetingRoom " + groupMeetingRoom);
         return groupMeetingRoom;
     }
 }

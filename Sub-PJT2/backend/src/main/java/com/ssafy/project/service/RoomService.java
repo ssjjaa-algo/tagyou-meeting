@@ -143,13 +143,14 @@ public class RoomService {
      */
     public GroupRoomRspDto enterGroupMeetRoom(Long userId, Long groupId) {
         User user = userService.findUser(userId)
-                .orElseThrow(() -> new NotFoundException("그룹 미팅룸에 들어가는 유저의 정보가 조회되지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("3:3 미팅룸에 들어가는 유저의 정보가 조회되지 않습니다."));
         MeetingGroup group = groupService.findMeetingGroup(groupId)
-                .orElseThrow(() -> new NotFoundException("그룹 미팅룸에 들어가는 그룹의 정보가 조회되지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("3:3 미팅룸에 들어가는 그룹의 정보가 조회되지 않습니다."));
 
         if (user.getMeetingRoom() != null) {
-            throw new IllegalStateException("이미 미팅룸에 들어간 그룹장입니다.");
+            throw new IllegalStateException("현재 유저는 이미 3:3 미팅룸에 입장 중입니다.");
         }
+        checkGroupContainsUser(group, user);
 
         // 랜덤 그룹방 조회
         return groupRepository.findRandomGroupRoom(group)
@@ -197,6 +198,8 @@ public class RoomService {
                 .orElseThrow(() -> new NotFoundException("3:3 미팅룸에 들어가는 유저의 정보가 조회되지 않습니다."));
         MeetingGroup group = groupService.findMeetingGroup(groupId)
                 .orElseThrow(() -> new NotFoundException("3:3 미팅룸에 들어가는 그룹의 정보가 조회되지 않습니다."));
+
+        checkGroupContainsUser(group, user);
 
         List<User> groupUser = group.getGroupUser();
 
@@ -266,6 +269,12 @@ public class RoomService {
         chatService.enterMeetRoom(meetingRoom.getId());
     }
 
+    private void checkGroupContainsUser(MeetingGroup group, User user){
+        if(!group.getGroupUser().contains(user)){
+            throw new IllegalStateException("해당 그룹에 속해있지 않습니다.");
+        }
+    }
+
     private Optional<OneMeetingRoom> saveOneMeetRoom(OneMeetingRoom oneMeetingRoom) {
         return Optional.ofNullable(oneRepository.save(oneMeetingRoom));
     }
@@ -281,7 +290,5 @@ public class RoomService {
     public Optional<GroupMeetingRoom> findGroupMeetRoom(Long roomId) {
         return Optional.ofNullable(roomId).flatMap(groupRepository::findById);
     }
-
-
 
 }
