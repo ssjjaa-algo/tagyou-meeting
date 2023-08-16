@@ -1,5 +1,6 @@
 package com.ssafy.project.dto.response;
 
+import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.room.GroupMeetingRoom;
 import com.ssafy.project.domain.room.OneMeetingRoom;
 import com.ssafy.project.domain.user.User;
@@ -21,12 +22,12 @@ public class GroupRoomRspDto {
         this.roomType = "Group";
         this.sessionId = meetingRoom.getSessionId();
 
-        this.maleUserNameList = meetingRoom.getMaleList().stream()
-                .filter(user -> user != null)
+        this.maleUserNameList = meetingRoom.getUserList().stream()
+                .filter(user -> user != null && user.getUserGender() == Gender.MALE)
                 .map(user -> user.getUserName()).collect(Collectors.toList());
 
-        this.femaleUserNameList = meetingRoom.getMaleList().stream()
-                .filter(user -> user != null)
+        this.femaleUserNameList = meetingRoom.getUserList().stream()
+                .filter(user -> user != null && user.getUserGender() == Gender.FEMALE)
                 .map(user -> user.getUserName()).collect(Collectors.toList());
     }
 }

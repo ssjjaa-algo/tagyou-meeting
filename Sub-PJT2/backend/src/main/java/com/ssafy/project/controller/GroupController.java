@@ -22,13 +22,6 @@ public class GroupController {
     private final GroupService groupService;
     private final TokenService tokenService;
 
-    // ====================== 그룹 조회 ============================
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{groupId}")
-    public GroupRspDto getGroup(@PathVariable Long groupId){
-        return groupService.getGroup(groupId);
-    }
-
     // ====================== 그룹 생성 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
@@ -37,6 +30,14 @@ public class GroupController {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.createGroup(userId);
     }
+
+    // ====================== 그룹 조회 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{groupId}")
+    public GroupRspDto getGroup(@PathVariable Long groupId){
+        return groupService.getGroup(groupId);
+    }
+
 
     // ====================== 그룹 초대 ============================
     @ResponseStatus(HttpStatus.CREATED)

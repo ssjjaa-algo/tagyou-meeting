@@ -1,6 +1,5 @@
 package com.ssafy.project.domain.room;
 
-import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.group.MeetingGroup;
 import com.ssafy.project.domain.user.User;
 import jakarta.persistence.*;
@@ -18,58 +17,36 @@ import java.util.List;
 @Entity
 public class GroupMeetingRoom extends MeetingRoom {
 
-    @OneToMany(mappedBy = "meetingRoom", cascade = CascadeType.ALL)
-    private List<User> maleList = new ArrayList<>(); // 남자
-
-    @OneToMany(mappedBy = "meetingRoom", cascade = CascadeType.ALL)
-    private List<User> femaleList = new ArrayList<>(); // 여자
-
     @Builder
     public GroupMeetingRoom(MeetingGroup newGroup) {
-        if(newGroup.getGroupGender().equals(Gender.MALE))
-            addMaleUserList(newGroup);
-        if(newGroup.getGroupGender().equals(Gender.FEMALE))
-            addFemaleUserList(newGroup);
+        addUserList(newGroup);
     }
 
     // 연관관계 편의 메소드
-    public void addMaleUserList(MeetingGroup meetingGroup){
+    public void addUserList(MeetingGroup meetingGroup){
         for (User user : meetingGroup.getGroupUser()) {
-            this.maleList.add(user);
+            this.getUserList().add(user);
             user.setMeetingRoom(this);
         }
     }
 
-    public void addFemaleUserList(MeetingGroup meetingGroup){
-        for (User user : meetingGroup.getGroupUser()) {
-            this.femaleList.add(user);
-            user.setMeetingRoom(this);
-        }
+    public void removeUser(User user){
+        user.quitRoom();
+        this.getUserList().remove(user);
     }
 
-    public void removeMaleUserList(MeetingGroup meetingGroup){
+    public void removeUserList(MeetingGroup meetingGroup){
         for (User user : meetingGroup.getGroupUser()) {
             user.quitRoom();
-            this.maleList.remove(user);
-        }
-    }
-
-    public void removeFemaleUserList(MeetingGroup meetingGroup){
-        for (User user : meetingGroup.getGroupUser()) {
-            user.quitRoom();
-            this.femaleList.remove(user);
+            this.getUserList().remove(user);
         }
     }
 
     public void clearGroupUser(){
-        for (User user : this.maleList) {
+        for (User user : this.getUserList()) {
             user.quitRoom();
         }
-        for (User user : femaleList) {
-            user.quitRoom();
-        }
-        this.maleList.clear();
-        this.femaleList.clear();
+        this.getUserList().clear();
     }
 
 }
