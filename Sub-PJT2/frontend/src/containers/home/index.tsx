@@ -7,19 +7,20 @@ import Intro from "components/intro";
 import Postit from "components/postit";
 import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { ProfileImgSrc, UserInfo, ProfileInfo } from "atoms/atoms";
+import { ProfileImgSrc, UserInfo, ProfileInfo, IsDark } from "atoms/atoms";
 import tageyou from "../../asset/img/tmpprofile.png";
 import profile from "../../asset/img/dsd.png";
+
 const Home = () => {
   const theme: themeProps = useTheme();
   const profileSrc = useRecoilValue(ProfileImgSrc);
   const userInfo = useRecoilValue(UserInfo);
   const profileInfo = useRecoilValue(ProfileInfo);
+  const isDark = useRecoilValue(IsDark);
 
   useEffect(() => {
-    console.log("Aaaaa", userInfo);
-    console.log("bbb", profileInfo);
-  }, []);
+    console.log("isDark", isDark);
+  }, [isDark]);
 
   return (
     <S.Container>
@@ -28,13 +29,13 @@ const Home = () => {
         {/* <S.TitleImg>💗</S.TitleImg> */}
         <S.LeftContainer>
           <S.InnerContent>
-            <S.miniTitle theme={theme}>
+            <S.miniTitle isDark={isDark}>
               {userInfo.userGender === "FEMALE" ? "👧" : "👦"}
             </S.miniTitle>
             <S.Wall theme={theme}>|</S.Wall>
-            <S.miniTitle theme={theme}>{userInfo.userName}</S.miniTitle>
+            <S.miniTitle isDark={isDark}>{userInfo.userName}</S.miniTitle>
             <S.Wall theme={theme}>|</S.Wall>
-            <S.miniTitle theme={theme}>{userInfo.userAge}세</S.miniTitle>
+            <S.miniTitle isDark={isDark}>{userInfo.userAge}세</S.miniTitle>
             <S.Wall theme={theme}>|</S.Wall>
             <S.T
               color="rgb(0, 0, 0)"
@@ -51,21 +52,25 @@ const Home = () => {
           </S.InnerContent>
           <S.Contents>
             <S.SubText theme={theme}>
-              #_현재_<S.Strong>{profileInfo.userSido}</S.Strong>_
-              <S.Strong>{profileInfo.userGugun}</S.Strong>_거주_중
+              #_현재_<S.Strong isDark={isDark}>{profileInfo.userSido}</S.Strong>
+              _<S.Strong isDark={isDark}>{profileInfo.userGugun}</S.Strong>
+              _거주_중
             </S.SubText>
             <S.SubText theme={theme}>
-              #_<S.Strong>{profileInfo.userJob}</S.Strong>로_일하고_있어요
+              #_<S.Strong isDark={isDark}>{profileInfo.userJob}</S.Strong>
+              로_일하고_있어요
             </S.SubText>
             <S.SubText theme={theme}>
-              #_주말에는_보통_ <S.Strong>{profileInfo.userHobby}</S.Strong>
+              #_주말에는_보통_
+              <S.Strong isDark={isDark}>{profileInfo.userHobby}</S.Strong>
               _해요
             </S.SubText>
             <S.SubText theme={theme}>
-              #_저의_성향은_<S.Strong>{profileInfo.userMbti}</S.Strong>
+              #_저의_성향은_
+              <S.Strong isDark={isDark}>{profileInfo.userMbti}</S.Strong>
             </S.SubText>
             <S.SubText theme={theme}>
-              #_<S.Strong>{profileInfo.content}</S.Strong>
+              #_<S.Strong isDark={isDark}>{profileInfo.content}</S.Strong>
             </S.SubText>
           </S.Contents>
           <S.Insta>
@@ -153,8 +158,9 @@ const Home = () => {
             <S.TTmp>
               <S.Tmp src={tageyou} alt="profile" width={20} />
               <S.Temp>
-                tagyou님 외<S.Strong> {userInfo.userLike + 1}</S.Strong>명이
-                좋아합니다
+                tagyou님 외
+                <S.Strong isDark={isDark}> {userInfo.userLike + 1}</S.Strong>
+                명이 좋아합니다
               </S.Temp>
             </S.TTmp>
           </S.Insta>
@@ -177,12 +183,12 @@ const Home = () => {
         </S.LeftContainer>
         {/* <S.RightContainer>
           <S.InnerContent>
-            <S.miniTitle theme={theme}>
+            <S.miniTitle isDark={isDark}>
               {profileInfo.userSido} {profileInfo.userGugun}
             </S.miniTitle>
           </S.InnerContent>
           <S.InnerContent>
-            <S.miniTitle theme={theme}>{profileInfo.userMbti}</S.miniTitle>
+            <S.miniTitle isDark={isDark}>{profileInfo.userMbti}</S.miniTitle>
           </S.InnerContent>
         </S.RightContainer> */}
         {/* <S.OtherContainer>
