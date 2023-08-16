@@ -5,6 +5,7 @@ import com.ssafy.project.dto.response.OneRoomRspDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.RoomService;
 import com.ssafy.project.service.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class RoomController {
     // ====================== 미팅방 조회 ============================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/one/{roomId}")
+    @Operation(summary = "roomId로 방 가져오기", description = "")
     public OneRoomRspDto getRoom(@PathVariable Long roomId) {
         return roomService.getRoom(roomId);
     }
@@ -33,6 +35,7 @@ public class RoomController {
     // ====================== 일대일 미팅방 입장 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/one")
+    @Operation(summary = "1:1 방 입장하기", description = "")
     public OneRoomRspDto enterOneMeetRoom(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return roomService.enterOneMeetRoom(userId);
@@ -41,6 +44,7 @@ public class RoomController {
     // ====================== 일대일 미팅방 나가기 ============================
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(path = "/one/quit")
+    @Operation(summary = "1:1 방 나가기", description = "")
     public OneRoomRspDto quitOneMeetRoom(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return roomService.quitOneMeetRoom(userId);
@@ -49,6 +53,7 @@ public class RoomController {
     // ====================== 일대일 미팅방 시작 ============================
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(path = "/one/{roomId}")
+    @Operation(summary = "1:1 미팅 시작하기", description = "")
     public OneRoomRspDto startOneMeetRoom(@PathVariable Long roomId) {
         return roomService.startOneMeetRoom(roomId);
     }
@@ -56,6 +61,7 @@ public class RoomController {
 //     ====================== 일대일 미팅방 종료 ============================
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(path = "/one/{roomId}")
+    @Operation(summary = "1:1 미팅 끝내기", description = "")
     public OneRoomRspDto endOneMeetRoom(@PathVariable Long roomId) {
         return roomService.endOneMeetRoom(roomId);
     }

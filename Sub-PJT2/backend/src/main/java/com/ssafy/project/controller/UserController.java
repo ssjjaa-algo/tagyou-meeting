@@ -114,8 +114,8 @@ public class UserController {
     }
 
     @GetMapping("/setUserStatus")
+    @Operation(summary = "유저 상태 설정", description = "")
     public void SetUserStatus(HttpServletRequest request){
-        System.out.println("열로 들어오냐?");
         Long id = tokenService.parseUId(request.getHeader("Auth"));
         userService.editUserStatus(id, null);
     }
