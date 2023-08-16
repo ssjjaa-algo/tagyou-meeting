@@ -7,7 +7,7 @@ import {
   TokenValue,
 } from "atoms/atoms";
 import Friend from "components/friend";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import * as S from "./friendContainer.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
@@ -21,7 +21,8 @@ const FriendContainer = () => {
   const token = useRecoilValue(TokenValue);
   const [showModal, setShowModal] = useState<boolean>();
   const isDark = useRecoilValue(IsDark);
-  const setFriendListAtom = useSetRecoilState(FriendList);
+  // const setFriendListAtom = useSetRecoilState(FriendList);
+  const [friendAtom, setFriendListAtom] = useRecoilState(FriendList);
   const nomalFriendList = useRecoilValue(NomalFriendList);
   const receivedFriendList = useRecoilValue(ReceivedFriendList);
   const requestFriendList = useRecoilValue(RequestFriendList);

@@ -1,21 +1,17 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./matching.styled";
-import './index.css'
+import "./index.css";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { TokenValue } from "atoms/atoms";
 import { Cookies } from "react-cookie";
 
 type MatchingProps = {
-  handleOnClick: () => void;
   setShowMatching: (value: boolean) => void;
 };
 
-export const Matching = ({
-  // handleOnClick,
-  setShowMatching,
-}: MatchingProps) => {
+export const Matching = ({ setShowMatching }: MatchingProps) => {
   const handleCloseMatching = () => {
     setShowMatching(false);
   };
@@ -24,8 +20,8 @@ export const Matching = ({
   const [isLoading, setIsLoading] = useState(false);
   const cookies = new Cookies();
   const [token, setToken] = useRecoilState(TokenValue);
-  
-  const handleFirstClick = async() => {
+
+  const handleFirstClick = async () => {
     setIsLoading(true);
     const postOneRoom = async () => {
       fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one`, {
@@ -35,18 +31,17 @@ export const Matching = ({
           "Content-Type": "application/json",
         },
       })
-        .then((response)=> response.json())
-        .then((res)=> {
-          let roomId = res.roomId
+        .then((response) => response.json())
+        .then((res) => {
+          let roomId = res.roomId;
           fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
             method: "POST",
             headers: {
               Auth: token,
               "Content-Type": "application/json",
-            }}
-          )
-          .then((res) => window.location.href = `/meeting/${roomId}`)
-      })
+            },
+          }).then((res) => (window.location.href = `/meeting/${roomId}`));
+        });
     };
     postOneRoom();
   };
@@ -62,7 +57,9 @@ export const Matching = ({
         <S.ButtonContainer>
           {isLoading ? (
             <>
-              <div className="lds-heart"><div></div></div>
+              <div className="lds-heart">
+                <div></div>
+              </div>
               <S.Loading theme={theme}>로딩 중...</S.Loading>
             </>
           ) : (
