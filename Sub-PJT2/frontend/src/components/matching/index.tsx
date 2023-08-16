@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { TokenValue } from "atoms/atoms";
 import { Cookies } from "react-cookie";
+import { GroupModal } from "components/modal/groupModal";
 
 type MatchingProps = {
   setShowMatching: (value: boolean) => void;
@@ -20,6 +21,7 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const cookies = new Cookies();
   const [token, setToken] = useRecoilState(TokenValue);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const handleFirstClick = async () => {
     setIsLoading(true);
@@ -48,6 +50,7 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
 
   const handleSecondClick = async () => {
     setIsLoading(true);
+    setShowModal(true);
   };
 
   return (
@@ -70,6 +73,8 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
               <S.Button theme={theme} onClick={handleSecondClick}>
                 다대다 매칭
               </S.Button>
+
+              {showModal && <GroupModal setShowModal={() => setShowModal} />}
             </>
           )}
         </S.ButtonContainer>
