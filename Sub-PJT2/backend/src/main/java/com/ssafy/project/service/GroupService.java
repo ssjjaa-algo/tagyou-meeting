@@ -4,6 +4,8 @@ import com.ssafy.project.domain.friend.FriendShip;
 import com.ssafy.project.domain.group.MeetingGroup;
 import com.ssafy.project.domain.notice.NoticeType;
 import com.ssafy.project.domain.room.GroupMeetingRoom;
+import com.ssafy.project.domain.room.MeetingRoom;
+import com.ssafy.project.domain.room.MeetingRoomStatus;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.GroupReqDto;
 import com.ssafy.project.dto.request.NoticeReqDto;
@@ -39,6 +41,10 @@ public class GroupService {
 
         userService.checkUserGender(user);
 
+        if(user.getMeetingRoom() == null){
+            throw new IllegalStateException("3 : 3 대기방에 입장하지 않은 유저입니다.");
+        }
+
         MeetingGroup meetingGroup = MeetingGroup.builder()
                 .groupGender(user.getUserGender())
                 .build();
@@ -63,10 +69,18 @@ public class GroupService {
         if (targetUser.getMeetingGroup() != null) {
             throw new IllegalStateException("초대할 유저가 이미 그룹에 가입 되어있습니다.");
         }
+        if(targetUser.getMeetingRoom() != null){
+            throw new IllegalStateException("초대할 유저가 이미 미팅방에 입장 되어있습니다.");
+        }
 
         return findMeetingGroup(groupReqDto.getGroupId())
                 .filter(group -> group.getGroupGender().equals(targetUser.getUserGender()))
                 .map(group -> {
+
+                    // 그룹장 권한
+                    Optional.of(group).filter(g -> g.getGroupUser().get(0).getId().equals(userId))
+                            .orElseThrow(() -> new IllegalArgumentException("현재 그룹장이 아닙니다."));
+
                     // 초대 요청
                     invitationService.createInvitation(targetUser, group);
 
@@ -98,9 +112,17 @@ public class GroupService {
                 .map(group -> {
                     Optional.of(group).filter(g -> g.getGroupUser().size() < 3)
                             .orElseThrow(() ->new IllegalArgumentException("그룹원 최대 인원수에 초과되었습니다."));
-
                     invitationService.acceptInvitation(user, group);
                     user.setMeetingGroup(group);
+
+                    // 대기방 개념이 그룹이 완성되야 입장할 수 있음
+//                    Optional.of(group.getGroupUser().get(0).getMeetingRoom())
+//                            .filter(meetingRoom -> meetingRoom.getStatus() == MeetingRoomStatus.INACTIVE)
+//                            .map(meetingRoom -> {
+//                                meetingRoom.addUser(user);
+//                                return meetingRoom;
+//                            })
+//                            .orElseThrow(() -> new IllegalArgumentException("그룹방이 현재 진행중입니다."));
                     return group;
                 })
                 .map(GroupRspDto::new)
@@ -149,6 +171,7 @@ public class GroupService {
 
         return findMeetingGroup(groupId)
                 .map(group -> {
+                    // 그룹장 권한
                     Optional.of(group).filter(g -> g.getGroupUser().get(0).getId().equals(userId))
                             .orElseThrow(() -> new IllegalArgumentException("현재 그룹장이 아닙니다."));
                     group.deleteGroup();

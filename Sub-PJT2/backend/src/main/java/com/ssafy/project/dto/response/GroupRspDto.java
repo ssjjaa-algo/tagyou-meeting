@@ -13,11 +13,14 @@ import java.util.stream.Collectors;
 public class GroupRspDto {
 
     private Long groupId;
+    private Long roomId;
     private Gender groupGender;
     private List<UserGroupDto> groupUser;
 
     public GroupRspDto(MeetingGroup group) {
         this.groupId = group.getId();
+        if(group.getGroupUser().size() > 0)
+            this.roomId = group.getGroupUser().get(0).getId();
         this.groupGender = group.getGroupGender();
         this.groupUser = group.getGroupUser().stream()
                 .filter(user -> user != null)

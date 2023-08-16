@@ -1,7 +1,7 @@
 package com.ssafy.project.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.project.domain.room.OneMeetingRoom;
 import com.ssafy.project.domain.room.QOneMeetingRoom;
@@ -25,19 +25,20 @@ public class OneRoomRepositoryImpl implements OneRoomRepositoryCustom{
         QOneMeetingRoom qOneRoom = QOneMeetingRoom.oneMeetingRoom;
         QUser qUser = QUser.user;
 
+        List<Long> oneRoomIdList =  queryFactory.select(qOneRoom.id)
+                .from(qOneRoom)
+                .where(qOneRoom.userList.size().eq(1))
+                .fetch();
+
+        BooleanBuilder notEqGenderOneRoomExist = new BooleanBuilder()
+                        .and(qUser.userGender.ne(user.getUserGender()))
+                        .and(qOneRoom.id.in(oneRoomIdList));
+
         Optional<OneMeetingRoom> oneMeetingRoom = Optional.ofNullable(
                 queryFactory.selectFrom(qOneRoom)
-                        .where(qOneRoom.id.in(
-                                JPAExpressions.select(qUser.meetingRoom.id)
-                                        .from(qUser)
-                                        .where(qUser.userGender.ne(user.getUserGender()),
-                                                qUser.meetingRoom.id.in(
-                                                        JPAExpressions.select(qUser.meetingRoom.id)
-                                                                .from(qUser)
-                                                                .groupBy(qUser.meetingRoom.id)
-                                                                .having(qUser.meetingRoom.id.count().eq(1L))
-                                                ))
-                        ))
+                        .leftJoin(qOneRoom.userList, qUser)
+//                        .join(qOneRoom.userList, qUser)
+                        .where(notEqGenderOneRoomExist)
                         .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                         .fetchFirst());
 

@@ -3,6 +3,7 @@ package com.ssafy.project.domain.group;
 import com.ssafy.project.domain.BaseTimeEntity;
 import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.room.GroupMeetingRoom;
+import com.ssafy.project.domain.room.MeetingRoom;
 import com.ssafy.project.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -34,13 +35,21 @@ public class MeetingGroup extends BaseTimeEntity {
     }
 
     public void quitGroup(User user){
-        this.groupUser.remove(user);
         user.quitMeetingGroup();
+        MeetingRoom meetingRoom = user.getMeetingRoom();
+        if(meetingRoom != null){
+            meetingRoom.removeUser(user);
+        }
+        this.groupUser.remove(user);
     }
 
     public void deleteGroup() {
         for (User user : groupUser) {
             user.quitMeetingGroup();
+            MeetingRoom meetingRoom = user.getMeetingRoom();
+            if(meetingRoom != null){
+                meetingRoom.removeUser(user);
+            }
         }
         this.groupUser.clear();
     }
