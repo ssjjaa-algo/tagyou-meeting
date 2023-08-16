@@ -1,18 +1,21 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import * as S from "./matching.styled";
-import "./index.css";
+import './index.css'
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { RoomInfo, TokenValue } from "atoms/atoms";
 import { Cookies } from "react-cookie";
-import { GroupModal } from "components/modal/groupModal";
 
 type MatchingProps = {
+  handleOnClick: () => void;
   setShowMatching: (value: boolean) => void;
 };
 
-export const Matching = ({ setShowMatching }: MatchingProps) => {
+export const Matching = ({
+  // handleOnClick,
+  setShowMatching,
+}: MatchingProps) => {
   const handleCloseMatching = () => {
     setShowMatching(false);
   };
@@ -32,9 +35,10 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
           "Content-Type": "application/json",
         },
       })
-        .then((response) => response.json())
-        .then((res) => {
-          let roomId = res.roomId;
+        .then((res)=> res.json())
+        .then((res)=> {
+          if (res['roomId'] !== undefined) {
+          let roomId = res['roomId'];      
           fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
             method: "POST",
             headers: {
@@ -44,16 +48,18 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
           )
           .then((res) => res.json())
           .then((res) => {
-            // Update the RoomInfo atom
-              setRoomInfo({
-                roomType: res.data.roomType,
-                roomId: res.data.roomId,
-                sessionId: res.data.sessionId,
-                maleUserName: res.data.maleUserName,
-                femaleUserName: res.data.femaleUserName,
-              })})
-              .then(()=> console.log("TEEEST", roomInfo))
-              // window.location.href = `/meeting/${roomId}`
+            const updatedRoomInfo = {
+              roomType: res['roomType'],
+              roomId: res['roomId'],
+              sessionId: res['sessionId'],
+              maleUserName: res['maleUserName'],
+              femaleUserName: res['femaleUserName'],
+            };
+            
+            setRoomInfo(updatedRoomInfo);
+            localStorage.setItem('roomInfo', JSON.stringify(updatedRoomInfo));
+            })
+          .then(()=> window.location.href = `/meeting/${roomId}`)
           }
       })
     };
@@ -62,7 +68,6 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
 
   const handleSecondClick = async () => {
     setIsLoading(true);
-    setShowModal(true);
   };
 
   return (
@@ -72,9 +77,7 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
         <S.ButtonContainer>
           {isLoading ? (
             <>
-              <div className="lds-heart">
-                <div></div>
-              </div>
+              <div className="lds-heart"><div></div></div>
               <S.Loading theme={theme}>로딩 중...</S.Loading>
             </>
           ) : (
@@ -85,8 +88,6 @@ export const Matching = ({ setShowMatching }: MatchingProps) => {
               <S.Button theme={theme} onClick={handleSecondClick}>
                 다대다 매칭
               </S.Button>
-
-              {showModal && <GroupModal setShowModal={() => setShowModal} />}
             </>
           )}
         </S.ButtonContainer>
