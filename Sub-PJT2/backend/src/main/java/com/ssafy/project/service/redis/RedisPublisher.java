@@ -12,6 +12,7 @@ import com.ssafy.project.repository.ChatMessageRepository;
 import com.ssafy.project.repository.OneRoomRepository;
 import com.ssafy.project.repository.UserRepository;
 import com.ssafy.project.service.ChatService;
+import com.ssafy.project.service.OnlineService;
 import com.ssafy.project.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Builder;
@@ -34,7 +35,7 @@ public class RedisPublisher {
     private final RedisTemplate<String, Object> redisTemplate;
     private final ChatMessageRepository chatMessageRepository;
     private final OneRoomRepository oneRoomRepository;
-    private final UserService userService;
+    private final OnlineService onlineService;
 
     /**
      * - 메시지를 Redis Topic(채팅방 고유 아이디)에 발행(Publish)합니다.
@@ -64,7 +65,7 @@ public class RedisPublisher {
             log.info("입장해있는 채팅방: " + user.getMeetingRoom().getId());
             if(user.getUserStatus() != UserStatus.INGAME) {
                 newMessage = ChatMessagePayload.builder().content("< " + user.getUserName() + " > 님이 입장하셨습니다.").sender("[알림]").messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
-                userService.editUserStatus(userId, UserStatus.INGAME);
+                onlineService.editUserStatus(userId, UserStatus.INGAME);
                 // reidsTemplate으로 넘어가는 message 형식이 잘못됨
                 redisTemplate.convertAndSend(topic.getTopic(), newMessage);
                 log.info("여까진 온다.");

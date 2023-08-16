@@ -65,6 +65,7 @@ export const UserInfo = atom<userProps>({
     userAge: 0,
     userGender: "MALE",
     userLike: 0,
+    userStatus: "",
   },
 });
 

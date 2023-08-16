@@ -7,6 +7,7 @@ export type userProps = {
   userAge: number;
   userGender: "FEMALE" | "MALE";
   userLike: number;
+  userStatus: string;
 };
 
 export type profileProps = {

@@ -1,11 +1,13 @@
 package com.ssafy.project.controller;
 
+import com.ssafy.project.domain.user.User;
 import com.ssafy.project.domain.user.UserStatus;
 import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
 import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
+import com.ssafy.project.service.OnlineService;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class UserController {
 
     private final UserService userService;
     private final TokenService tokenService;
+    private final OnlineService onlineService;
 
     // ====================== 임시 토큰 ============================
 
@@ -121,16 +125,22 @@ public class UserController {
         System.out.println("상태: " + status);
         switch(status){
             case "ONLINE":
-                userService.editUserStatus(id, UserStatus.ONLINE);
+                onlineService.editUserStatus(id, UserStatus.ONLINE);
                 break;
             case "OFFLINE":
-                userService.editUserStatus(id, UserStatus.OFFLINE);
+                onlineService.editUserStatus(id, UserStatus.OFFLINE);
                 break;
             case "INGAME":
-                userService.editUserStatus(id, UserStatus.INGAME);
+                onlineService.editUserStatus(id, UserStatus.INGAME);
                 break;
         }
+    }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/getUserStatus/{uId}")
+    public String getUserStatus(@PathVariable String uId){
+        Long id = Long.parseLong(uId);
+        return userService.getUserStatus(id);
     }
 
 }

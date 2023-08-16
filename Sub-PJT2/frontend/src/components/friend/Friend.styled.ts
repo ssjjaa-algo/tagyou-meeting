@@ -6,11 +6,16 @@ import { Button } from "antd";
 export const Profile = styled(Link)`
   display: flex;
   vertical-align: middle;
+  border: solid green 3px;
+  width: 100%;
 `;
 
 export const ProfileImgBox = styled.div`
-  display: block;
-  overflow: hidden;
+  border: solid green;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   height: 60px;
   width: 60px;
 `;
@@ -24,9 +29,9 @@ export const ProfileImg = styled.img`
   border-radius: 20px;
   object-fit: cover;
   display: block;
-  min-width: 100%;
-  min-height: 100%;
-  padding: 10px;
+  width: 80%;
+  height: 80%;
+  /* padding: 10px; */
 `;
 
 export const Name = styled.div<{ theme: themeProps }>`
@@ -54,5 +59,6 @@ export const Intro = styled(Name)`
 `;
 
 export const BtnContainer = styled.div`
-  margin-left: 120px;
+/* border: solid black 6px; */
+  /* margin-left: 120px; */
 `;

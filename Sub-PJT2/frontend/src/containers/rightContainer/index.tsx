@@ -12,43 +12,6 @@ type RightContinaerProp = {
 
 const RightContainer = ({ children }: RightContinaerProp) => {
   const theme: themeProps = useTheme();
-
-  const cookies = new Cookies();
-  const [token, setToken] = useRecoilState(TokenValue);
-  const [location, setLocation] = useState<string>("");
-  useEffect(() => {
-    const T = cookies.get("Auth");
-    setToken(T);
-  }, [cookies.get("Auth")]);
-
-  useEffect(() => {
-    setLocation(window.location.pathname);
-  }, [token]);
-
-  // pathname이 바뀔 경우 pathname이 meeting이 아니면 userStatus를 null로 바꿔야 함
-  useEffect(() => {
-    console.log(token);
-    console.log("위치: " + location);
-    if (location.search("meeting") != 1 && location !== "" && location !== "/" && location !=="/input") {
-      if(location.search("meeting") === 1){
-        fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
-          method: "POST",
-          body: "INGAME",
-          headers: {
-            Auth: token,
-          },
-        });
-      } else {
-        fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
-          method: "POST",
-          body: "ONLINE",
-          headers: {
-            Auth: token,
-          },
-        });
-      }
-    }
-  }, [location]);
   return (
     <>
       <S.Container className="right_container" theme={theme}>
