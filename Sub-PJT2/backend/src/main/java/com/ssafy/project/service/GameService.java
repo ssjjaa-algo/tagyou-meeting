@@ -21,7 +21,11 @@ public class GameService {
 
     public GameRspDto makeGame(Long roomId) throws IllegalAccessException {
         MeetingRoom meetingRoom = roomService.findGroupMeetRoom(roomId)
+                .orElse(null);
+        if(meetingRoom == null)
+            meetingRoom = roomService.findOneMeetRoom(roomId)
                 .orElseThrow(() -> new NotFoundException("룸아이디에 해당하는 룸 없음"));
+
         if(meetingRoom.getStatus().equals("INACTIVE"))
             throw new IllegalAccessException("아직 시작안한 방");
 
