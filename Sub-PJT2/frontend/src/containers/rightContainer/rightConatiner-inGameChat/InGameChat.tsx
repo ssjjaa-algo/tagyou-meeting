@@ -34,6 +34,12 @@ type Room = {
   femaleUserNicknmae: string;
 };
 
+type tempType = {
+  content: string;
+  message_type: string;
+  sender: string;
+}
+
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
@@ -70,6 +76,7 @@ const RightContainer = () => {
         // setRoomId(1);
       });
   };
+
 
   // const roomSync = async () => {
   //   console.log("roomConnect 함수 실행");
@@ -124,6 +131,7 @@ const RightContainer = () => {
       .then((response) => response.json())
       .then((data: ReceivingMessage[]) => {
         for (let i = 0; i < data.length; i++) {
+          // console.log(data[i].sender)
           addItem(data[i]);
         }
       });
@@ -133,6 +141,7 @@ const RightContainer = () => {
   useEffect(() => {
     const T = cookies.get("Auth");
     setToken(T);
+    console.log("패쓰네임: " + window.location);
   }, [cookies.get("Auth")]);
 
   useEffect(() => {
@@ -290,13 +299,13 @@ const RightContainer = () => {
           className={inGameChatStatus ? "chatBoxShown" : "chatBoxHidden"}
         >
           {/* 테스트용 User Input */}
-          <input type="text" value={user} onChange={handleUserChange} />
+          {/* <input type="text" value={user} onChange={handleUserChange} />
           <S.Button theme={theme} onClick={getRoomId}>
             Register
           </S.Button>
           <S.Button theme={theme} onClick={() => connectHandler(roomId)}>
             Connect
-          </S.Button>
+          </S.Button> */}
           <S.ChatRoomMainChats
             className="chatRoom-main-chats"
             theme={theme}
