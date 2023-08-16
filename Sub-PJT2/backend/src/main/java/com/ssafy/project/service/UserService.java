@@ -2,6 +2,7 @@ package com.ssafy.project.service;
 
 import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.User;
+import com.ssafy.project.domain.user.UserStatus;
 import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserProfileReqDto;
 import com.ssafy.project.dto.request.UserReqDto;
@@ -127,6 +128,13 @@ public class UserService {
         u.changeUserName(userProfileReqDto.getUserName());
     }
 
+    @Transactional
+    public void editUserStatus(Long uId, UserStatus userStatus){
+        User u = findUser(uId)
+                .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
+        u.setUserStatus(userStatus);
+    }
+
     public boolean checkUserExists(String email){
         return findUserByEmail(email).isPresent();
     }
@@ -157,5 +165,6 @@ public class UserService {
         if(phoneNum.length() == 13) return true;
         else return false;
     }
+
 }
 

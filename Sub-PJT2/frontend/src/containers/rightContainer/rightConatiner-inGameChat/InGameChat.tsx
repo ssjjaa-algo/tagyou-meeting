@@ -125,7 +125,6 @@ const RightContainer = () => {
       });
   };
 
-  // 렌더링 후 연결
   useEffect(() => {
     const T = cookies.get("Auth");
     setToken(T);

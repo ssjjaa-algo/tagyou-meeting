@@ -113,4 +113,11 @@ public class UserController {
         return ResponseEntity.badRequest().body("유효하지 않은 폰번호(13자리 아님)");
     }
 
+    @GetMapping("/setUserStatus")
+    public void SetUserStatus(HttpServletRequest request){
+        System.out.println("열로 들어오냐?");
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        userService.editUserStatus(id, null);
+    }
+
 }
