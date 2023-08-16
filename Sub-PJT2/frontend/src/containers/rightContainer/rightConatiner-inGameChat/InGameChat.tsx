@@ -38,7 +38,7 @@ type Room = {
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const [roomId, setRoomId] = useState<number>(0);
+  const [roomId, setRoomId] = useState<number>(1);
   const [items, setItems] = useState<ReceivingMessage[]>([]);
   const [lastMessage, setLastMessage] = useState<ReceivingMessage>();
   const [message, setMessage] = useState("");

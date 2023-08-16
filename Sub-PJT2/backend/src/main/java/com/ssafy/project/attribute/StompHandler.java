@@ -7,6 +7,7 @@ import com.ssafy.project.domain.message.MessageType;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.RoomMessageReqDto;
 import com.ssafy.project.dto.request.UserReqDto;
+import com.ssafy.project.dto.response.RoomMessageRspDto;
 import com.ssafy.project.repository.OneRoomRepository;
 import com.ssafy.project.repository.UserRepository;
 import com.ssafy.project.service.ChatService;
@@ -29,6 +30,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Log4j2
@@ -38,12 +41,14 @@ public class StompHandler implements ChannelInterceptor {
     private final TokenService tokenService;
     private final RedisPublisher redisPublisher;
     private final ChatService chatService;
+    private final UserService userService;
 
 
-    public StompHandler(TokenService tokenService, @Lazy ChatService chatService, @Lazy RedisPublisher redisPublisher) {
+    public StompHandler(TokenService tokenService, @Lazy ChatService chatService, @Lazy RedisPublisher redisPublisher, UserService userService) {
         this.tokenService = tokenService;
         this.chatService = chatService;
         this.redisPublisher = redisPublisher;
+        this.userService = userService;
     }
 
     @Override // websocket을 통해 들어온 요청이 처리 되기 전 실행된다.
@@ -89,18 +94,17 @@ public class StompHandler implements ChannelInterceptor {
             String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
             String accessToken = jwt;
             Long uId = tokenService.parseUId(accessToken);
-            Long rID = Long.parseLong(accessor.getFirstNativeHeader(AuthConstants.ROOM_ID));
-            System.out.println("룸: " + rID);
+            Long rId = Long.parseLong(accessor.getFirstNativeHeader(AuthConstants.ROOM_ID));
+            System.out.println("룸: " + rId);
 
             // DB연동을 안했으니 이메일 정보로 유저를 만들어주겠습니다
             UserReqDto userReqDto = new UserReqDto(uId, "email", "이름");
 
             log.info("user : " + uId);
             log.info("userInfo : " + userReqDto.getEmail());
-            chatService.enterMeetRoom(rID);
+            chatService.enterMeetRoom(rId);
             log.info("채팅방 입장");
-//            // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
-//            redisTemplate.convertAndSend(roomId, ChatMessage.builder().messageType(MessageType.ENTER).content("입장").build());
+
             redisPublisher.publish(ChannelTopic.of(roomId), uId, RoomMessageReqDto.builder().messageType(MessageType.ENTER).content("님께서 입장하셨습니다.").meetingRoomId(Long.parseLong(roomId)).build());
         }
 //        } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
