@@ -99,15 +99,6 @@ public class StompHandler implements ChannelInterceptor {
             log.info("userInfo : " + userReqDto.getEmail());
             chatService.enterMeetRoom(rID);
             log.info("채팅방 입장");
-
-            // 입장메시지?같은데 뭔지 잘 모르겠음
-//            oneRoomRepository.setUserEnterInfo(user, roomId);
-
-            // 방이랑 유저 연결하는 부분같음
-//            User u = userService.connectMemberAndChatRoom(roomId, user);
-
-//            RoomMessageReqDto chatMessage = new RoomMessageReqDto();
-//
 //            // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
 //            redisTemplate.convertAndSend(roomId, ChatMessage.builder().messageType(MessageType.ENTER).content("입장").build());
             redisPublisher.publish(ChannelTopic.of(roomId), uId, RoomMessageReqDto.builder().messageType(MessageType.ENTER).content("내용").meetingRoomId(Long.parseLong(roomId)).build());

@@ -52,6 +52,6 @@ public class RedisPublisher{
         log.info(publishedMessage.getContent());
         chatMessageRepository.save(publishedMessage);
         log.info("여까진 온다.");
-        redisTemplate.convertAndSend(topic.getTopic(), publishedMessage);
+        redisTemplate.convertAndSend(topic.getTopic(), message);
     }
 }
