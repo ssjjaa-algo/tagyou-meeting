@@ -49,6 +49,9 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType = RoleType.USER;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private MeetingGroup meetingGroup;
@@ -95,5 +98,9 @@ public class User extends BaseTimeEntity {
 
     public void changeUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
     }
 }

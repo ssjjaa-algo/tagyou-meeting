@@ -47,17 +47,28 @@ public class GroupMeetingRoom extends MeetingRoom {
         }
     }
 
-    public void removeMaleUserList(){
-        for (User user : maleList) {
+    public void removeMaleUserList(MeetingGroup meetingGroup){
+        for (User user : meetingGroup.getGroupUser()) {
             user.quitRoom();
+            this.maleList.remove(user);
         }
-        this.maleList.clear();
     }
 
-    public void removeFemaleUserList(){
+    public void removeFemaleUserList(MeetingGroup meetingGroup){
+        for (User user : meetingGroup.getGroupUser()) {
+            user.quitRoom();
+            this.femaleList.remove(user);
+        }
+    }
+
+    public void clearGroupUser(){
+        for (User user : this.maleList) {
+            user.quitRoom();
+        }
         for (User user : femaleList) {
             user.quitRoom();
         }
+        this.maleList.clear();
         this.femaleList.clear();
     }
 
