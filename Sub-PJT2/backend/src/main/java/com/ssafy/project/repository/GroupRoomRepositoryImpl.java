@@ -71,12 +71,12 @@ public class GroupRoomRepositoryImpl implements GroupRoomRepositoryCustom{
 
             log.info("Flag groupMeetingRoom " + groupMeetingRoom);
         }
-        // 다른 경우만이 존재하는 경우 => 3-size 인 조건에 해당 되는 내림차순으로 찾아줌
+        // 다른 경우만이 존재하는 경우 => 2-size 인 조건에 해당 되는 내림차순으로 찾아줌
         else{
             groupMeetingRoom = Optional.ofNullable(queryFactory.selectFrom(qGroupRoom)
                     .join(qGroupRoom.userList, qUser)
                     .groupBy(qGroupRoom.id, qUser.userGender)
-                    .having(qGroupRoom.userList.size().loe(2 - size),qUser.userGender.ne(group.getGroupGender()))
+                    .having(qGroupRoom.userList.size().loe(2),qUser.userGender.ne(group.getGroupGender()))
                     .orderBy(qGroupRoom.userList.size().desc())  // 내림차순 정렬
                     .fetchFirst());
         }

@@ -23,7 +23,7 @@ const Router = () => {
       <Route path="/test" element={<Test />} />
       <Route path="/mypage" element={<MyPageTmp />} />
       <Route path="/openvidu" element={<Openvidu />} />
-      <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
+      <Route path="/chatRoom/:userId" element={<ChatRoom />} />
       <Route path="/chatList" element={<ChatList />} />
       <Route path="/meeting/:roomId" element={<Meeting />} />
       <Route path="/chatTest" element={<InGameChat />} />

@@ -133,7 +133,7 @@ public class GroupService {
 
         return findMeetingGroup(groupId)
                 .map(group -> {
-                    Optional.of(group).filter(g -> g.getGroupUser().size() < 3)
+                    Optional.of(group).filter(g -> g.getGroupUser().size() < 2)
                             .orElseThrow(() ->new IllegalArgumentException("그룹원 최대 인원수에 초과되었습니다."));
 
                     invitationService.acceptInvitation(user, group);
