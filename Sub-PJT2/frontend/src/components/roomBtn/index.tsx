@@ -33,11 +33,12 @@ const RoomBtn = ({ source, content, setShowState }: btnProps) => {
       },
     })
       .then((response) => response.json())
-      .then((res) => console.log("aaaaa", res));
-    // .then((res) =>
-    //   res.map((item: groupResDtoType) => {
-    //     setInvitedList((pre) => [...pre, item]);
-    //   })
+      // .then((res) => console.log("aaaaa", res));
+      .then((res) =>
+        res.map((item: groupResDtoType) => {
+          setInvitedList((pre) => [...pre, item]);
+        })
+      );
   };
 
   const handleOnClick = (source: "default" | "make" | "view") => {

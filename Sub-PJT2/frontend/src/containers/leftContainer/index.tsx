@@ -1,12 +1,13 @@
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   IsDark,
   ProfileInfo,
   ProfileImgSrc,
   TokenValue,
   UserInfo,
+  GroupResDto,
 } from "../../atoms/atoms";
 import * as S from "./LeftContainer.styled";
 import Profile from "components/profile";
@@ -27,6 +28,7 @@ const LeftContainer = () => {
   const [imgSrc, setImgSrc] = useRecoilState<string>(ProfileImgSrc);
   const [showMatching, setShowMatching] = useState<boolean>(false);
   const [showGruopModal, setshowGruopModal] = useState<boolean>(false);
+  const groupInfo = useRecoilValue(GroupResDto);
 
   useEffect(() => {
     setAuthToken(cookies.get("Auth"));
@@ -106,6 +108,7 @@ const LeftContainer = () => {
           imgSrc={imgSrc}
           name={userInfo.userName}
           age={userInfo.userAge}
+          group={groupInfo.groupId}
         />
 
         <S.ListBox>

@@ -20,8 +20,8 @@ export const GroupModal = ({
   const invitedGroupList = useRecoilValue(InvitedList);
 
   useEffect(() => {
-    console.log("nomalFriendList", nomalFriendList);
-  }, [nomalFriendList]);
+    console.log("invitedGroupList", invitedGroupList);
+  }, [invitedGroupList]);
 
   return (
     <S.ModalWrapper onClick={() => setShowModal(false)}>
@@ -73,17 +73,19 @@ export const GroupModal = ({
               <S.Container>
                 <S.FriendContainer>
                   <S.Title> 요청 받은 그룹 </S.Title>
-                  {invitedGroupList.length > 0 &&
-                    invitedGroupList?.map(
-                      (item: groupResDtoType, idx: number) => (
+                  {invitedGroupList?.map(
+                    (item: groupResDtoType, idx: number) => (
+                      <>
+                        <div>aaaa{item.groupUser[0].groupIdx}</div>
                         <InvitedRoom
                           groupUser={item.groupUser}
                           groupGender={item.groupGender}
                           groupId={item.groupId}
                           roomId={item.roomId}
                         ></InvitedRoom>
-                      )
-                    )}
+                      </>
+                    )
+                  )}
                   {groupInfo.groupGender}
                   {groupInfo.groupId}
                 </S.FriendContainer>

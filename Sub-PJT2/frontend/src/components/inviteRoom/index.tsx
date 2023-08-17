@@ -1,8 +1,8 @@
 import * as S from "./Room.styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
-import { TokenValue } from "atoms/atoms";
-import { useRecoilValue } from "recoil";
+import { GroupResDto, TokenValue } from "atoms/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { groupResDtoType } from "types/types";
 
 const InvitedRoom = ({
@@ -13,6 +13,7 @@ const InvitedRoom = ({
 }: groupResDtoType) => {
   const theme: themeProps = useTheme();
   const token = useRecoilValue(TokenValue);
+  const setGroupInfo = useSetRecoilState(GroupResDto);
 
   const acceptGroup = () => {
     console.log("acceptGroup, groupId", groupId);
@@ -25,7 +26,9 @@ const InvitedRoom = ({
           "Content-Type": "application/json",
         },
       }
-    );
+    )
+      .then((res) => res.json())
+      .then((res) => setGroupInfo(res));
   };
 
   const rejectGroup = () => {

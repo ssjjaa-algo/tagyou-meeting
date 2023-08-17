@@ -82,6 +82,7 @@ export type leftContainerProprs = {
   imgSrc: string;
   name: string;
   age: number;
+  group: number | string;
 };
 
 export type userInfoProps = {
