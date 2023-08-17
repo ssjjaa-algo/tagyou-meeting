@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Schema(description = "1:1 방 Response DTO")
 public class OneRoomRspDto {
-    @Schema(description = "빙 아이디")
+    @Schema(description = "방 아이디")
     private Long roomId;
     @Schema(description = "방 타입")
     private String roomType;
