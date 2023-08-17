@@ -8,10 +8,14 @@ import homeImg from "asset/img/home.png";
 import tmpLogo from "asset/img/logo/2.png";
 // import { roomProps } from "types/types";
 
+interface HeaderProps {
+  leaveSession: () => void;
+}
+
 const OPENVIDU_SERVER_URL = 'https://tagyou.site:8443';
 const OPENVIDU_SERVER_SECRET = 'tagyou';
 
-const Header = () => {
+const Header = ({ leaveSession } : HeaderProps) => {
   const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo); 
   const theme: themeProps = useTheme();
   const [GameStart, setGameStart] = useRecoilState(GameStartAtom);
@@ -44,6 +48,7 @@ const Header = () => {
   const GotoHome = () => {
     alert("방 나가기 완료")
     Exit()
+    leaveSession()
     window.location.href = "/home";
   };
 

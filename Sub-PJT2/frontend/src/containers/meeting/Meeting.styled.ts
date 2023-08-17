@@ -55,4 +55,5 @@ export const Middle = styled.div`
   align-items: center;
   width: 100%;
   height: 10%;
+  flex: 1; // 추가
 `;

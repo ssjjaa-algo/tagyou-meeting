@@ -9,12 +9,12 @@ import "css/sonByeongHo.css";
 import lifeImg from "asset/img/icons8-heart-40.png";
 import UserVideoComponent from "containers/openvidu/UserVideoComponent";
 
-interface CatchMindProps {
+interface SonByeongHoProps {
   publisher: any; // publisher의 타입을 여기에 정확히 지정해주세요
   subscribers: any[]; // subscribers의 타입을 여기에 정확히 지정해주세요
 }
 
-const SonByeongHo = ({ publisher, subscribers }: CatchMindProps) => {
+const SonByeongHo = ({ publisher, subscribers }: SonByeongHoProps) => {
   const theme: themeProps = useTheme();
   const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
   const [inGameChatStatus, setInGameChatStatus] =

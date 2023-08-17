@@ -55,6 +55,11 @@ export const GroupResDto = atom<groupResDtoType>({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const MainStreamManager = atom({
+  key: "MainStreamManager",
+  default: null,
+});
+
 export const RequestFriendList = selector({
   key: "RequestFriendList",
   get: ({ get }) => {
