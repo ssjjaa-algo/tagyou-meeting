@@ -9,6 +9,7 @@ export const LandingOuter = styled.div`
   justify-content: center;
   align-items: center;
   width: 100vw;
+  min-width: 70rem;
   height: 100%;
 `;
 
