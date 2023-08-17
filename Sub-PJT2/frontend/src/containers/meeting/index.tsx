@@ -5,9 +5,8 @@ import SonByeonHo from "containers/inGame/sonByeongHo";
 import Sis from "containers/inGame/sis";
 import { useEffect, useState } from "react";
 import Header from "components/header/Header";
-import { GameStart as GameStartAtom, UserInfo } from "atoms/atoms";
+import { GameStart as GameStartAtom, UserInfo, RoomInfo, InGameChatStatus } from "atoms/atoms";
 import { useRecoilState } from "recoil";
-import { RoomInfo, InGameChatStatus } from "atoms/atoms";
 import { useRecoilValue } from "recoil";
 
 // OpenVidu
@@ -31,10 +30,11 @@ const Meeting = () => {
   const [inGameChatStatus, setInGameChatStatus] = useRecoilState(InGameChatStatus);
   const userInfo = useRecoilValue(UserInfo);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo); // 추가
+  // const [myUserName, setMyUserName] = useState(userInfo.userName);
   const [myUserName, setMyUserName] = useState(userInfo.userName);
   const [session, setSession] = useState<Session | null>();
   const [mainStreamManager, setMainStreamManager] = useState<StreamManager | null>(null);
-  const [publisher, setPublisher] = useState<Publisher | undefined>(undefined)
+  const [publisher, setPublisher] = useState<any>()
   // const [subscriber, setSubscriber] = useState<Subscriber | undefined>(undefined)
   const [publishers, setPublishers] = useState<any[]>([]); // 추가
   const [token, setToken] = useState<any>()
@@ -57,11 +57,11 @@ const Meeting = () => {
 
   const renderSelectedGame = () => {
     if (selectedGame === "catchMind") {
-      return <CatchMind publisher={publisher} />;
+      return <CatchMind publisher={publisher} subscribers={subscribers} />;
     } else if (selectedGame === "sonByeonHo") {
-      return <SonByeonHo />;
+      return <SonByeonHo publisher={publisher} subscribers={subscribers}/>;
     } else if (selectedGame === "sis") {
-      return <Sis />;
+      return <Sis publisher={publisher} subscribers={subscribers}/>;
     }
   };
 
@@ -71,36 +71,36 @@ const Meeting = () => {
     }
   }
 
-  const deleteSubscriber = (mainStreamManager: any) => {
-      let index = subscribers.indexOf(mainStreamManager, 0);
-      if (index > -1) {
-          subscribers.splice(index, 1);
-          setSubscribers(subscribers)
-      }
-  }
+  // const deleteSubscriber = (mainStreamManager: any) => {
+  //     let index = subscribers.indexOf(mainStreamManager, 0);
+  //     if (index > -1) {
+  //         subscribers.splice(index, 1);
+  //         setSubscribers(subscribers)
+  //     }
+  // }
   // Openvidu
   const joinSession = (roomInfo: roomProps) => {
     const OV = new OpenVidu();
     let mySession: Session = OV.initSession()
 
     mySession.on("streamCreated", function (event) {
-      let subscriber = mySession.subscribe(event.stream, "subscriber");
+      let subscriber = mySession.subscribe(event.stream, undefined );
       subscribers.push(subscriber)
       setSubscribers(subscribers)
     });
     
-    mySession.on('streamDestroyed', (event) => {
+    // mySession.on('streamDestroyed', (event) => {
 
-      // Remove the stream from 'subscribers' array
-      deleteSubscriber(event.stream.streamManager);
-    });
+    //   // Remove the stream from 'subscribers' array
+    //   // deleteSubscriber(event.stream.streamManager);
+    // });
 
 
 
     new Promise<void>((resolve, reject) => {
       const data = {
         type: "WEBRTC",
-        data: "My Server Data",
+        // data: "My Server Data",
         record: true,
         role: "PUBLISHER",
         kurentoOptions: {
@@ -135,7 +135,7 @@ const Meeting = () => {
         )
         .then((response) => {
           setToken(response.data.token);
-          mySession.connect(response.data.token).then(() => {
+          mySession.connect(response.data.token, { clientData: myUserName }).then(() => {
             const publisher = OV.initPublisher("publisher");
             mySession.publish(publisher);
             setPublisher(publisher);
@@ -162,13 +162,13 @@ const Meeting = () => {
           <S.InnerContainer>
               { roomInfo.roomType === "One" ? (
                 <S.PlayerVidBundle>
-                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                  <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
                 </S.PlayerVidBundle>
               ) : (
                 <S.PlayerVidBundle>
-                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+                  <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+                  <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+                  <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
                 </S.PlayerVidBundle>
               )
               }
@@ -184,11 +184,12 @@ const Meeting = () => {
               </select>
               <button onClick={() => setGameStart(true)}>게임 시작</button>
             </S.Middle>
-            {subscribers.map((sub, i) => (
-                <S.PlayerVidBundle>
+            <S.PlayerVidBundle>
+            {subscribers.map((sub, i) => {
+              return(
                 <S.PlayerVid><UserVideoComponent streamManager={sub} /></S.PlayerVid>
-              </S.PlayerVidBundle>
-            ))}
+                )})}
+            </S.PlayerVidBundle>
 
           </S.InnerContainer>
         </S.Container>

@@ -4,13 +4,19 @@ import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import { useRecoilState } from "recoil";
-import { InGameChatStatus } from "atoms/atoms";
+import { InGameChatStatus, RoomInfo } from "atoms/atoms";
 import "css/sonByeongHo.css";
 import lifeImg from "asset/img/icons8-heart-40.png";
+import UserVideoComponent from "containers/openvidu/UserVideoComponent";
 
-const SonByeongHo = () => {
+interface CatchMindProps {
+  publisher: any; // publisher의 타입을 여기에 정확히 지정해주세요
+  subscribers: any[]; // subscribers의 타입을 여기에 정확히 지정해주세요
+}
+
+const SonByeongHo = ({ publisher, subscribers }: CatchMindProps) => {
   const theme: themeProps = useTheme();
-
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
 
@@ -24,12 +30,12 @@ const SonByeongHo = () => {
   // 3. 목숨 카운트가 0이 된 사람이 한명이라도 있을 경우 게임 종료
   // 4. 목숨 카운트가 0이 된 사람이 나온 직후가 아닌 그 턴이 종료 된 후에 게임 종료
 
-  const [player1LifeCnt, setPlayer1LifeCnt] = useState(5);
-  const [player2LifeCnt, setPlayer2LifeCnt] = useState(5);
-  const [player3LifeCnt, setPlayer3LifeCnt] = useState(5);
-  const [player4LifeCnt, setPlayer4LifeCnt] = useState(5);
-  const [player5LifeCnt, setPlayer5LifeCnt] = useState(5);
-  const [player6LifeCnt, setPlayer6LifeCnt] = useState(5);
+  const [player1LifeCnt, setPlayerLifeCnt1] = useState(5);
+  const [player2LifeCnt, setPlayerLifeCnt2] = useState(5);
+  const [player3LifeCnt, setPlayerLifeCnt3] = useState(5);
+  const [player4LifeCnt, setPlayerLifeCnt4] = useState(5);
+  const [player5LifeCnt, setPlayerLifeCnt5] = useState(5);
+  const [player6LifeCnt, setPlayerLifeCnt6] = useState(5);
 
   const playerLifeCalc = (playerLifeCnt: number) => {
     const result = [];
@@ -39,9 +45,30 @@ const SonByeongHo = () => {
     return result;
   };
 
-  const handleClickConfess = () => {
-    setPlayer1LifeCnt(player1LifeCnt - 1);
+  const handleClickConfess1 = () => {
+    setPlayerLifeCnt1(player1LifeCnt - 1);
   };
+
+  const handleClickConfess2 = () => {
+    setPlayerLifeCnt2(player2LifeCnt - 1);
+  };
+
+  const handleClickConfess3 = () => {
+    setPlayerLifeCnt3(player3LifeCnt - 1);
+  };
+
+  const handleClickConfess4 = () => {
+    setPlayerLifeCnt4(player4LifeCnt - 1);
+  };
+
+  const handleClickConfess5 = () => {
+    setPlayerLifeCnt5(player5LifeCnt - 1);
+  };
+
+  const handleClickConfess6 = () => {
+    setPlayerLifeCnt6(player6LifeCnt - 1);
+  };
+
 
   const [turnEnd, setTurnEnd] = useState<boolean>(false);
 
@@ -72,35 +99,47 @@ const SonByeongHo = () => {
       className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}
     >
       <S.InnerContainer>
-        <S.PlayerVidBundle>
-          <S.PlayerVid>
-            <S.LifeContainer>{playerLifeCalc(player1LifeCnt)}</S.LifeContainer>
-          </S.PlayerVid>
-          <S.PlayerVid>
-            <S.LifeContainer>{playerLifeCalc(player2LifeCnt)}</S.LifeContainer>
-          </S.PlayerVid>
-          <S.PlayerVid>
-            <S.LifeContainer>{playerLifeCalc(player3LifeCnt)}</S.LifeContainer>
-          </S.PlayerVid>
-        </S.PlayerVidBundle>
+      { roomInfo.roomType === "One" ? (
+          <S.PlayerVidBundle>
+            <S.PlayerVid>
+              <UserVideoComponent streamManager={publisher} />
+              <S.LifeContainer>{playerLifeCalc(player1LifeCnt)}</S.LifeContainer>
+            </S.PlayerVid>
+          </S.PlayerVidBundle>
+        ) : (
+          <S.PlayerVidBundle>
+            <S.PlayerVid>
+              <UserVideoComponent streamManager={publisher} />
+              <S.LifeContainer>{playerLifeCalc(player1LifeCnt)}</S.LifeContainer>
+            </S.PlayerVid>
+            <S.PlayerVid>
+              <UserVideoComponent streamManager={publisher} />
+              <S.LifeContainer>{playerLifeCalc(player2LifeCnt)}</S.LifeContainer>
+            </S.PlayerVid>
+            <S.PlayerVid>
+              <UserVideoComponent streamManager={publisher} />
+              <S.LifeContainer>{playerLifeCalc(player3LifeCnt)}</S.LifeContainer>
+            </S.PlayerVid>
+          </S.PlayerVidBundle>
+        )
+        }
         <S.Middle>
           <S.Saying theme={theme}>
             세상에서 가장 품위있는 소리는 침착한 양심의 소리이다. - 셰익스피어
           </S.Saying>
-          <S.Confess theme={theme} onClick={handleClickConfess}>
+          <S.Confess theme={theme} onClick={handleClickConfess1}>
             양심 선언
           </S.Confess>
         </S.Middle>
+        {/* 사람 영상 뜰 자리 */}
         <S.PlayerVidBundle>
-          <S.PlayerVid>
-            <S.LifeContainer>{playerLifeCalc(player4LifeCnt)}</S.LifeContainer>
-          </S.PlayerVid>
-          <S.PlayerVid>
-            <S.LifeContainer>{playerLifeCalc(player5LifeCnt)}</S.LifeContainer>
-          </S.PlayerVid>
-          <S.PlayerVid>
-            <S.LifeContainer>{playerLifeCalc(player6LifeCnt)}</S.LifeContainer>
-          </S.PlayerVid>
+          {subscribers.map((sub, i) => {
+            return(
+              <S.PlayerVid>
+                <UserVideoComponent streamManager={sub} />
+                <S.LifeContainer>{playerLifeCalc(player4LifeCnt)}</S.LifeContainer>
+              </S.PlayerVid>
+              )})}
         </S.PlayerVidBundle>
       </S.InnerContainer>
     </S.Container>
