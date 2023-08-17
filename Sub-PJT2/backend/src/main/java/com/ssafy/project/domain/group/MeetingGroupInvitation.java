@@ -25,9 +25,6 @@ public class MeetingGroupInvitation {
     @JoinColumn(name = "group_id")
     private MeetingGroup group;
 
-    @Column(nullable = false, name = "invitation_read_status")
-    private boolean read = false;
-
     @Enumerated(EnumType.STRING)
     private InvitationStatus invitationStatus = InvitationStatus.PENDING; // PENDING, ACCEPTED, REJECTED
 
@@ -39,12 +36,10 @@ public class MeetingGroupInvitation {
 
     public void acceptInvitation(){
         this.invitationStatus = InvitationStatus.ACCEPTED;
-        this.read = true;
     }
 
     public void rejectInvitation(){
         this.invitationStatus = InvitationStatus.REJECTED;
-        this.read = true;
     }
 
 }
