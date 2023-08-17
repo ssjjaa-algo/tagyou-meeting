@@ -39,6 +39,10 @@ public class GroupService {
 
         userService.checkUserGender(user);
 
+        if (user.getMeetingGroup() != null) {
+            throw new IllegalStateException("이미 그룹에 가입한 유저입니다.");
+        }
+
         if(user.getMeetingRoom() != null){
             throw new IllegalStateException("미팅방에 입장한 유저는 그룹을 생성할 수 없습니다.");
         }
