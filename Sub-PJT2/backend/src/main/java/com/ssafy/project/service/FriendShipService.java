@@ -1,5 +1,6 @@
 package com.ssafy.project.service;
 
+import com.querydsl.core.Tuple;
 import com.ssafy.project.domain.friend.FriendShip;
 import com.ssafy.project.domain.friend.FriendShipStatus;
 import com.ssafy.project.domain.notice.Notice;
@@ -137,13 +138,7 @@ public class FriendShipService {
      */
     @Transactional(readOnly = true)
     public List<FriendInfoRspDto> findFriendShips(Long userId) {
-        return
-                findFriendShipsByUserId(userId)
-                        .map(fList -> fList.stream()
-//                                .map(friendShip -> friendShip.getTargetUser()
-                                        .map(FriendInfoRspDto::new)
-                                .toList()
-                        )
+        return findFriendShipsByUserId(userId)
                 .orElseGet(ArrayList::new);
     }
 
@@ -188,9 +183,9 @@ public class FriendShipService {
         return Optional.ofNullable(userId).flatMap(n -> friendShipRepository.findByUserIdAndTargetUserId(userId, targetId));
     }
 
-    private Optional<List<FriendShip>> findFriendShipsByUserId(Long userId) {
+    private Optional<List<FriendInfoRspDto>> findFriendShipsByUserId(Long userId) {
         return Optional.ofNullable(userId)
-                .flatMap(friendShipRepository::findAllByUserId);
+                .flatMap(friendShipRepository::findFriendInfoAllByUserId);
     }
 
     private Optional<List<Notice>> findNoticesByUserId(Long userId) {

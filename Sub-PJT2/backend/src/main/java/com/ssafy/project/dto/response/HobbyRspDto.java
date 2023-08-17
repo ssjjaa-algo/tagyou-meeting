@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class HobbyRspDto {
     @Schema(description = "취미")
     private String hobby;
-
     public HobbyRspDto(String hobby) {
         this.hobby = hobby;
     }

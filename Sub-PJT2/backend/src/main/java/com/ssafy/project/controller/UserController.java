@@ -1,10 +1,7 @@
 package com.ssafy.project.controller;
 
-import com.ssafy.project.domain.user.User;
 import com.ssafy.project.domain.user.UserStatus;
-import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
-import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.dto.response.UserStatusRspDto;
@@ -22,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
