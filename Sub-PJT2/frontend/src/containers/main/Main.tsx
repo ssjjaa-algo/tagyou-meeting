@@ -42,12 +42,12 @@ function Main() {
     setToken(T);
   }, [cookies.get("Auth")]);
   useEffect(() => {
-    if(!token) return;
+    if (!token) return;
     setLocation(window.location.pathname);
   }, [token]);
   useEffect(() => {
-    console.log(location);
-    console.log(location.search("meeting"));
+    // console.log(location);
+    // console.log(location.search("meeting"));
     if (location.search("meeting") == 1) {
       setUserStatus("ingame");
     } else {
@@ -64,8 +64,8 @@ function Main() {
       !token
     )
       return;
-    console.log(">>>>유저 접속 정보: " + userStatus);
-    console.log("접속 여부 알려주는 connectHandler 발동");
+    // console.log(">>>>유저 접속 정보: " + userStatus);
+    // console.log("접속 여부 알려주는 connectHandler 발동");
     token && connectHandler();
   }, [userStatus]);
 
@@ -76,17 +76,16 @@ function Main() {
       // 여기서 url 조정하면 됨
       return socket;
     });
-    console.log("바로직전: " + token);
     const headers = {
       Auth: token,
       Info: userStatus,
     };
     client.current.connect(headers, () => {
-      console.log("연결됨");
+      console.log("WebSocket Connected");
     });
-    client.current.onDisconnect = () =>{
-      console.log("연결 종료됨");
-    }
+    client.current.debug = () => {
+      // console.log("아무것도 안한다.");
+    };
   };
   // pathname이 바뀔 경우 pathname이 meeting이 아니면 userStatus를 null로 바꿔야 함
   // useEffect(() => {
