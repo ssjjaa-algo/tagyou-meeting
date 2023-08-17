@@ -48,7 +48,7 @@ const Friend = ({
 
   useEffect(() => {
     loadUserStatus();
-  }, [token]);
+  });
 
   return (
     <>
