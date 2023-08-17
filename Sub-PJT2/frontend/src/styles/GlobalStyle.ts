@@ -29,8 +29,9 @@ const GlobalStyle = css`
     display: flex;
     width: 100%;
     height: 100%;
-    min-width: 50rem;
-    min-height: fit-content;
+    min-width: 75rem;
+    min-height: 45rem;
+    /* border: solid yellow 5px !important; */
   }
   ::-webkit-scrollbar {
     width: 0.7rem;
