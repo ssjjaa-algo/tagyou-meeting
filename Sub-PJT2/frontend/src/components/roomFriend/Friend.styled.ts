@@ -39,7 +39,7 @@ export const StyledBtn = styled(Button)<{
   theme: themeProps;
 }>`
   background-color: ${(props) =>
-    props.source === "accept" ? "##5d85be" : "#da3350"} !important;
+    props.source === "accept" ? "#f43f5e" : "#da3350"} !important;
   font-size: 4px !important;
   font-weight: 600;
   width: 35px;

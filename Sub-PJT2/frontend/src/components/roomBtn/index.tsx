@@ -26,19 +26,24 @@ const RoomBtn = ({ source, content, setShowState }: btnProps) => {
       .then((res) => setGroupInfo(res));
   };
 
-  const getInvitedList = () => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/groups/invited`, {
-      headers: {
-        Auth: token,
-      },
-    })
-      .then((response) => response.json())
-      // .then((res) => console.log("aaaaa", res));
-      .then((res) =>
-        res.map((item: groupResDtoType) => {
-          setInvitedList((pre) => [...pre, item]);
-        })
-      );
+  const getInvitedList = async () => {
+    const fethchList = () => {
+      fetch(`${process.env.REACT_APP_BASE_URL}/groups/invited`, {
+        headers: {
+          Auth: token,
+        },
+      })
+        .then((response) => response.json())
+        // .then((res) => console.log("aaaaa", res));
+        .then((res) =>
+          res.map((item: groupResDtoType) => {
+            setInvitedList((pre) => [...pre, item]);
+          })
+        );
+    };
+
+    await setInvitedList([]);
+    await fethchList();
   };
 
   const handleOnClick = (source: "default" | "make" | "view") => {

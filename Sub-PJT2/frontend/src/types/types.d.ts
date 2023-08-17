@@ -3,7 +3,7 @@ export type userProps = {
   userName: string;
   phoneNumber: string;
   userAge: number;
-  userGender: "FEMALE" | "MALE";
+  userGender: "FEMALE" | "MALE" | undefined;
   userLike: number;
   userStatus: string;
 };

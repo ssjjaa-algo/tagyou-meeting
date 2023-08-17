@@ -32,27 +32,48 @@ export const ModalContent = styled.div`
   position: relative;
 `;
 
-export const BtnContainer = styled.div`
+export const BtnContainer = styled.span`
   display: flex;
-  margin: auto;
-  margin-top: 120px;
-  gap: 50px;
+  margin: 0 auto 0 auto;
+  width: 800px;
+  border-radius: 30px;
+`;
+export const Icon = styled.div`
+  font-size: 80px;
+  align-content: center;
+  align-items: center;
+  padding: 40px 80px 40px 80px;
 `;
 
-export const Title = styled.div``;
-
-export const FriendContainer = styled.div`
-  height: 250px;
-  overflow-y: auto;
-  border-bottom: solid 1px white;
-  margin-bottom: 20px;
-  background-color: red;
-  width: 300px;
+export const ID = styled.div`
+  font-size: 20px;
+  align-content: center;
+  align-items: center;
+  padding: 0 90px 0px 90px;
+  font-weight: 600;
 `;
 
+export const Title = styled.div`
+  padding: 15px 0 15px 0;
+  font-size: 16px;
+  font-weight: 550;
+  border-bottom: solid 1px red;
+`;
 export const Container = styled.div`
   display: flex;
-  margin: auto;
-  margin-top: 120px;
-  gap: 50px;
+  gap: 100px;
+  padding: 0 70px 0 70px;
+  position: absolute;
+  top: 160px;
+  width: 800px;
+  border: solid 1px red;
+  border-radius: 30px;
+`;
+
+export const FriendContainer = styled.div`
+  height: 380px;
+  overflow-y: auto;
+  border-bottom: solid 1px white;
+  border-radius: 30px;
+  width: 300px;
 `;

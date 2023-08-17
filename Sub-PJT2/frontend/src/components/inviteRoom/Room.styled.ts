@@ -53,6 +53,6 @@ export const Intro = styled(Name)`
 `;
 
 export const BtnContainer = styled.div`
-  margin-left: 120px;
+  margin-left: 100px;
   margin-top: 20px;
 `;

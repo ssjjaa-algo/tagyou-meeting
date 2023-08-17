@@ -50,7 +50,6 @@ const RoomFriend = ({
         </S.ProfileImgBox>
         <S.ProfileText>
           <S.Name>{targetName}</S.Name>
-          <S.Intro>고정했어요</S.Intro>
         </S.ProfileText>
         <S.BtnContainer>
           <S.StyledBtn
