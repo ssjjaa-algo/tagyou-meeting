@@ -27,11 +27,11 @@ export const UserStatus = styled.div<{ state: friendStateType }>`
   background-color: ${({ state }) => {
     switch (state) {
       case "OFFLINE":
-        return "#FF1493";
+        return "#808080";
       case "ONLINE":
         return "#1AF354";
       case "INGAME":
-        return "#808080";
+        return "#FF1493";
     }
   }};
 `;
