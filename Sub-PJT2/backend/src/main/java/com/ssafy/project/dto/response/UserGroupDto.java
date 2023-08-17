@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(description = "유저 방 Response DTO")
 public class UserGroupDto {
-    @Schema(description = "유저 이름")
+    @Schema(description = "방장 이름")
     private String userName;
-    @Schema(description = "유저 이미지 url")
+    @Schema(description = "방장 이미지 url")
     private String ImageUrl;
-    @Schema(description = "유저 그룹 아이디")
+    @Schema(description = "그룹 아이디")
     private int groupIdx;
 //    private GroupRole groupRole;
 
