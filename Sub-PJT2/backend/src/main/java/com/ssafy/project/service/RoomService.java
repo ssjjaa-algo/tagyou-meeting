@@ -123,9 +123,10 @@ public class RoomService {
         return findOneMeetRoom(roomId)
                 .map(room -> {
                     room.removeUser(user);
-//                    room.setSessionId(null);
-                    if(room.getUserList().isEmpty())
+                    if(room.getUserList().isEmpty()){
                         room.changeStatus(MeetingRoomStatus.INACTIVE);
+                        room.setSessionId(null);
+                    }
                     return room;
                 })
                 .map(OneRoomRspDto::new)
@@ -192,7 +193,8 @@ public class RoomService {
      */
     public GroupRoomRspDto startGroupMeetRoom(Long roomId) {
         GroupMeetingRoom meetingRoom = findGroupMeetRoom(roomId)
-                .filter(room -> room.getUserList().size() == 6)
+                .filter(room -> room.getUserList().size() == 4)
+//                .filter(room -> room.getUserList().size() == 6)
                 .orElseThrow(() -> new NotFoundException("아직 대기 중인 3:3 미팅룸입니다."));
 
         connectWebService(meetingRoom);
@@ -233,13 +235,16 @@ public class RoomService {
 
         User user = userService.findUser(userId).orElseThrow(() -> new NotFoundException("3:3 미팅룸을 나가는 유저의 정보가 조회되지 않습니다."));
 
-        return findGroupMeetRoom(roomId).filter(room -> room.getStatus() == MeetingRoomStatus.ACTIVE)
+        return findGroupMeetRoom(roomId)
                 .map(room -> {
                     room.removeUser(user);
                     MeetingGroup meetingGroup = user.getMeetingGroup();
                     meetingGroup.quitGroup(user);
 //                    room.setSessionId(null);
-                    room.changeStatus(MeetingRoomStatus.INACTIVE);
+                    if(room.getUserList().isEmpty()){
+                        room.changeStatus(MeetingRoomStatus.INACTIVE);
+                        room.setSessionId(null);
+                    }
                     return room;
                 })
                 .map(GroupRoomRspDto::new)
