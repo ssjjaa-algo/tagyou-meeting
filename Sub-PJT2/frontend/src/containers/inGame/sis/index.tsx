@@ -5,12 +5,19 @@ import { themeProps } from "@emotion/react";
 import { useTheme } from "@mui/material";
 import brush from "asset/img/brush.png";
 import { useRecoilState } from "recoil";
-import { InGameChatStatus } from "atoms/atoms";
+import { InGameChatStatus, RoomInfo } from "atoms/atoms";
 import "css/sis.css";
+import UserVideoComponent from "containers/openvidu/UserVideoComponent";
 
-const Sis = () => {
+interface CatchMindProps {
+  publisher: any; // publisher의 타입을 여기에 정확히 지정해주세요
+  subscribers: any[]; // subscribers의 타입을 여기에 정확히 지정해주세요
+}
+
+const Sis = ({ publisher, subscribers }: CatchMindProps) => {
   const theme: themeProps = useTheme();
-
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo); 
+  
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
   return (
@@ -18,11 +25,19 @@ const Sis = () => {
       className={!inGameChatStatus ? "Container-Sis" : "Container-Sis-withChat"}
     >
       <S.Container>
-        <S.PlayerVidBundle>
-          <S.PlayerVid></S.PlayerVid>
-          <S.PlayerVid></S.PlayerVid>
-          <S.PlayerVid></S.PlayerVid>
-        </S.PlayerVidBundle>
+        {/* 사람 영상 뜰 자리 */}
+        { roomInfo.roomType === "One" ? (
+          <S.PlayerVidBundle>
+            <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+          </S.PlayerVidBundle>
+        ) : (
+          <S.PlayerVidBundle>
+            <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+            <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+            <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+          </S.PlayerVidBundle>
+        )
+        }
         <S.Center theme={theme}>
           <S.CenterVid></S.CenterVid>
           <S.QuizContainer theme={theme}>
@@ -30,10 +45,12 @@ const Sis = () => {
             <S.QuizWord>새색시</S.QuizWord>
           </S.QuizContainer>
         </S.Center>
+        {/* 사람 영상 뜰 자리 */}
         <S.PlayerVidBundle>
-          <S.PlayerVid></S.PlayerVid>
-          <S.PlayerVid></S.PlayerVid>
-          <S.PlayerVid></S.PlayerVid>
+          {subscribers.map((sub, i) => {
+            return(
+              <S.PlayerVid><UserVideoComponent streamManager={sub} /></S.PlayerVid>
+              )})}
         </S.PlayerVidBundle>
       </S.Container>
     </Container>
