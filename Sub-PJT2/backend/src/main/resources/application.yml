@@ -23,7 +23,7 @@ spring:
       encoding: UTF-8
 
     redis:
-      host: redis
+      host: localhost
       port: ${REDIS_PORT}
 
   security:
