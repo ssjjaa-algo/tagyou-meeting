@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,6 +56,10 @@ public class InvitationService {
 
     public Optional<MeetingGroupInvitation> findInvitation(Long userId, Long groupId){
         return invitationRepository.findByUserIdAndGroupId(userId, groupId);
+    }
+
+    public Optional<List<MeetingGroupInvitation>> findInvitationByUserId(Long uId) {
+        return invitationRepository.findByUserId(uId);
     }
 
     private MeetingGroupInvitation saveInvitation(MeetingGroupInvitation invitation){
