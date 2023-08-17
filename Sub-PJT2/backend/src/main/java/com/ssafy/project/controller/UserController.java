@@ -7,6 +7,7 @@ import com.ssafy.project.dto.request.UserInfoReqDto;
 import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
+import com.ssafy.project.dto.response.UserStatusRspDto;
 import com.ssafy.project.service.OnlineService;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/users", produces = "application/json; charset=utf8")
@@ -137,9 +140,10 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/getUserStatus/{uId}")
-    public String getUserStatus(@PathVariable String uId){
+    @GetMapping("/state/{uId}")
+    public UserStatusRspDto getUserStatus(@PathVariable String uId){
         Long id = Long.parseLong(uId);
+        log.info(uId);
         return userService.getUserStatus(id);
     }
 

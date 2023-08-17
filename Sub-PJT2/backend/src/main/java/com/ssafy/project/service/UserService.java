@@ -158,14 +158,11 @@ public class UserService {
         else return false;
     }
 
-    public String getUserStatus(long id){
+    public UserStatusRspDto getUserStatus(long id){
         User u = findUser(id)
                 .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
-        if(u.getUserStatus() != null){
-            return u.getUserStatus().toString();
-        } else{
-            return "";
-        }
+            return Optional.of(u.getUserStatus()).map(UserStatusRspDto::new)
+                    .orElseGet(null);
     }
 
 }
