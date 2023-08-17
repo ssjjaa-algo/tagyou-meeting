@@ -29,16 +29,11 @@ type ReceivingMessage = {
   meeting_room_id: number;
 };
 
-type Room = {
-  roomId: number;
-  maleUserNicknmae: string;
-  femaleUserNicknmae: string;
-};
-
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const [roomId, setRoomId] = useState<number>(19);
+  // roomId 뒤에 임의로 해놓은 숫자 꼭 바꾸기!!!!!!!!!!!!!!!!!!!
+  const [roomId, setRoomId] = useState<number>(0);
   const [items, setItems] = useState<ReceivingMessage[]>([]);
   const [lastMessage, setLastMessage] = useState<ReceivingMessage>();
   const [message, setMessage] = useState("");
@@ -135,7 +130,12 @@ const RightContainer = () => {
     const location = window.location.pathname;
     console.log(location.substring(9, location.length));
     // pathname에서 방번호 가져오기 필수로 주석 없애야 함 !!!!!!!!!!!!!!!!!!!!
-    setRoomId(parseInt(location.substring(9, location.length)));
+    if (location === "/chatTest") {
+      // 채팅방 시연/테스트 할때 임의로 만든 채팅방의 id
+      setRoomId(148);
+    } else {
+      setRoomId(parseInt(location.substring(9, location.length)));
+    }
     console.log("방 번호: " + roomId);
     // 채팅 웹소켓 연결
     token && roomId && connectHandler();
