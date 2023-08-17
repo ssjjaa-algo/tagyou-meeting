@@ -33,6 +33,7 @@ const Friend = ({
   const token = useRecoilValue(TokenValue);
 
   const [userStatus, setUserStatus] = useState<friendStateType>("OFFLINE");
+  const [trigger, setTrigger] = useState<boolean>(true);
 
   const loadUserStatus = () => {
     fetch(`${process.env.REACT_APP_BASE_URL}/users/state/${targetId}`, {
@@ -42,13 +43,23 @@ const Friend = ({
     })
       .then((res) => res.json())
       .then((data) => {
+        // console.log(">>>: " + data.userStatus);
         setUserStatus(data.userStatus);
       });
   };
 
   useEffect(() => {
+    if(!token) return;
     loadUserStatus();
-  });
+    triggerHandler();
+  }, [token, trigger]);
+
+  const triggerHandler = () =>{
+    setTimeout(() => {
+      // console.log("triggerHandler 작동");
+      setTrigger(!trigger);
+    }, 60000); // 1초 = 1000 => 여긴 60초
+  }
 
   return (
     <>

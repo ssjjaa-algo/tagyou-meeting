@@ -94,7 +94,7 @@ public class StompHandler implements ChannelInterceptor {
         } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
             // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
 //            String roomId = Optional.ofNullable((String) message.getHeaders().get("RoomId")).orElse("InvalidRoomId");
-//            String info = accessor.getFirstNativeHeader(AuthConstants.INFO);
+            String info = accessor.getFirstNativeHeader(AuthConstants.INFO);
             String roomId = Optional.ofNullable((String) accessor.getFirstNativeHeader(AuthConstants.ROOM_ID)).orElse("InvalidRoomId");
             log.info("roomId : " + roomId);
 
