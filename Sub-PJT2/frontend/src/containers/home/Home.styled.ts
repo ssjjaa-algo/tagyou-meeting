@@ -48,7 +48,7 @@ export const SVG = styled.svg`
 
 export const Sec = styled.div`
   display: inline-block;
-  width: 87%;
+  width: 85%;
 `;
 
 export const SContainer = styled.div`

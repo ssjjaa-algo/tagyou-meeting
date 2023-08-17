@@ -74,6 +74,7 @@ export type friendProps = {
   targetId: number;
   targetName: string;
   userGender: "FEMALE" | "MALE";
+  targetContent: string;
   userAge: number;
   targetImageUrl: string;
 };
