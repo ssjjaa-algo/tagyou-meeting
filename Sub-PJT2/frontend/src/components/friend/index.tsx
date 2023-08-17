@@ -12,6 +12,7 @@ type friendCompoentProps = {
   targetImageUrl: string;
   targetGender: "MALE" | "FEMALE";
   targetAge: number;
+  targetContent: string;
   handleAccecpt?: (targetId: number) => void;
   handleReject?: (targetId: number) => void;
 };
@@ -25,6 +26,7 @@ const Friend = ({
   targetImageUrl,
   targetAge,
   targetGender,
+  targetContent,
   handleAccecpt,
   handleReject,
 }: friendCompoentProps) => {
@@ -48,17 +50,17 @@ const Friend = ({
   };
 
   useEffect(() => {
-    if(!token) return;
+    if (!token) return;
     loadUserStatus();
     triggerHandler();
   }, [token, trigger]);
 
-  const triggerHandler = () =>{
+  const triggerHandler = () => {
     setTimeout(() => {
       // console.log("triggerHandler 작동");
       setTrigger(!trigger);
     }, 60000); // 1초 = 1000 => 여긴 60초
-  }
+  };
 
   return (
     <>
@@ -74,7 +76,7 @@ const Friend = ({
         <S.UserStatus state={userStatus} />
         <S.ProfileText>
           <S.Name theme={theme}>{targetName}</S.Name>
-          <S.Intro theme={theme}>고정했어요</S.Intro>
+          <S.Intro theme={theme}>{targetContent}</S.Intro>
         </S.ProfileText>
       </S.Profile>
       <S.BtnContainer>

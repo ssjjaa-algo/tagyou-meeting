@@ -96,6 +96,7 @@ const FriendContainer = () => {
                   targetImageUrl={item.targetImageUrl}
                   targetGender={item.userGender}
                   targetAge={item.userAge}
+                  targetContent={item.targetContent}
                   key={idx}
                 />
               ))
@@ -121,6 +122,7 @@ const FriendContainer = () => {
                   targetGender={item.userGender}
                   targetAge={item.userAge}
                   targetImageUrl={item.targetImageUrl}
+                  targetContent={item.targetContent}
                   key={idx}
                 />
               ))
@@ -148,6 +150,7 @@ const FriendContainer = () => {
                   targetImageUrl={item.targetImageUrl}
                   targetGender={item.userGender}
                   targetAge={item.userAge}
+                  targetContent={item.targetContent}
                   key={idx}
                   handleAccecpt={fetchReceived}
                   handleReject={fetchRejected}
