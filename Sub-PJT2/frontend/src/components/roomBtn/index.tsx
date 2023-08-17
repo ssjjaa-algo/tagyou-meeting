@@ -1,6 +1,7 @@
 import { GroupResDto, InvitedList, TokenValue } from "atoms/atoms";
 import * as S from "./Button.styled";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { groupResDtoType } from "types/types";
 
 type stateType = "default" | "make" | "view";
 type btnProps = {
@@ -26,13 +27,17 @@ const RoomBtn = ({ source, content, setShowState }: btnProps) => {
   };
 
   const getInvitedList = () => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/groups/list`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/groups/invited`, {
       headers: {
         Auth: token,
       },
     })
       .then((response) => response.json())
-      .then((res) => setInvitedList((pre) => [...pre, res]));
+      .then((res) => console.log("aaaaa", res));
+    // .then((res) =>
+    //   res.map((item: groupResDtoType) => {
+    //     setInvitedList((pre) => [...pre, item]);
+    //   })
   };
 
   const handleOnClick = (source: "default" | "make" | "view") => {

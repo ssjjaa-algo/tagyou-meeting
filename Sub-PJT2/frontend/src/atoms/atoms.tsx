@@ -6,7 +6,6 @@ import {
   friendProps,
   roomProps,
   groupResDtoType,
-  groupInvitedListType,
 } from "types/types";
 
 const { persistAtom } = recoilPersist();
@@ -95,7 +94,7 @@ export const ProfileImgSrc = atom<string>({
   default: "",
 });
 
-export const InvitedList = atom<groupInvitedListType>({
+export const InvitedList = atom<groupResDtoType[]>({
   key: "InvitedList",
   default: [],
 });

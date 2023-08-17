@@ -1,5 +1,3 @@
-import internal from "stream";
-
 export type userProps = {
   userEmail: string;
   userName: string;
@@ -22,8 +20,6 @@ export type groupResDtoType = {
     }
   ];
 };
-
-export type groupInvitedListType = groupResDtoTypep[];
 
 export type profileProps = {
   userSido: string;

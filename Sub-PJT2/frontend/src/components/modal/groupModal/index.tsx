@@ -1,10 +1,11 @@
 import { useRecoilValue } from "recoil";
 import * as S from "./index.styled";
 import { GroupResDto, InvitedList, NomalFriendList } from "atoms/atoms";
-import { friendProps, groupInvitedListType } from "types/types";
+import { friendProps, groupResDtoType } from "types/types";
 import { useEffect, useState } from "react";
 import RoomBtn from "components/roomBtn";
 import RoomFriend from "components/roomFriend";
+import InvitedRoom from "components/inviteRoom";
 
 type stateType = "default" | "make" | "view";
 
@@ -74,14 +75,13 @@ export const GroupModal = ({
                   <S.Title> 요청 받은 그룹 </S.Title>
                   {invitedGroupList.length > 0 &&
                     invitedGroupList?.map(
-                      (item: groupInvitedListType, idx: number) => (
-                        <div>{item}</div>
-                        // <RoomFriend
-                        //   friendShipStatus={item.friendShipStatus}
-                        //   targetId={item.targetId}
-                        //   targetName={item.targetName}
-                        //   targetImageUrl={item.targetImageUrl}
-                        // />
+                      (item: groupResDtoType, idx: number) => (
+                        <InvitedRoom
+                          groupUser={item.groupUser}
+                          groupGender={item.groupGender}
+                          groupId={item.groupId}
+                          roomId={item.roomId}
+                        ></InvitedRoom>
                       )
                     )}
                   {groupInfo.groupGender}
