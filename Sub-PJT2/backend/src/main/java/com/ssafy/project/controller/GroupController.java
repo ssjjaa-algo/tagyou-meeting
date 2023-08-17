@@ -2,16 +2,16 @@ package com.ssafy.project.controller;
 
 import com.ssafy.project.dto.request.GroupReqDto;
 import com.ssafy.project.dto.response.GroupRspDto;
-import com.ssafy.project.dto.response.UserInfoRspDto;
 import com.ssafy.project.service.GroupService;
 import com.ssafy.project.service.TokenService;
-import com.ssafy.project.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/groups", produces = "application/json; charset=utf8")
@@ -38,6 +38,14 @@ public class GroupController {
     @GetMapping("/{groupId}")
     public GroupRspDto getGroup(@PathVariable Long groupId){
         return groupService.getGroup(groupId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/invited")
+    @Operation(summary = "날 초대한 정보 - 방장 정보", description = "")
+    public List<GroupRspDto> getInvitation(HttpServletRequest request) {
+        Long uId = tokenService.parseUId(request.getHeader("Auth"));
+        return groupService.getPending(uId);
     }
 
 
@@ -85,5 +93,6 @@ public class GroupController {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.removeGroup(userId, groupId);
     }
+
 
 }

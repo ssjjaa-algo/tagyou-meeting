@@ -1,26 +1,24 @@
 package com.ssafy.project.service;
 
 import com.ssafy.project.domain.friend.FriendShip;
+import com.ssafy.project.domain.group.InvitationStatus;
 import com.ssafy.project.domain.group.MeetingGroup;
+import com.ssafy.project.domain.group.MeetingGroupInvitation;
 import com.ssafy.project.domain.notice.NoticeType;
-import com.ssafy.project.domain.room.GroupMeetingRoom;
-import com.ssafy.project.domain.room.MeetingRoom;
-import com.ssafy.project.domain.room.MeetingRoomStatus;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.GroupReqDto;
 import com.ssafy.project.dto.request.NoticeReqDto;
 import com.ssafy.project.dto.response.GroupRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.GroupRepository;
-import com.ssafy.project.repository.InvitationRepository;
-import com.ssafy.project.repository.NoticeRepository;
-import com.ssafy.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -200,5 +198,19 @@ public class GroupService {
         return groupRepository.findById(groupId).map(GroupRspDto::new)
                 .orElseThrow(() -> new NotFoundException("그룹이 존재하지 않습니다."));
     }
+
+
+    public List<GroupRspDto> getPending(Long uId) {
+        List<MeetingGroupInvitation> inv = invitationService.findInvitationByUserId(uId)
+                .orElseThrow(() -> new NotFoundException("초대 없음"));
+        return inv.stream()
+                .filter(meetingGroupInvitation -> meetingGroupInvitation.getInvitationStatus().equals(InvitationStatus.PENDING))
+                .map(meetingGroupInvitation -> groupRepository.findById(meetingGroupInvitation.getGroup().getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(GroupRspDto::new)
+                .collect(Collectors.toList());
+    }
+
 }
 
