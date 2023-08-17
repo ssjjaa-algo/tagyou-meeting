@@ -50,7 +50,7 @@ function Main() {
     console.log(location.search("meeting"));
     if (location.search("meeting") !== 1 && location !== "")
       console.log("접속 여부 알려주는 connectHandler 발동");
-    // token && connectHandler(0);
+    token && connectHandler(0);
   }, [location]);
 
   const client = useRef<CompatClient>();

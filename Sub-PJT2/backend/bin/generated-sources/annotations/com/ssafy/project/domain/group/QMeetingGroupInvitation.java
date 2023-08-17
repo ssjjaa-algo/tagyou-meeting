@@ -28,6 +28,8 @@ public class QMeetingGroupInvitation extends EntityPathBase<MeetingGroupInvitati
 
     public final EnumPath<InvitationStatus> invitationStatus = createEnum("invitationStatus", InvitationStatus.class);
 
+    public final BooleanPath read = createBoolean("read");
+
     public final com.ssafy.project.domain.user.QUser user;
 
     public QMeetingGroupInvitation(String variable) {
