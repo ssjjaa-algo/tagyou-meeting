@@ -1,7 +1,7 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import * as S from "./index.styled";
-import { GroupResDto, NomalFriendList } from "atoms/atoms";
-import { friendProps } from "types/types";
+import { GroupResDto, InvitedList, NomalFriendList } from "atoms/atoms";
+import { friendProps, groupInvitedListType } from "types/types";
 import { useEffect, useState } from "react";
 import RoomBtn from "components/roomBtn";
 import RoomFriend from "components/roomFriend";
@@ -16,6 +16,8 @@ export const GroupModal = ({
   const nomalFriendList = useRecoilValue(NomalFriendList);
   const [showState, setShowState] = useState<stateType>("default");
   const groupInfo = useRecoilValue(GroupResDto);
+  const invitedGroupList = useRecoilValue(InvitedList);
+
   useEffect(() => {
     console.log("nomalFriendList", nomalFriendList);
   }, [nomalFriendList]);
@@ -69,7 +71,19 @@ export const GroupModal = ({
             <div>
               <S.Container>
                 <S.FriendContainer>
-                  <S.Title> 요청 받은 그룹 초대</S.Title>
+                  <S.Title> 요청 받은 그룹 </S.Title>
+                  {invitedGroupList.length > 0 &&
+                    invitedGroupList?.map(
+                      (item: groupInvitedListType, idx: number) => (
+                        <div>{item}</div>
+                        // <RoomFriend
+                        //   friendShipStatus={item.friendShipStatus}
+                        //   targetId={item.targetId}
+                        //   targetName={item.targetName}
+                        //   targetImageUrl={item.targetImageUrl}
+                        // />
+                      )
+                    )}
                   {groupInfo.groupGender}
                   {groupInfo.groupId}
                 </S.FriendContainer>
