@@ -1,6 +1,5 @@
 package com.ssafy.project.service;
 
-import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.group.MeetingGroup;
 import com.ssafy.project.domain.room.GroupMeetingRoom;
 import com.ssafy.project.domain.room.MeetingRoom;
@@ -34,8 +33,14 @@ public class RoomService {
     private final GroupService groupService;
     private final WebRtcService webRtcService;
 
-    // 임시
-    public GroupRoomRspDto getRoom(Long roomId) {
+    // 임시 일대일 방
+    public OneRoomRspDto getOneRoom(Long roomId) {
+        return oneRepository.findById(roomId).map(OneRoomRspDto::new)
+                .orElseThrow(() -> new NotFoundException("방이 조회되지 않습니다."));
+    }
+    
+    // 임시 다대다 방
+    public GroupRoomRspDto getGroupRoom(Long roomId) {
         return groupRepository.findById(roomId).map(GroupRoomRspDto::new)
                 .orElseThrow(() -> new NotFoundException("방이 조회되지 않습니다."));
     }

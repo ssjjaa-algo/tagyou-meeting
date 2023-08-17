@@ -2,8 +2,6 @@ package com.ssafy.project.service;
 
 import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.User;
-import com.ssafy.project.domain.user.UserStatus;
-import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserProfileReqDto;
 import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
@@ -16,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +87,7 @@ public class UserService {
         img = imageService.editImageInDb(img, f);
 
         // 프사 정보 user 정보에 저장
-        u.changeUserImg(img);
+        u.setUserImg(img);
     }
 
     @Transactional
@@ -107,7 +104,7 @@ public class UserService {
         // 프사 정보 user 정보에 저장
         User u = findUser(uId)
                 .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
-        u.changeUserImg(img);
+        u.setUserImg(img);
 
         return new ImageRspDto(img.getFilePath());
     }
@@ -125,7 +122,7 @@ public class UserService {
     public void editUserName(Long uId, UserProfileReqDto userProfileReqDto) {
         User u = findUser(uId)
                 .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
-        u.changeUserName(userProfileReqDto.getUserName());
+        u.setUserName(userProfileReqDto.getUserName());
     }
 
     public boolean checkUserExists(String email){

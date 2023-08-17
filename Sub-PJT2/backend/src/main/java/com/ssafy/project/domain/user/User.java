@@ -63,6 +63,9 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name = "meeting_room_id")
     private MeetingRoom meetingRoom;
 
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Profile profile;
+
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐
     public User(String userEmail, String userName) {
         this.userEmail = userEmail;
@@ -74,10 +77,6 @@ public class User extends BaseTimeEntity {
         this.userAge = userInfoReqDto.getUserAge();
         this.userGender = userInfoReqDto.getUserGender();
         this.userLike = 0;
-    }
-
-    public void changeUserImg(Image img) {
-        this.mainImage = img;
     }
 
     public void quitMeetingGroup() {
@@ -97,11 +96,15 @@ public class User extends BaseTimeEntity {
         meetingGroup.getGroupUser().add(this);
     }
 
+    public void setUserImg(Image img) {
+        this.mainImage = img;
+    }
+
     public void setMeetingRoom(MeetingRoom meetingRoom) {
         this.meetingRoom = meetingRoom;
     }
 
-    public void changeUserName(String userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
