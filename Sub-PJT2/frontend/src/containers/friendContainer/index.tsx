@@ -94,6 +94,8 @@ const FriendContainer = () => {
                   targetId={item.targetId}
                   targetName={item.targetName}
                   targetImageUrl={item.targetImageUrl}
+                  targetGender={item.userGender}
+                  targetAge={item.userAge}
                   key={idx}
                 />
               ))
@@ -116,6 +118,8 @@ const FriendContainer = () => {
                   friendShipStatus={item.friendShipStatus}
                   targetId={item.targetId}
                   targetName={item.targetName}
+                  targetGender={item.userGender}
+                  targetAge={item.userAge}
                   targetImageUrl={item.targetImageUrl}
                   key={idx}
                 />
@@ -142,6 +146,8 @@ const FriendContainer = () => {
                   targetId={item.targetId}
                   targetName={item.targetName}
                   targetImageUrl={item.targetImageUrl}
+                  targetGender={item.userGender}
+                  targetAge={item.userAge}
                   key={idx}
                   handleAccecpt={fetchReceived}
                   handleReject={fetchRejected}

@@ -75,6 +75,8 @@ export type friendProps = {
   friendShipStatus: "REQUESTED" | "BLOCKED" | "FRIEND" | "NONE" | "RECEIVED";
   targetId: number;
   targetName: string;
+  userGender: "FEMALE" | "MALE";
+  userAge: number;
   targetImageUrl: string;
 };
 

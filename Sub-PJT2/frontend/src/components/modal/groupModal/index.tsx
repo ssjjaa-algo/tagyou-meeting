@@ -1,10 +1,10 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import * as S from "./index.styled";
-import { NomalFriendList } from "atoms/atoms";
-import Friend from "components/friend";
+import { GroupResDto, NomalFriendList } from "atoms/atoms";
 import { friendProps } from "types/types";
 import { useEffect, useState } from "react";
 import RoomBtn from "components/roomBtn";
+import RoomFriend from "components/roomFriend";
 
 type stateType = "default" | "make" | "view";
 
@@ -15,6 +15,7 @@ export const GroupModal = ({
 }) => {
   const nomalFriendList = useRecoilValue(NomalFriendList);
   const [showState, setShowState] = useState<stateType>("default");
+  const groupInfo = useRecoilValue(GroupResDto);
   useEffect(() => {
     console.log("nomalFriendList", nomalFriendList);
   }, [nomalFriendList]);
@@ -38,9 +39,43 @@ export const GroupModal = ({
               />
             </>
           )}
-          {showState === "make" && <div>make</div>}
+          {showState === "make" && (
+            <S.Container>
+              <S.FriendContainer>
+                <S.Title> 내 그룹 정보</S.Title>
+                {groupInfo.groupGender}
+                {groupInfo.groupId}
+              </S.FriendContainer>
+              <S.FriendContainer>
+                <S.Title> 초대할 수 있는 친구들 </S.Title>
+                {nomalFriendList.length > 0 &&
+                  nomalFriendList?.map((item: friendProps, idx: number) => (
+                    <>
+                      {item.userGender === groupInfo.groupGender && (
+                        <RoomFriend
+                          friendShipStatus={item.friendShipStatus}
+                          targetId={item.targetId}
+                          targetName={item.targetName}
+                          targetImageUrl={item.targetImageUrl}
+                        />
+                      )}
+                    </>
+                  ))}
+              </S.FriendContainer>
+            </S.Container>
+          )}
 
-          {showState === "view" && <div>view</div>}
+          {showState === "view" && (
+            <div>
+              <S.Container>
+                <S.FriendContainer>
+                  <S.Title> 요청 받은 그룹 초대</S.Title>
+                  {groupInfo.groupGender}
+                  {groupInfo.groupId}
+                </S.FriendContainer>
+              </S.Container>
+            </div>
+          )}
         </S.BtnContainer>
         <div style={{ display: "flex", margin: "auto" }}>
           <button content="미팅시작" />
