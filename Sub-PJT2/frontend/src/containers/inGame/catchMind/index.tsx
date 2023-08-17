@@ -14,7 +14,12 @@ interface Coordinate {
   y: number;
 }
 
-const CatchMind = ({ publisher }: { publisher: Publisher | undefined }) => {
+interface CatchMindProps {
+  publisher: any; // publisher의 타입을 여기에 정확히 지정해주세요
+  subscribers: any[]; // subscribers의 타입을 여기에 정확히 지정해주세요
+}
+
+const CatchMind = ({ publisher, subscribers }: CatchMindProps) => {
   const theme: themeProps = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [color, setColor] = useState<string>("black");
@@ -176,13 +181,13 @@ const CatchMind = ({ publisher }: { publisher: Publisher | undefined }) => {
         {/* 사람 영상 뜰 자리 */}
         { roomInfo.roomType === "One" ? (
           <S.PlayerVidBundle>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+            <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
           </S.PlayerVidBundle>
         ) : (
           <S.PlayerVidBundle>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent streamManager={publisher} />): null}</S.PlayerVid>
+            <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+            <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+            <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
           </S.PlayerVidBundle>
         )
         }
@@ -297,18 +302,12 @@ const CatchMind = ({ publisher }: { publisher: Publisher | undefined }) => {
           </S.PaletteBody>
         </S.CanvasBox>
         {/* 사람 영상 뜰 자리 */}
-        { roomInfo.roomType === "One" ? (
-          <S.PlayerVidBundle>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
-          </S.PlayerVidBundle>
-        ) : (
-          <S.PlayerVidBundle>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
-            <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
-          </S.PlayerVidBundle>
-        )
-        }
+        <S.PlayerVidBundle>
+          {subscribers.map((sub, i) => {
+            return(
+              <S.PlayerVid><UserVideoComponent streamManager={sub} /></S.PlayerVid>
+              )})}
+        </S.PlayerVidBundle>
       </S.Body>
     </S.Container>
   );
