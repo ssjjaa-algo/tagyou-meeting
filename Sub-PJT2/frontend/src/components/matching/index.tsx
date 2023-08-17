@@ -11,6 +11,7 @@ import { userInfo } from "os";
 import { async } from "q";
 import { useNavigate } from "react-router";
 import { recoilPersist } from 'recoil-persist';
+import { update } from "@react-spring/web";
 
 const Matching = ({
   setShowMatching
@@ -22,6 +23,7 @@ const Matching = ({
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useRecoilState(TokenValue);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
+
   // const navigate = useNavigate();
 
 //   let setCookie = function(roomInfo: string, value: any, exp: number) {
@@ -31,51 +33,78 @@ const Matching = ({
 // };
 
 
-  async function waitAndCheck(
-  ) {
-    return new Promise<void>((resolve) => {
-      console.log(roomInfo.userList.length)
+function waitAndCheck () {
+      console.log("2명이 모였는가?", roomInfo.userList.length)
       // if (roomInfo.userList.length < 2) return
-      const interval = setInterval(() => {
+      
+      
+      setInterval(() => {
+        // handleFirstClick()
+        console.log("interval 확인")
+        console.log("인원 체크:", roomInfo.userList.length)
         if (roomInfo.userList.length === 2) {
-          clearInterval(interval);
-          resolve();
+          console.log("waitAndCheck 함수에서 ",roomInfo.roomId)
+          fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomInfo.roomId}`, {
+            method: "POST",
+            headers: {
+              Auth: token,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((res) => res.json())
+          .then((res)=> {
+            // console.log("if문 진입 직전,", res)
+            if (res['userList']) {
+              // console.log("if문 들어옴", res)
+              setRoomInfo({
+                roomId: res['roomId'],
+                roomType: res['roomType'],
+                sessionId: res['sessionId'],
+                userList: res['userList']
+              });
+              // roomInfo 정보가 무조건 바껴야한다.
+              
+              console.log("roomInfo가 바꼈나?",roomInfo)
+            
+            } 
+          })
+          .catch((res) => console.log(res))
+        } else {
+          fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomInfo.roomId}`, {
+            method: "GET",
+            headers: {
+              Auth: token,
+            },
+          }).then((res) => res.json())
+          .then((res) => {
+            console.log("변경 이전:", roomInfo)
+            setRoomInfo({
+              roomId: res['roomId'],
+              roomType: res['roomType'],
+              sessionId: res['sessionId'],
+              userList: res['userList']
+            })
+            console.log("변경 이후:", roomInfo)
+          })
         } 
-        // console.log("waitAndCheck 함수에서 ",roomInfo.roomId)
-        // const response = await fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomInfo.roomId}`, {
-        //   method: "POST",
-        //   headers: {
-        //     Auth: token,
-        //     "Content-Type": "application/json",
-        //   },
-        // });
-        
-        // const res = await response.json();
-        
-        // if (res['roomId'] !== undefined) {
-        //   let updatedRoomInfo = {
-        //     roomId: res['roomId'],
-        //     roomType: res['roomType'],
-        //     sessionId: res['sessionId'],
-        //     userList: res['userList']
-        //   };
-        //   console.log("setRoominfo 이전", updatedRoomInfo);
-        //   setRoomInfo(updatedRoomInfo);
-        //   console.log("setRoominfo 이후", roomInfo)
-          localStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-          // setCookie('roomInfo',JSON.stringify(roomInfo), 1)
-        // }
-      }, 1000); // 1초마다 체크
-      // navigate(`/meeting/${roomInfo.roomId}`)
-      window.location.href = `/meeting/${roomInfo.roomId}`;
-      // clearInterval(interval);
-      // resolve();
-    })
+      }, 5000); // 1초마다 체크
   }
 
   useEffect(() => {
-    roomInfo.roomId !== 0 && waitAndCheck();
+    roomInfo.roomId != 0 && waitAndCheck();
   },[roomInfo])
+
+  useEffect(() => {
+    console.log("useEffect 들어옴", roomInfo)
+
+    if (roomInfo.sessionId) {
+      console.log("useEffect 안의 if문 진입")
+      window.location.href = `/meeting/${roomInfo.roomId}`;
+    }
+  },[roomInfo.sessionId])
+
+
+
 
   const handleFirstClick = () => {
     setIsLoading(true);
@@ -88,12 +117,13 @@ const Matching = ({
     }).then((response)=> response.json())
     .then((res)=>{
       setRoomInfo({          
+        ...roomInfo,
       "roomId": res['roomId'],
       "roomType": res['roomType'],
-      "sessionId": res['sessionId'],
-      "userList": res['userList']
+      // "sessionId": res['sessionId'],
+      "userList": res['userList'],
     })
-    waitAndCheck();
+    console.log("handleFirstClick", roomInfo)
   })
 }
   
