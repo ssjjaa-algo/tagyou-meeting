@@ -42,6 +42,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final EnumPath<RoleType> roleType = createEnum("roleType", RoleType.class);
 
+    public final StringPath sessionId = createString("sessionId");
+
     public final NumberPath<Integer> userAge = createNumber("userAge", Integer.class);
 
     public final StringPath userEmail = createString("userEmail");

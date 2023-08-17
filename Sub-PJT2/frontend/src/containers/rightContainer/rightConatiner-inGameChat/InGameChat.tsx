@@ -38,7 +38,7 @@ type Room = {
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const [roomId, setRoomId] = useState<number>(0);
+  const [roomId, setRoomId] = useState<number>(19);
   const [items, setItems] = useState<ReceivingMessage[]>([]);
   const [lastMessage, setLastMessage] = useState<ReceivingMessage>();
   const [message, setMessage] = useState("");
@@ -84,7 +84,7 @@ const RightContainer = () => {
   // };
 
   // 미팅룸에 들어올때 connectHandler에 roomId와 codeName 변수를 줘야함
-  const connectHandler = (roomId: number) => {
+  const connectHandler = () => {
     client.current = Stomp.over(() => {
       // 여기서 url 조정하면 됨
       const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`);
@@ -134,10 +134,11 @@ const RightContainer = () => {
     // getRoomId();
     const location = window.location.pathname;
     console.log(location.substring(9, location.length));
-    setRoomId(parseInt(location.substring(9, location.length)));
+    // pathname에서 방번호 가져오기 필수로 주석 없애야 함 !!!!!!!!!!!!!!!!!!!!
+    // setRoomId(parseInt(location.substring(9, location.length)));
     console.log("방 번호: " + roomId);
     // 채팅 웹소켓 연결
-    token && roomId && connectHandler(roomId);
+    token && roomId && connectHandler();
   }, [token, roomId]);
 
   const handelScroll = () => {
