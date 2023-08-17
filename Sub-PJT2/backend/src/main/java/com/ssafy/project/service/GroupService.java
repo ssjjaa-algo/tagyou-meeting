@@ -63,12 +63,10 @@ public class GroupService {
         User sendUser = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 초대할 유저가 존재하지 않습니다."));
 
-        if(sendUser.getUserGender() != targetUser.getUserGender()){
-            throw new IllegalStateException("초대할 유저의 성별과 현재 유저의 성별이 일치 하지 않습니다.");
+        if(sendUser.getMeetingRoom() != null){
+            throw new IllegalStateException("미팅방에 입장한 유저는 그룹에 참여할 수 없습니다.");
         }
 
-        checkUserValidation(sendUser);
-        checkUserValidation(targetUser);
 
         // PENDING은 한번만 존재
         invitationService.findInvitation(userId, groupReqDto.getGroupId())
@@ -110,10 +108,18 @@ public class GroupService {
 
         checkUserValidation(user);
 
+        // PENDING일때만 수락 가능
+        invitationService.findInvitation(userId, groupId)
+                .filter(invitation -> invitation.getInvitationStatus() != InvitationStatus.PENDING)
+                .ifPresent(invitation -> {
+                    throw new IllegalStateException("수락 할 수 없는 그룹 정보 입니다.");
+                });
+
         return findMeetingGroup(groupId)
                 .map(group -> {
                     Optional.of(group).filter(g -> g.getGroupUser().size() < 3)
                             .orElseThrow(() ->new IllegalArgumentException("그룹원 최대 인원수에 초과되었습니다."));
+
                     invitationService.acceptInvitation(user, group);
                     user.setMeetingGroup(group);
 
@@ -138,7 +144,12 @@ public class GroupService {
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹에 수락할 유저가 존재하지 않습니다."));
 
-        checkUserValidation(user);
+        // PENDING일때만 수락 가능
+        invitationService.findInvitation(userId, groupId)
+                .filter(invitation -> invitation.getInvitationStatus() != InvitationStatus.PENDING)
+                .ifPresent(invitation -> {
+                    throw new IllegalStateException("거절 할 수 없는 그룹 정보 입니다.");
+                });
 
         return findMeetingGroup(groupId)
                 .map(group -> {
