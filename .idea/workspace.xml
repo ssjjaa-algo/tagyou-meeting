@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="30649e2b-764d-4303-9578-e679eae7946c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sub-PJT2/backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Sub-PJT2/backend/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +121,7 @@
       <workItem from="1691626559888" duration="20725000" />
       <workItem from="1691711114602" duration="787000" />
       <workItem from="1691712192913" duration="9716000" />
+      <workItem from="1692313615096" duration="1498000" />
     </task>
     <servers />
   </component>
