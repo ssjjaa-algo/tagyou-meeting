@@ -18,7 +18,7 @@ const Profile = React.memo(
             만 <strong>{age}</strong>세
           </S.Age>
           <S.Age theme={theme}>
-            내 그룹 : <strong>{group}</strong>
+            그룹: {group ? <strong>{group}</strong> : <strong>없음</strong>}
           </S.Age>
         </S.ProfileText>
       </S.Profile>

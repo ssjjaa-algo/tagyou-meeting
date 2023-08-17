@@ -56,8 +56,7 @@ const InvitedRoom = ({
         <S.ProfileText>
           <S.Name>{groupUser[0].userName}</S.Name>
           <S.Intro>
-            {groupId}
-            {groupGender}
+            {groupId}번 {groupGender === "FEMALE" ? "👧" : "👦"}
           </S.Intro>
         </S.ProfileText>
         <S.BtnContainer>

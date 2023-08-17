@@ -28,70 +28,63 @@ export const GroupModal = ({
       <S.ModalContent onClick={(e) => e.stopPropagation()}>
         <S.CloseIconStyled onClick={() => setShowModal(false)} />
         <S.BtnContainer>
-          {showState === "default" && (
-            <>
-              <RoomBtn
-                content="🎈 그 룹 생 성 🎈"
-                source="make"
-                setShowState={setShowState}
-              />
-              <RoomBtn
-                source="view"
-                content="🎉 받 은 초 대 🎉"
-                setShowState={setShowState}
-              />
-            </>
-          )}
-          {showState === "make" && (
-            <S.Container>
-              <S.FriendContainer>
-                <S.Title> 내 그룹 정보</S.Title>
-                {groupInfo.groupGender}
-                {groupInfo.groupId}
-              </S.FriendContainer>
-              <S.FriendContainer>
-                <S.Title> 초대할 수 있는 친구들 </S.Title>
-                {nomalFriendList.length > 0 &&
-                  nomalFriendList?.map((item: friendProps, idx: number) => (
-                    <>
-                      {item.userGender === groupInfo.groupGender && (
+          <S.BtnContainer>
+            <RoomBtn
+              content="그룹 생성"
+              source="make"
+              setShowState={setShowState}
+            />
+            <RoomBtn
+              source="view"
+              content="받은 초대"
+              setShowState={setShowState}
+            />
+          </S.BtnContainer>
+
+          <S.Container>
+            {showState === "make" && (
+              <>
+                <S.FriendContainer>
+                  <S.Title>내 그룹 정보</S.Title>
+                  <S.Icon>
+                    {groupInfo.groupGender === "FEMALE" ? "👧" : "👦"}
+                  </S.Icon>
+                  <S.ID>
+                    <strong>{groupInfo.groupId}</strong>번 그룹
+                  </S.ID>
+                </S.FriendContainer>
+                <S.FriendContainer>
+                  <S.Title>초대할 수 있는 친구들</S.Title>
+                  {nomalFriendList.length > 0 &&
+                    nomalFriendList.map((item: friendProps, idx: number) =>
+                      item.userGender === groupInfo.groupGender ? (
                         <RoomFriend
+                          key={item.targetId}
                           friendShipStatus={item.friendShipStatus}
                           targetId={item.targetId}
                           targetName={item.targetName}
                           targetImageUrl={item.targetImageUrl}
                         />
-                      )}
-                    </>
-                  ))}
-              </S.FriendContainer>
-            </S.Container>
-          )}
-
-          {showState === "view" && (
-            <div>
-              <S.Container>
-                <S.FriendContainer>
-                  <S.Title> 요청 받은 그룹 </S.Title>
-                  {invitedGroupList?.map(
-                    (item: groupResDtoType, idx: number) => (
-                      <>
-                        <div>aaaa{item.groupUser[0].groupIdx}</div>
-                        <InvitedRoom
-                          groupUser={item.groupUser}
-                          groupGender={item.groupGender}
-                          groupId={item.groupId}
-                          roomId={item.roomId}
-                        ></InvitedRoom>
-                      </>
-                    )
-                  )}
-                  {groupInfo.groupGender}
-                  {groupInfo.groupId}
+                      ) : null
+                    )}
                 </S.FriendContainer>
-              </S.Container>
-            </div>
-          )}
+              </>
+            )}
+
+            {showState === "view" && (
+              <S.FriendContainer>
+                <S.Title> 요청 받은 그룹 </S.Title>
+                {invitedGroupList?.map((item: groupResDtoType, idx: number) => (
+                  <InvitedRoom
+                    groupUser={item.groupUser}
+                    groupGender={item.groupGender}
+                    groupId={item.groupId}
+                    roomId={item.roomId}
+                  ></InvitedRoom>
+                ))}
+              </S.FriendContainer>
+            )}
+          </S.Container>
         </S.BtnContainer>
         <div style={{ display: "flex", margin: "auto" }}>
           <button content="미팅시작" />

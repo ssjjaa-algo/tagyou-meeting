@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 
 export const Button = styled.button`
-  width: 300px;
-  height: 250px;
   background-color: #f43f5e;
-  border-radius: 40px;
-  font-size: 24px;
-  font-weight: 600;
+  height: 80px;
+  width: 400px;
+  font-size: 20px;
+  font-weight: 500;
   color: white;
   animation-delay: 2s;
+  border-left: solid 3px white;
 `;
