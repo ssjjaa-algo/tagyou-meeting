@@ -120,11 +120,12 @@ public class RoomService {
     public OneRoomRspDto quitOneMeetRoom(Long userId, Long roomId){
         User user = userService.findUser(userId).orElseThrow(() -> new NotFoundException("1:1 미팅룸을 나가는 유저의 정보가 조회되지 않습니다."));
 
-        return findOneMeetRoom(roomId).filter(room -> room.getStatus() == MeetingRoomStatus.ACTIVE)
+        return findOneMeetRoom(roomId)
                 .map(room -> {
                     room.removeUser(user);
 //                    room.setSessionId(null);
-                    room.changeStatus(MeetingRoomStatus.INACTIVE);
+                    if(room.getUserList().isEmpty())
+                        room.changeStatus(MeetingRoomStatus.INACTIVE);
                     return room;
                 })
                 .map(OneRoomRspDto::new)
