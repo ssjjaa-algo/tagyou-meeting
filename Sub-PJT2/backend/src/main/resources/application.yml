@@ -24,7 +24,7 @@ spring:
 
     redis:
       host: redis-container
-      port: 6379
+      port: ${REDIS_PORT}
       password : A705SSAFYA705
 
   security:
