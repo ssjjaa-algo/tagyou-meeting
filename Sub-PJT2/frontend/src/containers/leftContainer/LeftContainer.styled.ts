@@ -86,5 +86,5 @@ export const FootBox = styled.div<{ theme: themeProps }>`
   color: ${(props) => props.theme.font.light};
   position: relative;
   left: 160px;
-  top: 240px;
+  top: 200px;
 `;

@@ -10,6 +10,19 @@ export type userProps = {
   userStatus: string;
 };
 
+export type groupResDtoType = {
+  groupId: number;
+  roomId: number;
+  groupGender: "MALE" | "FEMALE";
+  groupUser: [
+    {
+      userName: string;
+      groupIdx: number;
+      imageUrl: string;
+    }
+  ];
+};
+
 export type profileProps = {
   userSido: string;
   userSidoCode: number;
@@ -35,7 +48,7 @@ export type roomProps = {
   roomId: number;
   sessionId: string;
   userList: string[];
-}
+};
 
 export type Message = {
   // meeting_room_message 테이블

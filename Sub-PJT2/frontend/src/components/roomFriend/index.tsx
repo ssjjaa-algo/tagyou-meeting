@@ -11,7 +11,7 @@ type friendCompoentProps = {
   handleReject?: (targetId: number) => void;
 };
 
-const Friend = ({
+const RoomFriend = ({
   friendShipStatus,
   targetId,
   targetName,
@@ -20,17 +20,6 @@ const Friend = ({
   handleReject,
 }: friendCompoentProps) => {
   const theme: themeProps = useTheme();
-
-  // loadUserStatus(item.targetId)
-  // const loadUserStatus = (id: number) => {
-  //   fetch(`${process.env.REACT_APP_BASE_URL}/users/getUserStatus/${userInfo.}`, {
-  //     headers: {
-  //       Auth: token,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => console.log("RRRR", res));
-  // };
 
   return (
     <>
@@ -62,22 +51,9 @@ const Friend = ({
             수락
           </S.StyledBtn>
         )}
-        {friendShipStatus === "RECEIVED" && (
-          <S.StyledBtn
-            type="primary"
-            size="small"
-            source="reject"
-            theme={theme}
-            onClick={() => {
-              handleReject && handleReject(targetId);
-            }}
-          >
-            거절
-          </S.StyledBtn>
-        )}
       </S.BtnContainer>
     </>
   );
 };
 
-export default Friend;
+export default RoomFriend;

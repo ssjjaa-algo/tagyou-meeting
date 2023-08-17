@@ -27,7 +27,9 @@ public class GroupController {
     @PostMapping("/create")
     @Operation(summary = "그룹 생성하기", description = "")
     public GroupRspDto createGroup(HttpServletRequest request){
+        System.out.println(request.getHeader("bbbbbb"+ "Auth"));
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        System.out.println("Aaaaaaa" + userId);
         return groupService.createGroup(userId);
     }
 

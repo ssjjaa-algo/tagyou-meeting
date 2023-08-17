@@ -3,44 +3,48 @@ import * as S from "./index.styled";
 import { NomalFriendList } from "atoms/atoms";
 import Friend from "components/friend";
 import { friendProps } from "types/types";
-import { useEffect } from "react";
-export const GroupModal = () => {
-  const nomalFriendList = useRecoilValue(NomalFriendList);
-  // export const GroupModal = ({
-  //   setShowModal,
-  // }: {
-  //   setShowModal: (value: boolean) => void;
-  // }) => {
+import { useEffect, useState } from "react";
+import RoomBtn from "components/roomBtn";
 
+type stateType = "default" | "make" | "view";
+
+export const GroupModal = ({
+  setShowModal,
+}: {
+  setShowModal: (value: boolean) => void;
+}) => {
+  const nomalFriendList = useRecoilValue(NomalFriendList);
+  const [showState, setShowState] = useState<stateType>("default");
   useEffect(() => {
     console.log("nomalFriendList", nomalFriendList);
   }, [nomalFriendList]);
+
   return (
-    // <S.ModalWrapper onClick={() => setShowModal(false)}>
-    <S.ModalWrapper>
+    <S.ModalWrapper onClick={() => setShowModal(false)}>
       <S.ModalContent onClick={(e) => e.stopPropagation()}>
-        <S.CloseIconStyled />
-        {/* <S.CloseIconStyled onClick={() => setShowModal(false)} /> */}
-        <S.SubTitle>
-          친구목록 <S.Tmp>{nomalFriendList.length}명</S.Tmp>
-        </S.SubTitle>
-        <S.FriendContainer>
-          {nomalFriendList.length > 0 ? (
-            nomalFriendList?.map((item: friendProps, idx: number) => (
-              <Friend
-                friendShipStatus={item.friendShipStatus}
-                targetId={item.targetId}
-                targetName={item.targetName}
-                targetImageUrl={item.targetImageUrl}
-                key={idx}
+        <S.CloseIconStyled onClick={() => setShowModal(false)} />
+        <S.BtnContainer>
+          {showState === "default" && (
+            <>
+              <RoomBtn
+                content="🎈 그 룹 생 성 🎈"
+                source="make"
+                setShowState={setShowState}
               />
-            ))
-          ) : (
-            <S.NullMessageBox>
-              <S.NullMessage> 친구가 없어요 </S.NullMessage>
-            </S.NullMessageBox>
+              <RoomBtn
+                source="view"
+                content="🎉 받 은 초 대 🎉"
+                setShowState={setShowState}
+              />
+            </>
           )}
-        </S.FriendContainer>
+          {showState === "make" && <div>make</div>}
+
+          {showState === "view" && <div>view</div>}
+        </S.BtnContainer>
+        <div style={{ display: "flex", margin: "auto" }}>
+          <button content="미팅시작" />
+        </div>
       </S.ModalContent>
     </S.ModalWrapper>
   );

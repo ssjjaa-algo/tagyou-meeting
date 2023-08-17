@@ -79,39 +79,6 @@ const FriendContainer = () => {
     }
   }, [token]);
 
-  const loadUserStatus = (id: number) => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/users/getUserStatus/${id}`, {
-      headers: {
-        Auth: token,
-      },
-    })
-      .then((res) => console.log(JSON.stringify(res)));
-  };
-
-  const loadFriends = () => {
-    const result = [];
-    for (let i = 0; i < nomalFriendList.length; i++) {
-      const item = nomalFriendList[i];
-      loadUserStatus(item.targetId);
-      result.push(
-        <S.Friend>
-          <Friend
-            friendShipStatus={item.friendShipStatus}
-            targetId={item.targetId}
-            targetName={item.targetName}
-            targetImageUrl={item.targetImageUrl}
-            key={i}
-          />
-          <S.StatusDiv>
-            <S.StatusText></S.StatusText>
-            {/* <S.Status theme={theme} style={statusStyle} /> */}
-          </S.StatusDiv>
-        </S.Friend>
-      );
-    }
-    return result;
-  };
-
   return (
     <>
       <S.MainContainer theme={theme}>
@@ -121,17 +88,16 @@ const FriendContainer = () => {
           </S.SubTitle>
           <S.FriendContainer>
             {nomalFriendList.length > 0 ? (
-              loadFriends()
+              nomalFriendList?.map((item: friendProps, idx: number) => (
+                <Friend
+                  friendShipStatus={item.friendShipStatus}
+                  targetId={item.targetId}
+                  targetName={item.targetName}
+                  targetImageUrl={item.targetImageUrl}
+                  key={idx}
+                />
+              ))
             ) : (
-              // nomalFriendList?.map((item: friendProps, idx: number) => (
-              //   <Friend
-              //     friendShipStatus={item.friendShipStatus}
-              //     targetId={item.targetId}
-              //     targetName={item.targetName}
-              //     targetImageUrl={item.targetImageUrl}
-              //     key={idx}
-              //   />
-              // ))
               <S.NullMessageBox>
                 <S.NullMessage theme={theme}> 친구가 없어요 </S.NullMessage>
               </S.NullMessageBox>

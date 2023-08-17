@@ -1,6 +1,12 @@
 import { atom, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { userProps, profileProps, friendProps, roomProps } from "types/types";
+import {
+  userProps,
+  profileProps,
+  friendProps,
+  roomProps,
+  groupResDtoType,
+} from "types/types";
 
 const { persistAtom } = recoilPersist();
 
@@ -30,6 +36,23 @@ export const ReceivedFriendList = selector({
     const friendList = get(FriendList);
     return friendList?.filter((item) => item.friendShipStatus === "RECEIVED");
   },
+});
+
+export const GroupResDto = atom<groupResDtoType>({
+  key: "GroupResDto",
+  default: {
+    groupId: 0,
+    roomId: 0,
+    groupGender: "MALE",
+    groupUser: [
+      {
+        userName: "",
+        groupIdx: 0,
+        imageUrl: "",
+      },
+    ],
+  },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const RequestFriendList = selector({

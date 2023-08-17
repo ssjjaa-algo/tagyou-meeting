@@ -34,7 +34,6 @@ const Router = () => {
       <Route path="/meeting/:roomId" element={<Meeting />} />
       <Route path="/chatTest" element={<InGameChat />} />
       <Route id="pnf" path="*" element={<PageNotFound />} />
-      <Route path="group" element={<GroupModal />} />
     </Routes>
   );
 };
