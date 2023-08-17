@@ -80,7 +80,8 @@ export const SpecialDes = styled(Des)`
 `;
 
 export const StyledBadge = styled(Badge)<{ theme: themeProps }>`
+  /* border: solid black 2px; */
+  border-radius: 50%;
   background-color: ${(props) => props.theme.bg.light};
-  height: 23px;
-  margin-left: 10px;
+  margin: 0 0 0.3rem 0.5rem;
 `;

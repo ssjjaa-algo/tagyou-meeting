@@ -55,12 +55,12 @@ function Main() {
   useEffect(() => {
     if (location.search("meeting") !== 1 && location !== "") {
       console.log("접속 여부 알려주는 connectHandler 발동");
-      token && connectHandler(0);
+      token && connectHandler();
     }
   }, [userStatus]);
 
   const client = useRef<CompatClient>();
-  const connectHandler = (roomId: number) => {
+  const connectHandler = () => {
     client.current = Stomp.over(() => {
       const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`);
       // 여기서 url 조정하면 됨
