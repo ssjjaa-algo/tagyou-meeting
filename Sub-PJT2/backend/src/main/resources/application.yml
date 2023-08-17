@@ -23,7 +23,7 @@ spring:
       encoding: UTF-8
 
     redis:
-      host: redis
+      host: redis-container
       port: ${REDIS_PORT}
       password : A705SSAFYA705
 
