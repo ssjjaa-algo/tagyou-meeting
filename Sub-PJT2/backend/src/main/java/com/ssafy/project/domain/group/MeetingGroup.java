@@ -5,15 +5,18 @@ import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.room.GroupMeetingRoom;
 import com.ssafy.project.domain.room.MeetingRoom;
 import com.ssafy.project.domain.user.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;
 import java.util.List;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -51,6 +54,7 @@ public class MeetingGroup extends BaseTimeEntity {
                 meetingRoom.removeUser(user);
             }
         }
+        log.info("deleteGroup : 여기 옴?" + this.groupUser);
         this.groupUser.clear();
     }
 

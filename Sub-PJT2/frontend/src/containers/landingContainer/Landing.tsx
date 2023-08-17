@@ -4,7 +4,7 @@ import tmpLogo from "../../asset/img/logo/2.png";
 
 const LandingContainer = () => {
   return (
-    <>
+    <S.LandingOuter>
       <S.Nav>
         <S.Img src={tmpLogo} height={28}></S.Img>
       </S.Nav>
@@ -15,7 +15,7 @@ const LandingContainer = () => {
           <S.Btn content={"시작하기"}></S.Btn>
         </S.TextBox>
       </S.Container>
-    </>
+    </S.LandingOuter>
   );
 };
 

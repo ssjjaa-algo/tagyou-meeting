@@ -62,6 +62,10 @@ public class InvitationService {
         return invitationRepository.findByUserId(uId);
     }
 
+    public Optional<List<MeetingGroupInvitation>> findInvitationByGroupId(Long gId) {
+        return invitationRepository.findByGroupId(gId);
+    }
+
     private MeetingGroupInvitation saveInvitation(MeetingGroupInvitation invitation){
         return invitationRepository.save(invitation);
     }

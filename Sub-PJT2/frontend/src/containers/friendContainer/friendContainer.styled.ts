@@ -3,12 +3,20 @@ import { themeProps } from "@emotion/react";
 import { Badge } from "antd";
 
 export const MainContainer = styled.div<{ theme: themeProps }>`
+  /* border: solid green 4px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   width: 250px;
+  height: 100%;
   background-color: ${(props) => props.theme.bg.deep};
+  position: absolute;
+  right: 1px;
 `;
 
 export const Container = styled.div`
-  padding: 22px 16px 20px 16px;
+  /* padding: 10px 16px 0px 16px; */
 `;
 
 export const Title = styled.div<{ theme: themeProps }>`
@@ -72,7 +80,7 @@ export const SpecialDes = styled(Des)`
 `;
 
 export const StyledBadge = styled(Badge)<{ theme: themeProps }>`
-  background-color: : ${(props) => props.theme.bg.light};
+  background-color: ${(props) => props.theme.bg.light};
   height: 23px;
   margin-left: 10px;
 `;

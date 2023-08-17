@@ -38,14 +38,7 @@ public class GroupService {
                 .orElseThrow(() -> new NotFoundException("그룹을 만들 유저가 존재하지 않습니다."));
 
         userService.checkUserGender(user);
-
-        if (user.getMeetingGroup() != null) {
-            throw new IllegalStateException("이미 그룹에 가입한 유저입니다.");
-        }
-
-        if(user.getMeetingRoom() != null){
-            throw new IllegalStateException("미팅방에 입장한 유저는 그룹을 생성할 수 없습니다.");
-        }
+        checkUserValidation(user);
 
         MeetingGroup meetingGroup = MeetingGroup.builder()
                 .groupGender(user.getUserGender())
@@ -65,8 +58,11 @@ public class GroupService {
 
         User targetUser = userService.findUser(groupReqDto.getTargetUserId())
                 .orElseThrow(() -> new NotFoundException("그룹에 초대할 해당 유저가 존재하지 않습니다."));
+        checkUserValidation(targetUser);
+
         User sendUser = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 초대할 유저가 존재하지 않습니다."));
+        checkUserValidation(sendUser);
 
         if (targetUser.getMeetingGroup() != null) {
             throw new IllegalStateException("초대할 유저가 이미 그룹에 가입 되어있습니다.");
@@ -74,6 +70,13 @@ public class GroupService {
         if(targetUser.getMeetingRoom() != null){
             throw new IllegalStateException("초대할 유저가 이미 미팅방에 입장 되어있습니다.");
         }
+        
+        // PENDING은 한번만 존재
+        invitationService.findInvitation(userId, groupReqDto.getGroupId())
+                .filter(invitation -> invitation.getInvitationStatus().equals(InvitationStatus.PENDING))
+                .ifPresent(invitation -> {
+                    throw new IllegalStateException("이미 초대한 유저입니다.");
+                });
 
         return findMeetingGroup(groupReqDto.getGroupId())
                 .filter(group -> group.getGroupGender().equals(targetUser.getUserGender()))
@@ -106,9 +109,7 @@ public class GroupService {
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹에 수락할 유저가 존재하지 않습니다."));
 
-        if (user.getMeetingGroup() != null) {
-            throw new IllegalStateException("이미 그룹에 가입한 유저입니다.");
-        }
+        checkUserValidation(user);
 
         return findMeetingGroup(groupId)
                 .map(group -> {
@@ -138,11 +139,10 @@ public class GroupService {
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹에 수락할 유저가 존재하지 않습니다."));
 
+        checkUserValidation(user);
+
         return findMeetingGroup(groupId)
                 .map(group -> {
-                    Optional.of(group).filter(g -> g.getGroupUser().size() < 3)
-                            .orElseThrow(() ->new IllegalArgumentException("그룹원 최대 인원수에 초과되었습니다."));
-
                     invitationService.rejectInvitation(user, group);
                     return group;
                 })
@@ -159,6 +159,10 @@ public class GroupService {
 
         return findMeetingGroup(groupId)
                 .map(group -> {
+                    // 그룹원 권한
+                    if(group.getGroupUser().get(0).getId().equals(userId)){
+                        new IllegalArgumentException("그룹장은 그룹을 탈퇴할 수 없습니다.");
+                    }
                     group.quitGroup(user);
                     return group;
                 })
@@ -170,24 +174,63 @@ public class GroupService {
      * 그룹 삭제
      */
     public GroupRspDto removeGroup(Long userId, Long groupId){
+        User user = userService.findUser(userId)
+                .orElseThrow(() -> new NotFoundException("그룹을 삭제할 유저가 존재하지 않습니다."));
 
         return findMeetingGroup(groupId)
                 .map(group -> {
+                    log.info("removeGroup : " + group.getGroupUser().indexOf(user));
                     // 그룹장 권한
-                    Optional.of(group).filter(g -> g.getGroupUser().get(0).getId().equals(userId))
+                    Optional.of(group).filter(g -> g.getGroupUser().get(0).equals(user))
                             .orElseThrow(() -> new IllegalArgumentException("현재 그룹장이 아닙니다."));
+
+                    // 해당 그룹 요청 리스트 Reject로 변경
+                    invitationService.findInvitationByGroupId(groupId)
+                                    .filter(invitations -> invitations.stream()
+                                            .anyMatch(invitation -> invitation.getInvitationStatus().equals(InvitationStatus.PENDING)))
+                                            .map(invitations -> {
+                                                invitations.forEach(invitation -> invitation.rejectInvitation());
+                                                return invitations;
+                                            });
+
                     group.deleteGroup();
                     return group;
                 })
                 .map(GroupRspDto::new)
                 .orElseThrow(() -> new NotFoundException("그룹이 존재하지 않습니다."));
     }
+
+    /**
+     * 그룹 요청 목록 조회
+     */
+    public List<GroupRspDto> getPendingList(Long uId) {
+        List<MeetingGroupInvitation> inv = invitationService.findInvitationByUserId(uId)
+                .orElseThrow(() -> new NotFoundException("초대 없음"));
+        return inv.stream()
+                .filter(meetingGroupInvitation -> meetingGroupInvitation.getInvitationStatus().equals(InvitationStatus.PENDING))
+                .map(meetingGroupInvitation -> groupRepository.findById(meetingGroupInvitation.getGroup().getId()))
+//                .filter(group -> group.filter(meetingGroup -> meetingGroup.getGroupUser().size() > 0).isPresent())
+                .map(Optional::get)
+                .map(GroupRspDto::new)
+                .collect(Collectors.toList());
+    }
+
     private Optional<FriendShip> checkEqualUser(Long userId, Long targetId) {
         return Optional.ofNullable(userId)
                 .filter(id -> id.equals(targetId))
                 .map(n -> {
                     throw new IllegalStateException("자기 자신에게 그룹 초대 할 수 없습니다.");
                 });
+    }
+
+    private void checkUserValidation(User user){
+        if (user.getMeetingGroup() != null) {
+            throw new IllegalStateException("이미 그룹에 가입한 유저입니다.");
+        }
+
+        if(user.getMeetingRoom() != null){
+            throw new IllegalStateException("미팅방에 입장한 유저는 그룹에 참여할 수 없습니다.");
+        }
     }
 
     private MeetingGroup saveMeetingGroup(MeetingGroup meetingGroup){
@@ -203,18 +246,6 @@ public class GroupService {
                 .orElseThrow(() -> new NotFoundException("그룹이 존재하지 않습니다."));
     }
 
-
-    public List<GroupRspDto> getPending(Long uId) {
-        List<MeetingGroupInvitation> inv = invitationService.findInvitationByUserId(uId)
-                .orElseThrow(() -> new NotFoundException("초대 없음"));
-        return inv.stream()
-                .filter(meetingGroupInvitation -> meetingGroupInvitation.getInvitationStatus().equals(InvitationStatus.PENDING))
-                .map(meetingGroupInvitation -> groupRepository.findById(meetingGroupInvitation.getGroup().getId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(GroupRspDto::new)
-                .collect(Collectors.toList());
-    }
 
 }
 

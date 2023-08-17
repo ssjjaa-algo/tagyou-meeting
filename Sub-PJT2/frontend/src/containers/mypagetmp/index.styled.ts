@@ -3,10 +3,12 @@ import styled from "@emotion/styled";
 import { Input } from "antd";
 
 export const ModalWrapper = styled.div`
+  /* border: solid green 2px; */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  min-height: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -105,5 +107,4 @@ export const Button = styled.button`
   color: white;
   animation: ${Ani2} 1s ease;
   cursor: pointer;
-  }
 `;
