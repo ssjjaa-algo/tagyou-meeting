@@ -88,37 +88,31 @@ public class StompHandler implements ChannelInterceptor {
                     System.out.println("이건 되겠지?");
                     System.out.println(accessor.getSessionId());
                     onlineService.setSessionId(uid, accessor.getSessionId());
-                    if(info.equals("online")){
-                        onlineService.editUserStatus(uid, UserStatus.ONLINE);
-                    }
+                    onlineService.editUserStatus(uid, UserStatus.ONLINE);
                 }
             }
         } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
             // 채팅방에 들어온 클라이언트 sessionId를 roomId와 맵핑해 놓는다.(나중에 특정 세션이 어떤 채팅방에 들어가 있는지 알기 위함)
 //            String roomId = Optional.ofNullable((String) message.getHeaders().get("RoomId")).orElse("InvalidRoomId");
-            String info = accessor.getFirstNativeHeader(AuthConstants.INFO);
-            if (info.equals("userStatus")) {
+//            String info = accessor.getFirstNativeHeader(AuthConstants.INFO);
+            String roomId = Optional.ofNullable((String) accessor.getFirstNativeHeader(AuthConstants.ROOM_ID)).orElse("InvalidRoomId");
+            log.info("roomId : " + roomId);
 
-            } else {
-                String roomId = Optional.ofNullable((String) accessor.getFirstNativeHeader(AuthConstants.ROOM_ID)).orElse("InvalidRoomId");
-                log.info("roomId : " + roomId);
+            String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
+            String accessToken = jwt;
+            Long uId = tokenService.parseUId(accessToken);
+            Long rId = Long.parseLong(accessor.getFirstNativeHeader(AuthConstants.ROOM_ID));
+            System.out.println("룸: " + rId);
 
-                String jwt = accessor.getFirstNativeHeader(AuthConstants.AUTHORIZATION_HEADER);
-                String accessToken = jwt;
-                Long uId = tokenService.parseUId(accessToken);
-                Long rId = Long.parseLong(accessor.getFirstNativeHeader(AuthConstants.ROOM_ID));
-                System.out.println("룸: " + rId);
+            // DB연동을 안했으니 이메일 정보로 유저를 만들어주겠습니다
+            UserReqDto userReqDto = new UserReqDto(uId, "email", "이름");
 
-                // DB연동을 안했으니 이메일 정보로 유저를 만들어주겠습니다
-                UserReqDto userReqDto = new UserReqDto(uId, "email", "이름");
+            log.info("user : " + uId);
+            log.info("userInfo : " + userReqDto.getEmail());
+            chatService.enterMeetRoom(rId);
+            log.info("채팅방 입장");
 
-                log.info("user : " + uId);
-                log.info("userInfo : " + userReqDto.getEmail());
-                chatService.enterMeetRoom(rId);
-                log.info("채팅방 입장");
-
-                redisPublisher.publish(ChannelTopic.of(roomId), uId, RoomMessageReqDto.builder().messageType(MessageType.ENTER).content("님께서 입장하셨습니다.").meetingRoomId(Long.parseLong(roomId)).build());
-            }
+            redisPublisher.publish(ChannelTopic.of(roomId), uId, RoomMessageReqDto.builder().messageType(MessageType.ENTER).content("님께서 입장하셨습니다.").meetingRoomId(Long.parseLong(roomId)).build());
         } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
             // 연결이 종료된 클라이언트 sesssionId로 채팅방 id를 얻는다.
             // 연결 종료
