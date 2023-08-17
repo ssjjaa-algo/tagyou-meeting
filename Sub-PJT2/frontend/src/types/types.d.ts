@@ -94,3 +94,10 @@ export type CanvasProps = {
   width: number;
   height: number;
 };
+
+export type FriendMessage = {
+  createdDate: string;
+  content: string;
+  receiver: string;
+  sender: string;
+}

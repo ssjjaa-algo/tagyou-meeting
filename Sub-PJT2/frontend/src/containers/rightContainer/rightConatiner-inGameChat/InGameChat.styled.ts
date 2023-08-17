@@ -111,7 +111,7 @@ export const Messages = styled.div<{ theme: themeProps }>`
   justify-content: flex-start;
   width: 100%;
   margin: 0.3rem 0rem 0.2rem 0.5rem;
-  padding: 0.2rem;
+  padding: 0.3rem;
   word-break: break-all;
 `;
 
@@ -122,7 +122,11 @@ export const Sender = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
-export const Content = styled.div``;
+export const Content = styled.div`
+  /* border: solid green 2px; */
+  word-break: break-all;
+  word-wrap: break-word;
+`;
 
 export const ChatRoomMainInput = styled.div<{ theme: themeProps }>`
   /* border: solid green; */
