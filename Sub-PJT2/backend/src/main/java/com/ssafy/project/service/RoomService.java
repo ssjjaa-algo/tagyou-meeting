@@ -35,13 +35,15 @@ public class RoomService {
 
     // 임시 일대일 방
     public OneRoomRspDto getOneRoom(Long roomId) {
-        return oneRepository.findById(roomId).map(OneRoomRspDto::new)
+        return findOneMeetRoom(roomId)
+                .map(OneRoomRspDto::new)
                 .orElseThrow(() -> new NotFoundException("방이 조회되지 않습니다."));
     }
     
     // 임시 다대다 방
     public GroupRoomRspDto getGroupRoom(Long roomId) {
-        return groupRepository.findById(roomId).map(GroupRoomRspDto::new)
+        return findGroupMeetRoom(roomId)
+                .map(GroupRoomRspDto::new)
                 .orElseThrow(() -> new NotFoundException("방이 조회되지 않습니다."));
     }
 
