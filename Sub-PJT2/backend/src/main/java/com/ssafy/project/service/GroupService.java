@@ -62,15 +62,14 @@ public class GroupService {
 
         User sendUser = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("그룹을 초대할 유저가 존재하지 않습니다."));
-        checkUserValidation(sendUser);
 
-        if (targetUser.getMeetingGroup() != null) {
-            throw new IllegalStateException("초대할 유저가 이미 그룹에 가입 되어있습니다.");
+        if(sendUser.getUserGender() != targetUser.getUserGender()){
+            throw new IllegalStateException("초대할 유저의 성별과 현재 유저의 성별이 일치 하지 않습니다.");
         }
-        if(targetUser.getMeetingRoom() != null){
-            throw new IllegalStateException("초대할 유저가 이미 미팅방에 입장 되어있습니다.");
-        }
-        
+
+        checkUserValidation(sendUser);
+        checkUserValidation(targetUser);
+
         // PENDING은 한번만 존재
         invitationService.findInvitation(userId, groupReqDto.getGroupId())
                 .filter(invitation -> invitation.getInvitationStatus().equals(InvitationStatus.PENDING))
