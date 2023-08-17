@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -37,7 +36,8 @@ public class QOneMeetingRoom extends EntityPathBase<OneMeetingRoom> {
     //inherited
     public final EnumPath<MeetingRoomStatus> status = _super.status;
 
-    public final ListPath<com.ssafy.project.domain.user.User, com.ssafy.project.domain.user.QUser> userList = this.<com.ssafy.project.domain.user.User, com.ssafy.project.domain.user.QUser>createList("userList", com.ssafy.project.domain.user.User.class, com.ssafy.project.domain.user.QUser.class, PathInits.DIRECT2);
+    //inherited
+    public final ListPath<com.ssafy.project.domain.user.User, com.ssafy.project.domain.user.QUser> userList = _super.userList;
 
     public QOneMeetingRoom(String variable) {
         super(OneMeetingRoom.class, forVariable(variable));

@@ -64,10 +64,18 @@ public class RedisPublisher {
         if (message.getMessageType() == MessageType.ENTER) {
             log.info("입장해있는 채팅방: " + user.getMeetingRoom().getId());
             if(user.getUserStatus() != UserStatus.INGAME) {
+                log.info(">>>>>>>>>>>>>>>>>>>>>>> 1");
                 newMessage = ChatMessagePayload.builder().content("< " + user.getUserName() + " > 님이 입장하셨습니다.").sender("[알림]").messageType(message.getMessageType()).meetingRoomId(meetingRoom.getId()).build();
+                log.info(">>>>>>>>>>>>>>>>>>>>>>> 2");
                 onlineService.editUserStatus(userId, UserStatus.INGAME);
+                log.info(">>>>>>>>>>>>>>>>>>>>>>> 3");
                 // reidsTemplate으로 넘어가는 message 형식이 잘못됨
+                log.info(newMessage.getContent());
+                log.info(newMessage.getSender());
+                log.info(newMessage.getMeetingRoomId()+"");
+                log.info(topic.getTopic());
                 redisTemplate.convertAndSend(topic.getTopic(), newMessage);
+                log.info(">>>>>>>>>>>>>>>>>>>>>>> 4");
                 log.info("여까진 온다.");
             }
         } else {

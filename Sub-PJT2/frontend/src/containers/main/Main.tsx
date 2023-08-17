@@ -49,7 +49,8 @@ function Main() {
     console.log(location);
     console.log(location.search("meeting"));
     if (location.search("meeting") !== 1 && location !== "")
-      token && connectHandler(0);
+      console.log("접속 여부 알려주는 connectHandler 발동");
+    // token && connectHandler(0);
   }, [location]);
 
   const client = useRef<CompatClient>();
@@ -72,11 +73,7 @@ function Main() {
   useEffect(() => {
     console.log(token);
     console.log("위치: " + location);
-    if (
-      location !== "" &&
-      location !== "/" &&
-      location !== "/input"
-    ) {
+    if (location !== "" && location !== "/" && location !== "/input") {
       if (location.search("meeting") === 1) {
         fetch(`${process.env.REACT_APP_BASE_URL}/users/setUserStatus`, {
           method: "POST",

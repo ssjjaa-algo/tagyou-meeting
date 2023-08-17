@@ -42,18 +42,18 @@ const Meeting = () => {
   // const [device, setDevice] = useState<Device | undefined>(undefined)
 
 
-  useEffect(() => {
-    const storedRoomInfo = localStorage.getItem('recoil-persist');
-    setRoomInfo(storedRoomInfo ? JSON.parse(storedRoomInfo)['RoomInfo'] : null);
-    console.log(roomInfo)
-    const rightContainer = document.querySelector(
-      ".right_container"
-    ) as HTMLElement;
-    if (rightContainer instanceof Element) {
-      rightContainer.style.width = "100vw";
-    }
-    joinSession(roomInfo)
-  }, []);
+  // useEffect(() => {
+  //   const storedRoomInfo = localStorage.getItem('recoil-persist');
+  //   setRoomInfo(storedRoomInfo ? JSON.parse(storedRoomInfo)['RoomInfo'] : null);
+  //   console.log(roomInfo)
+  //   const rightContainer = document.querySelector(
+  //     ".right_container"
+  //   ) as HTMLElement;
+  //   if (rightContainer instanceof Element) {
+  //     rightContainer.style.width = "100vw";
+  //   }
+  //   joinSession(roomInfo)
+  // }, []);
 
   const renderSelectedGame = () => {
     if (selectedGame === "catchMind") {
@@ -65,72 +65,72 @@ const Meeting = () => {
     }
   };
 
-  const leaveSession = () => {
-    if (session) {
-        session.disconnect();
-    }
-  }
+  // const leaveSession = () => {
+  //   if (session) {
+  //       session.disconnect();
+  //   }
+  // }
 
-  // Openvidu
-  const joinSession = (roomInfo: roomProps) => {
-    const OV = new OpenVidu();
-    let mySession: Session = OV.initSession()
+  // // Openvidu
+  // const joinSession = (roomInfo: roomProps) => {
+  //   const OV = new OpenVidu();
+  //   let mySession: Session = OV.initSession()
 
-    mySession.on("streamCreated", function (event) {
-      mySession.subscribe(event.stream, "subscriber");
-    });
+  //   mySession.on("streamCreated", function (event) {
+  //     mySession.subscribe(event.stream, "subscriber");
+  //   });
     
-    new Promise<void>((resolve, reject) => {
-      const data = {
-        type: "WEBRTC",
-        data: "My Server Data",
-        record: true,
-        role: "PUBLISHER",
-        kurentoOptions: {
-          videoMaxRecvBandwidth: 1000,
-          videoMinRecvBandwidth: 300,
-          videoMaxSendBandwidth: 1000,
-          videoMinSendBandwidth: 300,
-          allowedFilters: ["GStreamerFilter", "ZBarFilter"],
-        },
-        customIceServers: [
-          {
-            url: "turn:turn-domain.com:443",
-            username: "usertest",
-            credential: "userpass",
-          },
-        ],
-      };
+  //   new Promise<void>((resolve, reject) => {
+  //     const data = {
+  //       type: "WEBRTC",
+  //       data: "My Server Data",
+  //       record: true,
+  //       role: "PUBLISHER",
+  //       kurentoOptions: {
+  //         videoMaxRecvBandwidth: 1000,
+  //         videoMinRecvBandwidth: 300,
+  //         videoMaxSendBandwidth: 1000,
+  //         videoMinSendBandwidth: 300,
+  //         allowedFilters: ["GStreamerFilter", "ZBarFilter"],
+  //       },
+  //       customIceServers: [
+  //         {
+  //           url: "turn:turn-domain.com:443",
+  //           username: "usertest",
+  //           credential: "userpass",
+  //         },
+  //       ],
+  //     };
     
-      axios
-        .post(
-          `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${roomInfo.sessionId}/connection`,
-          data,
-          {
-            headers: {
-              Authorization: `Basic ${btoa(
-                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-              )}`,
-              'Content-Type': 'application/json',
-              'Auth': token
-            },
-          }
-        )
-        .then((response) => {
-          setToken(response.data.token);
-          mySession.connect(token).then(() => {
-            const publisher = OV.initPublisher("publisher");
-            mySession.publish(publisher);
-            setPublisher(publisher);
-          });
-          resolve(); // Resolve the Promise once everything is done
-        })
-        .catch((error) => {
-          console.log(error);
-          reject(error); // Reject the Promise in case of an error
-        });
-    });    
-  };
+  //     axios
+  //       .post(
+  //         `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${roomInfo.sessionId}/connection`,
+  //         data,
+  //         {
+  //           headers: {
+  //             Authorization: `Basic ${btoa(
+  //               `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //             )}`,
+  //             'Content-Type': 'application/json',
+  //             'Auth': token
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         setToken(response.data.token);
+  //         mySession.connect(token).then(() => {
+  //           const publisher = OV.initPublisher("publisher");
+  //           mySession.publish(publisher);
+  //           setPublisher(publisher);
+  //         });
+  //         resolve(); // Resolve the Promise once everything is done
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         reject(error); // Reject the Promise in case of an error
+  //       });
+  //   });    
+  // };
 
   return (
     
