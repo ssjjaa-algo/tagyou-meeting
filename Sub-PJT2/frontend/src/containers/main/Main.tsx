@@ -53,7 +53,7 @@ function Main() {
     }
   }, [location]);
   useEffect(() => {
-    if (location.search("meeting") !== 1 && location !== "") {
+    if (location.search("meeting") !== 1 && location !== "" && location !=="/chatTest") {
       console.log("접속 여부 알려주는 connectHandler 발동");
       token && connectHandler();
     }
