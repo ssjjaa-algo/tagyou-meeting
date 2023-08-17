@@ -27,15 +27,15 @@ public class RoomController {
     // ====================== 미팅방 조회 ============================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/one/{roomId}")
-    @Operation(summary = "roomId로 방 가져오기", description = "")
+    @Operation(summary = "roomId로 일대일 방 가져오기", description = "")
     public OneRoomRspDto getOneTemp(@PathVariable Long roomId) {
         return roomService.getOneRoom(roomId);
     }
 
     // ====================== 미팅방 조회 ============================
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/groups/{roomId}")
-    @Operation(summary = "roomId로 방 가져오기", description = "")
+    @GetMapping(path = "/group/{roomId}")
+    @Operation(summary = "roomId로 다대다 방 가져오기", description = "")
     public GroupRoomRspDto getGroupTemp(@PathVariable Long roomId) {
         return roomService.getGroupRoom(roomId);
     }
@@ -86,7 +86,7 @@ public class RoomController {
 
     // ====================== 다대다 미팅방 생성 ============================
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/groups")
+    @PostMapping("/group")
     @Operation(summary = "3:3 대기방 생성하기", description = "그룹 생성이 선행되어야 대기방 생성이 가능함")
     public GroupRoomRspDto createGroupMeetRoom(HttpServletRequest request, @RequestParam Long groupId) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
@@ -95,7 +95,7 @@ public class RoomController {
 
     // ====================== 다대다 대기방 나가기 ============================
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/groups/quit")
+    @PostMapping("/group/quit")
     @Operation(summary = "3:3 대기방 나가기", description = "")
     public GroupRoomRspDto cancelGroupMeetRoom(HttpServletRequest request,@RequestParam Long groupId){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
@@ -104,7 +104,7 @@ public class RoomController {
 
     // ====================== 다대다 미팅방 시작 ============================
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/groups/{roomId}")
+    @PostMapping("/group/{roomId}")
     @Operation(summary = "3:3 미팅 시작하기", description = "")
     public GroupRoomRspDto startGroupMeetRoom(@PathVariable Long roomId) {
         return roomService.startGroupMeetRoom(roomId);
@@ -112,7 +112,7 @@ public class RoomController {
 
     // ====================== 다대다 미팅방 나가기 ============================
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/groups/quit/{roomId}")
+    @PostMapping("/group/quit/{roomId}")
     @Operation(summary = "3:3 진행 중 미팅방 나가기", description = "")
     public GroupRoomRspDto quitGroupMeetRoom(HttpServletRequest request,@RequestParam Long roomId){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
@@ -122,7 +122,7 @@ public class RoomController {
 
     // ====================== 다대다 미팅방 종료 ============================
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/groups/{roomId}")
+    @DeleteMapping("/group/{roomId}")
     @Operation(summary = "3:3 미팅 끝내기", description = "")
     public GroupRoomRspDto endGroupMeetRoom(@PathVariable Long roomId) {
         return roomService.endGroupMeetRoom(roomId);
