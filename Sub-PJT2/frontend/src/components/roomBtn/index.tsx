@@ -1,6 +1,6 @@
 import { GroupResDto, TokenValue } from "atoms/atoms";
 import * as S from "./Button.styled";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 type stateType = "default" | "make" | "view";
 type btnProps = {
@@ -11,13 +11,9 @@ type btnProps = {
 
 const RoomBtn = ({ source, content, setShowState }: btnProps) => {
   const token = useRecoilValue(TokenValue);
-  const [groupInfo, setGroupInfo] = useRecoilState(GroupResDto);
-  const creatRoom = () => {
-    console.log("!!!!!, creatRoom 토큰 확인", token);
-    console.log(
-      "fetch 주소",
-      `${process.env.REACT_APP_BASE_URL}/groups/create`
-    );
+  const setGroupInfo = useSetRecoilState(GroupResDto);
+
+  const createGroup = () => {
     fetch(`${process.env.REACT_APP_BASE_URL}/groups/create`, {
       headers: {
         Auth: token,
@@ -28,11 +24,22 @@ const RoomBtn = ({ source, content, setShowState }: btnProps) => {
       .then((res) => setGroupInfo(res));
   };
 
+  const getInvitedList = () => {
+    fetch(`${process.env.REACT_APP_BASE_URL}/groups/create`, {
+      headers: {
+        Auth: token,
+      },
+    })
+      .then((response) => response.json())
+      .then((res) => setGroupInfo(res));
+  };
+
   const handleOnClick = (source: "default" | "make" | "view") => {
     setShowState(source);
     if (source === "make") {
-      creatRoom();
+      createGroup();
     } else {
+      getInvitedList();
     }
   };
 

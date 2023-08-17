@@ -7,6 +7,8 @@ type friendCompoentProps = {
   targetId: number;
   targetName: string;
   targetImageUrl: string;
+  targetGender: "MALE" | "FEMALE";
+  targetAge: number;
   handleAccecpt?: (targetId: number) => void;
   handleReject?: (targetId: number) => void;
 };
@@ -16,6 +18,8 @@ const Friend = ({
   targetId,
   targetName,
   targetImageUrl,
+  targetAge,
+  targetGender,
   handleAccecpt,
   handleReject,
 }: friendCompoentProps) => {

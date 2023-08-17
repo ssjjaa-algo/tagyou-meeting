@@ -38,3 +38,21 @@ export const BtnContainer = styled.div`
   margin-top: 120px;
   gap: 50px;
 `;
+
+export const Title = styled.div``;
+
+export const FriendContainer = styled.div`
+  height: 250px;
+  overflow-y: auto;
+  border-bottom: solid 1px white;
+  margin-bottom: 20px;
+  background-color: red;
+  width: 300px;
+`;
+
+export const Container = styled.div`
+  display: flex;
+  margin: auto;
+  margin-top: 120px;
+  gap: 50px;
+`;

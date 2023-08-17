@@ -28,8 +28,8 @@ export const ProfileImg = styled.img`
   padding: 10px;
 `;
 
-export const Name = styled.div<{ theme: themeProps }>`
-  color: ${(props) => props.theme.font.light};
+export const Name = styled.div`
+  color: #404040;
   font-size: 14px;
   font-weight: 600;
 `;
@@ -54,4 +54,5 @@ export const Intro = styled(Name)`
 
 export const BtnContainer = styled.div`
   margin-left: 120px;
+  margin-top: 20px;
 `;
