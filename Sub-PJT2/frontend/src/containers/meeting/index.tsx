@@ -186,7 +186,7 @@ const Meeting = () => {
             </S.Middle>
             {subscribers.map((sub, i) => (
                 <S.PlayerVidBundle>
-                <S.PlayerVid><UserVideoComponent streamManager={sub} />)</S.PlayerVid>
+                <S.PlayerVid><UserVideoComponent streamManager={sub} /></S.PlayerVid>
               </S.PlayerVidBundle>
             ))}
 
