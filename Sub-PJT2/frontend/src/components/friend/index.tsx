@@ -43,20 +43,22 @@ const Friend = ({
     })
       .then((res) => res.json())
       .then((data) => {
+        // console.log(">>>: " + data.userStatus);
         setUserStatus(data.userStatus);
       });
   };
 
   useEffect(() => {
+    if(!token) return;
     loadUserStatus();
     triggerHandler();
   }, [token, trigger]);
 
   const triggerHandler = () =>{
     setTimeout(() => {
-      console.log("triggerHandler 작동");
+      // console.log("triggerHandler 작동");
       setTrigger(!trigger);
-    }, 1000); // 1초 = 1000
+    }, 60000); // 1초 = 1000 => 여긴 60초
   }
 
   return (

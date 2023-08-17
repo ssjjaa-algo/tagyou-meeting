@@ -36,12 +36,13 @@ function Main() {
   const [token, setToken] = useRecoilState(TokenValue);
   const [location, setLocation] = useState<string>("");
   const [userStatus, setUserStatus] = useState<string>("");
-  
-    useEffect(() => {
+
+  useEffect(() => {
     const T = cookies.get("Auth");
     setToken(T);
   }, [cookies.get("Auth")]);
   useEffect(() => {
+    if(!token) return;
     setLocation(window.location.pathname);
   }, [token]);
   useEffect(() => {
@@ -54,12 +55,19 @@ function Main() {
     }
   }, [location]);
   useEffect(() => {
-    if (location.search("meeting") !== 1 && location !== "" && location !=="/chatTest") {
-      console.log("접속 여부 알려주는 connectHandler 발동");
-      token && connectHandler();
-    }
+    if (
+      userStatus === "" ||
+      location.search("meeting") === 1 ||
+      location === "/chatTest" ||
+      location === "/" ||
+      location === null ||
+      !token
+    )
+      return;
+    console.log(">>>>유저 접속 정보: " + userStatus);
+    console.log("접속 여부 알려주는 connectHandler 발동");
+    token && connectHandler();
   }, [userStatus]);
-
 
   const client = useRef<CompatClient>();
   const connectHandler = () => {
@@ -76,6 +84,9 @@ function Main() {
     client.current.connect(headers, () => {
       console.log("연결됨");
     });
+    client.current.onDisconnect = () =>{
+      console.log("연결 종료됨");
+    }
   };
   // pathname이 바뀔 경우 pathname이 meeting이 아니면 userStatus를 null로 바꿔야 함
   // useEffect(() => {
