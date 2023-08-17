@@ -22,6 +22,17 @@ public class GroupController {
     private final GroupService groupService;
     private final TokenService tokenService;
 
+
+    // ====================== 그룹 조회 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/own")
+    @Operation(summary = "현재 유저 그룹 갖고오기", description = "")
+    public GroupRspDto getGroup(HttpServletRequest request){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return groupService.getGroup(userId);
+    }
+
+
     // ====================== 그룹 생성 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
@@ -29,13 +40,6 @@ public class GroupController {
     public GroupRspDto createGroup(HttpServletRequest request){
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return groupService.createGroup(userId);
-    }
-
-    // ====================== 임시 - 그룹 조회 ============================
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{groupId}")
-    public GroupRspDto getGroup(@PathVariable Long groupId){
-        return groupService.getGroup(groupId);
     }
 
     // ====================== 그룹 요청 리스트 ============================

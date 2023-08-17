@@ -19,22 +19,13 @@ public class GroupRoomRspDto {
     private String roomType;
     @Schema(description = "세션 아이디")
     private String sessionId;
-    @Schema(description = "방 내의 남자 참가자 목록")
-    private List<String> maleUserNameList;
-    @Schema(description = "방 내의 여자 참가자 목록")
-    private List<String> femaleUserNameList;
+    @Schema(description = "방 내의 참가자 목록")
+    private List<String> userList;
 
     public GroupRoomRspDto(GroupMeetingRoom meetingRoom) {
         this.roomId = meetingRoom.getId();
         this.roomType = "Group";
         this.sessionId = meetingRoom.getSessionId();
-
-        this.maleUserNameList = meetingRoom.getUserList().stream()
-                .filter(user -> user != null && user.getUserGender() == Gender.MALE)
-                .map(user -> user.getUserName()).collect(Collectors.toList());
-
-        this.femaleUserNameList = meetingRoom.getUserList().stream()
-                .filter(user -> user != null && user.getUserGender() == Gender.FEMALE)
-                .map(user -> user.getUserName()).collect(Collectors.toList());
+        this.userList = meetingRoom.getUserList().stream().map(user -> user.getUserName()).toList();
     }
 }

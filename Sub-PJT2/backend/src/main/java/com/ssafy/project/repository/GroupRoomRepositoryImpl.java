@@ -44,7 +44,8 @@ public class GroupRoomRepositoryImpl implements GroupRoomRepositoryCustom{
         boolean flag = false;
 
         // 성별이 같은 경우가 있는지 탐색
-        for(int i = 3 - size; i >= 0; i--) {
+        for(int i = 2 - size; i >= 0; i--) {
+//        for(int i = 3 - size; i >= 0; i--) {
             getIdealNumRoomIdList = queryFactory.select(qGroupRoom.id)
                     .from(qGroupRoom)
                     .join(qGroupRoom.userList, qUser)
@@ -75,7 +76,7 @@ public class GroupRoomRepositoryImpl implements GroupRoomRepositoryCustom{
             groupMeetingRoom = Optional.ofNullable(queryFactory.selectFrom(qGroupRoom)
                     .join(qGroupRoom.userList, qUser)
                     .groupBy(qGroupRoom.id, qUser.userGender)
-                    .having(qGroupRoom.userList.size().loe(3 - size),qUser.userGender.ne(group.getGroupGender()))
+                    .having(qGroupRoom.userList.size().loe(2 - size),qUser.userGender.ne(group.getGroupGender()))
                     .orderBy(qGroupRoom.userList.size().desc())  // 내림차순 정렬
                     .fetchFirst());
         }
