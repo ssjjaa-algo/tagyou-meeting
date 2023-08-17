@@ -12,6 +12,16 @@ export const ProfileImgBox = styled.div`
   overflow: hidden;
   height: 60px;
   width: 60px;
+  position: relative;
+`;
+
+export const UserStatus = styled.div`
+  position: absolute;
+  box-shadow: 1px 1px 3px 1px #dadce0 inset;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  margin: 0.3rem 0 0 0.2rem;
 `;
 
 export const ProfileText = styled.div`
