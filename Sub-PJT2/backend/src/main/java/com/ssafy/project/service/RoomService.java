@@ -34,6 +34,7 @@ public class RoomService {
     private final WebRtcService webRtcService;
 
     // 임시 일대일 방
+    @Transactional(readOnly = true)
     public OneRoomRspDto getOneRoom(Long roomId) {
         return findOneMeetRoom(roomId)
                 .map(OneRoomRspDto::new)
@@ -41,6 +42,7 @@ public class RoomService {
     }
     
     // 임시 다대다 방
+    @Transactional(readOnly = true)
     public GroupRoomRspDto getGroupRoom(Long roomId) {
         return findGroupMeetRoom(roomId)
                 .map(GroupRoomRspDto::new)
