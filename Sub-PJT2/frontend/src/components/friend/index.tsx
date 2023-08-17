@@ -43,7 +43,6 @@ const Friend = ({
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(">>>: " + data.userStatus);
         setUserStatus(data.userStatus);
       });
   };
