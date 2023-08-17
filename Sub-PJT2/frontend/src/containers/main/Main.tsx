@@ -36,7 +36,8 @@ function Main() {
   const [token, setToken] = useRecoilState(TokenValue);
   const [location, setLocation] = useState<string>("");
   const [userStatus, setUserStatus] = useState<string>("");
-  useEffect(() => {
+  
+    useEffect(() => {
     const T = cookies.get("Auth");
     setToken(T);
   }, [cookies.get("Auth")]);
@@ -58,6 +59,7 @@ function Main() {
       token && connectHandler();
     }
   }, [userStatus]);
+
 
   const client = useRef<CompatClient>();
   const connectHandler = () => {
