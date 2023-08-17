@@ -80,12 +80,11 @@ const FriendContainer = () => {
   }, [token]);
 
   const loadUserStatus = (id: number) => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/users/getUserStatus/${id}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/users/state/${id}`, {
       headers: {
         Auth: token,
       },
-    })
-      .then((res) => console.log(JSON.stringify(res)));
+    }).then((res) => res.json()).then((res)=> console.log(res));
   };
 
   const loadFriends = () => {

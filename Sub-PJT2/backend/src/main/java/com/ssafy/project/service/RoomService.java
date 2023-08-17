@@ -218,6 +218,7 @@ public class RoomService {
 
         return findGroupMeetRoom(user.getMeetingRoom().getId()).map(room ->{
                     room.removeUserList(group);
+
                     return room;
                 })
                 .map(GroupRoomRspDto::new)
