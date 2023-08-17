@@ -38,22 +38,22 @@ const Meeting = () => {
   // const [subscriber, setSubscriber] = useState<Subscriber | undefined>(undefined)
   const [publishers, setPublishers] = useState<any[]>([]); // 추가
   const [token, setToken] = useState<any>()
-  // const [subscribers, setSubscribers] = useState<any[]>([]);
+  const [subscribers, setSubscribers] = useState<any[]>([]);
   // const [device, setDevice] = useState<Device | undefined>(undefined)
 
 
-  // useEffect(() => {
-  //   const storedRoomInfo = localStorage.getItem('recoil-persist');
-  //   setRoomInfo(storedRoomInfo ? JSON.parse(storedRoomInfo)['RoomInfo'] : null);
-  //   console.log(roomInfo)
-  //   const rightContainer = document.querySelector(
-  //     ".right_container"
-  //   ) as HTMLElement;
-  //   if (rightContainer instanceof Element) {
-  //     rightContainer.style.width = "100vw";
-  //   }
-  //   joinSession(roomInfo)
-  // }, []);
+  useEffect(() => {
+    const storedRoomInfo = localStorage.getItem('recoil-persist');
+    setRoomInfo(storedRoomInfo ? JSON.parse(storedRoomInfo)['RoomInfo'] : null);
+    console.log(roomInfo)
+    const rightContainer = document.querySelector(
+      ".right_container"
+    ) as HTMLElement;
+    if (rightContainer instanceof Element) {
+      rightContainer.style.width = "100vw";
+    }
+    joinSession(roomInfo)
+  }, []);
 
   const renderSelectedGame = () => {
     if (selectedGame === "catchMind") {
@@ -71,15 +71,32 @@ const Meeting = () => {
     }
   }
 
+  const deleteSubscriber = (mainStreamManager: any) => {
+      let index = subscribers.indexOf(mainStreamManager, 0);
+      if (index > -1) {
+          subscribers.splice(index, 1);
+          setSubscribers(subscribers)
+      }
+  }
   // Openvidu
   const joinSession = (roomInfo: roomProps) => {
     const OV = new OpenVidu();
     let mySession: Session = OV.initSession()
 
     mySession.on("streamCreated", function (event) {
-      mySession.subscribe(event.stream, "subscriber");
+      let subscriber = mySession.subscribe(event.stream, "subscriber");
+      subscribers.push(subscriber)
+      setSubscribers(subscribers)
     });
     
+    mySession.on('streamDestroyed', (event) => {
+
+      // Remove the stream from 'subscribers' array
+      deleteSubscriber(event.stream.streamManager);
+    });
+
+
+
     new Promise<void>((resolve, reject) => {
       const data = {
         type: "WEBRTC",
@@ -118,7 +135,7 @@ const Meeting = () => {
         )
         .then((response) => {
           setToken(response.data.token);
-          mySession.connect(token).then(() => {
+          mySession.connect(response.data.token).then(() => {
             const publisher = OV.initPublisher("publisher");
             mySession.publish(publisher);
             setPublisher(publisher);
@@ -167,18 +184,12 @@ const Meeting = () => {
               </select>
               <button onClick={() => setGameStart(true)}>게임 시작</button>
             </S.Middle>
-              { roomInfo.roomType === "One" ? (
+            {subscribers.map((sub, i) => (
                 <S.PlayerVidBundle>
-                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
-                </S.PlayerVidBundle>
-              ) : (
-                <S.PlayerVidBundle>
-                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
-                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
-                  <S.PlayerVid>{publisher !== undefined ? (<UserVideoComponent id="subscriber" />): null}</S.PlayerVid>
-                </S.PlayerVidBundle>
-              )
-              }
+                <S.PlayerVid><UserVideoComponent streamManager={sub} />)</S.PlayerVid>
+              </S.PlayerVidBundle>
+            ))}
+
           </S.InnerContainer>
         </S.Container>
       ) : (
