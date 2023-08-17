@@ -10,4 +10,6 @@ public interface InvitationRepository extends JpaRepository<MeetingGroupInvitati
     Optional<MeetingGroupInvitation> findByUserIdAndGroupId(Long userId, Long groupId);
 
     Optional<List<MeetingGroupInvitation>> findByUserId(Long uId);
+
+    Optional<List<MeetingGroupInvitation>> findByGroupId(Long groupId);
 }
