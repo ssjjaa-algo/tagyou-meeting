@@ -28,8 +28,16 @@ public class RoomController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/one/{roomId}")
     @Operation(summary = "roomId로 방 가져오기", description = "")
-    public GroupRoomRspDto getRoom(@PathVariable Long roomId) {
-        return roomService.getRoom(roomId);
+    public OneRoomRspDto getOneTemp(@PathVariable Long roomId) {
+        return roomService.getOneRoom(roomId);
+    }
+
+    // ====================== 미팅방 조회 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/groups/{roomId}")
+    @Operation(summary = "roomId로 방 가져오기", description = "")
+    public GroupRoomRspDto getGroupTemp(@PathVariable Long roomId) {
+        return roomService.getGroupRoom(roomId);
     }
 
     // ====================== 일대일 미팅방 생성 ============================
