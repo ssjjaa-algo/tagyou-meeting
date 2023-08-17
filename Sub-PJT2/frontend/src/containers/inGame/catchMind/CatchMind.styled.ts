@@ -6,8 +6,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 90%;
   justify-content: space-evenly;
-  margin-top: 6rem;
+  margin-top: 3rem;
+  min-width: fit-content;
 `;
 
 export const CanvasBox = styled.div<{ theme: themeProps }>`
@@ -78,7 +80,7 @@ export const PaletteColor = styled.div<{ theme: themeProps }>`
   padding: 0.5rem;
   margin: 0.5rem;
   font-weight: bold;
-  width: 5rem;
+  width: 4rem;
 
   &:hover {
     cursor: pointer;
@@ -112,8 +114,8 @@ export const PlayerVidBundle = styled.div`
 export const PlayerVid = styled.div`
   border: solid red;
   display: flex;
-  width: 60%;
-  height: 40%;
+  width: 80%;
+  /* height: ; */
   min-width: 15rem;
   min-height: 10rem;
 `;

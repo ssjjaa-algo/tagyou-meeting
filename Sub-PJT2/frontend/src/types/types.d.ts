@@ -7,6 +7,20 @@ export type userProps = {
   userAge: number;
   userGender: "FEMALE" | "MALE";
   userLike: number;
+  userStatus: string;
+};
+
+export type groupResDtoType = {
+  groupId: number;
+  roomId: number;
+  groupGender: "MALE" | "FEMALE";
+  groupUser: [
+    {
+      userName: string;
+      groupIdx: number;
+      imageUrl: string;
+    }
+  ];
 };
 
 export type profileProps = {
@@ -33,7 +47,7 @@ export type roomProps = {
   roomType: string;
   roomId: number;
   sessionId: string;
-  status: string;
+  userList: string[];
 };
 
 export type Message = {

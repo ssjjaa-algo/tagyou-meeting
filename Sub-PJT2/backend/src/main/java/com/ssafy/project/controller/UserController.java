@@ -1,16 +1,21 @@
 package com.ssafy.project.controller;
 
+import com.ssafy.project.domain.user.User;
+import com.ssafy.project.domain.user.UserStatus;
 import com.ssafy.project.dto.request.HobbyReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
 import com.ssafy.project.dto.response.HobbyRspDto;
 import com.ssafy.project.dto.response.ImageRspDto;
 import com.ssafy.project.dto.response.UserInfoRspDto;
+import com.ssafy.project.dto.response.UserStatusRspDto;
+import com.ssafy.project.service.OnlineService;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/users", produces = "application/json; charset=utf8")
@@ -27,6 +34,7 @@ public class UserController {
 
     private final UserService userService;
     private final TokenService tokenService;
+    private final OnlineService onlineService;
 
     // ====================== 임시 토큰 ============================
 
@@ -111,6 +119,32 @@ public class UserController {
         if(userService.chkPhoneNum(phoneNum))
             return ResponseEntity.ok().body("유효한 폰번호(13자리)");
         return ResponseEntity.badRequest().body("유효하지 않은 폰번호(13자리 아님)");
+    }
+
+    @PostMapping("/setUserStatus")
+    public void SetUserStatus(HttpServletRequest request, @RequestBody String status){
+        System.out.println("열로 들어오냐?");
+        Long id = tokenService.parseUId(request.getHeader("Auth"));
+        System.out.println("상태: " + status);
+        switch(status){
+            case "ONLINE":
+                onlineService.editUserStatus(id, UserStatus.ONLINE);
+                break;
+            case "OFFLINE":
+                onlineService.editUserStatus(id, UserStatus.OFFLINE);
+                break;
+            case "INGAME":
+                onlineService.editUserStatus(id, UserStatus.INGAME);
+                break;
+        }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/state/{uId}")
+    public UserStatusRspDto getUserStatus(@PathVariable String uId){
+        Long id = Long.parseLong(uId);
+        log.info(">>>>>>>>>>>UserStaus : " + uId);
+        return userService.getUserStatus(id);
     }
 
 }

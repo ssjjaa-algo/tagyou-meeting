@@ -3,11 +3,9 @@ package com.ssafy.project.domain.room;
 
 import com.ssafy.project.domain.BaseTimeEntity;
 import com.ssafy.project.domain.message.ChatMessage;
+import com.ssafy.project.domain.user.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +28,27 @@ public abstract class MeetingRoom extends BaseTimeEntity implements Serializable
     private MeetingRoomStatus status = MeetingRoomStatus.INACTIVE;
 
     private String sessionId;
+
+    @OneToMany(mappedBy = "meetingRoom", cascade = CascadeType.ALL)
+    private List<User> userList = new ArrayList<>(); // 남자, 여자
+
+    public void addUser(User user){
+        this.userList.add(user);
+        user.setMeetingRoom(this);
+    }
+
+    // 연관관계 편의 메소드
+    public void removeUser(User user){
+        user.quitRoom();
+        this.userList.remove(user);
+    }
+
+    public void clearUser(){
+        for (User user : this.userList) {
+            user.quitRoom();
+        }
+        this.userList.clear();
+    }
 
     public void changeStatus(MeetingRoomStatus status){
         this.status = status;

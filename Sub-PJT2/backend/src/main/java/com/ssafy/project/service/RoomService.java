@@ -1,6 +1,5 @@
 package com.ssafy.project.service;
 
-import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.group.MeetingGroup;
 import com.ssafy.project.domain.room.GroupMeetingRoom;
 import com.ssafy.project.domain.room.MeetingRoom;
@@ -34,9 +33,19 @@ public class RoomService {
     private final GroupService groupService;
     private final WebRtcService webRtcService;
 
-    // 임시
-    public OneRoomRspDto getRoom(Long roomId) {
-        return oneRepository.findById(roomId).map(OneRoomRspDto::new)
+    // 임시 일대일 방
+    @Transactional(readOnly = true)
+    public OneRoomRspDto getOneRoom(Long roomId) {
+        return findOneMeetRoom(roomId)
+                .map(OneRoomRspDto::new)
+                .orElseThrow(() -> new NotFoundException("방이 조회되지 않습니다."));
+    }
+    
+    // 임시 다대다 방
+    @Transactional(readOnly = true)
+    public GroupRoomRspDto getGroupRoom(Long roomId) {
+        return findGroupMeetRoom(roomId)
+                .map(GroupRoomRspDto::new)
                 .orElseThrow(() -> new NotFoundException("방이 조회되지 않습니다."));
     }
 
@@ -53,21 +62,16 @@ public class RoomService {
             throw new IllegalStateException("이미 미팅룸에 들어간 사용자입니다.");
         }
 
-        return oneRepository.findRamdomRoom(user)
+        return oneRepository.findRamdomOneRoom(user)
             .map(room -> {
-                if(user.getUserGender() == Gender.MALE){
-                    room.setMaleUser(user);
+                if(room.getUserList().size() >= 2){
+                    throw new IllegalStateException("일대일 미팅룸 최대 인원을 초과하였습니다.");
                 }
-                else if(user.getUserGender() == Gender.FEMALE){
-                    room.setFemaleUser(user);
-                }
-                else {
-                    throw new NotFoundException("들어갈 수 있는 일대일 미팅룸이 없습니다.");
-                }
+                room.addUser(user);
                 return room;
             })
-                .map(OneRoomRspDto::new)
-                .orElseGet(() -> createOneMeetRoom(userId));
+            .map(OneRoomRspDto::new)
+            .orElseGet(() -> createOneMeetRoom(userId));
     }
 
     /**
@@ -76,7 +80,7 @@ public class RoomService {
     public OneRoomRspDto createOneMeetRoom(Long userId) {
         log.info("createOneMeetRoom : " + userId);
         OneMeetingRoom newOneRoom = OneMeetingRoom.builder()
-                .newUser(userService.findUser(userId)
+                .user(userService.findUser(userId)
                         .orElseThrow(() -> new NotFoundException("유저의 정보가 조회되지 않습니다.")))
                 .build();
         return saveOneMeetRoom(newOneRoom).map(OneRoomRspDto::new)
@@ -88,34 +92,43 @@ public class RoomService {
      */
     public OneRoomRspDto startOneMeetRoom(Long roomId) {
         OneMeetingRoom meetingRoom = findOneMeetRoom(roomId)
-                .filter(room -> room.getMaleUser() != null && room.getFemaleUser() != null)
+                .filter(room -> room.getUserList().size() == 2)
                 .orElseThrow(() -> new NotFoundException("아직 대기 중인 일대일 미팅룸입니다."));
-
         connectWebService(meetingRoom);
         return new OneRoomRspDto(meetingRoom);
     }
 
     /**
-     * 일대일 미팅방 퇴장
+     * 일대일 대기방 퇴장
      */
-    public OneRoomRspDto quitOneMeetRoom(Long userId) {
-        User user = userService.findUser(userId).orElseThrow(() -> new NotFoundException("일대일 미팅룸을 나가는 유저의 정보가 조회되지 않습니다."));
+    public OneRoomRspDto cancelOneMeetRoom(Long userId) {
+        User user = userService.findUser(userId).orElseThrow(() -> new NotFoundException("1:1 대기방을 나가는 유저의 정보가 조회되지 않습니다."));
 
         if(user.getMeetingRoom() == null){
             throw new IllegalStateException("해당 유저가 대기방에 존재 하지 않습니다.");
         }
 
         return findOneMeetRoom(user.getMeetingRoom().getId()).map(room ->{
-
-            if(user.getUserGender() == Gender.MALE) {
-                room.removeMaleUser();
-            }
-            else if(user.getUserGender() == Gender.FEMALE) {
-                room.removeFemaleUser();
-            }
+            room.removeUser(user);
             return room;})
                 .map(OneRoomRspDto::new)
-                .orElseThrow(() -> new NotFoundException("나가려는 일대일 미팅룸이 조회되지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("나가려는 1:1 미팅룸이 조회되지 않습니다."));
+    }
+    /**
+     * 1:1 미팅방 나가기
+     */
+    public OneRoomRspDto quitOneMeetRoom(Long userId, Long roomId){
+        User user = userService.findUser(userId).orElseThrow(() -> new NotFoundException("1:1 미팅룸을 나가는 유저의 정보가 조회되지 않습니다."));
+
+        return findOneMeetRoom(roomId).filter(room -> room.getStatus() == MeetingRoomStatus.ACTIVE)
+                .map(room -> {
+                    room.removeUser(user);
+//                    room.setSessionId(null);
+                    room.changeStatus(MeetingRoomStatus.INACTIVE);
+                    return room;
+                })
+                .map(OneRoomRspDto::new)
+                .orElseThrow(() -> new IllegalStateException("1:1 미팅룸이 진행되지 않고 있습니다."));
     }
 
     /**
@@ -125,14 +138,13 @@ public class RoomService {
        return findOneMeetRoom(roomId)
                .filter(room -> room.getStatus().equals(MeetingRoomStatus.ACTIVE))
                .map(room -> {
-                   room.removeMaleUser();
-                   room.removeFemaleUser();
+                   room.clearUser();
                    room.setSessionId(null);
                    room.changeStatus(MeetingRoomStatus.INACTIVE);
                    return room;
                })
                .map(OneRoomRspDto::new)
-               .orElseThrow(() -> new NotFoundException("미팅이 진행중인 일대일 미팅룸이 조회되지 않아 종료할 수 없습니다."));
+               .orElseThrow(() -> new NotFoundException("미팅이 진행중인 1:1 미팅룸이 조회되지 않아 종료할 수 없습니다."));
     }
 
     /**
@@ -140,39 +152,28 @@ public class RoomService {
      */
     public GroupRoomRspDto enterGroupMeetRoom(Long userId, Long groupId) {
         User user = userService.findUser(userId)
-                .orElseThrow(() -> new NotFoundException("그룹 미팅룸에 들어가는 유저의 정보가 조회되지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("3:3 미팅룸에 들어가는 유저의 정보가 조회되지 않습니다."));
         MeetingGroup group = groupService.findMeetingGroup(groupId)
-                .orElseThrow(() -> new NotFoundException("그룹 미팅룸에 들어가는 그룹의 정보가 조회되지 않습니다."));
-
-        List<User> groupUser = group.getGroupUser();
-
-        if(user != groupUser.get(0)){
-            throw new IllegalStateException("그룹장이 아니라 입장 할 수 없습니다.");
-        }
+                .orElseThrow(() -> new NotFoundException("3:3 미팅룸에 들어가는 그룹의 정보가 조회되지 않습니다."));
 
         if (user.getMeetingRoom() != null) {
-            throw new IllegalStateException("이미 미팅룸에 들어간 그룹장입니다.");
+            throw new IllegalStateException("현재 유저는 이미 3:3 미팅룸에 입장 중입니다.");
         }
+        checkGroupContainsUser(group, user);
 
-        return groupRepository.findRamdomRoom(group)
+        // 랜덤 그룹방 조회
+        return groupRepository.findRandomGroupRoom(group)
                 .map(room -> {
-                    if(group.getGroupGender() == Gender.MALE){
-                        room.addMaleUserList(group);
-                    }
-                    else if(group.getGroupGender() == Gender.FEMALE){
-                        room.addFemaleUserList(group);
-                    }
-                    else {
-                        throw new NotFoundException("들어갈 수 있는 미팅룸이 없습니다.");
-                    }
+                    room.addUserList(group);
                     return room;
                 })
                 .map(GroupRoomRspDto::new)
                 .orElseGet(() -> createGroupMeetRoom(groupId));
-
-
     }
 
+    /**
+     * 그룹 미팅방 개설
+     */
     private GroupRoomRspDto createGroupMeetRoom(Long groupId) {
         log.info("createGroupMeetRoom : " + groupId);
 
@@ -182,7 +183,7 @@ public class RoomService {
                 .build();
 
         return saveGroupMeetRoom(newGroupRoom).map(GroupRoomRspDto::new)
-                .orElseThrow(() -> new NotFoundException("그룹 미팅룸을 생성하는데 실패했습니다."));
+                .orElseThrow(() -> new NotFoundException("3:3 미팅룸을 생성하는데 실패했습니다."));
     }
 
     /**
@@ -190,21 +191,24 @@ public class RoomService {
      */
     public GroupRoomRspDto startGroupMeetRoom(Long roomId) {
         GroupMeetingRoom meetingRoom = findGroupMeetRoom(roomId)
-                .filter(room -> room.getMaleList().size() == 3 && room.getFemaleList().size() == 3)
-                .orElseThrow(() -> new NotFoundException("아직 대기 중인 그룹 미팅룸입니다."));
+                .filter(room -> room.getUserList().size() == 6)
+                .orElseThrow(() -> new NotFoundException("아직 대기 중인 3:3 미팅룸입니다."));
 
         connectWebService(meetingRoom);
         return new GroupRoomRspDto(meetingRoom);
     }
 
     /**
-     * 그룹 미팅방 퇴장
+     * 그룹 미팅방 나가기
      */
-    public GroupRoomRspDto quitGroupMeetRoom(Long userId, Long groupId) {
+    public GroupRoomRspDto cancelGroupMeetRoom(Long userId, Long groupId) {
+
         User user = userService.findUser(userId)
-                .orElseThrow(() -> new NotFoundException("그룹 미팅룸에 들어가는 유저의 정보가 조회되지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("3:3 미팅룸에 들어가는 유저의 정보가 조회되지 않습니다."));
         MeetingGroup group = groupService.findMeetingGroup(groupId)
-                .orElseThrow(() -> new NotFoundException("그룹 미팅룸에 들어가는 그룹의 정보가 조회되지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("3:3 미팅룸에 들어가는 그룹의 정보가 조회되지 않습니다."));
+
+        checkGroupContainsUser(group, user);
 
         List<User> groupUser = group.getGroupUser();
 
@@ -213,18 +217,33 @@ public class RoomService {
         }
 
         return findGroupMeetRoom(user.getMeetingRoom().getId()).map(room ->{
+                    room.removeUserList(group);
 
-                    if(user.getUserGender() == Gender.MALE) {
-                        room.removeMaleUserList();
-                    }
-                    else if(user.getUserGender() == Gender.FEMALE) {
-                        room.removeFemaleUserList();
-                    }
-                    return room;})
+                    return room;
+                })
                 .map(GroupRoomRspDto::new)
-                .orElseThrow(() -> new NotFoundException("나가려는 그룹 미팅룸이 조회되지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("나가려는 3:3 미팅룸이 조회되지 않습니다."));
     }
 
+    /**
+     * 그룹 대기방 퇴장
+     */
+    public GroupRoomRspDto quitGroupMeetRoom(Long userId, Long roomId) {
+
+        User user = userService.findUser(userId).orElseThrow(() -> new NotFoundException("3:3 미팅룸을 나가는 유저의 정보가 조회되지 않습니다."));
+
+        return findGroupMeetRoom(roomId).filter(room -> room.getStatus() == MeetingRoomStatus.ACTIVE)
+                .map(room -> {
+                    room.removeUser(user);
+                    MeetingGroup meetingGroup = user.getMeetingGroup();
+                    meetingGroup.quitGroup(user);
+//                    room.setSessionId(null);
+                    room.changeStatus(MeetingRoomStatus.INACTIVE);
+                    return room;
+                })
+                .map(GroupRoomRspDto::new)
+                .orElseThrow(() -> new IllegalStateException("3:3 미팅룸이 진행되지 않고 있습니다."));
+       }
 
     /**
      * 그룹 미팅방 종료
@@ -233,14 +252,13 @@ public class RoomService {
         return findGroupMeetRoom(roomId)
                 .filter(room -> room.getStatus().equals(MeetingRoomStatus.ACTIVE))
                 .map(room -> {
-                    room.removeMaleUserList();
-                    room.removeFemaleUserList();
+                    room.clearGroupUser();
                     room.setSessionId(null);
                     room.changeStatus(MeetingRoomStatus.INACTIVE);
                     return room;
                 })
                 .map(GroupRoomRspDto::new)
-                .orElseThrow(() -> new NotFoundException("미팅이 진행중인 일대일 미팅룸이 조회되지 않아 종료할 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("미팅이 진행중인 3:3 미팅룸이 조회되지 않아 종료할 수 없습니다."));
     }
 
     public void connectWebService(MeetingRoom meetingRoom){
@@ -259,6 +277,12 @@ public class RoomService {
         }
         meetingRoom.changeStatus(MeetingRoomStatus.ACTIVE);
         chatService.enterMeetRoom(meetingRoom.getId());
+    }
+
+    private void checkGroupContainsUser(MeetingGroup group, User user){
+        if(!group.getGroupUser().contains(user)){
+            throw new IllegalStateException("해당 그룹에 속해있지 않습니다.");
+        }
     }
 
     private Optional<OneMeetingRoom> saveOneMeetRoom(OneMeetingRoom oneMeetingRoom) {

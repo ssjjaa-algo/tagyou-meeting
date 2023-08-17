@@ -7,6 +7,7 @@ import com.ssafy.project.dto.response.RoomMessageRspDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.TokenService;
 import com.ssafy.project.service.redis.RedisPublisher;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class ChatController {
      * Client 에서는 prefix 를 붙여서 /pub/chat/message 로 발행 요청을 보내면 해당 메시지 처리
      */
     @MessageMapping("/chat/message")
+    @Operation(summary = "메시지 보내기", description = "")
     public void sendMessage(Message<?> header, RoomMessageReqDto message) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(header);
         System.out.println("열로 메시지가 와야됨");
@@ -49,7 +51,9 @@ public class ChatController {
     // ====================== 채팅 메시지 가져오기 ============================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/chat/rooms/{meetingRoomId}/messages")
+    @Operation(summary = "미팅방 메시지 가져오기", description = "")
     public List<RoomMessageRspDto> getChatMessages(@PathVariable("meetingRoomId") Long meetingRoomId) {
         return chatService.getChatMessages(meetingRoomId);
     }
+
 }

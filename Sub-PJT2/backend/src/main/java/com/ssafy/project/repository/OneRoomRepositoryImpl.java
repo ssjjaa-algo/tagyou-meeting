@@ -3,7 +3,6 @@ package com.ssafy.project.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.project.domain.Gender;
 import com.ssafy.project.domain.room.OneMeetingRoom;
 import com.ssafy.project.domain.room.QOneMeetingRoom;
 import com.ssafy.project.domain.user.QUser;
@@ -22,40 +21,26 @@ public class OneRoomRepositoryImpl implements OneRoomRepositoryCustom{
     }
 
     @Override
-    public Optional<OneMeetingRoom> findRamdomRoom(User user) {
-        QOneMeetingRoom qRoom = QOneMeetingRoom.oneMeetingRoom;
+    public Optional<OneMeetingRoom> findRamdomOneRoom(User user) {
+        QOneMeetingRoom qOneRoom = QOneMeetingRoom.oneMeetingRoom;
         QUser qUser = QUser.user;
 
-        Gender userGender = user.getUserGender();
-
-        BooleanBuilder userExistNeGender = new BooleanBuilder()
-                .and(qUser.meetingRoom.isNotNull())
-                .and(qUser.userGender.ne(userGender));
-
-        List<Long> otherUserRoomId = queryFactory
-                .select(qUser.meetingRoom.id)
-                .from(qUser)
-                .where(userExistNeGender)
+        List<Long> oneRoomIdList =  queryFactory.select(qOneRoom.id)
+                .from(qOneRoom)
+                .where(qOneRoom.userList.size().eq(1))
                 .fetch();
 
-        if(otherUserRoomId == null)
-            return Optional.empty();
+        BooleanBuilder notEqGenderOneRoomExist = new BooleanBuilder()
+                        .and(qUser.userGender.ne(user.getUserGender()))
+                        .and(qOneRoom.id.in(oneRoomIdList));
 
-        BooleanBuilder roomExistEqGender = new BooleanBuilder()
-                .and(qRoom.id.in(otherUserRoomId));
-
-        if (userGender == Gender.MALE) {
-            roomExistEqGender.and(qRoom.maleUser.isNull());
-        } else if (userGender == Gender.FEMALE) {
-            roomExistEqGender.and(qRoom.femaleUser.isNull());
-        }
-
-        log.info("otherUserRoomId " + otherUserRoomId);
         Optional<OneMeetingRoom> oneMeetingRoom = Optional.ofNullable(
-                queryFactory.selectFrom(qRoom)
-                .where(roomExistEqGender)
-                .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
-                .fetchFirst());
+                queryFactory.selectFrom(qOneRoom)
+//                        .leftJoin(qOneRoom.userList, qUser)
+                        .join(qOneRoom.userList, qUser)
+                        .where(notEqGenderOneRoomExist)
+                        .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                        .fetchFirst());
 
         log.info("oneMeetingRoom " + oneMeetingRoom);
         return oneMeetingRoom;

@@ -16,10 +16,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,7 +36,7 @@ public class ChatService {
     }
 
     /**
-     *   Redis 에 Topic 을 만들고 pub/sub 통신을 하기 위해 Listener 를 설정
+     * Redis 에 Topic 을 만들고 pub/sub 통신을 하기 위해 Listener 를 설정
      */
     public void enterMeetRoom(Long id) {
         log.info("안녕하세요");
@@ -54,32 +51,24 @@ public class ChatService {
     }
 
     /**
-     *  해당 방의 전체 채팅 리스트를 가져옵니다.
+     * 해당 방의 전체 채팅 리스트를 가져옵니다.
      */
     public List<RoomMessageRspDto> getChatMessages(Long roomId) {
 //        return chatMessageRepository.findAllByMeetingRoomId(roomId).orElseGet(() -> null)
 //                .stream().map(RoomMessageReqDto::new).toList();
-        List<RoomMessageRspDto> allMessages = new ArrayList<RoomMessageRspDto>(chatMessageRepository.findAllByMeetingRoomId(roomId).orElseGet(() -> null)
+        List<RoomMessageRspDto> allMessages = new ArrayList<RoomMessageRspDto>(chatMessageRepository.findAllByMeetingRoomIdAndMessageType(roomId, MessageType.TALK).orElseGet(() -> null)
                 .stream().map(RoomMessageRspDto::new).toList());
-        List<RoomMessageRspDto> result = new ArrayList<RoomMessageRspDto>();
-        for(int i = 0; i< allMessages.size(); i++){
-            if(allMessages.get(i).getMessageType() == MessageType.TALK){
-                result.add(allMessages.get(i));
-            }
-        }
-        return result;
+//        List<RoomMessageRspDto> result = new ArrayList<RoomMessageRspDto>();
+//        for(int i = 0; i< allMessages.size(); i++){
+//            if(allMessages.get(i).getMessageType() == MessageType.TALK){
+//                result.add(allMessages.get(i));
+//            }
+//        }
+        return allMessages;
     }
 
-//    public void sendChatMessage(ChatMessage chatMessage) {
-//        log.info("InComming ChatService");
-////        if (ChatMessage.MessageType.ENTER.equals(chatMessage.getType())) {
-////            chatMessage.setMessage(chatMessage.getSender() + "님이 방에 입장했습니다.");
-////            chatMessage.setSender("[알림]");
-////        } else if (ChatMessage.MessageType.QUIT.equals(chatMessage.getType())) {
-////            chatMessage.setMessage(chatMessage.getSender() + "님이 방에서 나갔습니다.");
-////            chatMessage.setSender("[알림]");
-////        }
-//        redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
-//        log.info("Service :  " + chatMessage.getType());
-//    }
+    public ChatMessage getEnterMessages(Long roomId) {
+        log.info("왜 안됨?");
+        return chatMessageRepository.findByMeetingRoomIdAndMessageType(roomId, MessageType.ENTER).orElseGet(null);
+    }
 }

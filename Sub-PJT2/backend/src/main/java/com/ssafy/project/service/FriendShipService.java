@@ -6,6 +6,7 @@ import com.ssafy.project.domain.notice.Notice;
 import com.ssafy.project.domain.notice.NoticeType;
 import com.ssafy.project.domain.user.User;
 import com.ssafy.project.dto.request.NoticeReqDto;
+import com.ssafy.project.dto.response.FriendInfoRspDto;
 import com.ssafy.project.dto.response.FriendRspDto;
 import com.ssafy.project.exception.NotFoundException;
 import com.ssafy.project.repository.FriendShipRepository;
@@ -134,36 +135,26 @@ public class FriendShipService {
     /**
      * 친구 리스트 조회
      */
-    public List<FriendRspDto> findFriendShips(Long userId) {
+    @Transactional(readOnly = true)
+    public List<FriendInfoRspDto> findFriendShips(Long userId) {
         return
                 findFriendShipsByUserId(userId)
                         .map(fList -> fList.stream()
-                                .map(FriendRspDto::new)
+//                                .map(friendShip -> friendShip.getTargetUser()
+                                        .map(FriendInfoRspDto::new)
                                 .toList()
                         )
                 .orElseGet(ArrayList::new);
-
-//        return friendShips.stream()
-//                .filter(friendShip -> friendShip.getFriendShipStatus().equals(FriendShipStatus.FRIEND))
-//                .map(FriendRspDto::new)
-//                .toList();
     }
 
     /**
      * 사용자 검색
      */
-    // 아직 완벽하지 않음
+    @Transactional(readOnly = true)
     public List<FriendRspDto> findUsers(Long userId, String word) {
 
         User user = userService.findUser(userId)
                 .orElseThrow(() -> new NotFoundException("현재 유효하지 않은 유저입니다."));
-
-//        List<FriendRspDto> friendRspDtoList =
-//                findFriendShipsByUserId(userId).map(fList -> fList.stream()
-////                                .filter(friendShip -> friendShip.getFriendShipStatus().equals(status))
-//                                .map(FriendRspDto::new)
-//                                .collect(Collectors.toList()))
-//                        .orElseGet(ArrayList::new);
 
         List<FriendRspDto> friendRspDtoList =
                 userService.findUsersByKeyWord(word)
@@ -212,7 +203,6 @@ public class FriendShipService {
                 .filter(noticeList -> !noticeList.isEmpty());
     }
 
-    @Transactional
     public void rejectFriendShip(Long userId, Long otherId) {
         friendShipRepository.deleteByUserIdAndTargetUserId(userId, otherId);
         friendShipRepository.deleteByUserIdAndTargetUserId(otherId, userId);

@@ -42,6 +42,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final EnumPath<RoleType> roleType = createEnum("roleType", RoleType.class);
 
+    public final StringPath sessionId = createString("sessionId");
+
     public final NumberPath<Integer> userAge = createNumber("userAge", Integer.class);
 
     public final StringPath userEmail = createString("userEmail");
@@ -51,6 +53,8 @@ public class QUser extends EntityPathBase<User> {
     public final NumberPath<Integer> userLike = createNumber("userLike", Integer.class);
 
     public final StringPath userName = createString("userName");
+
+    public final EnumPath<UserStatus> userStatus = createEnum("userStatus", UserStatus.class);
 
     public QUser(String variable) {
         this(User.class, forVariable(variable), INITS);

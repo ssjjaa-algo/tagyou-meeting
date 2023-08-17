@@ -8,6 +8,7 @@ import "css/chat/inGameChat.css";
 import sendButton from "asset/img/button_send.png";
 import messageButton from "asset/img/message.png";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { motion, useAnimation } from "framer-motion";
 
 // webSocket 관련
 import { CompatClient, Stomp } from "@stomp/stompjs";
@@ -34,25 +35,21 @@ type Room = {
   femaleUserNicknmae: string;
 };
 
-type tempType = {
-  content: string;
-  message_type: string;
-  sender: string;
-}
-
 const RightContainer = () => {
   const theme: themeProps = useTheme();
 
-  const [roomId, setRoomId] = useState<number>(1);
+  const [roomId, setRoomId] = useState<number>(19);
   const [items, setItems] = useState<ReceivingMessage[]>([]);
   const [lastMessage, setLastMessage] = useState<ReceivingMessage>();
   const [message, setMessage] = useState("");
-  const [isHovering, setIsHovering] = useState(false);
   const [inGameChatStatus, setInGameChatStatus] =
     useRecoilState(InGameChatStatus);
   const [token, setToken] = useRecoilState(TokenValue);
   const [pullDown, setPullDown] = useState<boolean>(true);
   const [newMEssageNoticeStatus, setNewMEssageNoticeStatus] = useState({
+    display: "none",
+  });
+  const [overMaxLengthStatus, setOverMaxLengthStatus] = useState({
     display: "none",
   });
   const cookies = new Cookies();
@@ -62,21 +59,20 @@ const RightContainer = () => {
   const domainAddress = "www.tagyou.site";
 
   // 방번호 조회
-  const getRoomId = async () => {
-    console.log("roomId 확인 전 발급된 토큰 확인: " + token);
-    fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
-      method: "POST",
-      headers: {
-        Auth: token,
-      },
-    })
-      .then((res) => res.json())
-      .then((data: Room) => {
-        console.log(data);
-        // setRoomId(1);
-      });
-  };
-
+  // const getRoomId = async () => {
+  //   console.log("roomId 확인 전 발급된 토큰 확인: " + token);
+  //   fetch(`${process.env.REACT_APP_BASE_URL}/rooms/one/${roomId}`, {
+  //     method: "POST",
+  //     headers: {
+  //       Auth: token,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data: Room) => {
+  //       // console.log(data);
+  //       // setRoomId(1);
+  //     });
+  // };
 
   // const roomSync = async () => {
   //   console.log("roomConnect 함수 실행");
@@ -88,16 +84,9 @@ const RightContainer = () => {
   // };
 
   // 미팅룸에 들어올때 connectHandler에 roomId와 codeName 변수를 줘야함
-  const connectHandler = (roomId: number) => {
+  const connectHandler = () => {
     client.current = Stomp.over(() => {
       // 여기서 url 조정하면 됨
-      // const socket = new SockJS(`http://${domainAddress}/ws/chat`);
-      // const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`, {
-      //   // http://localhost:9999/api/ws/chat/
-      //   headers: {
-      //     Auth: token,
-      //   },
-      // });
       const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws/chat`);
       return socket;
     });
@@ -106,8 +95,6 @@ const RightContainer = () => {
       Auth: token,
     };
     client.current.connect(headers, () => {
-      // 해당 방과 동기화(?)
-      // roomSync();
       client.current?.subscribe(
         `/sub/chat/rooms/${roomId}`,
         (message) => {
@@ -131,13 +118,11 @@ const RightContainer = () => {
       .then((response) => response.json())
       .then((data: ReceivingMessage[]) => {
         for (let i = 0; i < data.length; i++) {
-          // console.log(data[i].sender)
           addItem(data[i]);
         }
       });
   };
 
-  // 렌더링 후 연결
   useEffect(() => {
     const T = cookies.get("Auth");
     setToken(T);
@@ -147,10 +132,14 @@ const RightContainer = () => {
   useEffect(() => {
     // 연결됐던 방이 있다면 RoomId 조회
     // getRoomId();
+    const location = window.location.pathname;
+    console.log(location.substring(9, location.length));
+    // pathname에서 방번호 가져오기 필수로 주석 없애야 함 !!!!!!!!!!!!!!!!!!!!
+    // setRoomId(parseInt(location.substring(9, location.length)));
     console.log("방 번호: " + roomId);
     // 채팅 웹소켓 연결
-    token && connectHandler(roomId);
-  }, [token]);
+    token && roomId && connectHandler();
+  }, [token, roomId]);
 
   const handelScroll = () => {
     if (!chatScreenRef.current) return;
@@ -161,10 +150,6 @@ const RightContainer = () => {
 
   const addItem = (item: ReceivingMessage) => {
     if (item.message_type === "TALK" || "ENTER" || "EXIT") {
-      console.log("발신자: " + item.sender);
-      console.log("내용: " + item.content);
-      console.log("타입: " + item.message_type);
-      console.log("방번호: " + item.meeting_room_id);
       let newItems: ReceivingMessage[] = [];
       newItems = items;
       newItems.push(item);
@@ -183,13 +168,13 @@ const RightContainer = () => {
     setMessage(e.target.value);
   };
 
-  // client에 있는 토큰 이용해서 loginUser 정보를 받아와야 함
-  // const user = "A"
-  const [user, setUser] = useState<string>("");
-
-  const handleUserChange = (e: any) => {
-    setUser(e.target.value);
-  };
+  useEffect(() => {
+    if (message.length > 100) {
+      setOverMaxLengthStatus({ display: "flex" });
+    } else {
+      setOverMaxLengthStatus({ display: "none" });
+    }
+  }, [message]);
 
   const messageSending: SendingMessage = {
     content: message,
@@ -217,7 +202,7 @@ const RightContainer = () => {
 
   useEffect(() => {
     if (chatScreenRef.current) {
-      if (lastMessage?.sender === user || pullDown) {
+      if (pullDown) {
         lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
       } else if (!pullDown || chatScreenRef.current.scrollTop >= 0) {
         setNewMEssageNoticeStatus({ display: "flex" });
@@ -234,14 +219,6 @@ const RightContainer = () => {
   // 메시지 아이콘 누르면 채팅 창 열리고 닫히기 기능
   const handleClickMessage = () => {
     setInGameChatStatus(!inGameChatStatus);
-  };
-
-  // 메시지 아이콘 호버시 메시지 아이콘 확대 기능
-  const handleMouseOver = () => {
-    setIsHovering(true);
-  };
-  const handleMouseOut = () => {
-    setIsHovering(false);
   };
 
   // alt + c 누르면 채팅 나오는 기능
@@ -275,6 +252,17 @@ const RightContainer = () => {
     return result;
   };
 
+  const variants = {
+    vibrate: () => ({
+      x: 3,
+      transition: {
+        delay: 0.1,
+        repeat: 7,
+        duration: 0.1,
+      },
+    }),
+  };
+
   return (
     <S.Container
       theme={theme}
@@ -288,7 +276,6 @@ const RightContainer = () => {
         <S.MessageButton
           theme={theme}
           onClick={handleClickMessage}
-          onMouseOut={handleMouseOut}
           whileHover={{ scale: 1.3 }}
           whileTap={{ scale: 1.1 }}
         >
@@ -327,6 +314,8 @@ const RightContainer = () => {
             <input
               value={message}
               onChange={handleChangeText}
+              // onInput={numberMaxLength}
+              maxLength={101}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && e.ctrlKey) {
                   return;
@@ -335,6 +324,13 @@ const RightContainer = () => {
                 }
               }}
             />
+            <S.OverMaxLength
+              style={overMaxLengthStatus}
+              whileInView="vibrate"
+              variants={variants}
+            >
+              최대 입력 가능한 글자 수를 초과하였습니다.
+            </S.OverMaxLength>
             <div className="button-outer">
               <S.Button
                 theme={theme}

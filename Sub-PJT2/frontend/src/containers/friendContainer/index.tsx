@@ -36,28 +36,31 @@ const FriendContainer = () => {
 
   const fetchReceived = (targetId: number) => {
     console.log("fetchReceived token확인", token);
-    fetch(`${process.env.REACT_APP_BASE_URL}/friends/accept`, {
-      method: "POST",
-      headers: {
-        Auth: token,
-      },
-      body: JSON.stringify({ targetId: targetId }),
-    }).then(() => fetchData(token));
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}/friends/accept?targetId=${targetId}`,
+      {
+        method: "POST",
+        headers: {
+          Auth: token,
+        },
+      }
+    ).then(() => fetchData(token));
   };
 
   const fetchRejected = (targetId: number) => {
     console.log("fetchRejected token확인", token);
-    fetch(`${process.env.REACT_APP_BASE_URL}/friends/reject`, {
-      method: "POST",
-      headers: {
-        Auth: token,
-      },
-      body: JSON.stringify({ targetId: targetId }),
-    }).then(() => fetchData(token));
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}/friends/reject?otherId=${targetId}`,
+      {
+        method: "POST",
+        headers: {
+          Auth: token,
+        },
+      }
+    ).then(() => fetchData(token));
   };
 
   const fetchData = (token: string) => {
-    console.log("친구목록에서 token확인", token);
     fetch(`${process.env.REACT_APP_BASE_URL}/friends/list`, {
       headers: {
         Auth: token,
@@ -115,8 +118,6 @@ const FriendContainer = () => {
                   targetName={item.targetName}
                   targetImageUrl={item.targetImageUrl}
                   key={idx}
-                  handleAccecpt={() => fetchReceived(item.targetId)}
-                  handleReject={() => fetchRejected(item.targetId)}
                 />
               ))
             ) : (
@@ -142,6 +143,8 @@ const FriendContainer = () => {
                   targetName={item.targetName}
                   targetImageUrl={item.targetImageUrl}
                   key={idx}
+                  handleAccecpt={fetchReceived}
+                  handleReject={fetchRejected}
                 />
               ))
             ) : (

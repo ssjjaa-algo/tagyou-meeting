@@ -14,6 +14,8 @@ import LandingContainer from "containers/landingContainer/Landing";
 import InputContainer from "containers/inputContainer";
 import PageNotFound from "containers/pageNotFound/PageNotFound";
 import InGameChat from "containers/rightContainer/rightConatiner-inGameChat/InGameChat";
+import MyPageTmp from "containers/mypagetmp";
+import { GroupModal } from "components/modal/groupModal";
 
 const Router = () => {
   return (
@@ -25,7 +27,7 @@ const Router = () => {
       <Route path="/input" element={<InputContainer />} />
       <Route path="/home" element={<Home />} />
       <Route path="/test" element={<Test />} />
-      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/mypage" element={<MyPageTmp />} />
       <Route path="/openvidu" element={<Openvidu />} />
       <Route path="/chatRoom/:nickname" element={<ChatRoom />} />
       <Route path="/chatList" element={<ChatList />} />

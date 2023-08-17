@@ -33,6 +33,8 @@ spring:
           kakao:
             client-id: ${KAKAO_CLIENT}
             redirect-uri: https://tagyou.site/api/login/oauth2/code/kakao
+            client-id: fbb08611d97dc25ae84406583996ba60
+            redirect-uri: http://localhost:9999/api/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             client-name: Kakao

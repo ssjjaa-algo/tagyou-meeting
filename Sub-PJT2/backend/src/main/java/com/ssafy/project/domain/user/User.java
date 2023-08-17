@@ -49,6 +49,12 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType = RoleType.USER;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
+
+    @Column
+    private String sessionId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private MeetingGroup meetingGroup;
@@ -57,19 +63,20 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name = "meeting_room_id")
     private MeetingRoom meetingRoom;
 
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Profile profile;
+
     @Builder //// 여기 나중에 조건에 맞게 수정해야댐
     public User(String userEmail, String userName) {
         this.userEmail = userEmail;
         this.userName = userName;
     }
-    public void changeUser(UserInfoReqDto userInfoReqDto){
+
+    public void changeUser(UserInfoReqDto userInfoReqDto) {
         this.phoneNumber = userInfoReqDto.getPhoneNumber();
         this.userAge = userInfoReqDto.getUserAge();
         this.userGender = userInfoReqDto.getUserGender();
         this.userLike = 0;
-    }
-    public void changeUserImg(Image img) {
-        this.mainImage = img;
     }
 
     public void quitMeetingGroup() {
@@ -82,18 +89,30 @@ public class User extends BaseTimeEntity {
 
     // 연관관계 편의 메서드
     public void setMeetingGroup(MeetingGroup meetingGroup) {
-        if(this.getMeetingGroup() != null){
+        if (this.getMeetingGroup() != null) {
             this.getMeetingGroup().quitGroup(this);
         }
         this.meetingGroup = meetingGroup;
         meetingGroup.getGroupUser().add(this);
     }
 
+    public void setUserImg(Image img) {
+        this.mainImage = img;
+    }
+
     public void setMeetingRoom(MeetingRoom meetingRoom) {
         this.meetingRoom = meetingRoom;
     }
 
-    public void changeUserName(String userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public void setSessionId(String sessionId){
+        this.sessionId = sessionId;
     }
 }

@@ -5,6 +5,7 @@ import com.ssafy.project.dto.response.OneRoomRspDto;
 import com.ssafy.project.service.ChatService;
 import com.ssafy.project.service.RoomService;
 import com.ssafy.project.service.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,68 +27,105 @@ public class RoomController {
     // ====================== 미팅방 조회 ============================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/one/{roomId}")
-    public OneRoomRspDto getRoom(@PathVariable Long roomId) {
-        return roomService.getRoom(roomId);
+    @Operation(summary = "roomId로 일대일 방 가져오기", description = "")
+    public OneRoomRspDto getOneTemp(@PathVariable Long roomId) {
+        return roomService.getOneRoom(roomId);
     }
 
-    // ====================== 일대일 미팅방 입장 ============================
+    // ====================== 미팅방 조회 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/group/{roomId}")
+    @Operation(summary = "roomId로 다대다 방 가져오기", description = "")
+    public GroupRoomRspDto getGroupTemp(@PathVariable Long roomId) {
+        return roomService.getGroupRoom(roomId);
+    }
+
+    // ====================== 일대일 미팅방 생성 ============================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/one")
+    @Operation(summary = "1:1 대기방 생성하기", description = "")
     public OneRoomRspDto enterOneMeetRoom(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
         return roomService.enterOneMeetRoom(userId);
     }
 
-    // ====================== 일대일 미팅방 나가기 ============================
+    // ====================== 일대일 대기방 나가기 ============================
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(path = "/one/quit")
-    public OneRoomRspDto quitOneMeetRoom(HttpServletRequest request) {
+    @Operation(summary = "1:1 대기방 나가기", description = "")
+    public OneRoomRspDto cancelOneMeetRoom(HttpServletRequest request) {
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        return roomService.quitOneMeetRoom(userId);
+        return roomService.cancelOneMeetRoom(userId);
     }
 
     // ====================== 일대일 미팅방 시작 ============================
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(path = "/one/{roomId}")
+    @Operation(summary = "1:1 미팅 시작하기", description = "")
     public OneRoomRspDto startOneMeetRoom(@PathVariable Long roomId) {
         return roomService.startOneMeetRoom(roomId);
     }
 
-//     ====================== 일대일 미팅방 종료 ============================
+    // ====================== 일대일 미팅방 나가기 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(path = "/one/quit/{roomId}")
+    @Operation(summary = "1:1 진행 중 미팅방 나가기", description = "")
+    public OneRoomRspDto quitOneMeetRoom(HttpServletRequest request, @PathVariable Long roomId) {
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return roomService.quitOneMeetRoom(userId, roomId);
+    }
+
+    // ====================== 일대일 미팅방 종료 ============================
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(path = "/one/{roomId}")
+    @Operation(summary = "1:1 미팅 끝내기", description = "")
     public OneRoomRspDto endOneMeetRoom(@PathVariable Long roomId) {
         return roomService.endOneMeetRoom(roomId);
     }
 
-//    // ====================== 그룹 미팅방 입장 ============================
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping("/groups")
-//    public GroupRoomRspDto createGroupMeetRoom(HttpServletRequest request, Long groupId) {
-//        Long userId = tokenService.parseUId(request.getHeader("Auth"));
-//        return roomService.enterGroupMeetRoom(userId, groupId);
-//    }
-//
-//    // ====================== 그룹 미팅방 나가기 ============================
-//    @ResponseStatus(HttpStatus.OK)
-//    @PostMapping("/groups/quit")
-//    public GroupRoomRspDto quitGroupMeetRoom(HttpServletRequest request, Long groupId){
-//        Long userId = tokenService.parseUId(request.getHeader("Auth"));
-//        return roomService.quitGroupMeetRoom(userId, groupId);
-//    }
-//
-//    // ====================== 그룹 미팅방 시작 ============================
-//    @ResponseStatus(HttpStatus.OK)
-//    @PostMapping("/groups/{roomId}")
-//    public GroupRoomRspDto startGroupMeetRoom(@PathVariable Long roomId) {
-//        return roomService.startGroupMeetRoom(roomId);
-//    }
-//
-//    // ====================== 그룹 미팅방 종료 ============================
-//    @ResponseStatus(HttpStatus.OK)
-//    @DeleteMapping("/groups/{roomId}")
-//    public GroupRoomRspDto endGroupMeetRoom(@PathVariable Long roomId) {
-//        return roomService.endGroupMeetRoom(roomId);
-//    }
+
+    // ====================== 다대다 미팅방 생성 ============================
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/group")
+    @Operation(summary = "3:3 대기방 생성하기", description = "그룹 생성이 선행되어야 대기방 생성이 가능함")
+    public GroupRoomRspDto createGroupMeetRoom(HttpServletRequest request, @RequestParam Long groupId) {
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return roomService.enterGroupMeetRoom(userId, groupId);
+    }
+
+    // ====================== 다대다 대기방 나가기 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/group/quit")
+    @Operation(summary = "3:3 대기방 나가기", description = "")
+    public GroupRoomRspDto cancelGroupMeetRoom(HttpServletRequest request,@RequestParam Long groupId){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return roomService.cancelGroupMeetRoom(userId, groupId);
+    }
+
+    // ====================== 다대다 미팅방 시작 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/group/{roomId}")
+    @Operation(summary = "3:3 미팅 시작하기", description = "")
+    public GroupRoomRspDto startGroupMeetRoom(@PathVariable Long roomId) {
+        return roomService.startGroupMeetRoom(roomId);
+    }
+
+    // ====================== 다대다 미팅방 나가기 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/group/quit/{roomId}")
+    @Operation(summary = "3:3 진행 중 미팅방 나가기", description = "")
+    public GroupRoomRspDto quitGroupMeetRoom(HttpServletRequest request,@RequestParam Long roomId){
+        Long userId = tokenService.parseUId(request.getHeader("Auth"));
+        return roomService.quitGroupMeetRoom(userId, roomId);
+    }
+
+
+    // ====================== 다대다 미팅방 종료 ============================
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/group/{roomId}")
+    @Operation(summary = "3:3 미팅 끝내기", description = "")
+    public GroupRoomRspDto endGroupMeetRoom(@PathVariable Long roomId) {
+        return roomService.endGroupMeetRoom(roomId);
+    }
 
 }

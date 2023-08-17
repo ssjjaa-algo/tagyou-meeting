@@ -136,6 +136,16 @@ export const ChatRoomMainInput = styled.div<{ theme: themeProps }>`
   padding: 1rem 1.5rem 1rem 1.5rem;
 `;
 
+export const OverMaxLength = styled(motion.div)`
+  /* border: solid red 1px; */
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  font-size: 0.7rem;
+  font-weight: bold;
+  bottom: 0.5rem;
+`;
+
 export const Button = styled(motion.button)<{ theme: themeProps }>`
   background-color: ${(props) => props.theme.point.deep};
   border: none;

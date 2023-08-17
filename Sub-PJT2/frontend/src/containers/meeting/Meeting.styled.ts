@@ -6,7 +6,7 @@ export const Container = styled.div`
   flex-direction: row;
   transition: all 1s;
   /* width: 100%; */
-  height: 100%;
+  height: 95%;
   margin-top: 2rem;
 `;
 

@@ -13,7 +13,8 @@ import Profile from "components/profile";
 import { useEffect, useState } from "react";
 import { Modal } from "components/modal";
 import { Cookies, useCookies } from "react-cookie";
-import { Matching } from "components/matching";
+import Matching from "components/matching";
+import { GroupModal } from "components/modal/groupModal";
 
 const LeftContainer = () => {
   const [isDark, setIsDark] = useRecoilState(IsDark);
@@ -25,6 +26,7 @@ const LeftContainer = () => {
   const [authToken, setAuthToken] = useState<string>("");
   const [imgSrc, setImgSrc] = useRecoilState<string>(ProfileImgSrc);
   const [showMatching, setShowMatching] = useState<boolean>(false);
+  const [showGruopModal, setshowGruopModal] = useState<boolean>(false);
 
   useEffect(() => {
     setAuthToken(cookies.get("Auth"));
@@ -125,17 +127,26 @@ const LeftContainer = () => {
               <S.Tmp>🏝️</S.Tmp> M Y P A G E
             </S.ListText>
           </S.List>
-
           <S.List theme={theme}>
             <S.ListText
               onClick={() => {
-                setShowMatching(true);
+                setshowGruopModal(true);
               }}
             >
-              <S.Tmp>👨‍❤️‍👨</S.Tmp> M E E T I N G
+              <S.Tmp> 👬 </S.Tmp> G R O U P
             </S.ListText>
           </S.List>
         </S.ListBox>
+
+        <S.List theme={theme}>
+          <S.ListText
+            onClick={() => {
+              setShowMatching(true);
+            }}
+          >
+            <S.Tmp>👨‍❤️‍👨</S.Tmp> M E E T I N G
+          </S.ListText>
+        </S.List>
 
         <S.FootBox
           theme={theme}
@@ -154,6 +165,7 @@ const LeftContainer = () => {
           formType="logout"
         />
       )}
+      {showGruopModal && <GroupModal setShowModal={setshowGruopModal} />}
       {showMatching && <Matching setShowMatching={setShowMatching} />}
     </>
   );

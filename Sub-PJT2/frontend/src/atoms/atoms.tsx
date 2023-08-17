@@ -1,6 +1,12 @@
 import { atom, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { userProps, profileProps, friendProps, roomProps } from "types/types";
+import {
+  userProps,
+  profileProps,
+  friendProps,
+  roomProps,
+  groupResDtoType,
+} from "types/types";
 
 const { persistAtom } = recoilPersist();
 
@@ -13,6 +19,7 @@ export const IsDark = atom<boolean>({
 export const FriendList = atom<friendProps[]>({
   key: "FriendList",
   default: [],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const NomalFriendList = selector({
@@ -31,6 +38,23 @@ export const ReceivedFriendList = selector({
   },
 });
 
+export const GroupResDto = atom<groupResDtoType>({
+  key: "GroupResDto",
+  default: {
+    groupId: 0,
+    roomId: 0,
+    groupGender: "MALE",
+    groupUser: [
+      {
+        userName: "",
+        groupIdx: 0,
+        imageUrl: "",
+      },
+    ],
+  },
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const RequestFriendList = selector({
   key: "RequestFriendList",
   get: ({ get }) => {
@@ -39,15 +63,10 @@ export const RequestFriendList = selector({
   },
 });
 
-export const IsOpen = atom<boolean>({
-  key: "IsOpen",
-  default: true,
-  effects_UNSTABLE: [persistAtom],
-});
-
 export const TokenValue = atom<string>({
   key: "TokenValue",
   default: "",
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const IsLogin = atom<boolean>({
@@ -65,7 +84,9 @@ export const UserInfo = atom<userProps>({
     userAge: 0,
     userGender: "MALE",
     userLike: 0,
+    userStatus: "",
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const ProfileImgSrc = atom<string>({
@@ -92,8 +113,9 @@ export const RoomInfo = atom<roomProps>({
     roomType: "",
     roomId: 0,
     sessionId: "",
-    status: "",
+    userList: [],
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const UpdateUserInfoFromToken = selector({

@@ -72,7 +72,7 @@ export const Contents = styled.div`
 export const LeftContainer = styled.div`
   width: inherit;
   height: inherit;
-  border-bottom: 1px solid rgb(239, 239, 239);
+  border: 1px solid rgb(239, 239, 239);
 `;
 
 export const FavoriteIconStyled = styled(FavoriteIcon)<{
@@ -91,8 +91,8 @@ export const Title = styled.text<{ theme: themeProps }>`
   /* display: block; */
 `;
 
-export const miniTitle = styled.text<{ theme: themeProps }>`
-  color: #262625;
+export const miniTitle = styled.text<{ isDark: boolean }>`
+  color: ${({ isDark }) => (isDark ? "#e2e2e2" : "#404040")} !important;
   font-size: 18px;
   padding-bottom: 15px;
 `;
@@ -103,8 +103,8 @@ export const SubText = styled.div<{ theme: themeProps }>`
   padding-bottom: 15px;
 `;
 
-export const Strong = styled.strong`
-  color: #404040;
+export const Strong = styled.strong<{ isDark: boolean }>`
+  color: ${({ isDark }) => (isDark ? "#e2e2e2" : "#404040")} !important;
   font-size: 16px;
   font-weight: bold;
   padding-bottom: 15px;
