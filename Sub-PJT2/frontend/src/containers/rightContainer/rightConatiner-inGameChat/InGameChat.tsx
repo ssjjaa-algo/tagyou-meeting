@@ -125,6 +125,7 @@ const RightContainer = () => {
   }, [cookies.get("Auth")]);
 
   useEffect(() => {
+    if(!token) return;
     // 연결됐던 방이 있다면 RoomId 조회
     // getRoomId();
     const location = window.location.pathname;
