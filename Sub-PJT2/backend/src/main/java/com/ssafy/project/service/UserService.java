@@ -2,6 +2,7 @@ package com.ssafy.project.service;
 
 import com.ssafy.project.domain.user.Image;
 import com.ssafy.project.domain.user.User;
+import com.ssafy.project.domain.user.UserStatus;
 import com.ssafy.project.dto.request.UserProfileReqDto;
 import com.ssafy.project.dto.request.UserReqDto;
 import com.ssafy.project.dto.request.UserInfoReqDto;
@@ -161,8 +162,11 @@ public class UserService {
     public UserStatusRspDto getUserStatus(long id){
         User u = findUser(id)
                 .orElseThrow(() -> new NotFoundException("유저아이디에 해당하는 유저가 없습니다."));
-            return Optional.of(u.getUserStatus()).map(UserStatusRspDto::new)
-                    .orElseGet(null);
+        UserStatus userStatus = u.getUserStatus();
+        if(userStatus == null){
+            userStatus = UserStatus.OFFLINE;
+        }
+        return new UserStatusRspDto(userStatus);
     }
 
 }

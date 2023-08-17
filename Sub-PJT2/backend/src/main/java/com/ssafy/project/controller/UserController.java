@@ -143,7 +143,7 @@ public class UserController {
     @GetMapping("/state/{uId}")
     public UserStatusRspDto getUserStatus(@PathVariable String uId){
         Long id = Long.parseLong(uId);
-        log.info(uId);
+        log.info(">>>>>>>>>>>UserStaus : " + uId);
         return userService.getUserStatus(id);
     }
 
