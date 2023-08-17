@@ -23,7 +23,7 @@ spring:
       encoding: UTF-8
 
     redis:
-      host: tagyou.site
+      host: redis-container
       port: 6379
       password : A705SSAFYA705
 
