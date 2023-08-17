@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { themeProps } from "@emotion/react";
 import { Button } from "antd";
+import { friendStateType } from ".";
 
 export const Profile = styled.div`
   display: flex;
@@ -16,13 +17,23 @@ export const ProfileImgBox = styled.div`
   position: relative;
 `;
 
-export const UserStatus = styled.div`
+export const UserStatus = styled.div<{ state: friendStateType }>`
   position: absolute;
-  box-shadow: 1px 1px 3px 1px #dadce0 inset;
-  width: 1rem;
-  height: 1rem;
+  box-shadow: 1px 1px 5px 1px #dadce0 inset;
+  width: 0.8rem;
+  height: 0.8rem;
   border-radius: 50%;
-  margin: 0.3rem 0 0 0.2rem;
+  margin: 0.4rem 0 0 0.3rem;
+  background-color: ${({ state }) => {
+    switch (state) {
+      case "OFFLINE":
+        return "#FF1493";
+      case "ONLINE":
+        return "#1AF354";
+      case "INGAME":
+        return "#808080";
+    }
+  }};
 `;
 
 export const ProfileText = styled.div`

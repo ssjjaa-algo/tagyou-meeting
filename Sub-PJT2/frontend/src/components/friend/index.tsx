@@ -16,6 +16,8 @@ type friendCompoentProps = {
   handleReject?: (targetId: number) => void;
 };
 
+export type friendStateType = "ONLINE" | "OFFLINE" | "INGAME";
+
 const Friend = ({
   friendShipStatus,
   targetId,
@@ -30,10 +32,7 @@ const Friend = ({
 
   const token = useRecoilValue(TokenValue);
 
-  const [userStatus, setUserStatus] = useState("OFFLINE");
-  const [userStatusStyle, setUserStatusStyle] = useState({
-    backgroundColor: "blue",
-  });
+  const [userStatus, setUserStatus] = useState<friendStateType>("OFFLINE");
 
   const loadUserStatus = () => {
     fetch(`${process.env.REACT_APP_BASE_URL}/users/state/${targetId}`, {
@@ -43,33 +42,13 @@ const Friend = ({
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setUserStatus(data.userStatus);
       });
   };
 
   useEffect(() => {
-    console.log("왜 안돼!");
     loadUserStatus();
   }, [token]);
-
-  const handleUserStausChange = () => {
-    console.log("유저의 접속상태: " + userStatus);
-    switch (userStatus) {
-      case "ONLINE":
-        setUserStatusStyle({ backgroundColor: "#1AF354" });
-        break;
-      case "OFFLINE":
-        setUserStatusStyle({ backgroundColor: "grey" });
-        break;
-      case "INGAME":
-        setUserStatusStyle({ backgroundColor: "#FF1493" });
-        break;
-    }
-  };
-  useEffect(() => {
-    handleUserStausChange();
-  }, [userStatus]);
 
   return (
     <>
@@ -82,7 +61,7 @@ const Friend = ({
             alt="profile"
           />
         </S.ProfileImgBox>
-        <S.UserStatus style={userStatusStyle} />
+        <S.UserStatus state={userStatus} />
         <S.ProfileText>
           <S.Name theme={theme}>{targetName}</S.Name>
           <S.Intro theme={theme}>고정했어요</S.Intro>
