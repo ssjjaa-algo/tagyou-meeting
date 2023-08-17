@@ -27,25 +27,24 @@ public class GroupController {
     @PostMapping("/create")
     @Operation(summary = "그룹 생성하기", description = "")
     public GroupRspDto createGroup(HttpServletRequest request){
-        System.out.println(request.getHeader("bbbbbb"+ "Auth"));
         Long userId = tokenService.parseUId(request.getHeader("Auth"));
-        System.out.println("Aaaaaaa" + userId);
         return groupService.createGroup(userId);
     }
 
-    // ====================== 그룹 조회 ============================
+    // ====================== 임시 - 그룹 조회 ============================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{groupId}")
     public GroupRspDto getGroup(@PathVariable Long groupId){
         return groupService.getGroup(groupId);
     }
 
+    // ====================== 그룹 요청 리스트 ============================
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/invited")
     @Operation(summary = "날 초대한 정보 - 방장 정보", description = "")
     public List<GroupRspDto> getInvitation(HttpServletRequest request) {
         Long uId = tokenService.parseUId(request.getHeader("Auth"));
-        return groupService.getPending(uId);
+        return groupService.getPendingList(uId);
     }
 
 
