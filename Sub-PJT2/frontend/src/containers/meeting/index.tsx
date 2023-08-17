@@ -5,97 +5,116 @@ import SonByeonHo from "containers/inGame/sonByeongHo";
 import Sis from "containers/inGame/sis";
 import { useEffect, useState } from "react";
 import Header from "components/header/Header";
-import { GameStart as GameStartAtom, UserInfo, RoomInfo, InGameChatStatus } from "atoms/atoms";
+import {
+  GameStart as GameStartAtom,
+  UserInfo,
+  RoomInfo,
+  InGameChatStatus,
+  MainStreamManager,
+} from "atoms/atoms";
 import { useRecoilState } from "recoil";
 import { useRecoilValue } from "recoil";
 
 // OpenVidu
-import { OpenVidu, Publisher, Session, StreamManager, Subscriber } from 'openvidu-browser';
-import axios from 'axios';
-import UserVideoComponent from './UserVideoComponent';
+import {
+  OpenVidu,
+  Publisher,
+  Session,
+  StreamManager,
+  Subscriber,
+} from "openvidu-browser";
+import axios from "axios";
+import UserVideoComponent from "./UserVideoComponent";
 import { storiesOf } from "@storybook/react";
-// import { roomProps } from "types/types";
 import { parse } from "path";
 import { roomProps } from "types/types";
 
-const OPENVIDU_SERVER_URL = 'https://tagyou.site:8443';
-const OPENVIDU_SERVER_SECRET = 'tagyou';
-// const OPENVIDU_SERVER_URL = 'https://tagyou.site:5443'
-// const OPENVIDU_SERVER_SECRET = 'tagyou';
-
+const OPENVIDU_SERVER_URL = "https://tagyou.site:8443";
+const OPENVIDU_SERVER_SECRET = "tagyou";
 
 const Meeting = () => {
   const [GameStart, setGameStart] = useRecoilState(GameStartAtom);
   const [selectedGame, setSelectedGame] = useState("");
-  const [inGameChatStatus, setInGameChatStatus] = useRecoilState(InGameChatStatus);
+  const [inGameChatStatus, setInGameChatStatus] =
+    useRecoilState(InGameChatStatus);
   const userInfo = useRecoilValue(UserInfo);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo); // 추가
-  // const [myUserName, setMyUserName] = useState(userInfo.userName);
   const [myUserName, setMyUserName] = useState(userInfo.userName);
   const [session, setSession] = useState<Session | null>();
-  const [mainStreamManager, setMainStreamManager] = useState<StreamManager | null>(null);
-  const [publisher, setPublisher] = useState<any>()
-  // const [subscriber, setSubscriber] = useState<Subscriber | undefined>(undefined)
+  const [mainStreamManager, setMainStreamManager] =
+    useRecoilState(MainStreamManager);
+  const [publisher, setPublisher] = useState<any>();
   const [publishers, setPublishers] = useState<any[]>([]); // 추가
-  const [token, setToken] = useState<any>()
+  const [token, setToken] = useState<any>();
   const [subscribers, setSubscribers] = useState<any[]>([]);
-  // const [device, setDevice] = useState<Device | undefined>(undefined)
-
 
   useEffect(() => {
-    const storedRoomInfo = localStorage.getItem('recoil-persist');
-    setRoomInfo(storedRoomInfo ? JSON.parse(storedRoomInfo)['RoomInfo'] : null);
-    console.log(roomInfo)
+    const storedRoomInfo = localStorage.getItem("recoil-persist");
+    setRoomInfo(storedRoomInfo ? JSON.parse(storedRoomInfo)["RoomInfo"] : null);
+    console.log(roomInfo);
     const rightContainer = document.querySelector(
       ".right_container"
     ) as HTMLElement;
     if (rightContainer instanceof Element) {
       rightContainer.style.width = "100vw";
     }
-    joinSession(roomInfo)
+    joinSession(roomInfo);
   }, []);
 
   const renderSelectedGame = () => {
     if (selectedGame === "catchMind") {
       return <CatchMind publisher={publisher} subscribers={subscribers} />;
     } else if (selectedGame === "sonByeonHo") {
-      return <SonByeonHo publisher={publisher} subscribers={subscribers}/>;
+      return <SonByeonHo publisher={publisher} subscribers={subscribers} />;
     } else if (selectedGame === "sis") {
-      return <Sis publisher={publisher} subscribers={subscribers}/>;
+      return (
+        <Sis
+          publisher={publisher}
+          subscribers={subscribers}
+          handleMainVideoStream={handleMainVideoStream}
+        />
+      );
     }
   };
 
   const leaveSession = () => {
     if (session) {
-        session.disconnect();
+      session.disconnect();
     }
-  }
+  };
 
-  // const deleteSubscriber = (mainStreamManager: any) => {
-  //     let index = subscribers.indexOf(mainStreamManager, 0);
-  //     if (index > -1) {
-  //         subscribers.splice(index, 1);
-  //         setSubscribers(subscribers)
-  //     }
-  // }
-  // Openvidu
+  const handleMainVideoStream = (stream: any) => {
+    setMainStreamManager(stream);
+  };
+
+  const deleteSubscriber = (streamManager: any) => {
+    let index = subscribers.indexOf(streamManager, 0);
+    if (index > -1) {
+      subscribers.splice(index, 1);
+      setSubscribers(subscribers);
+    }
+  };
+
   const joinSession = (roomInfo: roomProps) => {
     const OV = new OpenVidu();
-    let mySession: Session = OV.initSession()
+    let mySession: Session = OV.initSession();
 
     mySession.on("streamCreated", function (event) {
-      let subscriber = mySession.subscribe(event.stream, undefined );
-      subscribers.push(subscriber)
-      setSubscribers(subscribers)
+      let subscriber = mySession.subscribe(event.stream, undefined);
+      subscribers.push(subscriber);
+      setSubscribers(subscribers);
     });
-    
-    // mySession.on('streamDestroyed', (event) => {
 
-    //   // Remove the stream from 'subscribers' array
-    //   // deleteSubscriber(event.stream.streamManager);
-    // });
+    // On every Stream destroyed...
+    mySession.on("streamDestroyed", (event) => {
+      // Remove the stream from 'subscribers' array
+      deleteSubscriber(event.stream.streamManager);
+    });
 
-
+    // On every asynchronous exception...
+    mySession.on("exception", (exception) => {
+      console.warn(exception);
+    });
 
     new Promise<void>((resolve, reject) => {
       const data = {
@@ -118,7 +137,7 @@ const Meeting = () => {
           },
         ],
       };
-    
+
       axios
         .post(
           `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${roomInfo.sessionId}/connection`,
@@ -128,50 +147,62 @@ const Meeting = () => {
               Authorization: `Basic ${btoa(
                 `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
               )}`,
-              'Content-Type': 'application/json',
-              'Auth': token
+              "Content-Type": "application/json",
+              Auth: token,
             },
           }
         )
         .then((response) => {
           setToken(response.data.token);
-          mySession.connect(response.data.token, { clientData: myUserName }).then(() => {
-            const publisher = OV.initPublisher("publisher");
-            mySession.publish(publisher);
-            setPublisher(publisher);
-          });
+          mySession
+            .connect(response.data.token, { clientData: myUserName })
+            .then(() => {
+              let publisher = OV.initPublisher("publisher");
+              mySession.publish(publisher);
+              setPublisher(publisher);
+            });
           resolve(); // Resolve the Promise once everything is done
         })
         .catch((error) => {
           console.log(error);
           reject(error); // Reject the Promise in case of an error
         });
-    });    
+    });
   };
 
   return (
-    
     <S.Container
-    className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}
+      className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}
     >
-      <Header/>
+      <Header leaveSession={leaveSession} />
       {!GameStart ? (
         <S.Container
-        className={!inGameChatStatus ? "Container-Son" : "Container-Son-withChat"}
+          className={
+            !inGameChatStatus ? "Container-Son" : "Container-Son-withChat"
+          }
         >
           <S.InnerContainer>
-              { roomInfo.roomType === "One" ? (
-                <S.PlayerVidBundle>
-                  <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
-                </S.PlayerVidBundle>
-              ) : (
-                <S.PlayerVidBundle>
-                  <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
-                  <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
-                  <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
-                </S.PlayerVidBundle>
+            {/* { roomInfo.roomType === "One" ? ( */}
+            <S.PlayerVidBundle>
+              <S.PlayerVid>
+                <UserVideoComponent streamManager={publisher} />
+              </S.PlayerVid>
+              {subscribers.map((sub, i) => {
+                return (
+                  <S.PlayerVid>
+                    <UserVideoComponent streamManager={sub} />
+                  </S.PlayerVid>
+                );
+              })}
+            </S.PlayerVidBundle>
+            {/* ) : (
+               <S.PlayerVidBundle>
+                 <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+                 <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+                 <S.PlayerVid><UserVideoComponent streamManager={publisher} /></S.PlayerVid>
+               </S.PlayerVidBundle>
               )
-              }
+              } */}
             <S.Middle>
               <select
                 value={selectedGame}
@@ -185,12 +216,14 @@ const Meeting = () => {
               <button onClick={() => setGameStart(true)}>게임 시작</button>
             </S.Middle>
             <S.PlayerVidBundle>
-            {subscribers.map((sub, i) => {
-              return(
-                <S.PlayerVid><UserVideoComponent streamManager={sub} /></S.PlayerVid>
-                )})}
+              {subscribers.map((sub, i) => {
+                return (
+                  <S.PlayerVid>
+                    <UserVideoComponent streamManager={sub} />
+                  </S.PlayerVid>
+                );
+              })}
             </S.PlayerVidBundle>
-
           </S.InnerContainer>
         </S.Container>
       ) : (
@@ -202,5 +235,3 @@ const Meeting = () => {
 };
 
 export default Meeting;
-
-
