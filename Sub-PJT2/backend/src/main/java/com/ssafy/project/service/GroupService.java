@@ -30,6 +30,22 @@ public class GroupService {
     private final NoticeService noticeService;
     private final InvitationService invitationService;
 
+
+    /**
+     * 그룹 조회
+     */
+    public GroupRspDto getGroup(Long userId) {
+       User user = userService.findUser(userId)
+                .orElseThrow(() -> new NotFoundException("그룹을 조회할 유저가 존재하지 않습니다."));
+
+       if(user.getMeetingGroup() == null)
+            return null;
+
+       return findMeetingGroup(user.getMeetingGroup().getId())
+                .map(GroupRspDto::new)
+                .orElseGet(null);
+    }
+
     /**
      * 그룹 생성
      */
@@ -251,10 +267,6 @@ public class GroupService {
         return Optional.ofNullable(groupId).flatMap(groupRepository::findById);
     }
 
-    public GroupRspDto getGroup(Long groupId) {
-        return groupRepository.findById(groupId).map(GroupRspDto::new)
-                .orElseThrow(() -> new NotFoundException("그룹이 존재하지 않습니다."));
-    }
 
 
 }

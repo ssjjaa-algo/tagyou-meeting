@@ -265,7 +265,6 @@ public class RoomService {
         if(meetingRoom.getStatus() == MeetingRoomStatus.ACTIVE){
             throw new IllegalStateException("이미 시작된 미팅룸입니다.");
         }
-
         try {
             String sessionId = webRtcService.initializeSession();
             meetingRoom.setSessionId(sessionId);
