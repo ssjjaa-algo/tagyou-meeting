@@ -1,16 +1,17 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
-  /* border: solid green 5px; */
+  /* border: solid white 5px; */
   display: flex;
   flex-direction: row;
   transition: all 1s;
   /* width: 100%; */
-  height: 95%;
+  height: 97%;
   margin-top: 2rem;
 `;
 
 export const InnerContainer = styled.div`
+  /* border: solid blue 3px; */
   display: flex;
   flex-direction: column;
   justify-content: center;

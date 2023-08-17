@@ -135,7 +135,7 @@ const RightContainer = () => {
     const location = window.location.pathname;
     console.log(location.substring(9, location.length));
     // pathname에서 방번호 가져오기 필수로 주석 없애야 함 !!!!!!!!!!!!!!!!!!!!
-    // setRoomId(parseInt(location.substring(9, location.length)));
+    setRoomId(parseInt(location.substring(9, location.length)));
     console.log("방 번호: " + roomId);
     // 채팅 웹소켓 연결
     token && roomId && connectHandler();

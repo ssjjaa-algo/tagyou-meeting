@@ -115,11 +115,11 @@ const Container = styled.div<{ theme: boolean }>`
   display: flex;
   background-color: ${(props) =>
     props.theme ? darkTheme.bg.light : lightTheme.bg.light};
-  /* border: dotted red 2px; */
+  /* border: dotted red 5px; */
   width: 100% !important;
   height: 100% !important;
   min-height: fit-content;
-  min-width: fit-content;
+  min-width: 40rem;
 `;
 
 export default Main;

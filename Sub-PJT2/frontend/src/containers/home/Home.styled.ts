@@ -3,10 +3,13 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { themeProps } from "@emotion/react";
 
 export const Container = styled.div`
+  /* border: solid green 4px; */
   width: 100%;
   height: 100%;
   display: flex;
   vertical-align: center;
+  min-width: fit-content;
+  padding: 2rem;
 `;
 
 export const T = styled.svg`
@@ -21,12 +24,14 @@ export const TitleImg = styled.div`
 `;
 
 export const ProfileContainer = styled.div`
+  /* border: solid white 3px; */
   width: 70%;
   display: flex;
   border-radius: 5px;
   margin: auto;
   overflow: hidden;
   position: relative;
+  min-width: 40rem;
 `;
 
 export const Img = styled.img`

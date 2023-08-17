@@ -5,6 +5,7 @@ import { Button } from "antd";
 export const Profile = styled.div`
   display: flex;
   vertical-align: middle;
+  position: relative;
 `;
 
 export const ProfileImgBox = styled.div`
