@@ -163,7 +163,7 @@ const LeftContainer = () => {
 
       {showModal && (
         <Modal
-          handleOnClick={() => handleLogout}
+          handleOnClick={handleLogout}
           setShowModal={setShowModal}
           formType="logout"
         />
