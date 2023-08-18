@@ -23,9 +23,9 @@ spring:
       encoding: UTF-8
 
     redis:
-      host: tagyou.site
+      host: ${REDIS_HOST}
       port: ${REDIS_PORT}
-      password : A705SSAFYA705
+      password : ${REDIS_PW}
 
   security:
     oauth2:
@@ -58,13 +58,12 @@ logging:
 cloud:
   aws:
     s3:
-      bucket: tag-u #tagyou
+      bucket: tag-u
     stack.auto: false
     region.static: ap-northeast-2
     credentials:
       accessKey: ${S3_ACCESS}
       secretKey: ${S3_SECRET}
 
-#OPENVIDU_URL: http://localhost:4443/
 OPENVIDU_URL: ${OPENVIDU_URL}
 OPENVIDU_SECRET: ${OPENVIDU_SECRET}
